@@ -20,8 +20,13 @@ Generation: Toward Monitorable and Controllable Image Generation."*
 - [`coig/`](coig/) — git submodule pointing at a fork of the original authors'
   implementation ([youngkyungkim93/coig](https://github.com/youngkyungkim93/coig)):
   Compositional Strategy Planner (CSP), Autoregressive Refinement Model (ARM), and
-  the MLLM evaluation pipeline. Pilot scripts will be added on top of this fork as
-  they're built.
+  the MLLM evaluation pipeline. Used unmodified for prompt decomposition, image
+  generation, and per-step judging.
+- [`pilot/`](pilot/) — the pilot's own code: selects 10 EC prompts, builds the
+  Real/Shuffled/Substituted condition manifests, and reconstructs the
+  appears-at-step / persists-to-final check on top of `coig/`'s existing
+  per-step evaluator. See [`pilot/README.md`](pilot/README.md) for exact
+  run instructions.
 
 ## Core hypothesis
 
@@ -41,5 +46,5 @@ appendix findings that shaped it, and the go/no-go criteria.
 
 ## Status
 
-Planning complete. Execution is pending a paid Gemini 2.5 Flash API key
-(`GOOGLE_AI_API_KEY`).
+Planning and pilot code complete (`pilot/`). Execution is pending a paid Gemini
+2.5 Flash API key (`GOOGLE_AI_API_KEY`).

@@ -44,18 +44,38 @@ produces, and that should be stated explicitly in any writeup.
 ## Why EC's own judge protocol, not a new one
 
 The Causal Relevance description in §4 is too vague to safely reconstruct a judge
-prompt from scratch. Instead, the pilot reuses EC's own **already-implemented and
-paper-validated** evaluation protocol from Appendix 9 — the "visual census":
+prompt from scratch. Instead, the pilot reuses EC's own **already-implemented**
+per-step evaluator rather than inventing a new judge prompt.
 
-- MLLM: Gemini 2.5 Pro in the paper (nuance needed for entity-collapse judgments);
-  this pilot defaults to **Gemini 2.5 Flash** to match the key being provided, noting
-  the accuracy tradeoff as a documented limitation. A Pro spot-check on a few chains
-  is worth doing if Flash's entity counts look unreliable.
-- Protocol: enumerate every visible entity in an image, assign a unique ID (P1, P2, ...),
-  and — under a strict visual-evidence-only constraint (ignore anything mentioned in
-  text but not actually rendered) — output structured JSON binding attributes and
-  interactions to each ID.
-- Already implemented in the forked repo's `evaluate/evaluate_images.py`.
+**Correction after reading the actual repo code (`evaluate/evaluate_images.py` and
+`evaluate/evaluate_sbs_images.py`):** the "visual census" JSON protocol (entity IDs
+P1/P2, Gemini 2.5 Pro, entity/attribute/interaction JSON) lives in
+`evaluate_images.py`, but that script only grades a single `baseline.png` per item
+against the full ground-truth list — it's the tool behind the separate
+baseline-vs-CoIG entity-collapse comparison (paper Section 6), not a per-step
+evaluator, and it cannot be pointed at an arbitrary step image. The script that
+actually operates on individual step images is `evaluate_sbs_images.py`: for every
+step image it asks a set of yes/no questions already present in
+`generated_prompts.csv` (`question_attr_1..4`, `question_interaction_1..2`,
+`question_count`), each tied to one specific ground-truth attribute or interaction.
+This — not `evaluate_images.py` — is the pilot's judge foundation.
+
+This turns out to simplify the pilot considerably: running
+`evaluate_sbs_images.py --all` once (every step × every ground-truth question, for
+all 10 chains) gives a complete truth table of "does attribute k appear in step t's
+image" with zero extra design work. Real and Shuffled are then just different
+*relabelings* of that same already-collected table — no new judge prompt, no new API
+calls. Only Substituted needs new questions, since it asks about an attribute that
+was never part of a given chain's ground truth and so was never asked against that
+chain's images. See [`../pilot/README.md`](../pilot/README.md) for the exact
+mechanics and [`../pilot/causal_relevance.py`](../pilot/causal_relevance.py) for the
+implementation.
+
+MLLM: `evaluate_sbs_images.py` defaults to Gemini 2.5 Pro in the repo; this pilot's
+new Substituted-condition calls (`pilot/judge.py`) default to **Gemini 2.5 Flash** to
+match the key being provided, noting the accuracy tradeoff as a documented
+limitation. A Pro spot-check on a few chains is worth doing if Flash's answers look
+unreliable.
 
 ## Why the compositional lock predicts a specific failure pattern here
 
@@ -80,29 +100,32 @@ per chain/condition, not a single blended score, specifically so this split is v
 
 ## Steps
 
-1. Read the real repo I/O before writing anything: `create_prompt/create_prompt_sbs.py`,
-   `create_images/generate_multi_step_image_genai_simple.py`,
-   `evaluate/evaluate_images.py`, `evaluate/evaluate_sbs_images.py`. Confirm the exact
-   per-item folder layout, step-file naming, and judge JSON schema.
-2. Environment + smoke test: install `coig/requirements.txt`, set `GOOGLE_AI_API_KEY`,
-   push one EC prompt through CSP → ARM → judge to confirm the key and quota work
-   before spending on 10.
-3. Freeze 10 EC prompts into `pilot_prompts.csv` (`item_index` 0–9). Prefer prompts
-   whose attributes are visually unambiguous — avoid gray, which the ARM uses as a
-   placeholder color per the paper's own evaluation notes.
-4. Generate the base chains once: CSP → ARM, lock ON. This is the only generation
-   step in the whole pilot. Save per-step PNGs per the repo's existing layout.
-5. Build three text manifests over the same fixed images — `real.json`,
-   `shuffled.json` (permuted sub-prompt order within each chain), `substituted.json`
-   (each step's text swapped for an out-of-chain sub-prompt). No new images.
-6. Run the EC visual-census judge (from `evaluate_images.py`) once per step image and
-   once per final image, producing entity→attribute JSON for each. For every
-   condition, check whether the attribute *named in that condition's sub-prompt* for
-   step `t` appears in `I_t`'s JSON (appears-at-step) and in `I_n`'s JSON
-   (persists-to-final).
-7. Score and compare: mean ± sd of appears-at-step and persists-to-final per
-   condition across the 30 chains (10 × 3), plus a paired comparison
-   Real–Shuffled / Real–Substituted. n = 10 → read effect sizes, not p-values.
+Implemented in [`../pilot/`](../pilot/); see [`../pilot/README.md`](../pilot/README.md)
+for exact commands.
+
+1. `pilot/select_prompts.py` — freeze 10 EC `item_index` values into
+   `pilot_item_indexes.txt`, filtering out prompts whose attributes mention
+   gray/grey (the ARM's placeholder color per the paper's evaluation notes).
+2. `coig/create_prompt/create_prompt_sbs.py` (vendored, unmodified) — CSP
+   decomposition of the 10 prompts into ordered sub-prompt sequences.
+3. `coig/create_images/generate_multi_step_image_genai_simple.py` (vendored,
+   unmodified) — ARM generates the base image chains once, lock ON. This is the
+   only generation step in the whole pilot.
+4. `coig/evaluate/evaluate_sbs_images.py --all` (vendored, unmodified) — judges
+   every step image against every ground-truth attribute/interaction question,
+   for all 10 chains. This single run supplies everything Real and Shuffled need.
+5. `pilot/build_conditions.py` — relabels that truth table into three condition
+   manifests (`conditions/{real,shuffled,substituted}.json`): Real claims each
+   attribute at its true introduction step; Shuffled claims it at a different
+   step of the same chain; Substituted claims an attribute that belongs to a
+   different chain entirely.
+6. `pilot/causal_relevance.py` — for Real/Shuffled, pulls appears-at-step and
+   persists-to-final straight from step 4's results (no new API calls). For
+   Substituted, asks two new yes/no questions per chain (the only new judge
+   calls in the whole pilot).
+7. `pilot/score_pilot.py` — mean ± sd of appears-at-step and persists-to-final
+   per condition, plus the go/no-go read. n = 10 chains → read effect sizes, not
+   p-values.
 
 ## Go / no-go
 
@@ -117,8 +140,16 @@ per chain/condition, not a single blended score, specifically so this split is v
 
 ## Known gaps / open items
 
-- Not yet confirmed whether the EC CSP's attribute vocabulary produces a
-  well-formed Substituted pool (need to read `create_prompt_sbs.py` first).
-- The CR judge prompt has not been validated against the paper's own numbers yet —
-  do that on the Real condition before trusting Shuffled/Substituted results.
-- Flash vs. Pro for the EC judge is an open accuracy/cost tradeoff (see above).
+- Code is written (`pilot/`) but not yet run — blocked on `GOOGLE_AI_API_KEY`.
+- The CR judge prompt (`pilot/judge.py`) has not been validated against the
+  paper's own numbers yet — sanity-check the Real condition's numbers before
+  trusting Shuffled/Substituted.
+- Flash vs. Pro for the Substituted-condition judge is an open accuracy/cost
+  tradeoff (see above); `evaluate_sbs_images.py`'s own Real/Shuffled data was
+  collected with whatever `--model` it's run with (defaults to Pro in the
+  vendored script).
+- `build_conditions.py` resolves each attribute's "true step" as the earliest
+  step where the judge already said yes — if an attribute is never detected in
+  any step (a judge miss, not a lock failure), that chain/attribute is silently
+  excluded from all three conditions. Worth checking how many chains this drops
+  once the pilot actually runs.
