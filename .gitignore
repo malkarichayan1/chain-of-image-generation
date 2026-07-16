@@ -1,0 +1,15 @@
+.env
+*.env
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+output/
+generated_images/
+*.png
+*.jpg
+*.jpeg
+!docs/**/*.png
+.DS_Store
+Thumbs.db
