@@ -41,6 +41,74 @@ Now, evaluate this image:
 Question: {question}"""
 
 
+# -------------------- Optional OpenRouter judge backend --------------------
+# Free Gemini tier caps at a small daily-request quota per model (429,
+# GenerateRequestsPerDayPerProjectPerModel-FreeTier, limit 20/day). When
+# USE_OPENROUTER=1, route judge calls through OpenRouter's vision-capable
+# chat completions instead.
+
+def _use_openrouter() -> bool:
+    return os.getenv("USE_OPENROUTER") == "1"
+
+
+def _openrouter_ask_yes_no(image_path: str, question: str, max_retries: int = 3) -> str:
+    import json as _json
+    import base64 as _base64
+    import urllib.request as _urlreq
+
+    api_key = os.getenv("OPENROUTER_API_KEY")
+    if not api_key:
+        print("OPENROUTER_API_KEY not set")
+        return "error"
+    model = os.getenv("OPENROUTER_JUDGE_MODEL", "google/gemini-2.5-flash")
+    url = "https://openrouter.ai/api/v1/chat/completions"
+
+    try:
+        with open(image_path, "rb") as f:
+            img_bytes = f.read()
+    except Exception as exc:
+        print(f"Error reading image {image_path}: {exc}")
+        return "error"
+    data_uri = "data:image/png;base64," + _base64.b64encode(img_bytes).decode("ascii")
+    prompt = YES_NO_TEMPLATE.format(question=question)
+
+    payload = {
+        "model": model,
+        "messages": [{
+            "role": "user",
+            "content": [
+                {"type": "text", "text": prompt},
+                {"type": "image_url", "image_url": {"url": data_uri}},
+            ],
+        }],
+        "temperature": 0.0,
+    }
+    data = _json.dumps(payload).encode("utf-8")
+    headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
+
+    for attempt in range(max_retries):
+        try:
+            req = _urlreq.Request(url, data=data, headers=headers)
+            with _urlreq.urlopen(req, timeout=float(os.getenv("OPENROUTER_TIMEOUT", "120"))) as resp:
+                body = _json.loads(resp.read().decode("utf-8"))
+            if isinstance(body, dict) and body.get("error"):
+                raise RuntimeError(str(body["error"]))
+            text = body["choices"][0]["message"]["content"].strip().lower()
+            if "yes" in text:
+                return "yes"
+            if "no" in text:
+                return "no"
+            print(f"Unexpected response: {text}")
+            return "error"
+        except Exception as exc:
+            print(f"Error on attempt {attempt + 1}: {exc}")
+            if attempt < max_retries - 1:
+                time.sleep(2 ** attempt)
+                continue
+            return "error"
+    return "error"
+
+
 def get_client() -> genai.Client:
     load_dotenv()
     api_key = os.getenv("GOOGLE_AI_API_KEY")
@@ -53,11 +121,14 @@ def ask_yes_no(
     client: genai.Client,
     image_path: str,
     question: str,
-    model: str = "gemini-2.5-flash",
+    model: str = "gemini-flash-latest",
     temperature: float = 0.0,
     max_retries: int = 3,
 ) -> str:
     """Returns "yes", "no", or "error"."""
+    if _use_openrouter():
+        return _openrouter_ask_yes_no(image_path, question, max_retries=max_retries)
+
     config: Dict[str, Any] = {
         "temperature": temperature,
         "top_p": 0.95,

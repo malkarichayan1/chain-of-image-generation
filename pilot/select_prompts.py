@@ -15,6 +15,15 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--n", type=int, default=10)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--output", type=str, default="pilot_item_indexes.txt")
+    parser.add_argument(
+        "--csv_output",
+        type=str,
+        default="pilot_prompts.csv",
+        help="Filtered copy of prompts_csv containing only the selected rows -- "
+        "point create_prompt_sbs.py --csv at this so it decomposes exactly "
+        "these 10 prompts (its own --limit_items takes the first N rows, "
+        "not a specific item_index selection).",
+    )
     return parser.parse_args()
 
 
@@ -44,6 +53,10 @@ def main() -> None:
     output_path.write_text("\n".join(str(i) for i in chosen) + "\n", encoding="utf-8")
     print(f"Selected {len(chosen)} item_index values -> {output_path}")
     print(chosen)
+
+    csv_output_path = pathlib.Path(args.csv_output)
+    df[df["item_index"].isin(chosen)].to_csv(csv_output_path, index=False)
+    print(f"Wrote filtered prompts CSV -> {csv_output_path}")
 
 
 if __name__ == "__main__":
