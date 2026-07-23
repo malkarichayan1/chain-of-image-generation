@@ -1,0 +1,64 @@
+condition,chain_id,n,attribute,subject,claimed_step,true_step,iou
+real,0,2,red apron,barista,1,1,0.11619926842013586
+shuffled,0,2,red apron,barista,2,1,9.483347242242622e-05
+substituted,0,2,white hat (from chain 1),barista,1,1,0.0
+attention_scrambled,0,2,red apron,barista,1,1,0.032365639902049236
+real,0,2,yellow helmet,cyclist,2,2,0.0
+shuffled,0,2,yellow helmet,cyclist,1,2,0.0
+substituted,0,2,blue gloves (from chain 2),cyclist,2,2,0.0
+attention_scrambled,0,2,yellow helmet,cyclist,2,2,0.0
+real,1,2,white hat,chef,1,1,0.010492653414001728
+shuffled,1,2,white hat,chef,2,1,0.004033632541756618
+substituted,1,2,red apron (from chain 0),chef,1,1,0.0
+attention_scrambled,1,2,white hat,chef,1,1,0.00017109518024877238
+real,1,2,shovel,farmer,2,2,0.0
+shuffled,1,2,shovel,farmer,1,2,0.0
+substituted,1,2,red apron (from chain 0),farmer,2,2,0.0
+attention_scrambled,1,2,shovel,farmer,2,2,0.0
+real,2,2,blue gloves,nurse,1,1,0.1098773057809473
+shuffled,2,2,blue gloves,nurse,2,1,0.03265108088195655
+substituted,2,2,white hat (from chain 1),nurse,1,1,0.0
+attention_scrambled,2,2,blue gloves,nurse,1,1,0.018066393674830667
+real,2,2,dark sunglasses,pilot,2,2,0.0
+shuffled,2,2,dark sunglasses,pilot,1,2,0.0
+substituted,2,2,shovel (from chain 1),pilot,2,2,0.0
+attention_scrambled,2,2,dark sunglasses,pilot,2,2,0.0
+real,5,3,dark sunglasses,pilot,1,1,0.0
+shuffled,5,3,dark sunglasses,pilot,2,1,0.0
+shuffled,5,3,dark sunglasses,pilot,3,1,0.0
+substituted,5,3,pan (from chain 7),pilot,1,1,0.0
+attention_scrambled,5,3,dark sunglasses,pilot,1,1,0.0
+real,5,3,book,teacher,2,2,0.0016621963658343091
+shuffled,5,3,book,teacher,1,2,0.0
+shuffled,5,3,book,teacher,3,2,0.0
+substituted,5,3,shovel (from chain 1),teacher,2,2,0.0
+attention_scrambled,5,3,book,teacher,2,2,0.008577568991422431
+real,5,3,red apron,barista,3,3,0.07221425877027537
+shuffled,5,3,red apron,barista,1,3,0.0
+shuffled,5,3,red apron,barista,2,3,0.0
+substituted,5,3,blue gloves (from chain 2),barista,3,3,0.0
+attention_scrambled,5,3,red apron,barista,3,3,0.010896934348104417
+real,7,4,blue gloves,nurse,1,1,0.0
+shuffled,7,4,blue gloves,nurse,2,1,0.0
+shuffled,7,4,blue gloves,nurse,3,1,0.0
+shuffled,7,4,blue gloves,nurse,4,1,0.0001317473462320259
+substituted,7,4,blue gloves (from chain 2),nurse,1,1,0.0
+attention_scrambled,7,4,blue gloves,nurse,1,1,0.0
+real,7,4,dark sunglasses,pilot,2,2,0.0
+shuffled,7,4,dark sunglasses,pilot,1,2,0.0
+shuffled,7,4,dark sunglasses,pilot,3,2,0.0
+shuffled,7,4,dark sunglasses,pilot,4,2,0.0
+substituted,7,4,dark sunglasses (from chain 5),pilot,2,2,0.0
+attention_scrambled,7,4,dark sunglasses,pilot,2,2,0.0
+real,7,4,pan,chef,3,3,0.0
+shuffled,7,4,pan,chef,1,3,0.0
+shuffled,7,4,pan,chef,2,3,0.0
+shuffled,7,4,pan,chef,4,3,0.0
+substituted,7,4,dark sunglasses (from chain 2),chef,3,3,0.0
+attention_scrambled,7,4,pan,chef,3,3,0.0
+real,7,4,book,teacher,4,4,0.16336124799709767
+shuffled,7,4,book,teacher,1,4,0.0
+shuffled,7,4,book,teacher,2,4,0.0
+shuffled,7,4,book,teacher,3,4,0.0
+substituted,7,4,red apron (from chain 5),teacher,4,4,0.0
+attention_scrambled,7,4,book,teacher,4,4,0.1557788190064276
