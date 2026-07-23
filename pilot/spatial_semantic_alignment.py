@@ -48,12 +48,13 @@ from PIL import Image
 
 class AttentionRecord:
     """A single captured cross-attention tensor with metadata."""
-    __slots__ = ("tensor", "layer_name", "spatial_dim")
+    __slots__ = ("tensor", "layer_name", "spatial_dim", "heads")
 
-    def __init__(self, tensor: torch.Tensor, layer_name: str, spatial_dim: int):
+    def __init__(self, tensor: torch.Tensor, layer_name: str, spatial_dim: int, heads: int = 1):
         self.tensor = tensor          # (batch*heads, spatial_dim, seq_len) — already on CPU
         self.layer_name = layer_name
         self.spatial_dim = spatial_dim
+        self.heads = heads            # needed to slice out one batch entry (e.g. CFG cond half)
 
 
 class AttentionStore:
@@ -72,10 +73,10 @@ class AttentionStore:
         self.step_store = {}
         self.current_step = 0
 
-    def add_attention(self, tensor: torch.Tensor, layer_name: str, spatial_dim: int):
+    def add_attention(self, tensor: torch.Tensor, layer_name: str, spatial_dim: int, heads: int = 1):
         if self.current_step not in self.step_store:
             self.step_store[self.current_step] = []
-        record = AttentionRecord(tensor.detach().cpu(), layer_name, spatial_dim)
+        record = AttentionRecord(tensor.detach().cpu(), layer_name, spatial_dim, heads)
         self.step_store[self.current_step].append(record)
 
     def step(self):
@@ -146,7 +147,7 @@ class CustomAttnProcessor:
         # ---- HOOK: record cross-attention probabilities ----
         if self.is_cross_attention:
             spatial_dim = attention_probs.shape[1]
-            self.store.add_attention(attention_probs, self.layer_name, spatial_dim)
+            self.store.add_attention(attention_probs, self.layer_name, spatial_dim, attn.heads)
         # ----------------------------------------------------
 
         hidden_states = torch.bmm(attention_probs, value)
@@ -425,6 +426,7 @@ class SpatialSemanticAlignment:
         max_steps: int = 15,
         aggregation_mode: str = "resolution_weighted",
         min_spatial_dim: int = 0,
+        cond_index: Optional[int] = None,
     ) -> Union[np.ndarray, Dict[int, np.ndarray]]:
         """
         Phase B: extract and aggregate cross-attention maps for *target_token_index*
@@ -449,6 +451,15 @@ class SpatialSemanticAlignment:
             Skip any layer whose native spatial dimension (sqrt of spatial_dim²)
             is below this value.  E.g. min_spatial_dim=32 discards 8×8 and
             16×16 layers.  Default 0 (keep all).
+        cond_index : int or None
+            Which batch entry (in units of `record.heads`) to read, for pipelines
+            running classifier-free guidance (batch = [uncond, cond] for a standard
+            single-prompt CFG call). Without this, averaging "over batch*heads" (see
+            below) silently mixes the near-uninformative unconditional branch's
+            attention into the signal, diluting it. None (default) preserves the
+            original whole-batch-average behaviour, so hand-built test tensors with
+            no real cond/uncond structure (batch=1, no heads dimension) still work
+            unmodified — pass cond_index=1 explicitly for a real CFG-hooked pipeline.
 
         Returns
         -------
@@ -481,8 +492,13 @@ class SpatialSemanticAlignment:
                 if target_token_index >= seq_len:
                     continue
 
-                # Average over batch*heads dimension → (spatial_dim,)
-                token_attn = record.tensor[:, :, target_token_index].mean(dim=0)
+                # Average over batch*heads dimension → (spatial_dim,), optionally
+                # restricted to one cond/uncond slice first (see cond_index above).
+                tensor = record.tensor
+                if cond_index is not None:
+                    start = cond_index * record.heads
+                    tensor = tensor[start:start + record.heads]
+                token_attn = tensor[:, :, target_token_index].mean(dim=0)
 
                 # Reshape to 2D and upsample
                 attn_2d = token_attn.view(native_side, native_side).unsqueeze(0).unsqueeze(0)

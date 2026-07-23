@@ -42,10 +42,16 @@ SD1.5 renders them with Mask R-CNN-detectable people) is decomposed into a chain
   step 0  = base image, subjects only, no attributes ("a photo of a barista and a cyclist")
   step i  = attribute i inpainted onto subject i's detected bounding box, i = 1..k
 
-Inpainting mechanically IS the lock: SD1.5's inpaint pipeline only edits pixels inside the
-mask, so everything outside a subject's box -- including attributes already added at
-earlier steps -- is frozen by construction, the same mechanical guarantee CoIG's ARM lock
-makes for its own step edits.
+The lock is mechanically enforced via a RePaint-style per-step latent blend on the plain
+SD1.5 txt2img UNet (see encode_to_latents/mask_to_latent_tensor and the callback in
+build_chain): at every denoising step, the region outside the subject's mask is forced to
+match the correctly-noised original image at that step's noise level, so by the final step
+(noise level 0) that region is exactly the original pixels -- including attributes already
+added at earlier steps -- and only the masked region is the model's own new generation.
+(A dedicated SD1.5 inpainting checkpoint was tried first; every available community mirror
+only ships pickle-format weights, which the pinned torch==2.5.1 -- required for T4/P100
+dual-arch support -- cannot load under transformers' torch.load security gate. This
+RePaint approach needs no second checkpoint at all.)
 
 Scoring: attention held constant, delta-mask target varied
 -------------------------------------------------------------
@@ -130,12 +136,13 @@ print(f"device={DEVICE} dtype={DTYPE} max_steps(early window)={MAX_STEPS}")
 # =============================================================================
 
 class AttentionRecord:
-    __slots__ = ("tensor", "layer_name", "spatial_dim")
+    __slots__ = ("tensor", "layer_name", "spatial_dim", "heads")
 
-    def __init__(self, tensor: torch.Tensor, layer_name: str, spatial_dim: int):
+    def __init__(self, tensor: torch.Tensor, layer_name: str, spatial_dim: int, heads: int = 1):
         self.tensor = tensor
         self.layer_name = layer_name
         self.spatial_dim = spatial_dim
+        self.heads = heads  # needed to slice out one batch entry (e.g. the CFG cond half)
 
 
 class AttentionStore:
@@ -147,10 +154,10 @@ class AttentionStore:
         self.step_store = {}
         self.current_step = 0
 
-    def add_attention(self, tensor: torch.Tensor, layer_name: str, spatial_dim: int):
+    def add_attention(self, tensor: torch.Tensor, layer_name: str, spatial_dim: int, heads: int = 1):
         if self.current_step not in self.step_store:
             self.step_store[self.current_step] = []
-        record = AttentionRecord(tensor.detach().cpu(), layer_name, spatial_dim)
+        record = AttentionRecord(tensor.detach().cpu(), layer_name, spatial_dim, heads)
         self.step_store[self.current_step].append(record)
 
     def step(self):
@@ -191,7 +198,7 @@ class CustomAttnProcessor:
         attention_probs = attn.get_attention_scores(query, key, attention_mask)
         if self.is_cross_attention:
             spatial_dim = attention_probs.shape[1]
-            self.store.add_attention(attention_probs, self.layer_name, spatial_dim)
+            self.store.add_attention(attention_probs, self.layer_name, spatial_dim, attn.heads)
         hidden_states = torch.bmm(attention_probs, value)
         hidden_states = attn.batch_to_head_dim(hidden_states)
         hidden_states = attn.to_out[0](hidden_states)
@@ -263,7 +270,18 @@ class SpatialSemanticAlignment:
     def phase_b_cross_attention_map(self, target_token_index: int,
                                      target_resolution: Tuple[int, int] = (IMG_SIZE, IMG_SIZE),
                                      max_steps: int = MAX_STEPS,
-                                     aggregation_mode: str = "resolution_weighted") -> np.ndarray:
+                                     aggregation_mode: str = "resolution_weighted",
+                                     cond_index: Optional[int] = None) -> np.ndarray:
+        """
+        cond_index : which batch entry (in units of `heads`) to read, for pipelines that
+            run classifier-free guidance (batch = [uncond, cond, uncond, cond, ...] in
+            groups of `heads`). Pass 1 for a standard single-prompt CFG call ([uncond,
+            cond] order) so the unconditional branch's near-uninformative attention isn't
+            averaged into the signal. None (default) keeps the old behavior of averaging
+            over the whole batch dimension -- kept as the default so the existing
+            hand-built test scenarios (which fabricate a batch=1 tensor with no cond/uncond
+            structure) still pass unmodified.
+        """
         if not self.attn_store.step_store:
             raise ValueError("Attention store is empty. Did you call hook_pipeline() before generating?")
         per_res_accum: Dict[int, np.ndarray] = {}
@@ -279,7 +297,11 @@ class SpatialSemanticAlignment:
                     continue
                 if target_token_index >= seq_len:
                     continue
-                token_attn = record.tensor[:, :, target_token_index].mean(dim=0)
+                tensor = record.tensor
+                if cond_index is not None:
+                    start = cond_index * record.heads
+                    tensor = tensor[start:start + record.heads]
+                token_attn = tensor[:, :, target_token_index].mean(dim=0)
                 attn_2d = token_attn.view(native_side, native_side).unsqueeze(0).unsqueeze(0)
                 attn_up = F.interpolate(attn_2d.float(), size=target_resolution,
                                          mode="bilinear", align_corners=False).squeeze().numpy()
@@ -376,18 +398,25 @@ SD15_TXT2IMG_CANDIDATES = [
     "stable-diffusion-v1-5/stable-diffusion-v1-5",
     "sd-legacy/stable-diffusion-v1-5",
 ]
-SD15_INPAINT_CANDIDATES = [
-    "stable-diffusion-v1-5/stable-diffusion-inpainting",
-    "botp/stable-diffusion-v1-5-inpainting",
-    "runwayml/stable-diffusion-inpainting",
-]
 COCO_PERSON = 1
+
+# No separate inpainting checkpoint is used -- see the RePaint-style blend in
+# build_chain(). The community SD1.5-inpainting mirrors (runwayml, botp, the
+# stable-diffusion-v1-5 org's own copy) only publish pickle-format (.bin) UNet
+# weights, and the pinned torch==2.5.1 (required for T4/P100 dual-arch support,
+# see the bootstrap note above) is blocked by transformers' torch.load security
+# gate from loading non-safetensors checkpoints (needs torch>=2.6, which risks
+# re-breaking P100/sm_60 support). Rather than depend on a mirror publishing
+# safetensors weights, the lock is implemented directly on the txt2img UNet that
+# already loads successfully: a per-step callback forces the region outside the
+# subject's mask to match the correctly-noised original image at every timestep,
+# so by t=0 that region is exactly the original pixels and only the masked
+# region is the model's own generation -- the standard RePaint algorithm.
 
 
 @dataclass
 class Models:
     txt2img: object
-    inpaint: object
     detector: object
     clip_model: object
     clip_proc: object
@@ -407,20 +436,18 @@ def _load_pipeline(candidates, cls):
 
 
 def load_all_models() -> Models:
-    from diffusers import StableDiffusionPipeline, StableDiffusionInpaintPipeline
+    from diffusers import StableDiffusionPipeline
     from torchvision.models.detection import maskrcnn_resnet50_fpn, MaskRCNN_ResNet50_FPN_Weights
     from transformers import CLIPProcessor, CLIPModel
 
     txt2img = _load_pipeline(SD15_TXT2IMG_CANDIDATES, StableDiffusionPipeline)
-    inpaint = _load_pipeline(SD15_INPAINT_CANDIDATES, StableDiffusionInpaintPipeline)
-    for p in (txt2img, inpaint):
-        p.set_progress_bar_config(disable=True)
+    txt2img.set_progress_bar_config(disable=True)
 
     detector = maskrcnn_resnet50_fpn(weights=MaskRCNN_ResNet50_FPN_Weights.DEFAULT).to(DEVICE).eval()
     clip_model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32").to(DEVICE).eval()
     clip_proc = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
 
-    return Models(txt2img=txt2img, inpaint=inpaint, detector=detector,
+    return Models(txt2img=txt2img, detector=detector,
                   clip_model=clip_model, clip_proc=clip_proc)
 
 
@@ -488,10 +515,31 @@ def token_indices(tokenizer, prompt: str, phrase: str) -> List[int]:
 
 
 def multi_token_attention_map(metric: SpatialSemanticAlignment, tokenizer, prompt: str, phrase: str) -> np.ndarray:
-    """Average phase_b_cross_attention_map over every token in a multi-word phrase."""
+    """Average phase_b_cross_attention_map over every token in a multi-word phrase.
+    cond_index=1 matches build_chain's guidance_scale=7.5 calls, which run classifier-
+    free guidance with batch order [uncond, cond] -- selecting the conditional half only,
+    the same convention metric A's own AttentionStore uses."""
     idxs = token_indices(tokenizer, prompt, phrase)
-    maps = [metric.phase_b_cross_attention_map(target_token_index=i) for i in idxs]
+    maps = [metric.phase_b_cross_attention_map(target_token_index=i, cond_index=1) for i in idxs]
     return np.mean(maps, axis=0)
+
+
+@torch.no_grad()
+def encode_to_latents(pipe, image: Image.Image) -> torch.Tensor:
+    img_t = TF.to_tensor(image).unsqueeze(0).to(device=DEVICE, dtype=DTYPE)
+    img_t = img_t * 2.0 - 1.0  # [0,1] -> [-1,1], matches VAE's expected input range
+    latents = pipe.vae.encode(img_t).latent_dist.sample()
+    return latents * pipe.vae.config.scaling_factor
+
+
+def mask_to_latent_tensor(mask_image: Image.Image, latent_hw: Tuple[int, int]) -> torch.Tensor:
+    """1.0 = editable (generated) region, 0.0 = keep-original region, at latent resolution.
+    latent_hw is (height, width) in latent space; PIL .resize wants (width, height)."""
+    lh, lw = latent_hw
+    small = mask_image.resize((lw, lh), Image.NEAREST)
+    arr = (np.array(small).astype(np.float32) / 255.0 > 0.5).astype(np.float32)
+    t = torch.from_numpy(arr).to(device=DEVICE, dtype=DTYPE)
+    return t.unsqueeze(0).unsqueeze(0)  # (1,1,h,w) -- broadcasts over the 4 latent channels
 
 
 # =============================================================================
@@ -519,8 +567,8 @@ def build_chain(chain_id: int, spec: dict, metric: SpatialSemanticAlignment, mod
     base_prompt = base_prompt_for(spec)
     subjects = [s for s, _, _ in spec["pairs"]]
 
-    # txt2img is never hooked (only the inpaint pipeline captures attention), so it
-    # already has its default attn processor -- no need to touch/reset it here.
+    # txt2img is unhooked for this call (attn processor is only swapped in for the
+    # attribute steps below), so no attention is captured or needed for the base image.
     g = torch.Generator(DEVICE).manual_seed(SEED)
     base_image = models.txt2img(base_prompt, num_inference_steps=NUM_INFERENCE_STEPS,
                                  guidance_scale=7.5, generator=g).images[0]
@@ -537,24 +585,43 @@ def build_chain(chain_id: int, spec: dict, metric: SpatialSemanticAlignment, mod
     current = base_image
 
     for subject, attribute, _region in spec["pairs"]:
-        mask = box_mask(current, subject_boxes[subject])
+        mask_img = box_mask(current, subject_boxes[subject])
         inpaint_prompt = f"a {subject} with a {attribute}"
 
-        metric.hook_pipeline(models.inpaint)
+        # RePaint-style lock: generate a full image from scratch, but at every
+        # denoising step force the region outside the subject's mask to match the
+        # correctly-noised original image at that step's noise level. By the final
+        # step (noise level 0) that region equals the original pixels exactly, so
+        # only the masked region is actually new -- everything else, including
+        # attributes added at earlier steps, is frozen by construction.
+        orig_latents = encode_to_latents(models.txt2img, current)
+        lh, lw = orig_latents.shape[-2], orig_latents.shape[-1]
+        mask_latent = mask_to_latent_tensor(mask_img, (lh, lw))
+        blend_noise = torch.randn(orig_latents.shape, generator=torch.Generator(DEVICE).manual_seed(SEED),
+                                   device=DEVICE, dtype=DTYPE)
+
+        metric.hook_pipeline(models.txt2img)
 
         def _cb(pipe, i, t, kw):
             metric.attn_store.step()
+            latents = kw["latents"]
+            timesteps = pipe.scheduler.timesteps
+            if i + 1 < len(timesteps):
+                next_t = timesteps[i + 1].unsqueeze(0)
+                noised_orig = pipe.scheduler.add_noise(orig_latents, blend_noise, next_t)
+            else:
+                noised_orig = orig_latents  # last step -> exact original outside the mask
+            kw["latents"] = mask_latent * latents + (1.0 - mask_latent) * noised_orig
             return kw
 
         g = torch.Generator(DEVICE).manual_seed(SEED)
-        edited = models.inpaint(
-            prompt=inpaint_prompt, image=current, mask_image=mask,
-            num_inference_steps=NUM_INFERENCE_STEPS, guidance_scale=7.5,
+        edited = models.txt2img(
+            prompt=inpaint_prompt, num_inference_steps=NUM_INFERENCE_STEPS, guidance_scale=7.5,
             generator=g, callback_on_step_end=_cb,
         ).images[0]
 
-        attn_map = multi_token_attention_map(metric, models.inpaint.tokenizer, inpaint_prompt, attribute)
-        metric.unhook_pipeline(models.inpaint)
+        attn_map = multi_token_attention_map(metric, models.txt2img.tokenizer, inpaint_prompt, attribute)
+        metric.unhook_pipeline(models.txt2img)
 
         steps.append(ChainStep(attribute=attribute, subject=subject, image=edited, attention_map=attn_map))
         images.append(edited)
