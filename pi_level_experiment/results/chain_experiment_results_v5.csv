@@ -1,0 +1,376 @@
+condition,chain_key,prompt_id,seed,n,attribute,subject,claimed_step,true_step,iou
+real,p0_s42,0,42,2,red apron,barista,1,1,0.07259009945921416
+shuffled,p0_s42,0,42,2,red apron,barista,2,1,0.005914579818392068
+substituted,p0_s42,0,42,2,white hat,barista,1,1,0.0
+attn_scrambled_samechain,p0_s42,0,42,2,red apron,barista,1,1,0.013326425981171511
+attn_scrambled_crosschain,p0_s42,0,42,2,red apron,barista,1,1,0.0003703442437923251
+attn_scrambled_sameattr,p0_s42,0,42,2,red apron,barista,1,1,0.04569922206245622
+real,p0_s42,0,42,2,yellow helmet,cyclist,2,2,0.0
+shuffled,p0_s42,0,42,2,yellow helmet,cyclist,1,2,0.0
+substituted,p0_s42,0,42,2,book,cyclist,2,2,0.0
+attn_scrambled_samechain,p0_s42,0,42,2,yellow helmet,cyclist,2,2,0.0
+attn_scrambled_crosschain,p0_s42,0,42,2,yellow helmet,cyclist,2,2,0.0
+attn_scrambled_sameattr,p0_s42,0,42,2,yellow helmet,cyclist,2,2,0.0
+real,p1_s42,1,42,2,white hat,chef,1,1,9.365751320570936e-05
+shuffled,p1_s42,1,42,2,white hat,chef,2,1,0.003490209045152283
+substituted,p1_s42,1,42,2,yellow helmet,chef,1,1,0.0
+attn_scrambled_samechain,p1_s42,1,42,2,white hat,chef,1,1,0.0
+attn_scrambled_crosschain,p1_s42,1,42,2,white hat,chef,1,1,0.015250337523056153
+attn_scrambled_sameattr,p1_s42,1,42,2,white hat,chef,1,1,0.018309778566115466
+real,p1_s42,1,42,2,shovel,farmer,2,2,0.0
+shuffled,p1_s42,1,42,2,shovel,farmer,1,2,0.0
+substituted,p1_s42,1,42,2,blue gloves,farmer,2,2,0.0
+attn_scrambled_samechain,p1_s42,1,42,2,shovel,farmer,2,2,0.0
+attn_scrambled_crosschain,p1_s42,1,42,2,shovel,farmer,2,2,0.0
+attn_scrambled_sameattr,p1_s42,1,42,2,shovel,farmer,2,2,0.0
+real,p2_s42,2,42,2,blue gloves,nurse,1,1,0.0
+shuffled,p2_s42,2,42,2,blue gloves,nurse,2,1,0.04280833735937608
+substituted,p2_s42,2,42,2,pan,nurse,1,1,0.0
+attn_scrambled_samechain,p2_s42,2,42,2,blue gloves,nurse,1,1,0.0
+attn_scrambled_crosschain,p2_s42,2,42,2,blue gloves,nurse,1,1,0.0
+attn_scrambled_sameattr,p2_s42,2,42,2,blue gloves,nurse,1,1,0.0
+real,p2_s42,2,42,2,dark sunglasses,pilot,2,2,0.0
+shuffled,p2_s42,2,42,2,dark sunglasses,pilot,1,2,0.0
+substituted,p2_s42,2,42,2,yellow helmet,pilot,2,2,0.0
+attn_scrambled_samechain,p2_s42,2,42,2,dark sunglasses,pilot,2,2,0.0
+attn_scrambled_crosschain,p2_s42,2,42,2,dark sunglasses,pilot,2,2,0.0
+attn_scrambled_sameattr,p2_s42,2,42,2,dark sunglasses,pilot,2,2,0.0
+real,p5_s42,5,42,3,dark sunglasses,pilot,1,1,0.0
+shuffled,p5_s42,5,42,3,dark sunglasses,pilot,2,1,0.0
+shuffled,p5_s42,5,42,3,dark sunglasses,pilot,3,1,0.0
+substituted,p5_s42,5,42,3,yellow helmet,pilot,1,1,0.0
+attn_scrambled_samechain,p5_s42,5,42,3,dark sunglasses,pilot,1,1,0.0
+attn_scrambled_crosschain,p5_s42,5,42,3,dark sunglasses,pilot,1,1,0.0
+attn_scrambled_sameattr,p5_s42,5,42,3,dark sunglasses,pilot,1,1,0.0
+real,p5_s42,5,42,3,book,teacher,2,2,0.0
+shuffled,p5_s42,5,42,3,book,teacher,1,2,0.0
+shuffled,p5_s42,5,42,3,book,teacher,3,2,0.0
+substituted,p5_s42,5,42,3,white hat,teacher,2,2,0.0
+attn_scrambled_samechain,p5_s42,5,42,3,book,teacher,2,2,0.0
+attn_scrambled_crosschain,p5_s42,5,42,3,book,teacher,2,2,0.0
+attn_scrambled_sameattr,p5_s42,5,42,3,book,teacher,2,2,0.0
+real,p5_s42,5,42,3,red apron,barista,3,3,0.061575336804694604
+shuffled,p5_s42,5,42,3,red apron,barista,1,3,0.0
+shuffled,p5_s42,5,42,3,red apron,barista,2,3,0.0
+substituted,p5_s42,5,42,3,pan,barista,3,3,0.0
+attn_scrambled_samechain,p5_s42,5,42,3,red apron,barista,3,3,0.0239647942344181
+attn_scrambled_crosschain,p5_s42,5,42,3,red apron,barista,3,3,0.020872081008472824
+attn_scrambled_sameattr,p5_s42,5,42,3,red apron,barista,3,3,0.018879898461050294
+real,p7_s42,7,42,4,blue gloves,nurse,1,1,0.0
+shuffled,p7_s42,7,42,4,blue gloves,nurse,2,1,0.0
+shuffled,p7_s42,7,42,4,blue gloves,nurse,3,1,0.0
+shuffled,p7_s42,7,42,4,blue gloves,nurse,4,1,0.0
+substituted,p7_s42,7,42,4,yellow helmet,nurse,1,1,0.0
+attn_scrambled_samechain,p7_s42,7,42,4,blue gloves,nurse,1,1,0.0
+attn_scrambled_crosschain,p7_s42,7,42,4,blue gloves,nurse,1,1,0.0
+attn_scrambled_sameattr,p7_s42,7,42,4,blue gloves,nurse,1,1,0.0
+real,p7_s42,7,42,4,dark sunglasses,pilot,2,2,0.0
+shuffled,p7_s42,7,42,4,dark sunglasses,pilot,1,2,0.0
+shuffled,p7_s42,7,42,4,dark sunglasses,pilot,3,2,0.0
+shuffled,p7_s42,7,42,4,dark sunglasses,pilot,4,2,0.0
+substituted,p7_s42,7,42,4,white hat,pilot,2,2,0.0
+attn_scrambled_samechain,p7_s42,7,42,4,dark sunglasses,pilot,2,2,0.0
+attn_scrambled_crosschain,p7_s42,7,42,4,dark sunglasses,pilot,2,2,0.0
+attn_scrambled_sameattr,p7_s42,7,42,4,dark sunglasses,pilot,2,2,0.0
+real,p7_s42,7,42,4,pan,chef,3,3,0.0
+shuffled,p7_s42,7,42,4,pan,chef,1,3,0.0
+shuffled,p7_s42,7,42,4,pan,chef,2,3,0.0
+shuffled,p7_s42,7,42,4,pan,chef,4,3,0.0
+substituted,p7_s42,7,42,4,yellow helmet,chef,3,3,0.0
+attn_scrambled_samechain,p7_s42,7,42,4,pan,chef,3,3,0.0
+attn_scrambled_crosschain,p7_s42,7,42,4,pan,chef,3,3,0.0
+attn_scrambled_sameattr,p7_s42,7,42,4,pan,chef,3,3,0.0
+real,p7_s42,7,42,4,book,teacher,4,4,0.0
+shuffled,p7_s42,7,42,4,book,teacher,1,4,0.0
+shuffled,p7_s42,7,42,4,book,teacher,2,4,0.0
+shuffled,p7_s42,7,42,4,book,teacher,3,4,0.0
+substituted,p7_s42,7,42,4,white hat,teacher,4,4,0.0
+attn_scrambled_samechain,p7_s42,7,42,4,book,teacher,4,4,0.0
+attn_scrambled_crosschain,p7_s42,7,42,4,book,teacher,4,4,0.0
+attn_scrambled_sameattr,p7_s42,7,42,4,book,teacher,4,4,0.0
+real,p0_s7,0,7,2,red apron,barista,1,1,0.344267596019114
+shuffled,p0_s7,0,7,2,red apron,barista,2,1,0.00022888096282591697
+substituted,p0_s7,0,7,2,blue gloves,barista,1,1,0.0
+attn_scrambled_samechain,p0_s7,0,7,2,red apron,barista,1,1,0.03705859526581296
+attn_scrambled_crosschain,p0_s7,0,7,2,red apron,barista,1,1,0.015056972327726533
+attn_scrambled_sameattr,p0_s7,0,7,2,red apron,barista,1,1,0.022477283596365374
+real,p0_s7,0,7,2,yellow helmet,cyclist,2,2,0.0
+shuffled,p0_s7,0,7,2,yellow helmet,cyclist,1,2,0.0
+substituted,p0_s7,0,7,2,book,cyclist,2,2,0.0
+attn_scrambled_samechain,p0_s7,0,7,2,yellow helmet,cyclist,2,2,0.0
+attn_scrambled_crosschain,p0_s7,0,7,2,yellow helmet,cyclist,2,2,0.0
+attn_scrambled_sameattr,p0_s7,0,7,2,yellow helmet,cyclist,2,2,0.0
+real,p1_s7,1,7,2,white hat,chef,1,1,0.006599401094813939
+shuffled,p1_s7,1,7,2,white hat,chef,2,1,0.0
+substituted,p1_s7,1,7,2,pan,chef,1,1,0.0
+attn_scrambled_samechain,p1_s7,1,7,2,white hat,chef,1,1,0.0
+attn_scrambled_crosschain,p1_s7,1,7,2,white hat,chef,1,1,0.001594200148032871
+attn_scrambled_sameattr,p1_s7,1,7,2,white hat,chef,1,1,0.0012521580754709823
+real,p1_s7,1,7,2,shovel,farmer,2,2,0.0
+shuffled,p1_s7,1,7,2,shovel,farmer,1,2,0.0
+substituted,p1_s7,1,7,2,dark sunglasses,farmer,2,2,0.0
+attn_scrambled_samechain,p1_s7,1,7,2,shovel,farmer,2,2,0.0
+attn_scrambled_crosschain,p1_s7,1,7,2,shovel,farmer,2,2,0.0
+attn_scrambled_sameattr,p1_s7,1,7,2,shovel,farmer,2,2,0.0
+real,p2_s7,2,7,2,blue gloves,nurse,1,1,0.00307990646210004
+shuffled,p2_s7,2,7,2,blue gloves,nurse,2,1,0.0
+substituted,p2_s7,2,7,2,yellow helmet,nurse,1,1,0.0
+attn_scrambled_samechain,p2_s7,2,7,2,blue gloves,nurse,1,1,0.0
+attn_scrambled_crosschain,p2_s7,2,7,2,blue gloves,nurse,1,1,0.0
+attn_scrambled_sameattr,p2_s7,2,7,2,blue gloves,nurse,1,1,0.006332373304850369
+real,p2_s7,2,7,2,dark sunglasses,pilot,2,2,0.0
+shuffled,p2_s7,2,7,2,dark sunglasses,pilot,1,2,0.0
+substituted,p2_s7,2,7,2,white hat,pilot,2,2,0.0
+attn_scrambled_samechain,p2_s7,2,7,2,dark sunglasses,pilot,2,2,0.0
+attn_scrambled_crosschain,p2_s7,2,7,2,dark sunglasses,pilot,2,2,0.0
+attn_scrambled_sameattr,p2_s7,2,7,2,dark sunglasses,pilot,2,2,0.0
+real,p4_s7,4,7,3,white hat,chef,1,1,0.024694987505512273
+shuffled,p4_s7,4,7,3,white hat,chef,2,1,0.0019792182088075212
+shuffled,p4_s7,4,7,3,white hat,chef,3,1,0.0
+substituted,p4_s7,4,7,3,red apron,chef,1,1,0.0
+attn_scrambled_samechain,p4_s7,4,7,3,white hat,chef,1,1,0.0
+attn_scrambled_crosschain,p4_s7,4,7,3,white hat,chef,1,1,0.047955502104630184
+attn_scrambled_sameattr,p4_s7,4,7,3,white hat,chef,1,1,0.04754212295959577
+real,p4_s7,4,7,3,shovel,farmer,2,2,0.0
+shuffled,p4_s7,4,7,3,shovel,farmer,1,2,0.0
+shuffled,p4_s7,4,7,3,shovel,farmer,3,2,0.0
+substituted,p4_s7,4,7,3,pan,farmer,2,2,0.0
+attn_scrambled_samechain,p4_s7,4,7,3,shovel,farmer,2,2,0.0
+attn_scrambled_crosschain,p4_s7,4,7,3,shovel,farmer,2,2,0.0
+attn_scrambled_sameattr,p4_s7,4,7,3,shovel,farmer,2,2,0.0
+real,p4_s7,4,7,3,blue gloves,nurse,3,3,0.0
+shuffled,p4_s7,4,7,3,blue gloves,nurse,1,3,0.0
+shuffled,p4_s7,4,7,3,blue gloves,nurse,2,3,0.0
+substituted,p4_s7,4,7,3,pan,nurse,3,3,0.0
+attn_scrambled_samechain,p4_s7,4,7,3,blue gloves,nurse,3,3,0.0
+attn_scrambled_crosschain,p4_s7,4,7,3,blue gloves,nurse,3,3,0.0
+attn_scrambled_sameattr,p4_s7,4,7,3,blue gloves,nurse,3,3,0.0
+real,p5_s7,5,7,3,dark sunglasses,pilot,1,1,0.0
+shuffled,p5_s7,5,7,3,dark sunglasses,pilot,2,1,0.0
+shuffled,p5_s7,5,7,3,dark sunglasses,pilot,3,1,0.0
+substituted,p5_s7,5,7,3,pan,pilot,1,1,0.0
+attn_scrambled_samechain,p5_s7,5,7,3,dark sunglasses,pilot,1,1,0.0
+attn_scrambled_crosschain,p5_s7,5,7,3,dark sunglasses,pilot,1,1,0.0
+attn_scrambled_sameattr,p5_s7,5,7,3,dark sunglasses,pilot,1,1,0.0
+real,p5_s7,5,7,3,book,teacher,2,2,0.0
+shuffled,p5_s7,5,7,3,book,teacher,1,2,0.0
+shuffled,p5_s7,5,7,3,book,teacher,3,2,0.0
+substituted,p5_s7,5,7,3,white hat,teacher,2,2,0.0
+attn_scrambled_samechain,p5_s7,5,7,3,book,teacher,2,2,0.0
+attn_scrambled_crosschain,p5_s7,5,7,3,book,teacher,2,2,0.0
+attn_scrambled_sameattr,p5_s7,5,7,3,book,teacher,2,2,0.0
+real,p5_s7,5,7,3,red apron,barista,3,3,0.24474414914716383
+shuffled,p5_s7,5,7,3,red apron,barista,1,3,0.0
+shuffled,p5_s7,5,7,3,red apron,barista,2,3,0.0
+substituted,p5_s7,5,7,3,pan,barista,3,3,0.0
+attn_scrambled_samechain,p5_s7,5,7,3,red apron,barista,3,3,0.061129655082138884
+attn_scrambled_crosschain,p5_s7,5,7,3,red apron,barista,3,3,0.11470412980703121
+attn_scrambled_sameattr,p5_s7,5,7,3,red apron,barista,3,3,0.05586610370016607
+real,p6_s7,6,7,4,red apron,barista,1,1,0.1807757467677218
+shuffled,p6_s7,6,7,4,red apron,barista,2,1,0.003908931431622302
+shuffled,p6_s7,6,7,4,red apron,barista,3,1,0.0
+shuffled,p6_s7,6,7,4,red apron,barista,4,1,0.0
+substituted,p6_s7,6,7,4,pan,barista,1,1,0.0
+attn_scrambled_samechain,p6_s7,6,7,4,red apron,barista,1,1,0.07688053996909816
+attn_scrambled_crosschain,p6_s7,6,7,4,red apron,barista,1,1,0.05035058218852121
+attn_scrambled_sameattr,p6_s7,6,7,4,red apron,barista,1,1,0.037789376342063606
+real,p6_s7,6,7,4,yellow helmet,cyclist,2,2,0.0
+shuffled,p6_s7,6,7,4,yellow helmet,cyclist,1,2,0.0
+shuffled,p6_s7,6,7,4,yellow helmet,cyclist,3,2,0.0
+shuffled,p6_s7,6,7,4,yellow helmet,cyclist,4,2,0.0
+substituted,p6_s7,6,7,4,book,cyclist,2,2,0.0
+attn_scrambled_samechain,p6_s7,6,7,4,yellow helmet,cyclist,2,2,0.0
+attn_scrambled_crosschain,p6_s7,6,7,4,yellow helmet,cyclist,2,2,0.0
+attn_scrambled_sameattr,p6_s7,6,7,4,yellow helmet,cyclist,2,2,0.0
+real,p6_s7,6,7,4,white hat,chef,3,3,0.0
+shuffled,p6_s7,6,7,4,white hat,chef,1,3,0.0
+shuffled,p6_s7,6,7,4,white hat,chef,2,3,0.0
+shuffled,p6_s7,6,7,4,white hat,chef,4,3,0.0
+substituted,p6_s7,6,7,4,blue gloves,chef,3,3,0.0
+attn_scrambled_samechain,p6_s7,6,7,4,white hat,chef,3,3,0.0
+attn_scrambled_crosschain,p6_s7,6,7,4,white hat,chef,3,3,0.0
+attn_scrambled_sameattr,p6_s7,6,7,4,white hat,chef,3,3,0.0
+real,p6_s7,6,7,4,shovel,farmer,4,4,0.0
+shuffled,p6_s7,6,7,4,shovel,farmer,1,4,0.0
+shuffled,p6_s7,6,7,4,shovel,farmer,2,4,0.0
+shuffled,p6_s7,6,7,4,shovel,farmer,3,4,0.0
+substituted,p6_s7,6,7,4,book,farmer,4,4,0.0
+attn_scrambled_samechain,p6_s7,6,7,4,shovel,farmer,4,4,0.0
+attn_scrambled_crosschain,p6_s7,6,7,4,shovel,farmer,4,4,0.0
+attn_scrambled_sameattr,p6_s7,6,7,4,shovel,farmer,4,4,0.0
+real,p8_s7,8,7,4,shovel,farmer,1,1,0.0
+shuffled,p8_s7,8,7,4,shovel,farmer,2,1,0.0
+shuffled,p8_s7,8,7,4,shovel,farmer,3,1,0.0
+shuffled,p8_s7,8,7,4,shovel,farmer,4,1,0.0
+substituted,p8_s7,8,7,4,white hat,farmer,1,1,0.0
+attn_scrambled_samechain,p8_s7,8,7,4,shovel,farmer,1,1,0.0
+attn_scrambled_crosschain,p8_s7,8,7,4,shovel,farmer,1,1,0.0
+real,p8_s7,8,7,4,red apron,barista,2,2,0.2587299158377965
+shuffled,p8_s7,8,7,4,red apron,barista,1,2,0.0
+shuffled,p8_s7,8,7,4,red apron,barista,3,2,0.0047433349581911585
+shuffled,p8_s7,8,7,4,red apron,barista,4,2,0.0
+substituted,p8_s7,8,7,4,white hat,barista,2,2,0.0
+attn_scrambled_samechain,p8_s7,8,7,4,red apron,barista,2,2,0.0018268621815170263
+attn_scrambled_crosschain,p8_s7,8,7,4,red apron,barista,2,2,0.04979835622032774
+real,p8_s7,8,7,4,yellow helmet,cyclist,3,3,0.0
+shuffled,p8_s7,8,7,4,yellow helmet,cyclist,1,3,0.0
+shuffled,p8_s7,8,7,4,yellow helmet,cyclist,2,3,0.0
+shuffled,p8_s7,8,7,4,yellow helmet,cyclist,4,3,0.0
+substituted,p8_s7,8,7,4,book,cyclist,3,3,0.0
+attn_scrambled_samechain,p8_s7,8,7,4,yellow helmet,cyclist,3,3,0.0
+attn_scrambled_crosschain,p8_s7,8,7,4,yellow helmet,cyclist,3,3,0.0
+real,p8_s7,8,7,4,blue gloves,nurse,4,4,0.0018671454219030522
+shuffled,p8_s7,8,7,4,blue gloves,nurse,1,4,0.0
+shuffled,p8_s7,8,7,4,blue gloves,nurse,2,4,0.0
+shuffled,p8_s7,8,7,4,blue gloves,nurse,3,4,0.0
+substituted,p8_s7,8,7,4,pan,nurse,4,4,0.0
+attn_scrambled_samechain,p8_s7,8,7,4,blue gloves,nurse,4,4,0.005386902080893613
+attn_scrambled_crosschain,p8_s7,8,7,4,blue gloves,nurse,4,4,0.0028213560479450825
+real,p0_s1234,0,1234,2,red apron,barista,1,1,0.2675120229110755
+shuffled,p0_s1234,0,1234,2,red apron,barista,2,1,0.0012490537471612415
+substituted,p0_s1234,0,1234,2,blue gloves,barista,1,1,0.0
+attn_scrambled_samechain,p0_s1234,0,1234,2,red apron,barista,1,1,0.024174064910493377
+attn_scrambled_crosschain,p0_s1234,0,1234,2,red apron,barista,1,1,0.06085868483733832
+attn_scrambled_sameattr,p0_s1234,0,1234,2,red apron,barista,1,1,0.19008641829158987
+real,p0_s1234,0,1234,2,yellow helmet,cyclist,2,2,0.0
+shuffled,p0_s1234,0,1234,2,yellow helmet,cyclist,1,2,0.0
+substituted,p0_s1234,0,1234,2,pan,cyclist,2,2,0.0
+attn_scrambled_samechain,p0_s1234,0,1234,2,yellow helmet,cyclist,2,2,0.0
+attn_scrambled_crosschain,p0_s1234,0,1234,2,yellow helmet,cyclist,2,2,0.0
+attn_scrambled_sameattr,p0_s1234,0,1234,2,yellow helmet,cyclist,2,2,0.0
+real,p2_s1234,2,1234,2,blue gloves,nurse,1,1,0.21059143312400413
+shuffled,p2_s1234,2,1234,2,blue gloves,nurse,2,1,0.0
+substituted,p2_s1234,2,1234,2,white hat,nurse,1,1,0.0
+attn_scrambled_samechain,p2_s1234,2,1234,2,blue gloves,nurse,1,1,0.12603093232899165
+attn_scrambled_crosschain,p2_s1234,2,1234,2,blue gloves,nurse,1,1,0.05184376832366929
+attn_scrambled_sameattr,p2_s1234,2,1234,2,blue gloves,nurse,1,1,0.08051265748657285
+real,p2_s1234,2,1234,2,dark sunglasses,pilot,2,2,0.0
+shuffled,p2_s1234,2,1234,2,dark sunglasses,pilot,1,2,0.0
+substituted,p2_s1234,2,1234,2,yellow helmet,pilot,2,2,0.0
+attn_scrambled_samechain,p2_s1234,2,1234,2,dark sunglasses,pilot,2,2,0.0
+attn_scrambled_crosschain,p2_s1234,2,1234,2,dark sunglasses,pilot,2,2,0.0
+attn_scrambled_sameattr,p2_s1234,2,1234,2,dark sunglasses,pilot,2,2,0.0
+real,p3_s1234,3,1234,3,red apron,barista,1,1,0.0
+shuffled,p3_s1234,3,1234,3,red apron,barista,2,1,0.0
+shuffled,p3_s1234,3,1234,3,red apron,barista,3,1,0.0
+substituted,p3_s1234,3,1234,3,book,barista,1,1,0.0
+attn_scrambled_samechain,p3_s1234,3,1234,3,red apron,barista,1,1,0.0
+attn_scrambled_crosschain,p3_s1234,3,1234,3,red apron,barista,1,1,0.0
+real,p3_s1234,3,1234,3,yellow helmet,cyclist,2,2,0.0001715658240878417
+shuffled,p3_s1234,3,1234,3,yellow helmet,cyclist,1,2,0.0
+shuffled,p3_s1234,3,1234,3,yellow helmet,cyclist,3,2,0.0
+substituted,p3_s1234,3,1234,3,dark sunglasses,cyclist,2,2,0.0
+attn_scrambled_samechain,p3_s1234,3,1234,3,yellow helmet,cyclist,2,2,5.7182067703568164e-05
+attn_scrambled_crosschain,p3_s1234,3,1234,3,yellow helmet,cyclist,2,2,0.0
+real,p3_s1234,3,1234,3,pan,chef,3,3,0.0
+shuffled,p3_s1234,3,1234,3,pan,chef,1,3,0.0
+shuffled,p3_s1234,3,1234,3,pan,chef,2,3,0.0
+substituted,p3_s1234,3,1234,3,blue gloves,chef,3,3,0.0
+attn_scrambled_samechain,p3_s1234,3,1234,3,pan,chef,3,3,0.0
+attn_scrambled_crosschain,p3_s1234,3,1234,3,pan,chef,3,3,0.0
+real,p4_s1234,4,1234,3,white hat,chef,1,1,0.0
+shuffled,p4_s1234,4,1234,3,white hat,chef,2,1,0.0
+shuffled,p4_s1234,4,1234,3,white hat,chef,3,1,0.0
+substituted,p4_s1234,4,1234,3,dark sunglasses,chef,1,1,0.0
+attn_scrambled_samechain,p4_s1234,4,1234,3,white hat,chef,1,1,0.0
+attn_scrambled_crosschain,p4_s1234,4,1234,3,white hat,chef,1,1,0.0
+attn_scrambled_sameattr,p4_s1234,4,1234,3,white hat,chef,1,1,0.0
+real,p4_s1234,4,1234,3,shovel,farmer,2,2,0.0
+shuffled,p4_s1234,4,1234,3,shovel,farmer,1,2,0.0
+shuffled,p4_s1234,4,1234,3,shovel,farmer,3,2,0.0
+substituted,p4_s1234,4,1234,3,book,farmer,2,2,0.0
+attn_scrambled_samechain,p4_s1234,4,1234,3,shovel,farmer,2,2,0.0
+attn_scrambled_crosschain,p4_s1234,4,1234,3,shovel,farmer,2,2,0.0
+attn_scrambled_sameattr,p4_s1234,4,1234,3,shovel,farmer,2,2,0.0
+real,p4_s1234,4,1234,3,blue gloves,nurse,3,3,0.0
+shuffled,p4_s1234,4,1234,3,blue gloves,nurse,1,3,0.0
+shuffled,p4_s1234,4,1234,3,blue gloves,nurse,2,3,0.0
+substituted,p4_s1234,4,1234,3,dark sunglasses,nurse,3,3,0.0
+attn_scrambled_samechain,p4_s1234,4,1234,3,blue gloves,nurse,3,3,0.0
+attn_scrambled_crosschain,p4_s1234,4,1234,3,blue gloves,nurse,3,3,0.0
+attn_scrambled_sameattr,p4_s1234,4,1234,3,blue gloves,nurse,3,3,0.0
+real,p5_s1234,5,1234,3,dark sunglasses,pilot,1,1,0.0
+shuffled,p5_s1234,5,1234,3,dark sunglasses,pilot,2,1,0.0
+shuffled,p5_s1234,5,1234,3,dark sunglasses,pilot,3,1,0.0
+substituted,p5_s1234,5,1234,3,shovel,pilot,1,1,0.0
+attn_scrambled_samechain,p5_s1234,5,1234,3,dark sunglasses,pilot,1,1,0.0
+attn_scrambled_crosschain,p5_s1234,5,1234,3,dark sunglasses,pilot,1,1,0.0
+attn_scrambled_sameattr,p5_s1234,5,1234,3,dark sunglasses,pilot,1,1,0.0
+real,p5_s1234,5,1234,3,book,teacher,2,2,0.0
+shuffled,p5_s1234,5,1234,3,book,teacher,1,2,0.0
+shuffled,p5_s1234,5,1234,3,book,teacher,3,2,0.0
+substituted,p5_s1234,5,1234,3,shovel,teacher,2,2,0.0
+attn_scrambled_samechain,p5_s1234,5,1234,3,book,teacher,2,2,0.0
+attn_scrambled_crosschain,p5_s1234,5,1234,3,book,teacher,2,2,0.0
+attn_scrambled_sameattr,p5_s1234,5,1234,3,book,teacher,2,2,0.0
+real,p5_s1234,5,1234,3,red apron,barista,3,3,0.2014271266434431
+shuffled,p5_s1234,5,1234,3,red apron,barista,1,3,0.0
+shuffled,p5_s1234,5,1234,3,red apron,barista,2,3,0.0
+substituted,p5_s1234,5,1234,3,white hat,barista,3,3,0.0
+attn_scrambled_samechain,p5_s1234,5,1234,3,red apron,barista,3,3,0.17237787159383738
+attn_scrambled_crosschain,p5_s1234,5,1234,3,red apron,barista,3,3,0.03542951221874294
+attn_scrambled_sameattr,p5_s1234,5,1234,3,red apron,barista,3,3,0.07172213311948678
+real,p6_s1234,6,1234,4,red apron,barista,1,1,0.0
+shuffled,p6_s1234,6,1234,4,red apron,barista,2,1,0.0
+shuffled,p6_s1234,6,1234,4,red apron,barista,3,1,0.0
+shuffled,p6_s1234,6,1234,4,red apron,barista,4,1,0.0
+substituted,p6_s1234,6,1234,4,book,barista,1,1,0.0
+attn_scrambled_samechain,p6_s1234,6,1234,4,red apron,barista,1,1,0.0
+attn_scrambled_crosschain,p6_s1234,6,1234,4,red apron,barista,1,1,0.0
+attn_scrambled_sameattr,p6_s1234,6,1234,4,red apron,barista,1,1,0.0
+real,p6_s1234,6,1234,4,yellow helmet,cyclist,2,2,0.0
+shuffled,p6_s1234,6,1234,4,yellow helmet,cyclist,1,2,0.0
+shuffled,p6_s1234,6,1234,4,yellow helmet,cyclist,3,2,0.0
+shuffled,p6_s1234,6,1234,4,yellow helmet,cyclist,4,2,0.0
+substituted,p6_s1234,6,1234,4,book,cyclist,2,2,0.0
+attn_scrambled_samechain,p6_s1234,6,1234,4,yellow helmet,cyclist,2,2,0.0
+attn_scrambled_crosschain,p6_s1234,6,1234,4,yellow helmet,cyclist,2,2,0.0
+attn_scrambled_sameattr,p6_s1234,6,1234,4,yellow helmet,cyclist,2,2,0.0
+real,p6_s1234,6,1234,4,white hat,chef,3,3,0.0
+shuffled,p6_s1234,6,1234,4,white hat,chef,1,3,0.0
+shuffled,p6_s1234,6,1234,4,white hat,chef,2,3,0.0
+shuffled,p6_s1234,6,1234,4,white hat,chef,4,3,0.0
+substituted,p6_s1234,6,1234,4,blue gloves,chef,3,3,0.0
+attn_scrambled_samechain,p6_s1234,6,1234,4,white hat,chef,3,3,0.0
+attn_scrambled_crosschain,p6_s1234,6,1234,4,white hat,chef,3,3,0.0
+attn_scrambled_sameattr,p6_s1234,6,1234,4,white hat,chef,3,3,0.0
+real,p6_s1234,6,1234,4,shovel,farmer,4,4,0.0
+shuffled,p6_s1234,6,1234,4,shovel,farmer,1,4,0.0
+shuffled,p6_s1234,6,1234,4,shovel,farmer,2,4,0.0
+shuffled,p6_s1234,6,1234,4,shovel,farmer,3,4,0.0
+substituted,p6_s1234,6,1234,4,book,farmer,4,4,0.0
+attn_scrambled_samechain,p6_s1234,6,1234,4,shovel,farmer,4,4,0.0
+attn_scrambled_crosschain,p6_s1234,6,1234,4,shovel,farmer,4,4,0.0
+attn_scrambled_sameattr,p6_s1234,6,1234,4,shovel,farmer,4,4,0.0
+real,p7_s1234,7,1234,4,blue gloves,nurse,1,1,0.0
+shuffled,p7_s1234,7,1234,4,blue gloves,nurse,2,1,0.0
+shuffled,p7_s1234,7,1234,4,blue gloves,nurse,3,1,0.0
+shuffled,p7_s1234,7,1234,4,blue gloves,nurse,4,1,0.0
+substituted,p7_s1234,7,1234,4,red apron,nurse,1,1,0.0
+attn_scrambled_samechain,p7_s1234,7,1234,4,blue gloves,nurse,1,1,0.0
+attn_scrambled_crosschain,p7_s1234,7,1234,4,blue gloves,nurse,1,1,0.0
+attn_scrambled_sameattr,p7_s1234,7,1234,4,blue gloves,nurse,1,1,0.0
+real,p7_s1234,7,1234,4,dark sunglasses,pilot,2,2,0.0
+shuffled,p7_s1234,7,1234,4,dark sunglasses,pilot,1,2,0.0
+shuffled,p7_s1234,7,1234,4,dark sunglasses,pilot,3,2,0.0
+shuffled,p7_s1234,7,1234,4,dark sunglasses,pilot,4,2,0.0
+substituted,p7_s1234,7,1234,4,yellow helmet,pilot,2,2,0.0
+attn_scrambled_samechain,p7_s1234,7,1234,4,dark sunglasses,pilot,2,2,0.0
+attn_scrambled_crosschain,p7_s1234,7,1234,4,dark sunglasses,pilot,2,2,0.0
+attn_scrambled_sameattr,p7_s1234,7,1234,4,dark sunglasses,pilot,2,2,0.0
+real,p7_s1234,7,1234,4,pan,chef,3,3,0.0
+shuffled,p7_s1234,7,1234,4,pan,chef,1,3,0.0
+shuffled,p7_s1234,7,1234,4,pan,chef,2,3,0.0
+shuffled,p7_s1234,7,1234,4,pan,chef,4,3,0.0
+substituted,p7_s1234,7,1234,4,yellow helmet,chef,3,3,0.0
+attn_scrambled_samechain,p7_s1234,7,1234,4,pan,chef,3,3,0.0
+attn_scrambled_crosschain,p7_s1234,7,1234,4,pan,chef,3,3,0.0
+attn_scrambled_sameattr,p7_s1234,7,1234,4,pan,chef,3,3,0.0
+real,p7_s1234,7,1234,4,book,teacher,4,4,0.0
+shuffled,p7_s1234,7,1234,4,book,teacher,1,4,0.0
+shuffled,p7_s1234,7,1234,4,book,teacher,2,4,0.0
+shuffled,p7_s1234,7,1234,4,book,teacher,3,4,0.0
+substituted,p7_s1234,7,1234,4,shovel,teacher,4,4,0.0
+attn_scrambled_samechain,p7_s1234,7,1234,4,book,teacher,4,4,0.0
+attn_scrambled_crosschain,p7_s1234,7,1234,4,book,teacher,4,4,0.0
+attn_scrambled_sameattr,p7_s1234,7,1234,4,book,teacher,4,4,0.0

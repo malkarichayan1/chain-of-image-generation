@@ -19,3 +19,7 @@ node_modules/
 image_service/test_output/
 # Puter auth state -- contains a session token, never commit
 image_service/storageState.json
+
+# pi_level_experiment Stage 1/2 outputs (images, attention .npy, segmentation cache,
+# manifest.json) -- pulled back from Kaggle, not committed (docs/part-b-strengthening-design.md)
+pi_level_experiment/artifacts/

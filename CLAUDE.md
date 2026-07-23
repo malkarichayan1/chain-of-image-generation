@@ -186,24 +186,28 @@ application of it. Validate the primitive, then spend that trust on the hard pro
    statistically significant (p=0.013, p=0.004). Not on the actual CR-pilot Gemini chains (closed
    model, can't be attention-hooked) but on matched SD1.5 chains built for this purpose — see
    `pi_level_experiment/RESULTS.md` for the full result and its honest limitations.
-3. **Now the top priority:** strengthen the money result. Design doc committed 2026-07-23
-   (`docs/part-b-strengthening-design.md`, commit `d46973c`): splits the experiment into
-   generate/segment/score stages so scoring-side iteration is free, adds multi-seed sample
-   expansion (SEEDS = [42, 7, 1234]), replaces the confounded same-chain
-   `attention_scrambled` with two unconfounded controls plus a legacy same-chain one, and adds
-   a pre-registered threshold calibration fit only on held-out chains. **All four steps' code
-   is now written and tested** (`generate_chains.py`, `segment_cache.py`, `score_chains.py`,
-   `calibrate_threshold.py`, extended `analyze_results.py` — 27 pytest tests passing locally,
-   `pi_level_experiment/tests/`). **Not yet done: the actual GPU run.** Stage 1
-   (`generate_chains.py`, pushed via `kernel-metadata-generate-chains.json`) still needs to
-   execute on Kaggle to produce real images/attention maps before Stage 2's cache, Step 3's
-   calibration, and Step 4's confirmatory scoring can run on real data — that's the next
-   concrete action, not more code. Extending `analyze_results.py` against the existing v4 CSV
-   surfaced one honest finding worth carrying forward: `attention_scrambled` is NOT significant
-   under the pooled (row-level) test (p=0.379) but IS significant under the new clustered
-   per-chain test (p=0.031, the best possible at n=5) — real's mean IoU beat
-   attention_scrambled's in all 5 v4 chains consistently, a signal the row-level pooling washed
-   out. Worth stating explicitly in the eventual updated RESULTS.md.
+3. **Done, 2026-07-23 — the Step 4 confirmatory run executed on real data.** Design doc
+   (`docs/part-b-strengthening-design.md`, commit `d46973c`) fully implemented and run
+   end-to-end: `generate_chains.py` executed on Kaggle (kernel
+   `chayanmalkari/coig-pi-level-generate-chains` v1, multi-seed SEEDS=[42,7,1234], 19/27
+   chains detected, every prompt including all 4 calibration prompts represented — no
+   rewording triggered since no prompt failed all 3 seeds), `segment_cache.py` built the
+   584-pair CLIPSeg cache locally, `calibrate_threshold.py` froze **T=0.85** on the
+   calibration set only (prompts 3/4/6/8; real hit rate at that T is 23.8%, notably lower
+   than v4's uncalibrated ~46% — a real, disclosed tradeoff, see RESULTS.md), and
+   `score_chains.py` + extended `analyze_results.py` scored all 19 chains. **Result: under
+   the clustered (per-prompt, conservative) test, real beats every control**
+   (shuffled p=0.0039, substituted p=0.0039, attn_scrambled_samechain p=0.0039,
+   attn_scrambled_crosschain p=0.0391) **except attn_scrambled_sameattr** (p=0.078, n=7/9
+   prompts — a near-miss on reduced n, same direction as every other contrast, not a
+   contradiction). This is a genuine improvement over v4, where the single
+   `attention_scrambled` control never reached significance under any test. Full writeup in
+   `pi_level_experiment/RESULTS.md`'s new top section. Remaining honest limitations: 19/27
+   not the ≥20 chain target, real's own hit rate still under 30%, and
+   `attn_scrambled_sameattr` not yet significant. Next: consider a fourth seed or two to
+   push `attn_scrambled_sameattr` over the line, and port this into
+   `proposal/CPGA-Research-Proposal.md`'s Ideal Results / Limitations / Experimental Setup
+   sections (not yet done).
 4. Run Part A's human-agreement anchor set + Tier-1 falsification battery on metric A; resolve
    the sub-chance n=2 anomaly — there's now a concrete, testable lead (see metric A's Status
    above: re-run the analysis with the already-existing windowed `phrase_attention`).
