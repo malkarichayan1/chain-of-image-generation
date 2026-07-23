@@ -33,12 +33,17 @@ from scipy.ndimage import zoom
 from segment_cache import load_cached_map
 
 DEFAULT_SEED = 42
-# Legacy/uncalibrated placeholder, matching SpatialSemanticAlignment's original default
-# (pilot/spatial_semantic_alignment.py). NOT the frozen output of Step 3's pre-registered
-# calibration -- that requires a real GPU run's segmentation cache to sweep against, which
-# does not exist yet. Re-freeze this constant (with the sweep range, selected value,
-# criterion, and calibration chains recorded here) once calibrate_threshold.py has run.
-DEFAULT_THRESHOLD = 0.5
+# Frozen by calibrate_threshold.py on 2026-07-23 against the first real Stage 1/2 run
+# (Kaggle kernel chayanmalkari/coig-pi-level-generate-chains v1, 19/27 chains detected).
+# Sweep: np.arange(0.05, 0.96, 0.05) (calibrate_threshold.DEFAULT_SWEEP). Criterion:
+# maximize real_nonzero_rate subject to substituted_nonzero_rate == 0 exactly. Fit only on
+# the calibration set (CALIBRATION_PROMPT_IDS below, n_real=21 rows) -- prompts 0/1/2/5/7
+# stayed held out and unopened until Step 4's confirmatory run. Selected T=0.85 as the
+# smallest threshold where substituted_nonzero_rate first reaches 0 (it does not reach 0
+# until T=0.85); real_nonzero_rate at that T is 0.238, notably lower than the legacy
+# T=0.5's uncalibrated ~0.46 hit rate in the v4 run -- CLIPSeg's sigmoid output apparently
+# carries more baseline noise on this attribute set than T=0.5 assumed. See RESULTS.md.
+DEFAULT_THRESHOLD = 0.85
 
 # Pre-registered per docs/part-b-strengthening-design.md Step 3: the four prompts skipped
 # in the v4 run (RESULTS.md) are the calibration set; the five already-scored prompts stay
