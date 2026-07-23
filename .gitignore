@@ -23,3 +23,4 @@ image_service/storageState.json
 # pi_level_experiment Stage 1/2 outputs (images, attention .npy, segmentation cache,
 # manifest.json) -- pulled back from Kaggle, not committed (docs/part-b-strengthening-design.md)
 pi_level_experiment/artifacts/
+pi_level_experiment/artifacts_growth/

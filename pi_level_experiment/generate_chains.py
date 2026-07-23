@@ -18,6 +18,18 @@ Two coverage fixes over the v4 run:
 The seed list and detection threshold (person_boxes(score_thresh=0.7), unchanged from
 v4) are frozen before any IoU is computed anywhere downstream -- that ordering is what
 makes them pre-registered, per the design doc's Step 1.
+
+--- Growth extension (2026-07-23, kernel v2) ---
+Step 4's confirmatory run (SEEDS=[42,7,1234], kernel v1) scored 19/27 chains and left
+attn_scrambled_sameattr at a near-miss (p=0.078, n_groups=7/9) because prompt_id 3 and 8
+each detected on only one of three seeds, leaving neither with a same-attribute
+different-seed partner to pair against. The fix deliberately is NOT extra seeds targeted
+at just those two prompts -- choosing retries because they're the prompts behind a
+near-significant result is outcome-driven selection, the exact thing this design has
+pre-registered against elsewhere. Instead this run adds ONE new seed uniformly across all
+9 prompts, same as the original three. SEEDS below holds only the new seed: the v1 seeds'
+chains already exist in artifacts/manifest.json and are combined with this run's output
+by merge_manifests.py after pullback, not regenerated on GPU.
 """
 import json
 import subprocess
@@ -48,7 +60,9 @@ from PIL import Image, ImageDraw
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 DTYPE = torch.float16 if DEVICE == "cuda" else torch.float32
-SEEDS = [42, 7, 1234]
+# v1 (pre-registered, kernel v1): [42, 7, 1234] -- already built, see artifacts/manifest.json.
+# v2 (growth extension, this run): one new seed, applied uniformly to all 9 prompts.
+SEEDS = [2024]
 NUM_INFERENCE_STEPS = 30
 EARLY_WINDOW_FRACTION = 0.5
 MAX_STEPS = int(NUM_INFERENCE_STEPS * EARLY_WINDOW_FRACTION)

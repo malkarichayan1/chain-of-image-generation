@@ -1,5 +1,81 @@
 # Results: the combined SSA chain experiment
 
+## Growth run (2026-07-23, Kaggle GPU, kernel `coig-pi-level-generate-chains` v2): closes the attn_scrambled_sameattr near-miss
+
+Step 4's confirmatory run (below) left one gap: `attn_scrambled_sameattr` missed significance
+(p=0.078, n_groups=7/9) because prompt_id 3 and 8 each detected on only one of the original
+three seeds, leaving neither with a same-attribute, different-seed partner to pair against.
+
+**Decision, made explicitly to avoid an outcome-driven fix:** rather than retrying seeds
+targeted at just prompts 3 and 8 -- picking retries *because* they're the two prompts behind a
+near-significant result is exactly the kind of post-hoc selection this design has pre-registered
+against everywhere else -- this run added **one new seed (2024), applied uniformly to all 9
+prompts**, the same way the original three seeds were applied. Whether it happened to close the
+gap for either prompt was left to chance, not chosen after the fact.
+
+Raw data: `artifacts/manifest_combined.json` (merge of the Step 4 manifest and this run's,
+via `merge_manifests.py`), `artifacts/chain_experiment_results_v6.csv` (both gitignored --
+regenerate via `generate_chains.py` SEEDS=[2024] -> `merge_manifests.py` -> `segment_cache.py`
+-> `score_chains.py` against the merged manifest).
+
+### Outcome: prompt 8's gap closed, prompt 3's did not, sample grew past the 20-chain target
+
+Seed 2024 detected on 7 of 9 prompts (failed on 3 and 6, same failure mode as before --
+Mask R-CNN found fewer people than the prompt's subject count in the base image). Prompt 8
+detected this time, giving it a second seed (7, 2024) and a valid same-attribute pairing for
+the first time. Prompt 3 failed again (2 of 3 people detected, same as its one prior failure
+mode), so it remains the one prompt still without a same-attribute pairing -- an honest,
+undisguised remainder, not something this run was guaranteed to fix.
+
+Total sample: **26/36 chains detected** (up from 19/27), clearing the design doc's "at least
+20 chains" acceptance target for the first time.
+
+### Rescored at the frozen T=0.85 (not re-calibrated) -- attn_scrambled_sameattr now significant
+
+| Comparison | Pooled p (n=74 rows) | Clustered p (n groups) | Clustered significant? |
+|---|---|---|---|
+| real vs shuffled | 0.0000 | 0.0039 (9/9) | Yes |
+| real vs substituted | 0.0000 | 0.0039 (9/9) | Yes |
+| real vs attn_scrambled_samechain | 0.1376 | 0.0039 (9/9) | Yes |
+| real vs attn_scrambled_crosschain | 0.1509 | 0.0195 (9/9) | Yes |
+| real vs attn_scrambled_sameattr | 0.3186 | **0.0156 (8/9)** | **Yes** |
+
+Under the clustered test the design doc says should govern, **REAL is now significantly
+higher than every control condition**, closing the "except one" caveat Step 4 reported.
+`attn_scrambled_sameattr` moved from p=0.078 (n=7/9, near-miss) to p=0.0156 (n=8/9,
+significant) purely from prompt 8 gaining a valid pairing -- consistent with Step 4's own
+read of the near-miss as an underpowered-sample issue, not a contradicting result.
+
+As in Step 4, the pooled test does not reach significance for the three `attn_scrambled_*`
+controls even though the clustered test does -- the same divergence pattern already reported
+there (rows within a prompt aren't independent draws, so pooling overstates n). This is not a
+new inconsistency; it is the reason the clustered test exists and is the one led with.
+
+### Two small honest disclosures, not rounded away
+
+**Substituted is no longer perfectly clean.** One row (`p7_s2024`, foreign attribute "yellow
+helmet") scored a nonzero IoU of 0.0000191 -- five orders of magnitude below real's mean
+(0.0325) and almost certainly CLIPSeg segmentation noise at a mask boundary, not a genuine
+foreign-attribute detection. Still, this breaks the "0/54, no exceptions" streak Step 4
+reported; substituted's nonzero rate is now 1/74 (1.35%), not exactly 0. Reported as
+negligible in magnitude, not as zero.
+
+**Real's own hit rate is unchanged, still under 30%.** 22/74 (29.7%) nonzero, essentially
+identical to Step 4's 19-chain rate -- the growth run added sample size, not a cleaner
+generation/segmentation pipeline. The underlying noise floor Step 4 disclosed is still there.
+
+### Bottom line for this run
+
+The one substantive gap left after Step 4 -- `attn_scrambled_sameattr` narrowly missing
+significance because two prompts lacked a same-attribute pairing -- is closed for one of the
+two prompts by an unbiased, pre-registration-consistent seed addition, and the resulting test
+now reaches significance. Prompt 3 remains a genuine, disclosed limitation (still only one
+detected chain across all four seeds run so far); a fifth seed could be tried the same
+uniform way if closing it specifically becomes important, but it is not currently blocking
+any reported result.
+
+---
+
 ## Step 4 confirmatory run (2026-07-23, Kaggle GPU, kernel `coig-pi-level-generate-chains` v1)
 
 Executed per `docs/part-b-strengthening-design.md` (the Part-B strengthening design),

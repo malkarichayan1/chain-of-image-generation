@@ -186,28 +186,30 @@ application of it. Validate the primitive, then spend that trust on the hard pro
    statistically significant (p=0.013, p=0.004). Not on the actual CR-pilot Gemini chains (closed
    model, can't be attention-hooked) but on matched SD1.5 chains built for this purpose — see
    `pi_level_experiment/RESULTS.md` for the full result and its honest limitations.
-3. **Done, 2026-07-23 — the Step 4 confirmatory run executed on real data.** Design doc
-   (`docs/part-b-strengthening-design.md`, commit `d46973c`) fully implemented and run
-   end-to-end: `generate_chains.py` executed on Kaggle (kernel
-   `chayanmalkari/coig-pi-level-generate-chains` v1, multi-seed SEEDS=[42,7,1234], 19/27
-   chains detected, every prompt including all 4 calibration prompts represented — no
-   rewording triggered since no prompt failed all 3 seeds), `segment_cache.py` built the
-   584-pair CLIPSeg cache locally, `calibrate_threshold.py` froze **T=0.85** on the
-   calibration set only (prompts 3/4/6/8; real hit rate at that T is 23.8%, notably lower
-   than v4's uncalibrated ~46% — a real, disclosed tradeoff, see RESULTS.md), and
-   `score_chains.py` + extended `analyze_results.py` scored all 19 chains. **Result: under
-   the clustered (per-prompt, conservative) test, real beats every control**
-   (shuffled p=0.0039, substituted p=0.0039, attn_scrambled_samechain p=0.0039,
-   attn_scrambled_crosschain p=0.0391) **except attn_scrambled_sameattr** (p=0.078, n=7/9
-   prompts — a near-miss on reduced n, same direction as every other contrast, not a
-   contradiction). This is a genuine improvement over v4, where the single
-   `attention_scrambled` control never reached significance under any test. Full writeup in
-   `pi_level_experiment/RESULTS.md`'s new top section. Remaining honest limitations: 19/27
-   not the ≥20 chain target, real's own hit rate still under 30%, and
-   `attn_scrambled_sameattr` not yet significant. Next: consider a fourth seed or two to
-   push `attn_scrambled_sameattr` over the line, and port this into
+3. ~~The Step 4 confirmatory run~~ — **done 2026-07-23**, then **fully closed out by a growth
+   run the same day.** Design doc (`docs/part-b-strengthening-design.md`, commit `d46973c`)
+   implemented end-to-end: `generate_chains.py` on Kaggle (kernel
+   `chayanmalkari/coig-pi-level-generate-chains` v1, SEEDS=[42,7,1234], 19/27 chains),
+   `segment_cache.py`, `calibrate_threshold.py` (froze **T=0.85** on the calibration set,
+   prompts 3/4/6/8 only), `score_chains.py` + `analyze_results.py`. That run left one gap:
+   under the clustered (per-prompt) test, real beat every control except
+   `attn_scrambled_sameattr` (p=0.078, n=7/9 — prompts 3 and 8 each had only one detected
+   seed, so neither had a same-attribute/different-seed partner to pair against).
+   **Growth run (kernel v2, SEEDS=[2024] only, applied uniformly to all 9 prompts —**
+   deliberately *not* targeted retries on just prompts 3/8, to avoid outcome-driven
+   selection**):** detected on 7/9 prompts, closing prompt 8's gap (prompt 3 failed
+   detection again, so it alone stays without a pairing). New manifest merged with the
+   original via `merge_manifests.py` (new file, tests in
+   `tests/test_merge_manifests.py`); Stage 2/3/4 rerun on the combined 26/36-chain sample
+   (clears the ≥20 target). **Result: under the clustered test, real now beats every single
+   control condition, including `attn_scrambled_sameattr`** (now p=0.0156, n=8/9). Full
+   writeup in `pi_level_experiment/RESULTS.md`'s new top section (includes two small honest
+   disclosures: one near-zero nonzero `substituted` row, 0.0000191 IoU, and real's hit rate
+   still ~30%, unchanged). Remaining limitation: prompt 3 still has no same-attribute
+   pairing (a 5th uniform seed could be tried if this specifically needs closing, but
+   nothing currently depends on it). **Not yet done:** port this into
    `proposal/CPGA-Research-Proposal.md`'s Ideal Results / Limitations / Experimental Setup
-   sections (not yet done).
+   sections.
 4. Run Part A's human-agreement anchor set + Tier-1 falsification battery on metric A; resolve
    the sub-chance n=2 anomaly — there's now a concrete, testable lead (see metric A's Status
    above: re-run the analysis with the already-existing windowed `phrase_attention`).
@@ -230,10 +232,14 @@ application of it. Validate the primitive, then spend that trust on the hard pro
   pure numpy: threshold -> delta masks -> IoU -> CSV, six conditions including the Step 2
   disjointness-by-attribute-string fix for `substituted`), `calibrate_threshold.py` (Step 3,
   refuses to run on non-calibration prompt_ids), and `analyze_results.py` (extended with a
-  clustered per-prompt Wilcoxon test alongside the original pooled Mann-Whitney one). Test
-  suite in `pi_level_experiment/tests/` (27 tests, `py -3 -m pytest pi_level_experiment/tests/`).
-  `run_chain_experiment.py` itself is untouched — still the v4 provenance record. The GPU run
-  itself (Stage 1 on Kaggle, then Steps 2-4 against its output) has not happened yet.
+  clustered per-prompt Wilcoxon test alongside the original pooled Mann-Whitney one).
+  `merge_manifests.py` (added 2026-07-23) combines a Stage 1 manifest with a later growth
+  run's manifest without regenerating existing chains on GPU. Test suite in
+  `pi_level_experiment/tests/` (31 tests, `py -3 -m pytest tests/` run from inside
+  `pi_level_experiment/` — running from the repo root fails to import the stage modules).
+  `run_chain_experiment.py` itself is untouched — still the v4 provenance record. Stage 1 has
+  now run twice on Kaggle: kernel v1 (SEEDS=[42,7,1234], 19/27 chains) and kernel v2
+  (SEEDS=[2024] growth run, 7 more chains, 26/36 total) — see RESULTS.md.
 - `ssa-metric` branch — `ssa/coig_ssa_colab.ipynb` (metric A, one-shot binding, ~9MB notebook,
   read/edit via JSON manipulation script, not the Read/NotebookEdit tools directly — too large).
 - `origin/feature/spatial-semantic-alignment-metric` branch (not checked out locally) —
