@@ -225,7 +225,7 @@ class SpatialSemanticAlignment:
             from transformers import CLIPSegForImageSegmentation, CLIPSegProcessor
             self.segmentation_processor = CLIPSegProcessor.from_pretrained("CIDAS/clipseg-rd64-refined")
             self.segmentation_model = CLIPSegForImageSegmentation.from_pretrained(
-                "CIDAS/clipseg-rd64-refined"
+                "CIDAS/clipseg-rd64-refined", use_safetensors=True
             ).to(self.device)
 
     def phase_a_delta_mask_from_masks(self, mask_curr, mask_prev, threshold: float = 0.5):
@@ -444,7 +444,7 @@ def load_all_models() -> Models:
     txt2img.set_progress_bar_config(disable=True)
 
     detector = maskrcnn_resnet50_fpn(weights=MaskRCNN_ResNet50_FPN_Weights.DEFAULT).to(DEVICE).eval()
-    clip_model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32").to(DEVICE).eval()
+    clip_model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32", use_safetensors=True).to(DEVICE).eval()
     clip_proc = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
 
     return Models(txt2img=txt2img, detector=detector,

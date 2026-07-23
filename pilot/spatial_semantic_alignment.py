@@ -257,7 +257,7 @@ class SpatialSemanticAlignment:
                 "CIDAS/clipseg-rd64-refined"
             )
             self.segmentation_model = CLIPSegForImageSegmentation.from_pretrained(
-                "CIDAS/clipseg-rd64-refined"
+                "CIDAS/clipseg-rd64-refined", use_safetensors=True
             ).to(self.device)
 
     # ------------------------------------------------------------------
