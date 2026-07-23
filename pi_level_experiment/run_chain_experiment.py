@@ -253,7 +253,12 @@ class SpatialSemanticAlignment:
         pipeline.unet.set_attn_processor(processors)
 
     def unhook_pipeline(self, pipeline):
-        pipeline.unet.set_attn_processor({})
+        # diffusers' set_attn_processor(dict) requires the dict to have exactly one
+        # entry per attention layer -- an empty {} raises ValueError ("number of
+        # processors 0 does not match the number of attention layers N"). Passing a
+        # single processor *instance* (not a dict) broadcasts it to every layer instead.
+        from diffusers.models.attention_processor import AttnProcessor2_0
+        pipeline.unet.set_attn_processor(AttnProcessor2_0())
 
     def phase_b_cross_attention_map(self, target_token_index: int,
                                      target_resolution: Tuple[int, int] = (IMG_SIZE, IMG_SIZE),
@@ -514,8 +519,9 @@ def build_chain(chain_id: int, spec: dict, metric: SpatialSemanticAlignment, mod
     base_prompt = base_prompt_for(spec)
     subjects = [s for s, _, _ in spec["pairs"]]
 
+    # txt2img is never hooked (only the inpaint pipeline captures attention), so it
+    # already has its default attn processor -- no need to touch/reset it here.
     g = torch.Generator(DEVICE).manual_seed(SEED)
-    models.txt2img.unet.set_attn_processor({})  # plain fast processor for the base image; no attention needed here
     base_image = models.txt2img(base_prompt, num_inference_steps=NUM_INFERENCE_STEPS,
                                  guidance_scale=7.5, generator=g).images[0]
 

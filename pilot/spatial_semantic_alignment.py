@@ -376,7 +376,15 @@ class SpatialSemanticAlignment:
         (hooks are stored internally).
         """
         if self._pipeline_arch == "unet" and pipeline is not None:
-            pipeline.unet.set_attn_processor({})  # reverts to default
+            # diffusers' set_attn_processor(dict) requires the dict to have exactly
+            # one entry per attention layer -- an empty {} raises ValueError ("number
+            # of processors 0 does not match the number of attention layers N"), so
+            # this line previously would have crashed the first time it ran against a
+            # real pipeline (caught 2026-07-22 while wiring this class into a real
+            # SD1.5 pipeline for the first time -- see pi_level_experiment/). Passing a
+            # single processor *instance* (not a dict) broadcasts it to every layer.
+            from diffusers.models.attention_processor import AttnProcessor2_0
+            pipeline.unet.set_attn_processor(AttnProcessor2_0())
         self._remove_dit_hooks()
         self._pipeline_arch = None
 
@@ -784,10 +792,56 @@ def test_metric():
     assert metric._pipeline_arch is None, "_pipeline_arch not reset after unhook_pipeline"
 
     # -------------------------------------------------------------------
+    # Scenario 10: hook_pipeline / unhook_pipeline round-trip on a REAL UNet.
+    #
+    # Scenarios 8-9 only ever exercised the DiT hook path (a hand-built fake
+    # transformer, no pipeline argument to unhook_pipeline). The UNet path of
+    # unhook_pipeline -- pipeline.unet.set_attn_processor({}) -- was never
+    # exercised against a real attention module and had a real bug: diffusers'
+    # set_attn_processor(dict) requires the dict to have exactly one entry per
+    # attention layer, so an empty {} always raised ValueError. This was only
+    # caught 2026-07-22 wiring this class into a real SD1.5 pipeline for the
+    # first time (see pi_level_experiment/) -- exactly the class of bug a
+    # "verified against hand-built scenarios, never against a real pipeline"
+    # test suite is blind to. Skips gracefully if diffusers isn't installed.
+    # -------------------------------------------------------------------
+    try:
+        from diffusers import UNet2DConditionModel
+    except ImportError:
+        print("[SKIP] Scenario 10 (real UNet hook/unhook round-trip): diffusers not installed")
+    else:
+        tiny_unet = UNet2DConditionModel(
+            sample_size=8, in_channels=4, out_channels=4,
+            down_block_types=("CrossAttnDownBlock2D", "DownBlock2D"),
+            up_block_types=("UpBlock2D", "CrossAttnUpBlock2D"),
+            block_out_channels=(16, 32), layers_per_block=1,
+            cross_attention_dim=16, attention_head_dim=4, norm_num_groups=8,
+        )
+
+        class _FakeUNetPipeline:
+            def __init__(self, unet):
+                self.unet = unet
+
+        fake_pipe = _FakeUNetPipeline(tiny_unet)
+        n_layers = len(tiny_unet.attn_processors)
+
+        metric.hook_pipeline(fake_pipe)
+        assert metric._pipeline_arch == "unet"
+        assert all(isinstance(p, CustomAttnProcessor) for p in tiny_unet.attn_processors.values())
+
+        metric.unhook_pipeline(fake_pipe)  # this line raised ValueError before the fix
+        assert metric._pipeline_arch is None
+        assert not any(isinstance(p, CustomAttnProcessor) for p in tiny_unet.attn_processors.values())
+        print(
+            f"[OK] Scenario 10 (real UNet hook/unhook round-trip): "
+            f"{n_layers} attention layers hooked and cleanly restored"
+        )
+
+    # -------------------------------------------------------------------
     # Summary
     # -------------------------------------------------------------------
     print()
-    print("[ALL 9 SCENARIOS PASSED] SSA metric implementation fully verified.")
+    print("[ALL SCENARIOS PASSED] SSA metric implementation fully verified.")
 
 
 if __name__ == "__main__":
