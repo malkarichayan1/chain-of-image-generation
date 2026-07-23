@@ -1,0 +1,13 @@
+{
+  "id": "chayanmalkari/coig-pi-level-generate-chains",
+  "title": "coig-pi-level-generate-chains",
+  "code_file": "generate_chains.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true,
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": []
+}

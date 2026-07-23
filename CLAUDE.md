@@ -186,10 +186,24 @@ application of it. Validate the primitive, then spend that trust on the hard pro
    statistically significant (p=0.013, p=0.004). Not on the actual CR-pilot Gemini chains (closed
    model, can't be attention-hooked) but on matched SD1.5 chains built for this purpose — see
    `pi_level_experiment/RESULTS.md` for the full result and its honest limitations.
-3. **Now the top priority:** strengthen the money result — fix the base-prompt person-detection
-   issue that limited the sample to 5/9 chains, and redesign `attention_scrambled`'s control to
-   draw wrong-attention from an unrelated chain rather than a same-chain sibling (see
-   RESULTS.md's discussion of why it didn't reach significance).
+3. **Now the top priority:** strengthen the money result. Design doc committed 2026-07-23
+   (`docs/part-b-strengthening-design.md`, commit `d46973c`): splits the experiment into
+   generate/segment/score stages so scoring-side iteration is free, adds multi-seed sample
+   expansion (SEEDS = [42, 7, 1234]), replaces the confounded same-chain
+   `attention_scrambled` with two unconfounded controls plus a legacy same-chain one, and adds
+   a pre-registered threshold calibration fit only on held-out chains. **All four steps' code
+   is now written and tested** (`generate_chains.py`, `segment_cache.py`, `score_chains.py`,
+   `calibrate_threshold.py`, extended `analyze_results.py` — 27 pytest tests passing locally,
+   `pi_level_experiment/tests/`). **Not yet done: the actual GPU run.** Stage 1
+   (`generate_chains.py`, pushed via `kernel-metadata-generate-chains.json`) still needs to
+   execute on Kaggle to produce real images/attention maps before Stage 2's cache, Step 3's
+   calibration, and Step 4's confirmatory scoring can run on real data — that's the next
+   concrete action, not more code. Extending `analyze_results.py` against the existing v4 CSV
+   surfaced one honest finding worth carrying forward: `attention_scrambled` is NOT significant
+   under the pooled (row-level) test (p=0.379) but IS significant under the new clustered
+   per-chain test (p=0.031, the best possible at n=5) — real's mean IoU beat
+   attention_scrambled's in all 5 v4 chains consistently, a signal the row-level pooling washed
+   out. Worth stating explicitly in the eventual updated RESULTS.md.
 4. Run Part A's human-agreement anchor set + Tier-1 falsification battery on metric A; resolve
    the sub-chance n=2 anomaly — there's now a concrete, testable lead (see metric A's Status
    above: re-run the analysis with the already-existing windowed `phrase_attention`).
@@ -203,6 +217,19 @@ application of it. Validate the primitive, then spend that trust on the hard pro
   `pi_level_experiment/` (the money-result experiment: `run_chain_experiment.py`,
   `analyze_results.py`, `RESULTS.md`, `results/chain_experiment_results.csv`). Kaggle kernel
   `chayanmalkari/coig-pi-level-chain-experiment`.
+- `docs/part-b-strengthening-design.md` — the Step 1-4 design for strengthening the money
+  result, and its implementation, split by real cost boundary (GPU vs. pure numpy):
+  `pi_level_experiment/generate_chains.py` (Stage 1, GPU/Kaggle, multi-seed + detectability
+  pre-flight + manifest.json emission; pushed via `kernel-metadata-generate-chains.json` to
+  Kaggle kernel `chayanmalkari/coig-pi-level-generate-chains`), `segment_cache.py` (Stage 2,
+  CLIPSeg -> cached sigmoid maps keyed by (image, attribute)), `score_chains.py` (Stage 3,
+  pure numpy: threshold -> delta masks -> IoU -> CSV, six conditions including the Step 2
+  disjointness-by-attribute-string fix for `substituted`), `calibrate_threshold.py` (Step 3,
+  refuses to run on non-calibration prompt_ids), and `analyze_results.py` (extended with a
+  clustered per-prompt Wilcoxon test alongside the original pooled Mann-Whitney one). Test
+  suite in `pi_level_experiment/tests/` (27 tests, `py -3 -m pytest pi_level_experiment/tests/`).
+  `run_chain_experiment.py` itself is untouched — still the v4 provenance record. The GPU run
+  itself (Stage 1 on Kaggle, then Steps 2-4 against its output) has not happened yet.
 - `ssa-metric` branch — `ssa/coig_ssa_colab.ipynb` (metric A, one-shot binding, ~9MB notebook,
   read/edit via JSON manipulation script, not the Read/NotebookEdit tools directly — too large).
 - `origin/feature/spatial-semantic-alignment-metric` branch (not checked out locally) —
