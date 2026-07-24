@@ -37,15 +37,24 @@ def labels_path(annotator: str) -> Path:
 
 def _open_image(path: str) -> None:
     """Best-effort open in the OS default viewer; fall back to PIL. Never fatal -- if the
-    image can't be shown, the annotator can open it manually from the printed path."""
+    image can't be shown, the annotator can open it manually from the printed path.
+
+    manifest.json's image_path strings were written on Kaggle (Linux), so they use forward
+    slashes, e.g. "artifacts/images/p6.png". A plain relative forward-slash path passed to
+    os.startfile() invokes ShellExecuteW, which -- unlike ordinary file I/O -- can fail to
+    resolve that shape of path on Windows (WinError 2) even though the file exists.
+    Resolving to an absolute Path first sidesteps that: Path.resolve() both makes it
+    absolute and normalizes the separators to backslashes."""
+    abs_path = str(Path(path).resolve())
     try:
         if sys.platform.startswith("win"):
-            os.startfile(path)  # type: ignore[attr-defined]
+            os.startfile(abs_path)  # type: ignore[attr-defined]
             return
         from PIL import Image
-        Image.open(path).show()
+        Image.open(abs_path).show()
     except Exception as e:  # noqa: BLE001 -- showing an image must never crash labeling
         print(f"  (could not auto-open image: {type(e).__name__}: {e})")
+        print(f"  open it manually: {abs_path}")
 
 
 def build_menu(subjects: List[str]) -> Tuple[Dict[str, str], str]:
