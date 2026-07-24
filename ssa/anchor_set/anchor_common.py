@@ -26,7 +26,16 @@ import numpy as np
 # Sentinels a human may record instead of a subject name.
 LABEL_NONE = "none"        # the attribute never visibly rendered on anyone
 LABEL_UNCLEAR = "unclear"  # rendered but the annotator cannot assign ownership
-NON_SUBJECT_LABELS = frozenset({LABEL_NONE, LABEL_UNCLEAR})
+LABEL_SHARED = "shared"    # rendered on MORE THAN ONE subject (attribute leakage)
+NON_SUBJECT_LABELS = frozenset({LABEL_NONE, LABEL_UNCLEAR, LABEL_SHARED})
+
+# `shared` is deliberately split out of `unclear`. Both are "not one subject", but they are
+# different facts: `unclear` is missing data (the annotator could not tell), while `shared`
+# is a binding OUTCOME (the model bound the attribute to several subjects at once) that the
+# metric can be asked to predict. Strict scoring excludes all three -- preserving every
+# already-published accuracy number -- while shared-aware scoring (see `margin_threshold`
+# in build_agreement_rows) readmits only `shared` as an extra predictable class.
+MISSING_DATA_LABELS = frozenset({LABEL_NONE, LABEL_UNCLEAR})
 
 
 # ---------------------------------------------------------------------------
@@ -99,6 +108,44 @@ def predicted_owner_from_attention(
 
 
 # ---------------------------------------------------------------------------
+# Confidence margin -> the metric's own "shared" (leakage) call
+# ---------------------------------------------------------------------------
+
+def margin_from_scores(model_scores: Dict[str, float]) -> float:
+    """How decisively the top subject beat the runner-up: (top1 - top2) / top1, in [0, 1].
+
+    A bare argmax always names somebody, even when two subjects hold near-identical
+    attention mass -- which is exactly the leakage case a human marks `shared`. This is the
+    scalar that lets the metric abstain instead. Computed from the `model_scores` already
+    stored in every manifest attribute entry, so re-thresholding costs no GPU time.
+
+    Degenerate cases: a lone subject has no competitor, so it scores 1.0 (nothing to be
+    ambiguous against); an all-zero map has no evidence for anyone, so it scores 0.0
+    (maximally ambiguous, NOT maximally confident -- getting this backwards would turn
+    empty attention into a confident prediction)."""
+    if not model_scores:
+        raise ValueError("model_scores is empty; no prediction to measure confidence for")
+    ranked = sorted(model_scores.values(), reverse=True)
+    if len(ranked) == 1:
+        return 1.0
+    top1, top2 = ranked[0], ranked[1]
+    if top1 <= 0.0:
+        return 0.0
+    return float((top1 - top2) / top1)
+
+
+def predicted_label_with_shared(model_scores: Dict[str, float],
+                                margin_threshold: float) -> str:
+    """The metric's binding call when it is allowed to say `shared`: the argmax subject when
+    its margin clears `margin_threshold`, else LABEL_SHARED. The boundary is inclusive on the
+    confident side (margin >= threshold names a subject) so threshold=0.0 reproduces plain
+    argmax behavior exactly."""
+    if margin_from_scores(model_scores) >= margin_threshold:
+        return max(model_scores, key=lambda s: model_scores[s])
+    return LABEL_SHARED
+
+
+# ---------------------------------------------------------------------------
 # Manifest entry assembly (DUPLICATED inline in generate_anchor_images.py)
 # ---------------------------------------------------------------------------
 
@@ -155,15 +202,22 @@ def resolve_image_path(artifacts_dir: Path, stored_path: str) -> Path:
     return (Path(artifacts_dir) / rel).resolve()
 
 
-def pending_label_targets(manifest: dict, labels: Dict[str, str]) -> List[Tuple[dict, dict]]:
+def pending_label_targets(manifest: dict, labels: Dict[str, str],
+                          relabel: frozenset = frozenset()) -> List[Tuple[dict, dict]]:
     """(image_entry, attribute_entry) pairs still needing a human label -- only detected
-    images, only attributes not already keyed in `labels`. Order follows the manifest."""
+    images, only attributes not already keyed in `labels`. Order follows the manifest.
+
+    `relabel` re-queues rows whose EXISTING label is in that set, which is how an already
+    finished pass gets revisited without discarding it: passing {LABEL_UNCLEAR} re-asks only
+    the ambiguous rows (e.g. to split the ones that were really `shared`) and leaves every
+    settled subject judgment alone. Empty by default, so an ordinary resume is unchanged."""
     out: List[Tuple[dict, dict]] = []
     for img in manifest["images"]:
         if not img.get("detected"):
             continue
         for attr in img["attributes"]:
-            if label_key(img["prompt_id"], attr["attribute"]) not in labels:
+            key = label_key(img["prompt_id"], attr["attribute"])
+            if key not in labels or labels[key] in relabel:
                 out.append((img, attr))
     return out
 
@@ -172,15 +226,26 @@ def pending_label_targets(manifest: dict, labels: Dict[str, str]) -> List[Tuple[
 # Agreement analysis
 # ---------------------------------------------------------------------------
 
-def chance_baseline(n: int) -> float:
-    """Random-guess accuracy at subject count n: 1/n."""
-    return 1.0 / n
+def chance_baseline(n: int, include_shared: bool = False) -> float:
+    """Random-guess accuracy at subject count n. Strict scoring picks among the n subjects
+    (1/n); shared-aware scoring picks among n subjects plus `shared` (1/(n+1))."""
+    return 1.0 / (n + 1) if include_shared else 1.0 / n
 
 
-def build_agreement_rows(manifest: dict, labels: Dict[str, str]) -> List[dict]:
-    """One row per (detected chain, attribute) that has a human label. `human_label` may be
-    a subject, `none`, or `unclear`; `scored` is True only when the human named a subject
-    (the accuracy denominator). `correct` compares predicted_owner to the human subject."""
+def build_agreement_rows(manifest: dict, labels: Dict[str, str],
+                         margin_threshold: float = None) -> List[dict]:
+    """One row per (detected chain, attribute) that has a human label.
+
+    Strict columns (always present, semantics frozen so published numbers cannot move):
+    `human_label` may be a subject or one of none/unclear/shared; `scored` is True only when
+    the human named a single subject (the accuracy denominator); `correct` compares
+    `predicted_owner` (bare argmax) to that subject.
+
+    Shared-aware columns (only when `margin_threshold` is given): `margin`,
+    `predicted_label` (a subject, or `shared` when the metric's top-two attention margin
+    falls short), `scored_shared` (human named a subject OR said `shared`), and
+    `correct_shared`. `none`/`unclear` stay excluded in both modes -- they are missing data,
+    not outcomes."""
     rows: List[dict] = []
     for img in manifest["images"]:
         if not img.get("detected"):
@@ -191,24 +256,75 @@ def build_agreement_rows(manifest: dict, labels: Dict[str, str]) -> List[dict]:
                 continue
             human = labels[key]
             scored = human not in NON_SUBJECT_LABELS
-            rows.append(dict(
+            row = dict(
                 prompt_id=img["prompt_id"], n=img["n"], attribute=attr["attribute"],
                 intended_subject=attr["intended_subject"], predicted_owner=attr["predicted_owner"],
                 human_label=human, scored=scored,
                 correct=(scored and attr["predicted_owner"] == human),
-            ))
+            )
+            if margin_threshold is not None:
+                predicted_label = predicted_label_with_shared(
+                    attr["model_scores"], margin_threshold)
+                scored_shared = human not in MISSING_DATA_LABELS
+                row.update(
+                    margin=margin_from_scores(attr["model_scores"]),
+                    predicted_label=predicted_label,
+                    scored_shared=scored_shared,
+                    correct_shared=(scored_shared and predicted_label == human),
+                )
+            rows.append(row)
     return rows
 
 
-def summarize_agreement(rows: Sequence[dict]) -> dict:
+def cohens_kappa(labels_a: Dict[str, str], labels_b: Dict[str, str]) -> dict:
+    """Inter-rater reliability between two annotators' label files, over the keys they BOTH
+    labeled (so a second annotator who stops partway is not penalised for unlabeled rows).
+
+    Returns {n, p_observed, p_expected, kappa, categories}. `kappa` is None when p_expected
+    is 1.0 -- both raters used a single identical category, which makes (po-pe)/(1-pe) a 0/0
+    and would otherwise surface as a NaN or a ZeroDivisionError."""
+    shared_keys = sorted(set(labels_a) & set(labels_b))
+    if not shared_keys:
+        raise ValueError("no overlapping label keys; nothing to compare between annotators")
+
+    pairs = [(labels_a[k], labels_b[k]) for k in shared_keys]
+    n = len(pairs)
+    p_observed = sum(1 for x, y in pairs if x == y) / n
+
+    categories = sorted({c for pair in pairs for c in pair})
+    p_expected = sum(
+        (sum(1 for x, _ in pairs if x == c) / n) * (sum(1 for _, y in pairs if y == c) / n)
+        for c in categories
+    )
+    kappa = None if p_expected >= 1.0 else (p_observed - p_expected) / (1.0 - p_expected)
+    return dict(n=n, p_observed=p_observed, p_expected=p_expected, kappa=kappa,
+                categories=categories)
+
+
+def summarize_agreement(rows: Sequence[dict], mode: str = "strict") -> dict:
     """Overall + per-stratum agreement vs chance, plus coverage (how many labeled rows were
-    excludable none/unclear). Strata with zero scored rows report accuracy=None."""
+    excluded). Strata with zero scored rows report accuracy=None.
+
+    `mode="strict"` (default) reads the frozen `scored`/`correct` columns against a 1/n
+    baseline -- this is what every published anchor-set number used. `mode="shared"` reads
+    `scored_shared`/`correct_shared` against 1/(n+1), which requires rows built with a
+    `margin_threshold`."""
+    if mode not in ("strict", "shared"):
+        raise ValueError(f"unknown mode {mode!r}; expected 'strict' or 'shared'")
+    include_shared = mode == "shared"
+    if include_shared and rows and "scored_shared" not in rows[0]:
+        raise ValueError(
+            "mode='shared' needs rows built with build_agreement_rows(..., margin_threshold=...); "
+            "these rows have no shared-aware columns")
+    scored_col, correct_col = (
+        ("scored_shared", "correct_shared") if include_shared else ("scored", "correct"))
+
     def _stratum(subset: Sequence[dict]) -> dict:
-        scored = [r for r in subset if r["scored"]]
+        scored = [r for r in subset if r[scored_col]]
         n_scored = len(scored)
-        n_correct = sum(1 for r in scored if r["correct"])
+        n_correct = sum(1 for r in scored if r[correct_col])
         ns = {r["n"] for r in subset}
-        chance = chance_baseline(next(iter(ns))) if len(ns) == 1 else None
+        chance = chance_baseline(next(iter(ns)), include_shared) if len(ns) == 1 else None
         acc = (n_correct / n_scored) if n_scored else None
         return dict(
             n_labeled=len(subset), n_scored=n_scored, n_correct=n_correct,

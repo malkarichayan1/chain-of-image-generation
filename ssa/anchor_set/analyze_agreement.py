@@ -21,7 +21,9 @@ from pathlib import Path
 
 import pandas as pd
 
-from anchor_common import build_agreement_rows, load_labels, summarize_agreement
+from anchor_common import (
+    build_agreement_rows, cohens_kappa, load_labels, summarize_agreement,
+)
 
 ARTIFACTS_DIR = Path("artifacts")
 MANIFEST_PATH = ARTIFACTS_DIR / "manifest.json"
@@ -59,13 +61,33 @@ def format_summary(summary: dict) -> str:
     return "\n".join(lines)
 
 
-def analyze(annotator: str) -> dict:
+def format_kappa(result: dict, annotator_a: str, annotator_b: str) -> str:
+    """Inter-rater reliability block. Reports the raw agreement fraction alongside kappa,
+    because on a small anchor set kappa alone hides how few rows it rests on."""
+    agreed = round(result["p_observed"] * result["n"])
+    kappa = "undefined (both raters used a single category)" if result["kappa"] is None \
+        else f"{result['kappa']:.3f}"
+    return (f"Inter-rater reliability: {annotator_a} vs {annotator_b}\n"
+            f"  overlapping judgments : {result['n']}\n"
+            f"  raw agreement         : {agreed}/{result['n']} = {result['p_observed']:.1%}\n"
+            f"  chance agreement      : {result['p_expected']:.1%}\n"
+            f"  Cohen's kappa         : {kappa}\n"
+            f"  categories used       : {', '.join(result['categories'])}")
+
+
+def analyze(annotator: str, margin_threshold: float = None,
+            compare_annotator: str = None) -> dict:
+    """Strict agreement table (the frozen, published measurement). With `margin_threshold`,
+    additionally reports the shared-aware table, which readmits human `shared` rows as a
+    scoreable outcome and lets the metric abstain via its top-two attention margin -- and
+    returns {"strict": ..., "shared": ...} instead of the bare strict summary.
+    With `compare_annotator`, also prints Cohen's kappa against that annotator's labels."""
     manifest = json.loads(MANIFEST_PATH.read_text())
     labels = load_labels(labels_path(annotator))
     if not labels:
         raise SystemExit(f"No labels found at {labels_path(annotator)}; run label_images.py first.")
 
-    rows = build_agreement_rows(manifest, labels)
+    rows = build_agreement_rows(manifest, labels, margin_threshold=margin_threshold)
     summary = summarize_agreement(rows)
 
     df = pd.DataFrame(rows)
@@ -73,13 +95,35 @@ def analyze(annotator: str) -> dict:
     df.to_csv(out_csv, index=False)
 
     print(f"Annotator: {annotator}  |  rows: {len(rows)}  |  detail CSV: {out_csv}\n")
+    print("STRICT (one subject only; chance = 1/n)")
     print(format_summary(summary))
     excluded = summary["overall"]["n_excluded"]
     if excluded:
-        print(f"\n({excluded} labeled rows excluded as none/unclear -- coverage, not error.)")
+        print(f"\n({excluded} labeled rows excluded as none/unclear/shared -- coverage, not error.)")
     print("\nDecision gate (memo SSA-Metric-Memo.md §7): accuracy clearly above the 1/n chance "
           "line at a stratum = attention tracks binding there.")
-    return summary
+
+    result = summary
+    if margin_threshold is not None:
+        shared_summary = summarize_agreement(rows, mode="shared")
+        print(f"\nSHARED-AWARE (metric may abstain at margin < {margin_threshold}; "
+              f"chance = 1/(n+1))")
+        print(format_summary(shared_summary))
+        recovered = shared_summary["overall"]["n_scored"] - summary["overall"]["n_scored"]
+        print(f"\n({recovered} leakage rows recovered as a scoreable outcome rather than "
+              "discarded as missing data.)")
+        result = {"strict": summary, "shared": shared_summary}
+
+    if compare_annotator is not None:
+        other = load_labels(labels_path(compare_annotator))
+        if not other:
+            raise SystemExit(
+                f"No labels found at {labels_path(compare_annotator)}; "
+                f"the second annotator has not labeled anything yet.")
+        print()
+        print(format_kappa(cohens_kappa(labels, other), annotator, compare_annotator))
+
+    return result
 
 
 def main() -> None:
@@ -88,11 +132,22 @@ def main() -> None:
     ap.add_argument("--artifacts-dir", default="artifacts",
                     help="directory holding manifest.json / labels files, e.g. "
                          "'artifacts_sdxl' for the SDXL run (default: 'artifacts', the SD1.5 run)")
+    ap.add_argument("--margin-threshold", type=float, default=None,
+                    help="also report the shared-aware table: the metric predicts `shared` "
+                         "when its top-two attention margin falls below this. Scale it to "
+                         "the DATA, not to intuition -- observed margins are tiny (SDXL "
+                         "median 0.0095, max 0.0689; SD1.5 median 0.0127), so 0.2 abstains "
+                         "on literally every row. Sweep something like 0.005-0.03. "
+                         "Omit for the strict, already-published measurement only.")
+    ap.add_argument("--compare-annotator", default=None,
+                    help="second annotator id to compute Cohen's kappa against, e.g. "
+                         "'--annotator chayan --compare-annotator ane'")
     args = ap.parse_args()
     global ARTIFACTS_DIR, MANIFEST_PATH
     ARTIFACTS_DIR = Path(args.artifacts_dir)
     MANIFEST_PATH = ARTIFACTS_DIR / "manifest.json"
-    analyze(args.annotator)
+    analyze(args.annotator, margin_threshold=args.margin_threshold,
+            compare_annotator=args.compare_annotator)
 
 
 if __name__ == "__main__":

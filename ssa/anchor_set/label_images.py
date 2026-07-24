@@ -23,8 +23,8 @@ from pathlib import Path
 from typing import Dict, List, Tuple
 
 from anchor_common import (
-    LABEL_NONE, LABEL_UNCLEAR, label_key, load_labels, save_labels, pending_label_targets,
-    resolve_image_path,
+    LABEL_NONE, LABEL_SHARED, LABEL_UNCLEAR, label_key, load_labels, save_labels,
+    pending_label_targets, resolve_image_path,
 )
 
 ARTIFACTS_DIR = Path("artifacts")
@@ -59,14 +59,21 @@ def _open_image(abs_path: Path) -> None:
 
 
 def build_menu(subjects: List[str]) -> Tuple[Dict[str, str], str]:
-    """Map single-key inputs to labels: 1..n -> subjects, plus n(one)/u(nclear). Returns
-    (choice_map, help_text)."""
+    """Map single-key inputs to labels: 1..n -> subjects, plus n(one)/u(nclear)/s(hared).
+    Returns (choice_map, help_text).
+
+    `shared` is distinct from `unclear` on purpose. "It's painted on three of them" is a
+    binding OUTCOME the metric can be scored against (see anchor_common.margin_from_scores);
+    "I can't tell who has it" is missing data. Folding both into `unclear`, as the first
+    labeling passes did, throws the former away."""
     choice_map: Dict[str, str] = {str(i + 1): s for i, s in enumerate(subjects)}
     choice_map[LABEL_NONE[0]] = LABEL_NONE        # 'n'
     choice_map[LABEL_UNCLEAR[0]] = LABEL_UNCLEAR  # 'u'
+    choice_map[LABEL_SHARED[0]] = LABEL_SHARED    # 's'
     lines = [f"    {i + 1}) {s}" for i, s in enumerate(subjects)]
     lines.append(f"    n) {LABEL_NONE} (attribute not visibly rendered on anyone)")
-    lines.append(f"    u) {LABEL_UNCLEAR} (rendered but ownership ambiguous)")
+    lines.append(f"    s) {LABEL_SHARED} (visibly rendered on MORE THAN ONE subject)")
+    lines.append(f"    u) {LABEL_UNCLEAR} (rendered, but you genuinely cannot tell whose)")
     return choice_map, "\n".join(lines)
 
 
@@ -84,12 +91,12 @@ def prompt_one(img: dict, attr: dict, choice_map: Dict[str, str], menu: str,
         print(f"  invalid choice {raw!r}; pick one of {sorted(choice_map)}")
 
 
-def run(annotator: str, input_fn=input) -> Dict[str, str]:
+def run(annotator: str, input_fn=input, relabel: frozenset = frozenset()) -> Dict[str, str]:
     manifest = json.loads(MANIFEST_PATH.read_text())
     lpath = labels_path(annotator)
     labels = load_labels(lpath)
 
-    targets = pending_label_targets(manifest, labels)
+    targets = pending_label_targets(manifest, labels, relabel)
     random.Random(SHUFFLE_SEED).shuffle(targets)  # de-correlate order from prompt_id
 
     total = sum(len(i["attributes"]) for i in manifest["images"] if i.get("detected"))
@@ -97,7 +104,8 @@ def run(annotator: str, input_fn=input) -> Dict[str, str]:
         print(f"All {total} judgments already recorded in {lpath}. Nothing to do.")
         return labels
 
-    print(f"Annotator: {annotator} | {len(targets)} of {total} judgments remaining "
+    scope = f" (re-examining {sorted(relabel)} rows)" if relabel else ""
+    print(f"Annotator: {annotator} | {len(targets)} of {total} judgments remaining{scope} "
           f"| labels file: {lpath}")
     print("Answers save after each entry; Ctrl-C to stop and resume later.\n")
 
@@ -121,11 +129,17 @@ def main() -> None:
                     help="directory holding manifest.json / labels files, e.g. "
                          "'artifacts_sdxl' for the SDXL run, so it never touches the SD1.5 "
                          "run's data in 'artifacts' (default)")
+    ap.add_argument("--relabel", nargs="+", default=[],
+                    choices=[LABEL_NONE, LABEL_UNCLEAR, LABEL_SHARED],
+                    help="re-ask only the rows currently carrying these labels, leaving "
+                         "settled subject judgments untouched. Use '--relabel unclear' to "
+                         "split an older pass's ambiguous rows into shared vs genuinely "
+                         "unclear without redoing the whole set.")
     args = ap.parse_args()
     global ARTIFACTS_DIR, MANIFEST_PATH
     ARTIFACTS_DIR = Path(args.artifacts_dir)
     MANIFEST_PATH = ARTIFACTS_DIR / "manifest.json"
-    run(args.annotator)
+    run(args.annotator, relabel=frozenset(args.relabel))
 
 
 if __name__ == "__main__":

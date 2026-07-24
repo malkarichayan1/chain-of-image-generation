@@ -25,9 +25,49 @@ def _manifest():
 
 
 def test_build_menu_maps_numbers_and_sentinels():
+    """`s` (shared) was added after the first labeling passes: `unclear` had been carrying
+    both "I can't tell" and "it's on several people at once", which are different facts."""
     choice_map, menu = li.build_menu(["barista", "cyclist"])
-    assert choice_map == {"1": "barista", "2": "cyclist", "n": ac.LABEL_NONE, "u": ac.LABEL_UNCLEAR}
-    assert "barista" in menu and "none" in menu and "unclear" in menu
+    assert choice_map == {"1": "barista", "2": "cyclist", "n": ac.LABEL_NONE,
+                          "u": ac.LABEL_UNCLEAR, "s": ac.LABEL_SHARED}
+    assert "barista" in menu and "none" in menu and "unclear" in menu and "shared" in menu
+
+
+def test_relabel_requeues_only_rows_carrying_a_targeted_label():
+    """Re-examining the existing `unclear` rows must not disturb settled judgments."""
+    manifest = _manifest()
+    labels = {ac.label_key(0, "red apron"): ac.LABEL_UNCLEAR,
+              ac.label_key(0, "yellow helmet"): "cyclist"}
+
+    pending = ac.pending_label_targets(manifest, labels, relabel={ac.LABEL_UNCLEAR})
+
+    assert [a["attribute"] for _i, a in pending] == ["red apron"]
+
+
+def test_relabel_defaults_to_off_so_a_normal_resume_is_unchanged():
+    manifest = _manifest()
+    labels = {ac.label_key(0, "red apron"): ac.LABEL_UNCLEAR,
+              ac.label_key(0, "yellow helmet"): "cyclist"}
+
+    assert ac.pending_label_targets(manifest, labels) == []
+
+
+def test_run_relabel_pass_overwrites_the_targeted_rows(tmp_path, monkeypatch):
+    (tmp_path / "artifacts").mkdir()
+    manifest_path = tmp_path / "artifacts" / "manifest.json"
+    manifest_path.write_text(json.dumps(_manifest()))
+    (tmp_path / "artifacts" / "labels_tester.json").write_text(json.dumps({
+        ac.label_key(0, "red apron"): ac.LABEL_UNCLEAR,
+        ac.label_key(0, "yellow helmet"): "cyclist",
+    }))
+    monkeypatch.setattr(li, "ARTIFACTS_DIR", tmp_path / "artifacts")
+    monkeypatch.setattr(li, "MANIFEST_PATH", manifest_path)
+    monkeypatch.setattr(li, "_open_image", lambda _p: None)
+
+    labels = li.run("tester", input_fn=lambda _p: "s", relabel={ac.LABEL_UNCLEAR})
+
+    assert labels[ac.label_key(0, "red apron")] == ac.LABEL_SHARED   # re-asked, upgraded
+    assert labels[ac.label_key(0, "yellow helmet")] == "cyclist"     # untouched
 
 
 def test_prompt_one_rejects_then_accepts():
