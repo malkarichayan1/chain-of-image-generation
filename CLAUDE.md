@@ -210,10 +210,70 @@ application of it. Validate the primitive, then spend that trust on the hard pro
    nothing currently depends on it). **Not yet done:** port this into
    `proposal/CPGA-Research-Proposal.md`'s Ideal Results / Limitations / Experimental Setup
    sections.
-4. Run Part A's human-agreement anchor set + Tier-1 falsification battery on metric A; resolve
+4. ~~Part C validation battery (stress-test the growth run's scoring machinery itself)~~ —
+   **done 2026-07-23**, per `docs/part-c-validation-design.md`, pure numpy/pandas against
+   already-generated artifacts, no GPU. Seven pre-registered checks, all passing or
+   already-published-number-preserving: (1) `score_chains.py`'s ported Phase A/C functions
+   verified bit-identical to `pilot/spatial_semantic_alignment.py`'s validated original;
+   (2) all four RNG-dependent contrasts (`substituted`, `attn_scrambled_*`) are significant
+   in 50/50 reseeds, not a lucky single draw; (3) all 5 control contrasts survive
+   Holm-Bonferroni correction; (4) the "beats every control" headline survives dropping any
+   single one of the 9 prompts; (5) both `real vs shuffled` and `real vs substituted` stay
+   significant across a full 95-point (T, top-k) grid, not just the frozen operating point.
+   **Two real corrections to the paper's framing came out of this, not just
+   confirmations:** (6) an ablation shows `real vs shuffled`/`real vs substituted` are
+   actually validating Phase A (the delta mask alone, or even literally random
+   content-free "attention," reproduces the same significance) — Phase B's specific
+   attention content is only tested by the `attn_scrambled_*` family, which is
+   Holm-significant but weaker under the pooled test; (7) the disclosed ~30% real hit rate
+   is, on this data, 100% explained by genuine cross-step attribute persistence (detected in
+   both current and previous images), zero cases of "CLIPSeg found new content but attention
+   missed it" — not unexplained pipeline noise as previously framed. Full detail in
+   `pi_level_experiment/RESULTS.md`'s new top section. **Correction (2026-07-23, same day,
+   Part D): finding (7) above was wrong and should be treated as retracted.** A follow-up
+   "what's still defensible" review hand-inspected a sample of the 52 zero-IoU rows against
+   the actual cached images and found several where the attribute never visibly rendered in
+   *either* frame — inconsistent with genuine persistence. Tracing the mechanism: the
+   original check used `curr_mask_area` (`sigmoid.mean()`, a continuous value virtually
+   never exactly 0) as a proxy for "detected in curr," which is a different question from
+   "does the sigmoid cross the calibrated T=0.85 threshold anywhere" — recomputing with the
+   correct threshold check (`pi_level_experiment/zero_inflation_recheck.py`, new, 5 tests,
+   cross-validated against known-good nonzero rows) reverses the finding: **52/52 (100%) are
+   `never_detected_in_curr` (noise floor), 0/52 are genuine persistence** — the exact
+   opposite of what was published. The ~30% hit rate reverts to its original framing:
+   unexplained SD1.5/CLIPSeg pipeline noise, not the lock working as designed. Two other
+   Part D checks this same session were reassuring, not corrections: selection effect
+   (detection rate falls monotonically with subject count, 92%/67%/58% at n=2/3/4 — a new,
+   previously-unquantified limitation) and discriminant validity (subject bounding-box area
+   is not an independent confound on `iou` beyond what `delta_area` already explains). Full
+   detail in `pi_level_experiment/RESULTS.md`'s new Part D section, now above Part C.
+   **Not yet done:** port the corrected version of finding (7) — and (6) which still
+   stands — into `proposal/CPGA-Research-Proposal.md`; the still-open Tier 2 gaps
+   (segmenter diversity, human-agreement ground truth for metric B, SDXL replication) remain
+   unstarted, tracked in the design doc's non-goals.
+5. ~~Segmenter diversity (D4) + growing the attn_scrambled_* sample past n=9 groups
+   (D5)~~ — **both done 2026-07-23, same session, after the user provided a Kaggle API
+   key mid-session.** D4: full (not sampled) OWL-ViT cross-check of all 74 real-condition
+   rows, CPU-only, no GPU needed (`pi_level_experiment/owlvit_cross_check.py`) —
+   corroborates CLIPSeg rather than contradicting it (Mann-Whitney p=0.0086, an
+   independent detector's confidence ranks CLIPSeg's "detected"/"never detected" calls the
+   same way). D5: pushed `generate_chains.py` kernel v3 to Kaggle with 6 new n=2 prompts
+   (prompt_id 9-14, at all four seeds used so far) — chosen n=2-only per D1's own finding
+   that n=2 detects best. 23/24 detected (95.8%); merged into
+   `pi_level_experiment/artifacts/manifest_combined_v3.json` (49/60 chains) and rescored
+   (`chain_experiment_results_v8.csv`). **All five contrasts remain clustered-significant
+   at n=14-15 groups (up from n=8-9), and the two that were sitting near Wilcoxon's n=9
+   resolution floor move clear of it**: `attn_scrambled_crosschain` 0.0195→0.0024,
+   `attn_scrambled_sameattr` 0.0156→0.0022. Full detail in `RESULTS.md`'s Part D, sections
+   D4-D5. **Not yet done, disclosed in RESULTS.md rather than assumed:** Part C's
+   robustness battery (Holm correction, leave-one-out, RNG sweep, T×top-k grid) has not
+   been re-run against this 15-group data, only the original 9-group data; D1-D3's checks
+   were not rerun on the enlarged sample either. Segmenter diversity's OWL-ViT check also
+   only covers the pre-growth 74 rows, not the 6 new prompts.
+6. Run Part A's human-agreement anchor set + Tier-1 falsification battery on metric A; resolve
    the sub-chance n=2 anomaly — there's now a concrete, testable lead (see metric A's Status
    above: re-run the analysis with the already-existing windowed `phrase_attention`).
-5. Everything else (VQAScore correlation, causal intervention via A&E, discriminant validity) —
+7. Everything else (VQAScore correlation, causal intervention via A&E, discriminant validity) —
    strengthens a submission but isn't load-bearing for a first draft.
 
 ## Branch/file pointers
@@ -235,11 +295,25 @@ application of it. Validate the primitive, then spend that trust on the hard pro
   clustered per-prompt Wilcoxon test alongside the original pooled Mann-Whitney one).
   `merge_manifests.py` (added 2026-07-23) combines a Stage 1 manifest with a later growth
   run's manifest without regenerating existing chains on GPU. Test suite in
-  `pi_level_experiment/tests/` (31 tests, `py -3 -m pytest tests/` run from inside
-  `pi_level_experiment/` — running from the repo root fails to import the stage modules).
-  `run_chain_experiment.py` itself is untouched — still the v4 provenance record. Stage 1 has
-  now run twice on Kaggle: kernel v1 (SEEDS=[42,7,1234], 19/27 chains) and kernel v2
-  (SEEDS=[2024] growth run, 7 more chains, 26/36 total) — see RESULTS.md.
+  `pi_level_experiment/tests/` (51 tests as of the Part C battery below, `py -3 -m pytest
+  tests/` run from inside `pi_level_experiment/` — running from the repo root fails to
+  import the stage modules). `run_chain_experiment.py` itself is untouched — still the v4
+  provenance record. Stage 1 has now run twice on Kaggle: kernel v1 (SEEDS=[42,7,1234],
+  19/27 chains) and kernel v2 (SEEDS=[2024] growth run, 7 more chains, 26/36 total) — see
+  RESULTS.md.
+- `docs/part-c-validation-design.md` (added 2026-07-23) — the 7-step design for stress-testing
+  the growth run's own scoring machinery, entirely pure numpy/pandas against already-generated
+  artifacts (no GPU): `equivalence_check.py` (Step 1, new — asserts `score_chains.py`'s ported
+  Phase A/C functions match `pilot/spatial_semantic_alignment.py` bit-for-bit), `rng_sweep.py`
+  (Step 2, new — reseeds `score_chains`'s RNG-dependent conditions to check p-value
+  stability), `analyze_results.py`'s `holm_correction`/`leave_one_out_check`/
+  `joint_threshold_topk_sweep` (Steps 3-5), and `score_chains.py`'s `threshold_pct` param plus
+  the `delta_area`/`iou_random_attn`/`curr_mask_area`/`prev_mask_area` columns (Steps 5-7 —
+  note the ablation RNG is a separate `np.random.RandomState` stream from the existing
+  `random.Random` one, so adding it doesn't perturb `substituted`/`attn_scrambled_*`'s
+  selections at a given seed; verified both by a regression test and by re-scoring the real
+  manifest and confirming a bit-identical match to the published growth-run table). Full
+  findings in `RESULTS.md`'s new top section.
 - `ssa-metric` branch — `ssa/coig_ssa_colab.ipynb` (metric A, one-shot binding, ~9MB notebook,
   read/edit via JSON manipulation script, not the Read/NotebookEdit tools directly — too large).
 - `origin/feature/spatial-semantic-alignment-metric` branch (not checked out locally) —
