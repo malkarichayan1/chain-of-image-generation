@@ -73,8 +73,26 @@ recolors instead of localized edits — which is what forced the one-shot framin
   Attend-and-Excite) is a plausible, concrete, testable explanation for the sub-chance result —
   not yet a confirmed one. **Next step: re-run cell 51's exact analysis using cell 58's windowed
   `phrase_attention` instead, and check whether n=2/n=3 clear chance.**
-- Human-agreement anchor set (~15-20 hand-labeled images) not yet built — this is the actual
-  validation step, decoupled from the noisy OWL-ViT detector.
+- ~~Human-agreement anchor set (~15-20 hand-labeled images) not yet built~~ — **done
+  2026-07-23/24**, both SD1.5 and SDXL (`ssa/anchor_set/`, branch `pi-level-idea`, memory
+  `coig-metric-a-anchor-set`): SDXL's real win is coverage (58% vs 39%, p=0.040); binding
+  accuracy only directional (pooled p=0.078, fails Holm); n=2 stays sub-chance in both.
+- **Discriminant validity — done 2026-07-24, branch `sdxl`:** is `predicted_owner` tracking
+  subject box size/position rather than attention content (the gap this file used to flag as
+  "manifests do not store boxes")? `recompute_boxes.py` reruns the same Mask R-CNN + CLIP
+  detection locally (CPU, cached images, no GPU) to recover boxes as a sidecar
+  `boxes.json`; `discriminant_validity_check.py` reads them. Result, both models: **no
+  box-size confound** — the metric's own picks land on the biggest box at or below chance
+  (SD1.5 29.6% vs 33.3% chance, p=0.76; SDXL 42% vs 34%, p=0.15), ground truth itself
+  doesn't correlate with box size (both exactly at chance, p=0.55), and confidence margin
+  doesn't track box-area dominance (SD1.5 r=-0.08; SDXL r=0.16, neither significant). But
+  the headline comparison is a genuinely mixed, more important finding: on SD1.5 a trivial
+  "always guess the biggest box" baseline actually **beats** the attention metric's own
+  accuracy (42.9% vs 33.3%, though not significant on n=21, McNemar p=0.77); on SDXL the
+  metric clearly beats that baseline (48.3% vs 24.1%, McNemar p=0.065 — trending, not yet
+  significant at n=29). Net read: the weak signal is real, not a geometric artifact — and
+  it only clears a dumb box-size heuristic on SDXL, consistent with SDXL being the model
+  chosen going forward.
 
 ### B. Chain / Delta-Mask metric (branch `feature/spatial-semantic-alignment-metric`, single file
 `pilot/spatial_semantic_alignment.py`, authored by Pranav, commit `5452a16`)
@@ -270,10 +288,14 @@ application of it. Validate the primitive, then spend that trust on the hard pro
    been re-run against this 15-group data, only the original 9-group data; D1-D3's checks
    were not rerun on the enlarged sample either. Segmenter diversity's OWL-ViT check also
    only covers the pre-growth 74 rows, not the 6 new prompts.
-6. Run Part A's human-agreement anchor set + Tier-1 falsification battery on metric A; resolve
-   the sub-chance n=2 anomaly — there's now a concrete, testable lead (see metric A's Status
-   above: re-run the analysis with the already-existing windowed `phrase_attention`).
-7. Everything else (VQAScore correlation, causal intervention via A&E, discriminant validity) —
+6. ~~Run Part A's human-agreement anchor set on metric A; check discriminant validity~~ —
+   **done 2026-07-23/24** (anchor set, both models, `pi-level-idea`) **and 2026-07-24**
+   (discriminant validity / box-size confound check, `sdxl` branch) — see metric A's Status
+   above for both. Still open: the notebook's own cell-51 re-run with the windowed
+   `phrase_attention` (a *different* dataset/ground-truth than the anchor set, OWL-ViT not
+   human) has not been done — separate, lower-priority now that the anchor set's own
+   already-windowed n=2 result answers the same question with real human labels.
+7. Everything else (VQAScore correlation, causal intervention via A&E) —
    strengthens a submission but isn't load-bearing for a first draft.
 
 ## Branch/file pointers
