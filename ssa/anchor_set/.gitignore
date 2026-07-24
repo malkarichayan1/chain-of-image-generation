@@ -1,0 +1,4 @@
+artifacts/images/
+artifacts/*.png
+.pytest_cache/
+__pycache__/
