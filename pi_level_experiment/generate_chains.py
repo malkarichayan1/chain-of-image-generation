@@ -30,6 +30,25 @@ pre-registered against elsewhere. Instead this run adds ONE new seed uniformly a
 9 prompts, same as the original three. SEEDS below holds only the new seed: the v1 seeds'
 chains already exist in artifacts/manifest.json and are combined with this run's output
 by merge_manifests.py after pullback, not regenerated on GPU.
+
+--- Growth extension (2026-07-23, kernel v3) ---
+The Part D review (RESULTS.md) found that attn_scrambled_crosschain/_sameattr only clear
+significance under the clustered per-prompt test, on n_groups=9 -- near Wilcoxon's n=9
+one-sided floor of 1/512. Growing that test's power needs more independent PROMPT groups,
+not more seeds on the existing 9 (the clustered test pairs by prompt_id, so extra seeds on
+an existing prompt don't add another group). GROWTH_V3_PROMPTS below adds 6 new n=2
+prompts (prompt_id 9-14) -- n=2 chosen deliberately: Part D's own selection-effect check
+found detection rate falls from 92% (n=2) to 58% (n=4), so new prompts at the easiest
+subject count maximize the odds these actually detect rather than adding more undetected
+attempts. Each new prompt reuses the same validated 7-subject/8-attribute vocabulary as
+MECHANISM_PROMPTS in a subject pairing not already used at n=2 (0/1/2 already cover
+barista+cyclist, chef+farmer, nurse+pilot) -- reusing the vocabulary keeps
+`select_foreign_attribute`'s disjointness logic and the calibrated T=0.85 threshold valid
+without re-validation. SEEDS holds all four seeds used so far ([42,7,1234,2024]) so the
+new prompts get the same seed-depth the existing 9 already have; the main loop below runs
+ONLY GROWTH_V3_PROMPTS (prompt_id continuing from 9), not MECHANISM_PROMPTS again --
+prompts 0-8 already exist in artifacts/manifest_combined.json and are combined with this
+run's output by merge_manifests.py after pullback, not regenerated on GPU.
 """
 import json
 import subprocess
@@ -61,8 +80,12 @@ from PIL import Image, ImageDraw
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 DTYPE = torch.float16 if DEVICE == "cuda" else torch.float32
 # v1 (pre-registered, kernel v1): [42, 7, 1234] -- already built, see artifacts/manifest.json.
-# v2 (growth extension, this run): one new seed, applied uniformly to all 9 prompts.
-SEEDS = [2024]
+# v2 (growth extension): one new seed, applied uniformly to all 9 prompts -- already built,
+# see artifacts/manifest_combined.json.
+# v3 (this run): all four seeds so far, applied to the 6 new GROWTH_V3_PROMPTS only (see
+# that list's comment and the module docstring's "kernel v3" section) -- prompts 0-8 are
+# NOT regenerated.
+SEEDS = [42, 7, 1234, 2024]
 NUM_INFERENCE_STEPS = 30
 EARLY_WINDOW_FRACTION = 0.5
 MAX_STEPS = int(NUM_INFERENCE_STEPS * EARLY_WINDOW_FRACTION)
@@ -238,6 +261,27 @@ MECHANISM_PROMPTS = [
          pairs=[("nurse", "blue gloves", "hands"), ("pilot", "dark sunglasses", "head"), ("chef", "pan", "hands"), ("teacher", "book", "hands")]),
     dict(n=4, prompt="a photo of a farmer holding a shovel, a barista wearing a red apron, a cyclist wearing a yellow helmet, and a nurse wearing blue gloves",
          pairs=[("farmer", "shovel", "hands"), ("barista", "red apron", "torso"), ("cyclist", "yellow helmet", "head"), ("nurse", "blue gloves", "hands")]),
+]
+
+# Growth extension v3 (2026-07-23, kernel v3) -- see module docstring's "kernel v3" section
+# for why these are new n=2 PROMPTS rather than new seeds. Assigned prompt_id 9-14 (main()
+# enumerates this list with start=len(MECHANISM_PROMPTS)). Every subject/attribute/region
+# triple is copied verbatim from MECHANISM_PROMPTS above -- only the pairing is new -- and
+# no subject pair here duplicates an existing n=2 prompt (0: barista+cyclist, 1: chef+farmer,
+# 2: nurse+pilot).
+GROWTH_V3_PROMPTS = [
+    dict(n=2, prompt="a photo of a teacher holding a book and a chef holding a pan",
+         pairs=[("teacher", "book", "hands"), ("chef", "pan", "hands")]),
+    dict(n=2, prompt="a photo of a barista wearing a red apron and a farmer holding a shovel",
+         pairs=[("barista", "red apron", "torso"), ("farmer", "shovel", "hands")]),
+    dict(n=2, prompt="a photo of a nurse wearing blue gloves and a teacher holding a book",
+         pairs=[("nurse", "blue gloves", "hands"), ("teacher", "book", "hands")]),
+    dict(n=2, prompt="a photo of a pilot wearing dark sunglasses and a cyclist wearing a yellow helmet",
+         pairs=[("pilot", "dark sunglasses", "head"), ("cyclist", "yellow helmet", "head")]),
+    dict(n=2, prompt="a photo of a chef wearing a white hat and a nurse wearing blue gloves",
+         pairs=[("chef", "white hat", "head"), ("nurse", "blue gloves", "hands")]),
+    dict(n=2, prompt="a photo of a farmer holding a shovel and a pilot wearing dark sunglasses",
+         pairs=[("farmer", "shovel", "hands"), ("pilot", "dark sunglasses", "head")]),
 ]
 
 COCO_PERSON = 1
@@ -453,7 +497,7 @@ def main():
     manifest = {"seeds": SEEDS, "img_size": IMG_SIZE, "chains": []}
     t0 = time.time()
     for seed in SEEDS:
-        for prompt_id, spec in enumerate(MECHANISM_PROMPTS):
+        for prompt_id, spec in enumerate(GROWTH_V3_PROMPTS, start=len(MECHANISM_PROMPTS)):
             print(f"\n=== chain p{prompt_id}_s{seed}: {spec['prompt'][:70]}... ===")
             try:
                 entry = build_and_persist_chain(prompt_id, seed, spec, capture, models)

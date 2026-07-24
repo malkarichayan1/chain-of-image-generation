@@ -165,8 +165,15 @@ def select_foreign_attribute(chain: ChainRecord, all_chains: List[ChainRecord], 
 
 
 def score_chains(manifest: dict, cache_dir: Path, threshold: float = DEFAULT_THRESHOLD,
-                  seed: int = DEFAULT_SEED) -> pd.DataFrame:
+                  seed: int = DEFAULT_SEED, threshold_pct: float = 0.20) -> pd.DataFrame:
     rng = random.Random(seed)
+    # Separate RNG stream for the Step 6 attention-ablation baseline (docs/
+    # part-c-validation-design.md) -- kept independent of `rng` above, which
+    # substituted/attn_scrambled_* already consume via rng.choice. Drawing the ablation
+    # map from `rng` itself would shift every subsequent rng.choice call, silently
+    # changing which foreign attribute / scrambled partner gets picked at a given seed
+    # and invalidating reproducibility of the already-published growth-run numbers.
+    ablation_rng = np.random.RandomState(seed)
     all_chains = detected_chains(parse_manifest(manifest))
     rows = []
 
@@ -179,12 +186,21 @@ def score_chains(manifest: dict, cache_dir: Path, threshold: float = DEFAULT_THR
             )
         return cached
 
+    def random_attn_like(reference: np.ndarray) -> np.ndarray:
+        return ablation_rng.rand(*reference.shape).astype(np.float32)
+
     def add_row(condition: str, chain: ChainRecord, step: ChainStepRecord, attribute: str,
-                claimed_step: int, true_step_idx: int, iou: float) -> None:
+                claimed_step: int, true_step_idx: int, attn_map: np.ndarray,
+                curr_mask: np.ndarray, prev_mask: np.ndarray, delta_mask: np.ndarray) -> None:
         rows.append(dict(
             condition=condition, chain_key=chain.chain_key, prompt_id=chain.prompt_id,
             seed=chain.seed, n=chain.n, attribute=attribute, subject=step.subject,
-            claimed_step=claimed_step, true_step=true_step_idx, iou=iou,
+            claimed_step=claimed_step, true_step=true_step_idx,
+            iou=iou_top_k(attn_map, delta_mask, threshold_pct=threshold_pct),
+            iou_random_attn=iou_top_k(random_attn_like(attn_map), delta_mask,
+                                       threshold_pct=threshold_pct),
+            curr_mask_area=float(curr_mask.mean()), prev_mask_area=float(prev_mask.mean()),
+            delta_area=float(delta_mask.mean()),
         ))
 
     for chain in all_chains:
@@ -195,46 +211,52 @@ def score_chains(manifest: dict, cache_dir: Path, threshold: float = DEFAULT_THR
             prev_path = chain_image_path(chain, true_step_idx - 1)
             attn = load_attention_map(step.attention_path)
 
-            delta_real = delta_mask_from_sigmoid(sigmoid(curr_path, step.attribute),
-                                                  sigmoid(prev_path, step.attribute), threshold)
-            iou_real = iou_top_k(attn, delta_real)
-            add_row("real", chain, step, step.attribute, true_step_idx, true_step_idx, iou_real)
+            curr_mask_real = sigmoid(curr_path, step.attribute)
+            prev_mask_real = sigmoid(prev_path, step.attribute)
+            delta_real = delta_mask_from_sigmoid(curr_mask_real, prev_mask_real, threshold)
+            add_row("real", chain, step, step.attribute, true_step_idx, true_step_idx,
+                    attn, curr_mask_real, prev_mask_real, delta_real)
 
             for wrong_step in range(1, k + 1):
                 if wrong_step == true_step_idx:
                     continue
                 w_curr = chain_image_path(chain, wrong_step)
                 w_prev = chain_image_path(chain, wrong_step - 1)
-                delta_shuf = delta_mask_from_sigmoid(sigmoid(w_curr, step.attribute),
-                                                      sigmoid(w_prev, step.attribute), threshold)
+                curr_mask_shuf = sigmoid(w_curr, step.attribute)
+                prev_mask_shuf = sigmoid(w_prev, step.attribute)
+                delta_shuf = delta_mask_from_sigmoid(curr_mask_shuf, prev_mask_shuf, threshold)
                 add_row("shuffled", chain, step, step.attribute, wrong_step, true_step_idx,
-                        iou_top_k(attn, delta_shuf))
+                        attn, curr_mask_shuf, prev_mask_shuf, delta_shuf)
 
             foreign_attr = select_foreign_attribute(chain, all_chains, rng)
-            delta_sub = delta_mask_from_sigmoid(sigmoid(curr_path, foreign_attr),
-                                                 sigmoid(prev_path, foreign_attr), threshold)
+            curr_mask_sub = sigmoid(curr_path, foreign_attr)
+            prev_mask_sub = sigmoid(prev_path, foreign_attr)
+            delta_sub = delta_mask_from_sigmoid(curr_mask_sub, prev_mask_sub, threshold)
             add_row("substituted", chain, step, foreign_attr, true_step_idx, true_step_idx,
-                    iou_top_k(attn, delta_sub))
+                    attn, curr_mask_sub, prev_mask_sub, delta_sub)
 
             samechain = [s for s in chain.steps if s.attribute != step.attribute]
             if samechain:
                 wrong = rng.choice(samechain)
                 add_row("attn_scrambled_samechain", chain, step, step.attribute, true_step_idx,
-                        true_step_idx, iou_top_k(load_attention_map(wrong.attention_path), delta_real))
+                        true_step_idx, load_attention_map(wrong.attention_path),
+                        curr_mask_real, prev_mask_real, delta_real)
 
             crosschain = [(c, s) for c in all_chains if c.prompt_id != chain.prompt_id
                           for s in c.steps if s.attribute != step.attribute]
             if crosschain:
                 _, wrong = rng.choice(crosschain)
                 add_row("attn_scrambled_crosschain", chain, step, step.attribute, true_step_idx,
-                        true_step_idx, iou_top_k(load_attention_map(wrong.attention_path), delta_real))
+                        true_step_idx, load_attention_map(wrong.attention_path),
+                        curr_mask_real, prev_mask_real, delta_real)
 
             sameattr = [(c, s) for c in all_chains if c.prompt_id == chain.prompt_id and c.seed != chain.seed
                         for s in c.steps if s.attribute == step.attribute]
             if sameattr:
                 _, wrong = rng.choice(sameattr)
                 add_row("attn_scrambled_sameattr", chain, step, step.attribute, true_step_idx,
-                        true_step_idx, iou_top_k(load_attention_map(wrong.attention_path), delta_real))
+                        true_step_idx, load_attention_map(wrong.attention_path),
+                        curr_mask_real, prev_mask_real, delta_real)
 
     return pd.DataFrame(rows)
 

@@ -94,6 +94,77 @@ def clustered_check(df: pd.DataFrame) -> Dict[str, dict]:
     return results
 
 
+def holm_correction(p_values: Dict[str, float]) -> Dict[str, dict]:
+    """Standard Holm-Bonferroni step-down over an arbitrary set of p-values (docs/
+    part-c-validation-design.md, Step 3). Testing 5 control contrasts against the same
+    `real` sample with no correction means a low p-value can look more significant than
+    it is; this recomputes each contrast's Holm-adjusted p and whether it survives
+    alpha=0.05, without touching the raw p-values or requiring any rescoring."""
+    alpha = 0.05
+    m = len(p_values)
+    ordered = sorted(p_values.items(), key=lambda kv: kv[1])
+    results: Dict[str, dict] = {}
+    running_max = 0.0
+    for i, (cond, p) in enumerate(ordered):
+        adjusted = min(1.0, (m - i) * p)
+        running_max = max(running_max, adjusted)
+        results[cond] = dict(p_value=p, adjusted_p=running_max, significant=running_max < alpha)
+    return results
+
+
+def leave_one_out_check(df: pd.DataFrame) -> Dict[str, dict]:
+    """Drop each prompt in turn and recompute the clustered test on the rest (docs/
+    part-c-validation-design.md, Step 4). Reports, per control condition, the worst-case
+    (maximum) p-value across all single-prompt-dropped subsets and which prompt produced
+    it -- a contrast that flips significance when one prompt is removed is reported as
+    sensitive to that prompt, not just as its full-sample p-value."""
+    group_col = _prompt_group_column(df)
+    worst: Dict[str, dict] = {}
+    for prompt in df[group_col].unique():
+        subset = df[df[group_col] != prompt]
+        for cond, res in clustered_check(subset).items():
+            p = res.get("p_value", float("nan"))
+            current = worst.get(cond)
+            is_worse = current is None or np.isnan(current["p_value"]) or (
+                not np.isnan(p) and p > current["p_value"]
+            )
+            if is_worse:
+                worst[cond] = dict(p_value=p, dropped_prompt=prompt,
+                                    significant=bool(res.get("significant", False)))
+    return worst
+
+
+def joint_threshold_topk_sweep(manifest: dict, cache_dir: Path, t_values=None, topk_values=None,
+                                seed: int = 42) -> pd.DataFrame:
+    """2-D grid over T (delta-mask threshold) x threshold_pct (attention top-k fraction),
+    docs/part-c-validation-design.md Step 5. `real vs shuffled` is fully RNG-independent;
+    `real vs substituted` is not (its foreign attribute is drawn via rng.choice) and is
+    reported here at the pre-registered default seed only -- see Step 2's RNG sweep for
+    that contrast's stability across seeds, not this grid."""
+    from score_chains import score_chains
+
+    if t_values is None:
+        t_values = tuple(round(t, 2) for t in np.arange(0.05, 0.96, 0.05))
+    if topk_values is None:
+        topk_values = (0.05, 0.10, 0.20, 0.30, 0.40)
+
+    rows = []
+    for t in t_values:
+        for topk in topk_values:
+            df_t = score_chains(manifest, cache_dir, threshold=t, threshold_pct=topk, seed=seed)
+            pooled = pooled_check(df_t)
+            clustered = clustered_check(df_t)
+            for cond in ("shuffled", "substituted"):
+                if cond not in pooled:
+                    continue
+                rows.append(dict(
+                    threshold=t, threshold_pct=topk, condition=cond,
+                    pooled_p=pooled[cond]["p_value"],
+                    clustered_p=clustered.get(cond, {}).get("p_value", float("nan")),
+                ))
+    return pd.DataFrame(rows)
+
+
 def threshold_sweep_curve(manifest: dict, cache_dir: Path, t_values=None) -> pd.DataFrame:
     """p-value (pooled Mann-Whitney, real vs each control) as a function of threshold T --
     free once Stage 2's cache exists, since score_chains.py is pure numpy. Robustness

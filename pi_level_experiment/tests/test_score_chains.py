@@ -8,12 +8,14 @@ import random
 from pathlib import Path
 
 import numpy as np
+import pandas as pd
 import pytest
 
 from score_chains import (
     ChainRecord,
     ChainStepRecord,
     delta_mask_from_sigmoid,
+    detected_chains,
     iou_top_k,
     parse_manifest,
     score_chains,
@@ -187,3 +189,66 @@ def test_real_condition_scores_higher_than_substituted_in_clean_synthetic_case(t
     real_mean = df[df.condition == "real"]["iou"].mean()
     sub_mean = df[df.condition == "substituted"]["iou"].mean()
     assert real_mean > sub_mean
+
+
+def test_threshold_pct_param_reaches_iou_top_k(tmp_path: Path):
+    """docs/part-c-validation-design.md Step 5: score_chains() must forward threshold_pct
+    to every iou_top_k call, not just the module-level default of 0.20. In this fixture
+    the real condition's delta mask covers the whole 4x4 image (curr all-present, prev
+    all-absent -- see _manifest_with_disjoint_foreign_attribute), so top-k selection of
+    k=round(threshold_pct*16) cells gives IoU == k/16 exactly -- a clean, independently
+    verifiable way to confirm threshold_pct actually changes scoring, not just accepted
+    and ignored."""
+    manifest, cache_dir = _manifest_with_disjoint_foreign_attribute(tmp_path)
+    df_20 = score_chains(manifest, cache_dir, threshold=0.5, seed=0, threshold_pct=0.20)
+    df_50 = score_chains(manifest, cache_dir, threshold=0.5, seed=0, threshold_pct=0.50)
+    real_20 = df_20[df_20.condition == "real"]["iou"].iloc[0]
+    real_50 = df_50[df_50.condition == "real"]["iou"].iloc[0]
+    assert real_20 == pytest.approx(3 / 16)
+    assert real_50 == pytest.approx(8 / 16)
+
+
+def test_new_columns_present_and_delta_area_matches_delta_mask_mean(tmp_path: Path):
+    """docs/part-c-validation-design.md Steps 6-7: every row gets delta_area/
+    curr_mask_area/prev_mask_area (Step 7) and iou_random_attn (Step 6)."""
+    manifest, cache_dir = _manifest_with_disjoint_foreign_attribute(tmp_path)
+    df = score_chains(manifest, cache_dir, threshold=0.5, seed=0)
+    for col in ("curr_mask_area", "prev_mask_area", "delta_area", "iou_random_attn"):
+        assert col in df.columns
+    real = df[df.condition == "real"].iloc[0]
+    # In this fixture real's delta mask covers the whole 4x4 image (curr all-present,
+    # prev all-absent -- see _manifest_with_disjoint_foreign_attribute).
+    assert real["curr_mask_area"] == pytest.approx(1.0)
+    assert real["prev_mask_area"] == pytest.approx(0.0)
+    assert real["delta_area"] == pytest.approx(1.0)
+
+
+def test_iou_random_attn_is_deterministic_given_seed(tmp_path: Path):
+    manifest, cache_dir = _manifest_with_disjoint_foreign_attribute(tmp_path)
+    df1 = score_chains(manifest, cache_dir, threshold=0.5, seed=3)
+    df2 = score_chains(manifest, cache_dir, threshold=0.5, seed=3)
+    pd.testing.assert_series_equal(
+        df1["iou_random_attn"].reset_index(drop=True),
+        df2["iou_random_attn"].reset_index(drop=True),
+    )
+
+
+def test_ablation_rng_is_independent_of_condition_selection_rng(tmp_path: Path):
+    """The Step 6 iou_random_attn ablation must draw from an RNG stream independent of
+    score_chains.py's `rng`, which substituted/attn_scrambled_* already consume via
+    rng.choice -- otherwise adding this column would silently shift which foreign
+    attribute and scrambled partner get selected at a fixed seed, changing the
+    already-published growth-run numbers. Verified by replaying the expected
+    select_foreign_attribute rng.choice sequence independently (same iteration order
+    score_chains.py itself uses) and checking it matches score_chains' actual picks."""
+    manifest, cache_dir = _manifest_with_disjoint_foreign_attribute(tmp_path)
+    df = score_chains(manifest, cache_dir, threshold=0.5, seed=7)
+
+    all_chains = detected_chains(parse_manifest(manifest))
+    expected_rng = random.Random(7)
+    expected_foreign_attrs = [
+        select_foreign_attribute(chain, all_chains, expected_rng)
+        for chain in all_chains for _ in chain.steps
+    ]
+    actual_foreign_attrs = df[df.condition == "substituted"]["attribute"].tolist()
+    assert actual_foreign_attrs == expected_foreign_attrs
