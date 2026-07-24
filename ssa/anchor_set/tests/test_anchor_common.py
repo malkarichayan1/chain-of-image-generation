@@ -108,6 +108,23 @@ def test_predicted_owner_tie_breaks_by_insertion_order():
 
 # --------------------------------------------------------------------------- labels I/O
 
+def test_resolve_image_path_rebases_baked_in_artifacts_prefix(tmp_path):
+    """manifest.json always stores image_path as "artifacts/images/pN.png" regardless of
+    which run generated it (SD1.5 and SDXL both use that literal folder name on Kaggle).
+    resolve_image_path must strip that prefix and rejoin onto whatever local artifacts_dir
+    is actually in use -- e.g. an "artifacts_sdxl" folder that doesn't literally contain a
+    nested "artifacts" subfolder at all."""
+    local_dir = tmp_path / "artifacts_sdxl"
+    result = ac.resolve_image_path(local_dir, "artifacts/images/p6.png")
+    assert result == (local_dir / "images" / "p6.png").resolve()
+
+
+def test_resolve_image_path_handles_path_without_prefix(tmp_path):
+    local_dir = tmp_path / "artifacts"
+    result = ac.resolve_image_path(local_dir, "images/p0.png")
+    assert result == (local_dir / "images" / "p0.png").resolve()
+
+
 def test_label_roundtrip_and_resume(tmp_path):
     p = tmp_path / "labels_x.json"
     assert ac.load_labels(p) == {}

@@ -24,6 +24,7 @@ from typing import Dict, List, Tuple
 
 from anchor_common import (
     LABEL_NONE, LABEL_UNCLEAR, label_key, load_labels, save_labels, pending_label_targets,
+    resolve_image_path,
 )
 
 ARTIFACTS_DIR = Path("artifacts")
@@ -35,17 +36,17 @@ def labels_path(annotator: str) -> Path:
     return ARTIFACTS_DIR / f"labels_{annotator}.json"
 
 
-def _open_image(path: str) -> None:
+def _open_image(abs_path: Path) -> None:
     """Best-effort open in the OS default viewer; fall back to PIL. Never fatal -- if the
     image can't be shown, the annotator can open it manually from the printed path.
 
-    manifest.json's image_path strings were written on Kaggle (Linux), so they use forward
-    slashes, e.g. "artifacts/images/p6.png". A plain relative forward-slash path passed to
-    os.startfile() invokes ShellExecuteW, which -- unlike ordinary file I/O -- can fail to
-    resolve that shape of path on Windows (WinError 2) even though the file exists.
-    Resolving to an absolute Path first sidesteps that: Path.resolve() both makes it
-    absolute and normalizes the separators to backslashes."""
-    abs_path = str(Path(path).resolve())
+    Takes an already-resolved absolute Path (see resolve_image_path() in anchor_common.py,
+    called by run() below) -- NOT the raw manifest.json image_path string, which is baked in
+    relative to the GENERATING script's own artifacts folder, not wherever this run's
+    artifacts_dir actually is locally. os.startfile() also specifically needs an absolute
+    path on Windows: it invokes ShellExecuteW, which -- unlike ordinary file I/O -- can fail
+    to resolve a relative forward-slash path (WinError 2) even when the file exists."""
+    abs_path = str(abs_path)
     try:
         if sys.platform.startswith("win"):
             os.startfile(abs_path)  # type: ignore[attr-defined]
@@ -101,7 +102,7 @@ def run(annotator: str, input_fn=input) -> Dict[str, str]:
     print("Answers save after each entry; Ctrl-C to stop and resume later.\n")
 
     for img, attr in targets:
-        _open_image(img["image_path"])
+        _open_image(resolve_image_path(ARTIFACTS_DIR, img["image_path"]))
         subjects = img["subjects"]
         choice_map, menu = build_menu(subjects)
         answer = prompt_one(img, attr, choice_map, menu, input_fn=input_fn)

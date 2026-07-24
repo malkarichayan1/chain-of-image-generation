@@ -52,6 +52,31 @@ def test_blindness_predicted_owner_never_shown(capsys):
     # prediction wording is absent, not the subject name.
 
 
+def test_run_opens_images_under_current_artifacts_dir_not_baked_in_prefix(tmp_path, monkeypatch):
+    """Regression test for the bug where --artifacts-dir artifacts_sdxl still opened SD1.5
+    images: manifest.json's image_path is always shaped "artifacts/images/pN.png" (baked in
+    by the GENERATING script, both SD1.5 and SDXL use that literal folder name on Kaggle),
+    so run() must rebase it onto the CURRENT local ARTIFACTS_DIR (which may be
+    "artifacts_sdxl" or any other name), not open the raw manifest string as-is."""
+    sdxl_dir = tmp_path / "artifacts_sdxl"  # deliberately NOT named "artifacts"
+    sdxl_dir.mkdir()
+    manifest_path = sdxl_dir / "manifest.json"
+    manifest_path.write_text(json.dumps(_manifest()))  # image_path still says "artifacts/..."
+    monkeypatch.setattr(li, "ARTIFACTS_DIR", sdxl_dir)
+    monkeypatch.setattr(li, "MANIFEST_PATH", manifest_path)
+
+    opened_paths = []
+    monkeypatch.setattr(li, "_open_image", lambda p: opened_paths.append(p))
+
+    li.run("tester", input_fn=lambda _p: "1")
+
+    assert opened_paths, "expected at least one image open call"
+    for p in opened_paths:
+        assert str(sdxl_dir) in str(p), (
+            f"opened {p!r}, which is not under the current artifacts_dir {sdxl_dir!r} "
+            "-- the baked-in 'artifacts/' prefix leaked through unrebased")
+
+
 def test_run_only_detected_and_resumes(tmp_path, monkeypatch):
     (tmp_path / "artifacts").mkdir()
     manifest_path = tmp_path / "artifacts" / "manifest.json"
