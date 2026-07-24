@@ -1,0 +1,13 @@
+{
+  "id": "chayanmalkari/coig-metric-a-vqa-score-sdxl",
+  "title": "coig-metric-a-vqa-score-sdxl",
+  "code_file": "vqa_score_sdxl.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true,
+  "dataset_sources": ["chayanmalkari/coig-metric-a-anchor-set-sdxl-images"],
+  "competition_sources": [],
+  "kernel_sources": []
+}
