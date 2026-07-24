@@ -21,7 +21,7 @@ def test_real_prompt_specs_are_valid_and_stratified():
     specs = ac.load_specs(PKG / "prompt_specs.json")
     ac.validate_specs(specs)  # must not raise
     by_n = {n: sum(1 for s in specs if s["n"] == n) for n in (2, 3, 4)}
-    assert by_n == {2: 6, 3: 6, 4: 6}
+    assert by_n == {2: 8, 3: 8, 4: 8}  # 18 original + 6-prompt 2026-07-24 growth batch
 
 
 @pytest.mark.parametrize("script_name", ["generate_anchor_images.py", "generate_anchor_images_sdxl.py"])

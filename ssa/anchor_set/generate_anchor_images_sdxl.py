@@ -122,7 +122,28 @@ ANCHOR_PROMPTS = [
          pairs=[("barista", "red apron"), ("nurse", "blue gloves"), ("farmer", "shovel"), ("pilot", "dark sunglasses")]),
     dict(id=17, n=4, prompt="a photo of a cyclist wearing a yellow helmet, a chef holding a pan, a teacher holding a book, and a nurse wearing blue gloves",
          pairs=[("cyclist", "yellow helmet"), ("chef", "pan"), ("teacher", "book"), ("nurse", "blue gloves")]),
+    # 2026-07-24 growth batch (ids 18-23): new subject combinations, same controlled
+    # vocabulary as 0-17 -- no confound from new subjects/attributes. GROWTH_PROMPT_IDS
+    # below scopes a given Kaggle run to just these, so 0-17 are not silently regenerated.
+    dict(id=18, n=2, prompt="a photo of a chef wearing a white hat and a nurse wearing blue gloves",
+         pairs=[("chef", "white hat"), ("nurse", "blue gloves")]),
+    dict(id=19, n=2, prompt="a photo of a farmer holding a shovel and a teacher holding a book",
+         pairs=[("farmer", "shovel"), ("teacher", "book")]),
+    dict(id=20, n=3, prompt="a photo of a barista wearing a red apron, a chef holding a pan, and a nurse wearing blue gloves",
+         pairs=[("barista", "red apron"), ("chef", "pan"), ("nurse", "blue gloves")]),
+    dict(id=21, n=3, prompt="a photo of a cyclist wearing a yellow helmet, a pilot wearing dark sunglasses, and a teacher holding a book",
+         pairs=[("cyclist", "yellow helmet"), ("pilot", "dark sunglasses"), ("teacher", "book")]),
+    dict(id=22, n=4, prompt="a photo of a chef wearing a white hat, a farmer holding a shovel, a nurse wearing blue gloves, and a teacher holding a book",
+         pairs=[("chef", "white hat"), ("farmer", "shovel"), ("nurse", "blue gloves"), ("teacher", "book")]),
+    dict(id=23, n=4, prompt="a photo of a barista wearing a red apron, a cyclist wearing a yellow helmet, a chef holding a pan, and a pilot wearing dark sunglasses",
+         pairs=[("barista", "red apron"), ("cyclist", "yellow helmet"), ("chef", "pan"), ("pilot", "dark sunglasses")]),
 ]
+
+# Scopes a single Kaggle run to just the growth batch, so re-pushing this script doesn't
+# silently regenerate (and potentially get slightly different seeds/images for) prompts
+# 0-17, which are already generated, boxed, and partially human-labeled. Set to None to
+# generate the full ANCHOR_PROMPTS catalog (e.g. for a from-scratch run).
+GROWTH_PROMPT_IDS = {18, 19, 20, 21, 22, 23}
 
 # =============================================================================
 # Attention capture -- verbatim duplicate of generate_anchor_images.py. Keep in sync. This
@@ -437,7 +458,9 @@ def generate_and_score(spec: dict, capture: AttentionCapture, models: Models) ->
 
 
 def main():
-    print(f"device={DEVICE} dtype={DTYPE} seeds={CANDIDATE_SEEDS} prompts={len(ANCHOR_PROMPTS)} "
+    prompts = ([p for p in ANCHOR_PROMPTS if p["id"] in GROWTH_PROMPT_IDS]
+               if GROWTH_PROMPT_IDS is not None else ANCHOR_PROMPTS)
+    print(f"device={DEVICE} dtype={DTYPE} seeds={CANDIDATE_SEEDS} prompts={len(prompts)} "
           f"model={MODEL_ID} img_size={IMG_SIZE}")
     capture = AttentionCapture()
     print(f"\nLoading models ({MODEL_ID}, Mask R-CNN, CLIP)...")
@@ -447,7 +470,7 @@ def main():
                 "num_inference_steps": NUM_INFERENCE_STEPS,
                 "early_window_fraction": EARLY_WINDOW_FRACTION, "images": []}
     t0 = time.time()
-    for spec in ANCHOR_PROMPTS:
+    for spec in prompts:
         print(f"\n=== p{spec['id']} (n={spec['n']}): {spec['prompt'][:70]}... ===")
         try:
             entry = generate_and_score(spec, capture, models)
