@@ -1,51 +1,69 @@
-prompt_id,n,attribute,intended_subject,predicted_owner,human_label,scored,correct
-0,2,red apron,barista,cyclist,unclear,False,False
-0,2,yellow helmet,cyclist,cyclist,cyclist,True,True
-1,2,white hat,chef,farmer,unclear,False,False
-1,2,shovel,farmer,chef,unclear,False,False
-2,2,blue gloves,nurse,nurse,nurse,True,True
-2,2,dark sunglasses,pilot,pilot,pilot,True,True
-3,2,book,teacher,cyclist,teacher,True,False
-3,2,yellow helmet,cyclist,cyclist,teacher,True,False
-4,2,blue gloves,nurse,farmer,unclear,False,False
-4,2,shovel,farmer,nurse,unclear,False,False
-5,2,dark sunglasses,pilot,barista,pilot,True,False
-5,2,red apron,barista,pilot,barista,True,False
-6,3,red apron,barista,chef,unclear,False,False
-6,3,yellow helmet,cyclist,barista,cyclist,True,False
-6,3,white hat,chef,barista,chef,True,False
-7,3,pan,chef,chef,chef,True,True
-7,3,shovel,farmer,farmer,farmer,True,True
-7,3,blue gloves,nurse,chef,nurse,True,False
-8,3,dark sunglasses,pilot,pilot,unclear,False,False
-8,3,book,teacher,teacher,teacher,True,True
-8,3,red apron,barista,barista,barista,True,True
-9,3,blue gloves,nurse,cyclist,cyclist,True,True
-9,3,yellow helmet,cyclist,cyclist,farmer,True,False
-9,3,shovel,farmer,nurse,farmer,True,False
-10,3,book,teacher,teacher,unclear,False,False
-10,3,dark sunglasses,pilot,pilot,unclear,False,False
-10,3,white hat,chef,teacher,unclear,False,False
-11,3,red apron,barista,barista,cyclist,True,False
-11,3,blue gloves,nurse,nurse,none,False,False
-11,3,yellow helmet,cyclist,cyclist,none,False,False
-12,4,red apron,barista,farmer,unclear,False,False
-12,4,yellow helmet,cyclist,barista,barista,True,True
-12,4,white hat,chef,chef,unclear,False,False
-12,4,shovel,farmer,chef,none,False,False
-13,4,blue gloves,nurse,nurse,nurse,True,True
-13,4,dark sunglasses,pilot,nurse,unclear,False,False
-13,4,book,teacher,pilot,teacher,True,False
-13,4,pan,chef,chef,none,False,False
-14,4,shovel,farmer,farmer,farmer,True,True
-14,4,red apron,barista,cyclist,nurse,True,False
-14,4,yellow helmet,cyclist,cyclist,farmer,True,False
-14,4,blue gloves,nurse,barista,nurse,True,False
-15,4,white hat,chef,chef,chef,True,True
-15,4,book,teacher,cyclist,unclear,False,False
-15,4,dark sunglasses,pilot,chef,chef,True,True
-15,4,yellow helmet,cyclist,teacher,teacher,True,True
-17,4,yellow helmet,cyclist,nurse,cyclist,True,False
-17,4,pan,chef,teacher,unclear,False,False
-17,4,book,teacher,cyclist,unclear,False,False
-17,4,blue gloves,nurse,nurse,none,False,False
+prompt_id,n,attribute,intended_subject,predicted_owner,human_label,scored,correct,margin,predicted_label,scored_shared,correct_shared
+0,2,red apron,barista,cyclist,unclear,False,False,0.005463167583334994,shared,False,False
+0,2,yellow helmet,cyclist,cyclist,cyclist,True,True,0.004424196331939041,shared,True,False
+1,2,white hat,chef,farmer,unclear,False,False,0.012100115109219156,shared,False,False
+1,2,shovel,farmer,chef,unclear,False,False,0.0203677966177359,chef,False,False
+2,2,blue gloves,nurse,nurse,nurse,True,True,0.001715168071705536,shared,True,False
+2,2,dark sunglasses,pilot,pilot,pilot,True,True,0.0033845064814405166,shared,True,False
+3,2,book,teacher,cyclist,teacher,True,False,0.0021239467577360677,shared,True,False
+3,2,yellow helmet,cyclist,cyclist,teacher,True,False,0.013702891126672825,shared,True,False
+4,2,blue gloves,nurse,farmer,unclear,False,False,0.029700889861437048,farmer,False,False
+4,2,shovel,farmer,nurse,unclear,False,False,0.0020148877856011474,shared,False,False
+5,2,dark sunglasses,pilot,barista,pilot,True,False,0.015101126057690291,shared,True,False
+5,2,red apron,barista,pilot,barista,True,False,0.046103469195374405,pilot,True,False
+6,3,red apron,barista,chef,unclear,False,False,0.009511939593143037,shared,False,False
+6,3,yellow helmet,cyclist,barista,cyclist,True,False,0.003561908528401536,shared,True,False
+6,3,white hat,chef,barista,chef,True,False,0.019708563146683716,shared,True,False
+7,3,pan,chef,chef,chef,True,True,0.001368439448504859,shared,True,False
+7,3,shovel,farmer,farmer,farmer,True,True,0.0069528910192722644,shared,True,False
+7,3,blue gloves,nurse,chef,nurse,True,False,0.02325073675359362,chef,True,False
+8,3,dark sunglasses,pilot,pilot,unclear,False,False,0.02105129088470897,pilot,False,False
+8,3,book,teacher,teacher,teacher,True,True,0.012656350959203392,shared,True,False
+8,3,red apron,barista,barista,barista,True,True,0.068870546110764,barista,True,True
+9,3,blue gloves,nurse,cyclist,cyclist,True,True,0.0014060743185218632,shared,True,False
+9,3,yellow helmet,cyclist,cyclist,farmer,True,False,0.0038397528826689983,shared,True,False
+9,3,shovel,farmer,nurse,farmer,True,False,0.009578415892037862,shared,True,False
+10,3,book,teacher,teacher,unclear,False,False,0.0034010315058321406,shared,False,False
+10,3,dark sunglasses,pilot,pilot,unclear,False,False,0.004248090398291665,shared,False,False
+10,3,white hat,chef,teacher,unclear,False,False,0.0019468861603799646,shared,False,False
+11,3,red apron,barista,barista,cyclist,True,False,0.014084019681440947,shared,True,False
+11,3,blue gloves,nurse,nurse,none,False,False,0.028355153029479444,nurse,False,False
+11,3,yellow helmet,cyclist,cyclist,none,False,False,0.014166781098449013,shared,False,False
+12,4,red apron,barista,farmer,unclear,False,False,0.018593111930394327,shared,False,False
+12,4,yellow helmet,cyclist,barista,barista,True,True,0.006960120476194819,shared,True,False
+12,4,white hat,chef,chef,unclear,False,False,0.004177656089466895,shared,False,False
+12,4,shovel,farmer,chef,none,False,False,0.01033399569815676,shared,False,False
+13,4,blue gloves,nurse,nurse,nurse,True,True,0.036058175852232865,nurse,True,True
+13,4,dark sunglasses,pilot,nurse,unclear,False,False,0.010777277794584532,shared,False,False
+13,4,book,teacher,pilot,teacher,True,False,0.009034520406323934,shared,True,False
+13,4,pan,chef,chef,none,False,False,0.0004364402717358768,shared,False,False
+14,4,shovel,farmer,farmer,farmer,True,True,0.030816639848736945,farmer,True,True
+14,4,red apron,barista,cyclist,nurse,True,False,0.050207157469969906,cyclist,True,False
+14,4,yellow helmet,cyclist,cyclist,farmer,True,False,0.003225752307656227,shared,True,False
+14,4,blue gloves,nurse,barista,nurse,True,False,0.013944819389742735,shared,True,False
+15,4,white hat,chef,chef,chef,True,True,0.013653624851208293,shared,True,False
+15,4,book,teacher,cyclist,unclear,False,False,0.005221510556109627,shared,False,False
+15,4,dark sunglasses,pilot,chef,chef,True,True,0.005487196430493066,shared,True,False
+15,4,yellow helmet,cyclist,teacher,teacher,True,True,0.022022787392954928,teacher,True,True
+17,4,yellow helmet,cyclist,nurse,cyclist,True,False,0.0016098238441033556,shared,True,False
+17,4,pan,chef,teacher,unclear,False,False,0.0009632145436998949,shared,False,False
+17,4,book,teacher,cyclist,unclear,False,False,0.006064792733776663,shared,False,False
+17,4,blue gloves,nurse,nurse,none,False,False,0.02281373936792296,nurse,False,False
+18,2,white hat,chef,chef,shared,False,False,0.00041306965247464296,shared,True,True
+18,2,blue gloves,nurse,nurse,shared,False,False,0.005999793225512268,shared,True,True
+19,2,shovel,farmer,farmer,farmer,True,True,0.01914937007287288,shared,True,False
+19,2,book,teacher,teacher,teacher,True,True,0.0024974821074291195,shared,True,False
+20,3,red apron,barista,barista,shared,False,False,0.00043244757468792586,shared,True,True
+20,3,pan,chef,nurse,none,False,False,0.012677191727293233,shared,False,False
+20,3,blue gloves,nurse,chef,nurse,True,False,0.005853800459605479,shared,True,False
+21,3,yellow helmet,cyclist,cyclist,shared,False,False,0.013634173161773244,shared,True,True
+21,3,dark sunglasses,pilot,teacher,shared,False,False,0.013916315154981748,shared,True,True
+21,3,book,teacher,pilot,teacher,True,False,0.008772265784671723,shared,True,False
+22,4,white hat,chef,teacher,shared,False,False,0.0034120226983197343,shared,True,True
+22,4,shovel,farmer,teacher,none,False,False,0.007122209800352451,shared,False,False
+22,4,blue gloves,nurse,teacher,none,False,False,0.02571386370695133,teacher,False,False
+22,4,book,teacher,farmer,shared,False,False,0.002136068502910677,shared,True,True
+23,4,red apron,barista,barista,shared,False,False,0.0034419049323795073,shared,True,True
+23,4,yellow helmet,cyclist,pilot,cyclist,True,False,0.012083967538477696,shared,True,False
+23,4,pan,chef,pilot,chef,True,False,0.0014583537781716466,shared,True,False
+23,4,dark sunglasses,pilot,cyclist,shared,False,False,0.0031385844236436213,shared,True,True

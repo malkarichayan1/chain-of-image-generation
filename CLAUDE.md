@@ -89,10 +89,23 @@ recolors instead of localized edits — which is what forced the one-shot framin
   the headline comparison is a genuinely mixed, more important finding: on SD1.5 a trivial
   "always guess the biggest box" baseline actually **beats** the attention metric's own
   accuracy (42.9% vs 33.3%, though not significant on n=21, McNemar p=0.77); on SDXL the
-  metric clearly beats that baseline (48.3% vs 24.1%, McNemar p=0.065 — trending, not yet
-  significant at n=29). Net read: the weak signal is real, not a geometric artifact — and
-  it only clears a dumb box-size heuristic on SDXL, consistent with SDXL being the model
-  chosen going forward.
+  metric beats that baseline (48.3% vs 24.1% at n=29, McNemar p=0.065 — trending, not
+  significant). Net read: the weak signal is real, not a geometric artifact — and it only
+  clears a dumb box-size heuristic on SDXL, consistent with SDXL being the model chosen
+  going forward.
+- **SDXL growth batch, tested this exact trend — done 2026-07-24, same day.** Grew the
+  SDXL anchor set to 24 prompts (6 new, ids 18-23, Kaggle kernel v2) specifically to push
+  the p=0.065 McNemar result past significance; Chayan blind-labeled all 18 new
+  judgments. **Result is a genuine null, and it moved the wrong way: McNemar p=0.065
+  (n=29) -> p=0.092 (n=35)** — the 6 new scored rows split evenly between the metric and
+  the bigbox baseline, so the accuracy gap didn't widen (48.3%->45.7% metric,
+  24.1%->25.7% baseline). The two confound-*mechanism* checks drifted toward significance
+  without crossing it (bigbox win rate p=0.148->0.081; margin-area correlation
+  p=0.258->0.160), which is mildly concerning in the opposite direction, though
+  construct validity (ground truth vs. box size) stayed exactly at chance, unchanged.
+  Read: the effect is genuinely marginal/noisy at n~30-35 — another small growth batch is
+  not a reliable lever; would need a substantially larger one, or a different kind of
+  evidence entirely (VQAScore baseline, causal intervention), to move this further.
 
 ### B. Chain / Delta-Mask metric (branch `feature/spatial-semantic-alignment-metric`, single file
 `pilot/spatial_semantic_alignment.py`, authored by Pranav, commit `5452a16`)
