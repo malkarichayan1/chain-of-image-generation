@@ -1,0 +1,16 @@
+{
+  "name": "puter-image-service",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Headless-browser microservice exposing Puter.js image generation/editing over local HTTP.",
+  "scripts": {
+    "start": "node server.js",
+    "login": "node server.js --headful",
+    "test:generate": "node test_generate.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "playwright": "^1.48.0"
+  }
+}
