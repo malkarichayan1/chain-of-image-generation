@@ -85,7 +85,13 @@ def analyze(annotator: str) -> dict:
 def main() -> None:
     ap = argparse.ArgumentParser(description="Agreement analysis for the metric-A anchor set")
     ap.add_argument("--annotator", required=True, help="annotator id used by label_images.py")
+    ap.add_argument("--artifacts-dir", default="artifacts",
+                    help="directory holding manifest.json / labels files, e.g. "
+                         "'artifacts_sdxl' for the SDXL run (default: 'artifacts', the SD1.5 run)")
     args = ap.parse_args()
+    global ARTIFACTS_DIR, MANIFEST_PATH
+    ARTIFACTS_DIR = Path(args.artifacts_dir)
+    MANIFEST_PATH = ARTIFACTS_DIR / "manifest.json"
     analyze(args.annotator)
 
 

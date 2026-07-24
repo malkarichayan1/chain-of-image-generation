@@ -116,7 +116,14 @@ def main() -> None:
     ap = argparse.ArgumentParser(description="Blind human labeling for the metric-A anchor set")
     ap.add_argument("--annotator", required=True,
                     help="short id for this annotator, e.g. 'chayan' -> labels_chayan.json")
+    ap.add_argument("--artifacts-dir", default="artifacts",
+                    help="directory holding manifest.json / labels files, e.g. "
+                         "'artifacts_sdxl' for the SDXL run, so it never touches the SD1.5 "
+                         "run's data in 'artifacts' (default)")
     args = ap.parse_args()
+    global ARTIFACTS_DIR, MANIFEST_PATH
+    ARTIFACTS_DIR = Path(args.artifacts_dir)
+    MANIFEST_PATH = ARTIFACTS_DIR / "manifest.json"
     run(args.annotator)
 
 

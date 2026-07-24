@@ -24,17 +24,18 @@ def test_real_prompt_specs_are_valid_and_stratified():
     assert by_n == {2: 6, 3: 6, 4: 6}
 
 
-def test_embedded_anchor_prompts_match_prompt_specs_json():
-    """generate_anchor_images.py embeds ANCHOR_PROMPTS for the single-file Kaggle kernel;
-    it must stay bit-identical to the canonical prompt_specs.json or the manifest would
-    describe different prompts than were authored."""
-    src = (PKG / "generate_anchor_images.py").read_text(encoding="utf-8")
+@pytest.mark.parametrize("script_name", ["generate_anchor_images.py", "generate_anchor_images_sdxl.py"])
+def test_embedded_anchor_prompts_match_prompt_specs_json(script_name):
+    """Each single-file Kaggle kernel (SD1.5 and SDXL) embeds its own ANCHOR_PROMPTS
+    literal; both must stay bit-identical to the canonical prompt_specs.json, or the two
+    runs would silently describe different prompts and the A/B comparison would be invalid."""
+    src = (PKG / script_name).read_text(encoding="utf-8")
     seg = None
     for node in ast.parse(src).body:
         if isinstance(node, ast.Assign) and any(
                 getattr(t, "id", None) == "ANCHOR_PROMPTS" for t in node.targets):
             seg = ast.get_source_segment(src, node)
-    assert seg is not None, "ANCHOR_PROMPTS assignment not found"
+    assert seg is not None, f"ANCHOR_PROMPTS assignment not found in {script_name}"
     ns: dict = {}
     exec(seg, ns)  # only dict()/tuple/list/str/int literals
     embedded = [dict(id=p["id"], n=p["n"], prompt=p["prompt"],
