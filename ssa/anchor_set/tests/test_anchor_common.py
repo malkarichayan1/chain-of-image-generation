@@ -21,7 +21,11 @@ def test_real_prompt_specs_are_valid_and_stratified():
     specs = ac.load_specs(PKG / "prompt_specs.json")
     ac.validate_specs(specs)  # must not raise
     by_n = {n: sum(1 for s in specs if s["n"] == n) for n in (2, 3, 4)}
-    assert by_n == {2: 8, 3: 8, 4: 8}  # 18 original + 6-prompt 2026-07-24 growth batch
+    # 18 original + 6-prompt 2026-07-24 growth batch (ids 0-23) + 85-image 2026-07-25
+    # growth batch (ids 100-184, build_growth_specs.py, +42/+25/+18 per stratum) + 28-image
+    # n=4 backfill (ids 200-227, build_n4_backfill_specs -- the 100-184 batch's n=4 stratum
+    # hit only 22.2% detection, far short of target; see that function's docstring).
+    assert by_n == {2: 50, 3: 33, 4: 54}
 
 
 @pytest.mark.parametrize("script_name", ["generate_anchor_images.py", "generate_anchor_images_sdxl.py"])
@@ -176,3 +180,51 @@ def test_none_and_unclear_excluded_from_denominator():
 def test_chance_baseline():
     assert ac.chance_baseline(2) == 0.5
     assert ac.chance_baseline(4) == 0.25
+
+
+# --------------------------------------------------------------------------- count-clean
+
+def test_pending_count_targets_only_detected_and_uncounted():
+    manifest = _manifest()  # p0 detected, p1 n=3 detected, p2 undetected
+    counts = {ac.count_key(0): ac.COUNT_CLEAN}
+    pending = ac.pending_count_targets(manifest, counts)
+    assert [img["prompt_id"] for img in pending] == [1]  # p0 already counted, p2 undetected
+
+
+def test_pending_count_targets_empty_when_all_counted():
+    manifest = _manifest()
+    counts = {ac.count_key(0): ac.COUNT_CLEAN, ac.count_key(1): ac.COUNT_BROKEN}
+    assert ac.pending_count_targets(manifest, counts) == []
+
+
+def test_build_rows_excludes_count_broken_images_from_scoring():
+    """A count-broken image must be excluded from the binding accuracy denominator
+    regardless of what the human said about any individual attribute -- count-broken
+    conflates rendering failure with binding failure, so it can't answer a pure binding
+    question. This must not change published numbers when no counts are given (counts=None
+    behaves identically to today's build_agreement_rows)."""
+    labels = {
+        ac.label_key(0, "red apron"): "barista",     # would be correct...
+        ac.label_key(0, "yellow helmet"): "cyclist",  # ...and correct...
+        ac.label_key(1, "white hat"): "chef",         # correct, different image
+    }
+    counts = {ac.count_key(0): ac.COUNT_BROKEN}  # ...but p0 is count-broken
+
+    rows = ac.build_agreement_rows(_manifest(), labels, counts=counts)
+    p0_rows = [r for r in rows if r["prompt_id"] == 0]
+    p1_rows = [r for r in rows if r["prompt_id"] == 1]
+
+    assert all(r["count_broken"] is True and r["scored"] is False for r in p0_rows)
+    assert all(r["count_broken"] is False for r in p1_rows)
+    assert p1_rows[0]["scored"] is True  # unaffected: not count-broken
+
+
+def test_build_rows_without_counts_arg_is_unaffected_backward_compatible():
+    """counts=None (the default) must reproduce every already-published number -- no row
+    gets excluded for count reasons unless a counts dict says so."""
+    labels = {ac.label_key(0, "red apron"): "barista"}
+    rows_no_counts_arg = ac.build_agreement_rows(_manifest(), labels)
+    rows_empty_counts = ac.build_agreement_rows(_manifest(), labels, counts={})
+    assert rows_no_counts_arg == rows_empty_counts
+    assert rows_no_counts_arg[0]["count_broken"] is False
+    assert rows_no_counts_arg[0]["scored"] is True

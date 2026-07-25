@@ -108,13 +108,74 @@ def test_run_opens_images_under_current_artifacts_dir_not_baked_in_prefix(tmp_pa
     opened_paths = []
     monkeypatch.setattr(li, "_open_image", lambda p: opened_paths.append(p))
 
-    li.run("tester", input_fn=lambda _p: "1")
+    # "y" answers the per-image count check; "1" answers each attribute (first subject).
+    li.run("tester", input_fn=lambda p: "y" if "count" in p else "1")
 
     assert opened_paths, "expected at least one image open call"
     for p in opened_paths:
         assert str(sdxl_dir) in str(p), (
             f"opened {p!r}, which is not under the current artifacts_dir {sdxl_dir!r} "
             "-- the baked-in 'artifacts/' prefix leaked through unrebased")
+
+
+def test_prompt_count_clean_accepts_y_and_n():
+    img = {"prompt_id": 0, "subjects": ["barista", "cyclist"]}
+    assert li.prompt_count_clean(img, input_fn=lambda _p: "y") == ac.COUNT_CLEAN
+    assert li.prompt_count_clean(img, input_fn=lambda _p: "n") == ac.COUNT_BROKEN
+
+
+def test_prompt_count_clean_rejects_then_accepts():
+    img = {"prompt_id": 0, "subjects": ["barista", "cyclist"]}
+    answers = iter(["x", "yes", "n"])  # two invalid, then valid
+    assert li.prompt_count_clean(img, input_fn=lambda _p: next(answers)) == ac.COUNT_BROKEN
+
+
+def test_run_asks_count_clean_once_per_image_and_persists(tmp_path, monkeypatch):
+    (tmp_path / "artifacts").mkdir()
+    manifest_path = tmp_path / "artifacts" / "manifest.json"
+    manifest_path.write_text(json.dumps(_manifest()))
+    monkeypatch.setattr(li, "ARTIFACTS_DIR", tmp_path / "artifacts")
+    monkeypatch.setattr(li, "MANIFEST_PATH", manifest_path)
+    monkeypatch.setattr(li, "_open_image", lambda _p: None)
+
+    # "n" is a valid answer to BOTH question types (count-broken / LABEL_NONE), so a single
+    # constant input_fn drives the whole run without ambiguity: p0's count-clean question
+    # (asked once, before whichever of its 2 attributes the shuffle visits first) resolves
+    # to COUNT_BROKEN, and both attribute questions resolve to LABEL_NONE.
+    li.run("tester", input_fn=lambda _p: "n")
+
+    counts = json.loads((tmp_path / "artifacts" / "counts_tester.json").read_text())
+    assert counts == {ac.count_key(0): ac.COUNT_BROKEN}
+
+    # Resume: nothing pending (labels AND counts already recorded) -> never prompts again.
+    def _boom(_p):
+        raise AssertionError("should not prompt when count is already recorded")
+    li.run("tester", input_fn=_boom)
+
+
+def test_run_prints_workstream_2_guidelines_banner(tmp_path, monkeypatch, capsys):
+    """The 2026-07-25 Workstream 2 guidelines (Count-Clean/Count-Broken definition, the
+    Present/Missing/Shared/Unclear attribute taxonomy) must be shown every time run() is
+    invoked -- including a no-op resume -- so Grace/Akhil see the reminder every session,
+    not just once via a message."""
+    (tmp_path / "artifacts").mkdir()
+    manifest_path = tmp_path / "artifacts" / "manifest.json"
+    manifest_path.write_text(json.dumps(_manifest()))
+    monkeypatch.setattr(li, "ARTIFACTS_DIR", tmp_path / "artifacts")
+    monkeypatch.setattr(li, "MANIFEST_PATH", manifest_path)
+    monkeypatch.setattr(li, "_open_image", lambda _p: None)
+
+    li.run("tester", input_fn=lambda _p: "n")  # answer everything, drains all targets
+    out = capsys.readouterr().out
+    for phrase in ("Count-Clean", "Count-Broken", "Present", "Missing", "Shared", "Unclear"):
+        assert phrase in out
+
+    # No-op resume (nothing pending) must STILL show the banner.
+    def _boom(_p):
+        raise AssertionError("should not prompt when everything is already recorded")
+    li.run("tester", input_fn=_boom)
+    out2 = capsys.readouterr().out
+    assert "Count-Clean" in out2
 
 
 def test_run_only_detected_and_resumes(tmp_path, monkeypatch):
@@ -125,8 +186,8 @@ def test_run_only_detected_and_resumes(tmp_path, monkeypatch):
     monkeypatch.setattr(li, "MANIFEST_PATH", manifest_path)
     monkeypatch.setattr(li, "_open_image", lambda _p: None)  # no GUI in tests
 
-    # First pass: answer everything "1" (the first subject of each image).
-    labels = li.run("tester", input_fn=lambda _p: "1")
+    # First pass: "y" to each per-image count check, "1" (first subject) to each attribute.
+    labels = li.run("tester", input_fn=lambda p: "y" if "count" in p else "1")
     # Only the detected image (p0) has labelable attributes -> 2 judgments, none from p1.
     assert set(labels) == {ac.label_key(0, "red apron"), ac.label_key(0, "yellow helmet")}
     assert all(v == "barista" for v in labels.values())
