@@ -1,8 +1,0 @@
-Experiment 3 -- attention-randomization falsification (artifacts_sdxl, annotator=grace, 200 seeds)
-
-  n=2: median_accuracy=0.500 chance=0.500 falsification_clean_fraction=0.980 (n_seeds=200)
-  n=3: median_accuracy=0.353 chance=0.333 falsification_clean_fraction=0.985 (n_seeds=200)
-  n=4: median_accuracy=0.278 chance=0.250 falsification_clean_fraction=0.985 (n_seeds=200)
-
-Paired McNemar, real vs. scrambled (seed=42):
-  {'n': 63, 'real_only_correct': 22, 'scrambled_only_correct': 6, 'n_discordant': 28, 'p_value': np.float64(0.0037191659212112427)}
