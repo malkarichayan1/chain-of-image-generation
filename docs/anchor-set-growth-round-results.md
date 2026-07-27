@@ -67,3 +67,54 @@ it auto-converges to the full-set number, no code changes needed). The low effec
 count-broken images is a separate, real finding worth investigating regardless of Grace's
 progress: is the growth batch's prompt/seed pool systematically harder to render than the
 original 23 prompts, or is this a one-off from the backfill's retry seeds?
+
+
+## Workstream 3 Experiment Results (Akhil)
+
+### Experiment 4: Positional Baseline
+```text
+Experiment 4 -- nearest-subject-noun baseline (artifacts_sdxl, annotator=akhil)
+
+Headline: metric accuracy vs. baseline accuracy
+  n: 57
+  metric_accuracy: 0.38596491228070173
+  baseline_accuracy: 0.5964912280701754
+
+McNemar (paired, same rows)
+  n: 57
+  metric_only_correct: 6
+  baseline_only_correct: 18
+  n_discordant: 24
+  p_value: 0.022655844688415527
+
+Per-stratum (n=2/3/4)
+  n=2: {'n': 18, 'metric_accuracy': np.float64(0.5), 'baseline_accuracy': np.float64(0.7222222222222222), 'chance': 0.5}
+  n=3: {'n': 16, 'metric_accuracy': np.float64(0.5625), 'baseline_accuracy': np.float64(0.75), 'chance': 0.3333333333333333}
+  n=4: {'n': 23, 'metric_accuracy': np.float64(0.17391304347826086), 'baseline_accuracy': np.float64(0.391304347826087), 'chance': 0.25}
+```
+
+### Experiment 5: Count-Clean Subset Analysis
+```text
+Experiment 5 -- count-clean subset (artifacts_sdxl, annotator=akhil)
+
+ALL ROWS (no count filter)
+ stratum | labeled | scored | correct | accuracy |  chance
+----------------------------------------------------------
+     n=2 |      88 |     18 |       9 |  50.0% |  50.0%
+     n=3 |      78 |     16 |       9 |  56.2% |  33.3%
+     n=4 |     140 |     23 |       4 |  17.4% |  25.0%
+----------------------------------------------------------
+ overall |     306 |     57 |      22 |  38.6% |     -  
+
+COUNT-CLEAN ONLY (count-broken images excluded)
+ stratum | labeled | scored | correct | accuracy |  chance
+----------------------------------------------------------
+     n=2 |      88 |     18 |       9 |  50.0% |  50.0%
+     n=3 |      78 |     14 |       8 |  57.1% |  33.3%
+     n=4 |     140 |      8 |       3 |  37.5% |  25.0%
+----------------------------------------------------------
+ overall |     306 |     40 |      20 |  50.0% |     -  
+
+(96 row(s) excluded as count-broken -- rendering failure, not binding failure.)
+```
+
