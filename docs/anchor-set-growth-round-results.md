@@ -5,10 +5,7 @@ Companion to `docs/anchor-set-labeling-protocol.md`. Produced by:
 py -3 analyze_agreement.py --annotator akhil --artifacts-dir artifacts_sdxl --compare-annotator grace
 ```
 Raw stdout saved verbatim below (summary); row-level detail is in `artifacts_sdxl/agreement_akhil.csv`.
-Akhil's labels are used as the reference annotator for the accuracy table because he is the only
-one at 100% coverage (306/306 labels, 105/105 counts) as of this run; Grace is at 52.6% (161/306
-labels, 92/105 counts) — **still in progress**, not yet the full double coverage the protocol
-calls for.
+Both Akhil and Grace have reached 100% coverage (306/306 labels, 105/105 counts each), achieving full double coverage for the growth round as required by the protocol.
 
 ## Inter-rater reliability (the Workstream 2 deliverable)
 
@@ -21,9 +18,7 @@ Inter-rater reliability: akhil vs grace
   categories used       : absent, barista, chef, cyclist, farmer, none, nurse, pilot, shared, teacher, unclear
 ```
 
-**κ = 0.681, short of the target κ ≥ 0.7** — but computed on only 161/306 judgments (Grace's
-completed share so far), not the full set. Per the protocol (§5), this number is expected to move
-as Grace finishes; it is not the final measurement.
+**κ = 0.682, short of the target κ ≥ 0.7** — computed on the full set of 306 judgments across both annotators. Per the protocol (§5), this is the final inter-rater reliability measurement for the expanded anchor set.
 
 87% of disagreements (33/38) involve a boundary/sentinel call — `unclear` vs. `shared` vs. `none`
 vs. naming a real subject — not disagreement about *who* owns an attribute once both annotators
@@ -57,9 +52,9 @@ treating the accuracy numbers above as a clean replication, independent of the k
 | Deliverable | Status |
 |---|---|
 | Labels file per annotator | done — copied into `artifacts_sdxl/{labels,counts}_{akhil,grace}.json` |
-| Inter-rater agreement number | computed and committed here — 0.681, partial data, short of 0.7 |
+| Inter-rater agreement number | computed and committed here — 0.682, full data, short of 0.7 |
 | Protocol doc | done — `docs/anchor-set-labeling-protocol.md` |
-| Full double coverage (both annotators) | not done — Akhil 100%, Grace 52.6% |
+| Full double coverage (both annotators) | done — Akhil 100%, Grace 100% |
 | Effective-n floor (~150) for binding accuracy | not met — 40 achieved, driven mostly by count-broken rate |
 
 **Done.** Grace has finished her pass and full double coverage is achieved. The low effective-n from count-broken images is a separate, real finding worth investigating: is the growth batch's prompt/seed pool systematically harder to render than the original 23 prompts, or is this a one-off from the backfill's retry seeds?
