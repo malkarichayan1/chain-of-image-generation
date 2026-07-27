@@ -106,6 +106,38 @@ recolors instead of localized edits — which is what forced the one-shot framin
   Read: the effect is genuinely marginal/noisy at n~30-35 — another small growth batch is
   not a reliable lever; would need a substantially larger one, or a different kind of
   evidence entirely (VQAScore baseline, causal intervention), to move this further.
+- **Workstream 2 — anchor-set growth + second annotator, started 2026-07-25, IN PROGRESS
+  as of 2026-07-27, branch `sdxl`.** Addresses the two problems named in the workstream
+  brief: single-annotator (no inter-rater reliability) and undersized sample (68 raw
+  items). Built a 137-image growth+backfill batch (`build_growth_specs.py` + a bounded-
+  retry n=4 backfill), landing at 105 detected / 306 raw judgments, balanced 44/26/35
+  across n=2/3/4 — comfortably past the ~200-raw floor. Formal protocol doc
+  `docs/anchor-set-labeling-protocol.md` pre-registers the shared/unclear/count-broken
+  handling plan the brief asked for (shared scored separately via the metric's own
+  attention-margin abstention; unclear/none excluded as missing data; count-broken
+  excluded entirely — rendering failure ≠ binding failure). Model: SDXL only, confirmed
+  consistent throughout (§7 of the protocol doc). Sent to two second annotators, Grace and
+  Akhil, for full double-coverage blind labeling (stronger than the 30-50%-subset floor the
+  brief asked for). **Their labels landed on `origin/main` directly** (Akhil built his own
+  parallel copy of the labeling kit at repo root rather than using `ssa/anchor_set/`) while
+  the growth-batch pipeline itself stayed on local-only `sdxl` commit `e500e1d` — reconciled
+  2026-07-27 by merging `origin/main` into `sdxl` and copying Grace/Akhil's
+  `labels_*.json`/`counts_*.json` into the canonical `ssa/anchor_set/artifacts_sdxl/`
+  location. Also wired `analyze_agreement.py` to actually use the count-broken exclusion
+  `anchor_common.py` already supported but the script never called with (it silently
+  no-ops when no counts file exists, so old runs are unaffected).
+  **Result, `docs/anchor-set-growth-round-results.md`: not done.** Akhil is 100% complete
+  (306/306 labels, 105/105 counts); Grace is 52.6% (161/306 labels) — still labeling.
+  Cohen's kappa on the 161 overlapping judgments so far: **0.681, short of the κ ≥ 0.7
+  target** (expected to move, not final — recompute once Grace finishes; no code changes
+  needed, `cohens_kappa` already converges to whatever keys both annotators have answered).
+  Count-clean kappa (same pair, per-image): 0.914, comfortably clears target. 87% of label
+  disagreements (33/38) are boundary/sentinel calls (unclear vs. shared vs. none vs. a real
+  subject), not core binding disagreement. Separately concerning: 96/306 rows are
+  count-broken (Akhil's own per-image judgment), leaving only 40 scored rows — a 13%
+  effective yield vs. the original 23-image set's ~51%, well short of the ~150-effective
+  floor the protocol sized the batch for. Not yet investigated: whether the growth/backfill
+  seed pool is systematically harder to render than the original 23 prompts.
 
 ### B. Chain / Delta-Mask metric (branch `feature/spatial-semantic-alignment-metric`, single file
 `pilot/spatial_semantic_alignment.py`, authored by Pranav, commit `5452a16`)
