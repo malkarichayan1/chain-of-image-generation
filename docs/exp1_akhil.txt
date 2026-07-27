@@ -1,0 +1,11 @@
+Experiment 1 -- accuracy per subject count (artifacts_sdxl, annotator=akhil)
+
+ stratum | labeled | scored | correct | accuracy |  chance |  p-value
+---------------------------------------------------------------------
+     n=2 |      88 |     18 |       9 |  50.0% |  50.0% | 0.5927
+     n=3 |      78 |     16 |       9 |  56.2% |  33.3% | 0.0500
+     n=4 |     140 |     23 |       4 |  17.4% |  25.0% | 0.8630
+---------------------------------------------------------------------
+ overall |     306 |     57 |      22 |  38.6% |     -   |      -  
+
+Significant (p < 0.05, one-sided) means that stratum's accuracy clearly beats its own 1/n chance line -- not a lucky run at this sample size.
