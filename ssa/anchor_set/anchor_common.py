@@ -19,9 +19,10 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Dict, List, Sequence, Tuple
+from typing import Dict, List, Optional, Sequence, Tuple
 
 import numpy as np
+from scipy import stats
 
 # Sentinels a human may record instead of a subject name.
 LABEL_NONE = "none"        # the attribute never visibly rendered on anyone
@@ -259,6 +260,17 @@ def chance_baseline(n: int, include_shared: bool = False) -> float:
     """Random-guess accuracy at subject count n. Strict scoring picks among the n subjects
     (1/n); shared-aware scoring picks among n subjects plus `shared` (1/(n+1))."""
     return 1.0 / (n + 1) if include_shared else 1.0 / n
+
+
+def binomial_test_vs_chance(n_correct: int, n_scored: int, chance: float) -> Optional[float]:
+    """One-sided (alternative="greater") exact binomial p-value for "accuracy exceeds
+    chance" at a given scored count. Returns None when n_scored is 0 -- there is no test to
+    run, not a p-value of 1.0 or 0.0. Shared by exp1_accuracy_by_n.py (per-stratum
+    significance) and exp3_attention_scramble.py (scrambled-vs-chance falsification), both of
+    which need the same primitive rather than duplicating it."""
+    if n_scored == 0:
+        return None
+    return float(stats.binomtest(n_correct, n_scored, chance, alternative="greater").pvalue)
 
 
 def build_agreement_rows(manifest: dict, labels: Dict[str, str],

@@ -342,6 +342,38 @@ application of it. Validate the primitive, then spend that trust on the hard pro
    already-windowed n=2 result answers the same question with real human labels.
 7. Everything else (VQAScore correlation, causal intervention via A&E) —
    strengthens a submission but isn't load-bearing for a first draft.
+8. **Scaffolded 2026-07-27, branch `sdxl`, NOT yet run on real data — blocked on Workstream 2**
+   (the labeling-protocol growth run) **finishing.** Five Part A validation experiments,
+   pre-registered in `docs/part-a-five-experiment-battery-design.md`: (1) headline accuracy
+   per subject count vs. 1/n chance, with per-stratum binomial significance
+   (`exp1_accuracy_by_n.py`); (2) early-window vs. full-trajectory attention accuracy
+   (`exp2_window_ablation.py`) — genuinely blocked on more than just labels: needs a NEW field,
+   `model_scores_full`, scaffolded as an additive patch to `generate_anchor_images_sdxl.py`
+   (captured for free from the same already-hooked generation, reusing
+   `phase_b_cross_attention_map` with `max_steps=NUM_INFERENCE_STEPS`) but not yet actually
+   regenerated on Kaggle — that's one more pinned-seed rerun (`PIN_SEEDS_FROM_MANIFEST`
+   constant, same edit-before-push convention as `GROWTH_PROMPT_IDS`), separate from and not
+   blocking on Workstream 2; (3) attention-randomization falsification
+   (`exp3_attention_scramble.py`) — deliberately scrambles CROSS-ITEM within a stratum, not by
+   permuting one item's own scores, because the latter degenerates at n=2 (a forced swap makes
+   scrambled accuracy = 1 − real accuracy by arithmetic, not by any property of attention);
+   (4) nearest-subject-noun positional baseline (`exp4_positional_baseline.py`) — checked
+   against all 306 real scored rows in `artifacts_sdxl/manifest.json`: this baseline currently
+   equals `intended_subject` 306/306 times, since the prompt template never lets a second
+   subject intervene before an attribute, so it's presently indistinguishable from "always
+   guess the intended pairing" (still the right baseline, just not yet a novel one on this
+   vocabulary); (5) count-clean-only vs. all-rows accuracy, side by side
+   (`exp5_count_clean_subset.py`) — discovered `analyze_agreement.py` already silently wires
+   `counts_<annotator>.json` into a single filtered view (added sometime before this session,
+   undocumented here until now), so this experiment's actual contribution is the side-by-side
+   comparison, not first-time wiring. `run_five_experiments.py` runs all five in one pass
+   against any `--artifacts-dir`, degrading Experiment 2 to a clean "unavailable" message
+   rather than crashing when `model_scores_full` is absent (true of the current
+   `artifacts_sdxl/manifest.json`). `make_dummy_artifacts.py` generates a synthetic
+   `artifacts_dummy/` (55 images, real vocabulary/phrasing, both attention windows populated)
+   so the whole pipeline is smoke-tested end-to-end today; 54 new tests added (112 → 166,
+   `py -3 -m pytest tests/` from inside `ssa/anchor_set/`). Everything here reads/writes only
+   `artifacts_dummy/` — zero writes to `artifacts_sdxl/` or any real label/count file.
 
 ## Branch/file pointers
 

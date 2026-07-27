@@ -397,6 +397,16 @@ ANCHOR_PROMPTS = [
 # build_n4_backfill_specs). ids 0-23 and 100-184 (the previous two runs) are already done.
 GROWTH_PROMPT_IDS = set(range(200, 228))
 
+# Set to a manifest.json path (e.g. "artifacts_sdxl/manifest.json", uploaded as a Kaggle
+# dataset input) to force every prompt to reuse ITS OWN already-recorded `seed` instead of
+# running the CANDIDATE_SEEDS/growth/backfill retry loop -- a guaranteed pixel-identical
+# rerun, used to backfill model_scores_full onto an anchor set that's already been generated,
+# boxed, and human-labeled without regenerating (and thereby invalidating) any of it. None
+# (the default) leaves seed selection exactly as before this patch. Same
+# edit-the-constant-before-pushing convention as GROWTH_PROMPT_IDS -- this script has no
+# argparse anywhere and Kaggle kernels don't take custom argv.
+PIN_SEEDS_FROM_MANIFEST: Optional[str] = None
+
 # =============================================================================
 # Attention capture -- verbatim duplicate of generate_anchor_images.py. Keep in sync. This
 # class hierarchy is architecture-generic (any diffusers UNet2DConditionModel with attn2
@@ -558,9 +568,15 @@ def predicted_owner_from_attention(attn_map: np.ndarray, subject_boxes: Dict[str
     return owner, scores
 
 
-def build_attribute_entry(attribute, intended_subject, predicted_owner, model_scores) -> dict:
+def build_attribute_entry(attribute, intended_subject, predicted_owner, model_scores,
+                          predicted_owner_full=None, model_scores_full=None) -> dict:
+    """`_full` fields are the SAME attention capture aggregated over all NUM_INFERENCE_STEPS
+    instead of the early-window MAX_STEPS -- see phase_b_cross_attention_map's max_steps param
+    and the model_scores_full patch in generate_and_score. None on manifests predating that
+    patch; exp2_window_ablation.py treats an all-None column as "unavailable," not an error."""
     return dict(attribute=attribute, intended_subject=intended_subject,
-                predicted_owner=predicted_owner, model_scores=model_scores)
+                predicted_owner=predicted_owner, model_scores=model_scores,
+                predicted_owner_full=predicted_owner_full, model_scores_full=model_scores_full)
 
 
 def build_manifest_entry(prompt_id, n, prompt, subjects, seed, detected,
@@ -650,14 +666,21 @@ def assign_subjects(models: Models, image: Image.Image, boxes: List[List[float]]
     return {subject_names[j]: int(i) for i, j in zip(r, c)}
 
 
-def generate_and_score(spec: dict, capture: AttentionCapture, models: Models) -> dict:
+def generate_and_score(spec: dict, capture: AttentionCapture, models: Models,
+                       pinned_seed: Optional[int] = None) -> dict:
     """Identical logic to generate_anchor_images.py's version -- only guidance_scale is kept
     explicit at 7.5 (matching the SD1.5 run) rather than SDXL's own library default, so the
-    two runs differ only in model choice, not in generation hyperparameters."""
+    two runs differ only in model choice, not in generation hyperparameters.
+
+    `pinned_seed` (from PIN_SEEDS_FROM_MANIFEST): when given, overrides ALL seed-selection
+    regimes below -- generate with exactly this seed, no retry -- guaranteeing a
+    pixel-identical rerun of an already-generated, already-labeled image (e.g. to backfill
+    model_scores_full without touching anything a human has already labeled)."""
     prompt_id, n, prompt = spec["id"], spec["n"], spec["prompt"]
     subjects = [s for s, _ in spec["pairs"]]
 
-    # Three seed-selection regimes, checked most-specific-first:
+    # Four seed-selection regimes, checked most-specific-first:
+    #  - Pinned (PIN_SEEDS_FROM_MANIFEST set): exactly one seed, no retry -- see docstring.
     #  - Backfill ids (>= BACKFILL_ID_START): retry across spec["seeds"], a small ordered
     #    list -- safe without per-combo bookkeeping because these combos are never used by
     #    any other spec, so no (prompt, seed) pair can collide regardless of seed reuse.
@@ -666,7 +689,9 @@ def generate_and_score(spec: dict, capture: AttentionCapture, models: Models) ->
     #    run reuses from the base set, silently reproduces an already-generated image under
     #    a different prompt_id. A pinned-seed miss is simply recorded as not-detected.
     #  - Base ids: the original CANDIDATE_SEEDS retry loop, unchanged.
-    if prompt_id >= BACKFILL_ID_START:
+    if pinned_seed is not None:
+        seed_pool = [pinned_seed]
+    elif prompt_id >= BACKFILL_ID_START:
         seed_pool = spec["seeds"]
     elif prompt_id >= GROWTH_ID_START:
         seed_pool = [spec["seed"]]
@@ -715,7 +740,17 @@ def generate_and_score(spec: dict, capture: AttentionCapture, models: Models) ->
         maps = [capture.phase_b_cross_attention_map(target_token_index=i, cond_index=1) for i in idxs]
         attn_map = np.mean(maps, axis=0)
         owner, scores = predicted_owner_from_attention(attn_map, subject_boxes)
-        attributes_out.append(build_attribute_entry(attribute, subject, owner, scores))
+        # Free full-trajectory aggregate: attn_store.step_store still holds every step here
+        # (unhook_pipeline, which discards it, isn't called until after this loop) -- so this
+        # costs one more numpy pass over already-captured tensors, not a second generation.
+        # Powers exp2_window_ablation.py (early-window vs. full-trajectory accuracy).
+        maps_full = [capture.phase_b_cross_attention_map(target_token_index=i, cond_index=1,
+                                                          max_steps=NUM_INFERENCE_STEPS)
+                     for i in idxs]
+        attn_map_full = np.mean(maps_full, axis=0)
+        owner_full, scores_full = predicted_owner_from_attention(attn_map_full, subject_boxes)
+        attributes_out.append(build_attribute_entry(attribute, subject, owner, scores,
+                                                     owner_full, scores_full))
     capture.unhook_pipeline(models.txt2img)
 
     print(f"  p{prompt_id}: OK seed={chosen_seed} n={n} "
@@ -728,6 +763,13 @@ def generate_and_score(spec: dict, capture: AttentionCapture, models: Models) ->
 def main():
     prompts = ([p for p in ANCHOR_PROMPTS if p["id"] in GROWTH_PROMPT_IDS]
                if GROWTH_PROMPT_IDS is not None else ANCHOR_PROMPTS)
+    pinned_seeds: Dict[int, int] = {}
+    if PIN_SEEDS_FROM_MANIFEST is not None:
+        prior = json.loads(Path(PIN_SEEDS_FROM_MANIFEST).read_text())
+        pinned_seeds = {img["prompt_id"]: img["seed"]
+                        for img in prior["images"] if img.get("detected")}
+        print(f"PIN_SEEDS_FROM_MANIFEST={PIN_SEEDS_FROM_MANIFEST}: pinning "
+              f"{len(pinned_seeds)} prompt(s) to their already-recorded seed, no retry.")
     print(f"device={DEVICE} dtype={DTYPE} seeds={CANDIDATE_SEEDS} prompts={len(prompts)} "
           f"model={MODEL_ID} img_size={IMG_SIZE}")
     capture = AttentionCapture()
@@ -741,7 +783,8 @@ def main():
     for spec in prompts:
         print(f"\n=== p{spec['id']} (n={spec['n']}): {spec['prompt'][:70]}... ===")
         try:
-            entry = generate_and_score(spec, capture, models)
+            entry = generate_and_score(spec, capture, models,
+                                       pinned_seed=pinned_seeds.get(spec["id"]))
         except Exception as e:
             print(f"  p{spec['id']}: ERROR {type(e).__name__}: {e}")
             traceback.print_exc()

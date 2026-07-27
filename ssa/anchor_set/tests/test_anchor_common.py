@@ -228,3 +228,27 @@ def test_build_rows_without_counts_arg_is_unaffected_backward_compatible():
     assert rows_no_counts_arg == rows_empty_counts
     assert rows_no_counts_arg[0]["count_broken"] is False
     assert rows_no_counts_arg[0]["scored"] is True
+
+
+# --------------------------------------------------------------------------- significance
+
+def test_binomial_test_vs_chance_significant_when_far_above_chance():
+    # 18/20 correct at chance=0.5 is a clear win.
+    p = ac.binomial_test_vs_chance(18, 20, 0.5)
+    assert p < 0.01
+
+
+def test_binomial_test_vs_chance_not_significant_at_chance():
+    # 10/20 correct at chance=0.5 is exactly the null.
+    p = ac.binomial_test_vs_chance(10, 20, 0.5)
+    assert p > 0.5
+
+
+def test_binomial_test_vs_chance_returns_none_when_nothing_scored():
+    assert ac.binomial_test_vs_chance(0, 0, 0.5) is None
+
+
+def test_binomial_test_vs_chance_below_chance_is_not_significant_one_sided():
+    # A one-sided ("greater") test: doing WORSE than chance must not read as "beats chance."
+    p = ac.binomial_test_vs_chance(2, 20, 0.5)
+    assert p > 0.99
