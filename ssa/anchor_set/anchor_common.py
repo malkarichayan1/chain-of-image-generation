@@ -19,9 +19,10 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Dict, List, Sequence, Tuple
+from typing import Dict, List, Optional, Sequence, Tuple
 
 import numpy as np
+from scipy import stats
 
 # Sentinels a human may record instead of a subject name.
 LABEL_NONE = "none"        # the attribute never visibly rendered on anyone
@@ -226,14 +227,55 @@ def pending_label_targets(manifest: dict, labels: Dict[str, str],
 # Agreement analysis
 # ---------------------------------------------------------------------------
 
+# ---------------------------------------------------------------------------
+# Count-clean / count-broken -- per-IMAGE (not per-attribute) check
+# ---------------------------------------------------------------------------
+
+# Detection passing (Mask R-CNN finds exactly n people) is a WEAK proxy for "the prompt
+# rendered correctly" -- it only checks headcount, not whether those n people are visually
+# distinct individuals. SDXL's own "two identical chefs" failure mode (see
+# generate_anchor_images_sdxl.py's module docstring) passes headcount while conflating two
+# different subjects into one interchangeable-looking person, which makes the binding
+# question for that image ill-posed regardless of how good the metric is. This is logged as
+# an explicit human judgment, separate from the per-attribute subject/none/unclear/shared
+# labels, because it's a fact about the IMAGE, not about any one attribute.
+COUNT_CLEAN = "clean"    # all intended subjects rendered as visually distinct people
+COUNT_BROKEN = "broken"  # two+ subjects are duplicates/interchangeable/not distinguishable
+
+
+def count_key(prompt_id: int) -> str:
+    """Stable key for one image's count-clean judgment. Deliberately just str(prompt_id)
+    (no attribute component, unlike label_key) -- this is a per-image fact, and reuses the
+    same load_labels/save_labels persistence since both are flat {str: str} dicts."""
+    return str(prompt_id)
+
+
+def pending_count_targets(manifest: dict, counts: Dict[str, str]) -> List[dict]:
+    """Detected image entries with no count-clean judgment yet, in manifest order."""
+    return [img for img in manifest["images"]
+            if img.get("detected") and count_key(img["prompt_id"]) not in counts]
+
+
 def chance_baseline(n: int, include_shared: bool = False) -> float:
     """Random-guess accuracy at subject count n. Strict scoring picks among the n subjects
     (1/n); shared-aware scoring picks among n subjects plus `shared` (1/(n+1))."""
     return 1.0 / (n + 1) if include_shared else 1.0 / n
 
 
+def binomial_test_vs_chance(n_correct: int, n_scored: int, chance: float) -> Optional[float]:
+    """One-sided (alternative="greater") exact binomial p-value for "accuracy exceeds
+    chance" at a given scored count. Returns None when n_scored is 0 -- there is no test to
+    run, not a p-value of 1.0 or 0.0. Shared by exp1_accuracy_by_n.py (per-stratum
+    significance) and exp3_attention_scramble.py (scrambled-vs-chance falsification), both of
+    which need the same primitive rather than duplicating it."""
+    if n_scored == 0:
+        return None
+    return float(stats.binomtest(n_correct, n_scored, chance, alternative="greater").pvalue)
+
+
 def build_agreement_rows(manifest: dict, labels: Dict[str, str],
-                         margin_threshold: float = None) -> List[dict]:
+                         margin_threshold: float = None,
+                         counts: Dict[str, str] = None) -> List[dict]:
     """One row per (detected chain, attribute) that has a human label.
 
     Strict columns (always present, semantics frozen so published numbers cannot move):
@@ -241,25 +283,35 @@ def build_agreement_rows(manifest: dict, labels: Dict[str, str],
     the human named a single subject (the accuracy denominator); `correct` compares
     `predicted_owner` (bare argmax) to that subject.
 
+    `counts` (optional, default None): a count-clean/count-broken judgment dict keyed by
+    count_key(prompt_id) (see pending_count_targets). When given, every row from a
+    count-broken image is forced `scored=False` regardless of its human attribute label --
+    count-broken conflates rendering failure with binding failure, so it can't answer a pure
+    binding question (see COUNT_CLEAN/COUNT_BROKEN docstring). Omitting `counts` (or passing
+    {}) reproduces every already-published number exactly -- no row is excluded for count
+    reasons unless a counts dict says so.
+
     Shared-aware columns (only when `margin_threshold` is given): `margin`,
     `predicted_label` (a subject, or `shared` when the metric's top-two attention margin
     falls short), `scored_shared` (human named a subject OR said `shared`), and
     `correct_shared`. `none`/`unclear` stay excluded in both modes -- they are missing data,
     not outcomes."""
+    counts = counts or {}
     rows: List[dict] = []
     for img in manifest["images"]:
         if not img.get("detected"):
             continue
+        count_broken = counts.get(count_key(img["prompt_id"])) == COUNT_BROKEN
         for attr in img["attributes"]:
             key = label_key(img["prompt_id"], attr["attribute"])
             if key not in labels:
                 continue
             human = labels[key]
-            scored = human not in NON_SUBJECT_LABELS
+            scored = human not in NON_SUBJECT_LABELS and not count_broken
             row = dict(
                 prompt_id=img["prompt_id"], n=img["n"], attribute=attr["attribute"],
                 intended_subject=attr["intended_subject"], predicted_owner=attr["predicted_owner"],
-                human_label=human, scored=scored,
+                human_label=human, count_broken=count_broken, scored=scored,
                 correct=(scored and attr["predicted_owner"] == human),
             )
             if margin_threshold is not None:

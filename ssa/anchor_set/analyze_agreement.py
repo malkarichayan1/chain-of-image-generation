@@ -33,6 +33,10 @@ def labels_path(annotator: str) -> Path:
     return ARTIFACTS_DIR / f"labels_{annotator}.json"
 
 
+def counts_path(annotator: str) -> Path:
+    return ARTIFACTS_DIR / f"counts_{annotator}.json"
+
+
 def _fmt(x, pct=False):
     if x is None:
         return "  -  "
@@ -81,13 +85,23 @@ def analyze(annotator: str, margin_threshold: float = None,
     additionally reports the shared-aware table, which readmits human `shared` rows as a
     scoreable outcome and lets the metric abstain via its top-two attention margin -- and
     returns {"strict": ..., "shared": ...} instead of the bare strict summary.
-    With `compare_annotator`, also prints Cohen's kappa against that annotator's labels."""
+    With `compare_annotator`, also prints Cohen's kappa against that annotator's labels.
+
+    Count-clean/count-broken: if counts_<annotator>.json exists (per-image judgments from
+    label_images.py's prompt_count_clean()), every attribute row from a count-broken image is
+    forced out of the accuracy denominator via build_agreement_rows(..., counts=...) -- a
+    count-broken image conflates rendering failure with binding failure (see
+    docs/anchor-set-labeling-protocol.md §4), so it can't answer a pure binding question.
+    Missing counts file (e.g. the original SD1.5/SDXL runs, which predate this check) is
+    equivalent to an empty dict: no row is excluded for count reasons, reproducing every
+    already-published number exactly."""
     manifest = json.loads(MANIFEST_PATH.read_text())
     labels = load_labels(labels_path(annotator))
     if not labels:
         raise SystemExit(f"No labels found at {labels_path(annotator)}; run label_images.py first.")
+    counts = load_labels(counts_path(annotator))
 
-    rows = build_agreement_rows(manifest, labels, margin_threshold=margin_threshold)
+    rows = build_agreement_rows(manifest, labels, margin_threshold=margin_threshold, counts=counts)
     summary = summarize_agreement(rows)
 
     df = pd.DataFrame(rows)
@@ -95,11 +109,16 @@ def analyze(annotator: str, margin_threshold: float = None,
     df.to_csv(out_csv, index=False)
 
     print(f"Annotator: {annotator}  |  rows: {len(rows)}  |  detail CSV: {out_csv}\n")
+    if counts:
+        n_broken = sum(1 for r in rows if r.get("count_broken"))
+        print(f"Count-clean check: {counts_path(annotator)} loaded, "
+              f"{n_broken} row(s) excluded as count-broken.\n")
     print("STRICT (one subject only; chance = 1/n)")
     print(format_summary(summary))
     excluded = summary["overall"]["n_excluded"]
     if excluded:
-        print(f"\n({excluded} labeled rows excluded as none/unclear/shared -- coverage, not error.)")
+        print(f"\n({excluded} labeled rows excluded as none/unclear/shared/count-broken -- "
+              f"coverage, not error.)")
     print("\nDecision gate (memo SSA-Metric-Memo.md §7): accuracy clearly above the 1/n chance "
           "line at a stratum = attention tracks binding there.")
 

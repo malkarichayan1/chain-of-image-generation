@@ -1,0 +1,307 @@
+prompt_id,n,attribute,intended_subject,predicted_owner,human_label,count_broken,scored,correct
+0,2,red apron,barista,cyclist,shared,True,False,False
+0,2,yellow helmet,cyclist,cyclist,unclear,True,False,False
+1,2,white hat,chef,farmer,shared,False,False,False
+1,2,shovel,farmer,chef,shared,False,False,False
+2,2,blue gloves,nurse,nurse,unclear,False,False,False
+2,2,dark sunglasses,pilot,pilot,nurse,False,True,False
+3,2,book,teacher,cyclist,teacher,False,True,False
+3,2,yellow helmet,cyclist,cyclist,teacher,False,True,False
+4,2,blue gloves,nurse,farmer,shared,False,False,False
+4,2,shovel,farmer,nurse,shared,False,False,False
+5,2,dark sunglasses,pilot,barista,shared,False,False,False
+5,2,red apron,barista,pilot,none,False,False,False
+6,3,red apron,barista,chef,shared,True,False,False
+6,3,yellow helmet,cyclist,barista,unclear,True,False,False
+6,3,white hat,chef,barista,shared,True,False,False
+7,3,pan,chef,chef,unclear,False,False,False
+7,3,shovel,farmer,farmer,farmer,False,True,True
+7,3,blue gloves,nurse,chef,nurse,False,True,False
+8,3,dark sunglasses,pilot,pilot,shared,False,False,False
+8,3,book,teacher,teacher,shared,False,False,False
+8,3,red apron,barista,barista,none,False,False,False
+9,3,blue gloves,nurse,cyclist,shared,True,False,False
+9,3,yellow helmet,cyclist,cyclist,nurse,True,False,False
+9,3,shovel,farmer,nurse,nurse,True,False,False
+10,3,book,teacher,teacher,shared,True,False,False
+10,3,dark sunglasses,pilot,pilot,shared,True,False,False
+10,3,white hat,chef,teacher,shared,True,False,False
+11,3,red apron,barista,barista,cyclist,False,True,False
+11,3,blue gloves,nurse,nurse,none,False,False,False
+11,3,yellow helmet,cyclist,cyclist,none,False,False,False
+12,4,red apron,barista,farmer,shared,False,False,False
+12,4,yellow helmet,cyclist,barista,unclear,False,False,False
+12,4,white hat,chef,chef,shared,False,False,False
+12,4,shovel,farmer,chef,none,False,False,False
+13,4,blue gloves,nurse,nurse,shared,True,False,False
+13,4,dark sunglasses,pilot,nurse,shared,True,False,False
+13,4,book,teacher,pilot,chef,True,False,False
+13,4,pan,chef,chef,none,True,False,False
+14,4,shovel,farmer,farmer,shared,True,False,False
+14,4,red apron,barista,cyclist,nurse,True,False,False
+14,4,yellow helmet,cyclist,cyclist,unclear,True,False,False
+14,4,blue gloves,nurse,barista,shared,True,False,False
+15,4,white hat,chef,chef,absent,True,False,False
+15,4,book,teacher,cyclist,teacher,True,False,False
+15,4,dark sunglasses,pilot,chef,shared,True,False,False
+15,4,yellow helmet,cyclist,teacher,none,True,False,False
+17,4,yellow helmet,cyclist,nurse,none,False,False,False
+17,4,pan,chef,teacher,none,False,False,False
+17,4,book,teacher,cyclist,shared,False,False,False
+17,4,blue gloves,nurse,nurse,none,False,False,False
+18,2,white hat,chef,chef,shared,False,False,False
+18,2,blue gloves,nurse,nurse,shared,False,False,False
+19,2,shovel,farmer,farmer,farmer,False,True,True
+19,2,book,teacher,teacher,shared,False,False,False
+20,3,red apron,barista,barista,shared,True,False,False
+20,3,pan,chef,nurse,none,True,False,False
+20,3,blue gloves,nurse,chef,none,True,False,False
+21,3,yellow helmet,cyclist,cyclist,shared,False,False,False
+21,3,dark sunglasses,pilot,teacher,shared,False,False,False
+21,3,book,teacher,pilot,shared,False,False,False
+22,4,white hat,chef,teacher,shared,False,False,False
+22,4,shovel,farmer,teacher,none,False,False,False
+22,4,blue gloves,nurse,teacher,none,False,False,False
+22,4,book,teacher,farmer,shared,False,False,False
+23,4,red apron,barista,barista,shared,True,False,False
+23,4,yellow helmet,cyclist,pilot,cyclist,True,False,False
+23,4,pan,chef,pilot,chef,True,False,False
+23,4,dark sunglasses,pilot,cyclist,shared,True,False,False
+100,2,red apron,barista,chef,none,False,False,False
+100,2,white hat,chef,barista,shared,False,False,False
+101,2,red apron,barista,chef,none,False,False,False
+101,2,pan,chef,chef,unclear,False,False,False
+104,2,red apron,barista,barista,none,False,False,False
+104,2,blue gloves,nurse,barista,none,False,False,False
+105,2,red apron,barista,barista,none,False,False,False
+105,2,dark sunglasses,pilot,pilot,shared,False,False,False
+106,2,red apron,barista,teacher,none,False,False,False
+106,2,book,teacher,barista,shared,False,False,False
+107,2,white hat,chef,chef,none,False,False,False
+107,2,yellow helmet,cyclist,cyclist,none,False,False,False
+108,2,pan,chef,chef,chef,False,True,True
+108,2,yellow helmet,cyclist,cyclist,none,False,False,False
+110,2,pan,chef,chef,shared,False,False,False
+110,2,shovel,farmer,farmer,none,False,False,False
+111,2,white hat,chef,chef,shared,False,False,False
+111,2,blue gloves,nurse,nurse,shared,False,False,False
+112,2,pan,chef,chef,shared,False,False,False
+112,2,blue gloves,nurse,chef,shared,False,False,False
+113,2,white hat,chef,chef,shared,False,False,False
+113,2,dark sunglasses,pilot,chef,shared,False,False,False
+114,2,pan,chef,chef,shared,False,False,False
+114,2,dark sunglasses,pilot,chef,shared,False,False,False
+115,2,white hat,chef,chef,shared,False,False,False
+115,2,book,teacher,chef,shared,False,False,False
+116,2,pan,chef,chef,chef,False,True,True
+116,2,book,teacher,chef,teacher,False,True,False
+118,2,yellow helmet,cyclist,cyclist,none,False,False,False
+118,2,blue gloves,nurse,cyclist,nurse,False,True,False
+119,2,yellow helmet,cyclist,cyclist,none,False,False,False
+119,2,dark sunglasses,pilot,pilot,shared,False,False,False
+120,2,yellow helmet,cyclist,cyclist,none,False,False,False
+120,2,book,teacher,teacher,shared,False,False,False
+121,2,shovel,farmer,nurse,shared,False,False,False
+121,2,blue gloves,nurse,nurse,shared,False,False,False
+122,2,shovel,farmer,farmer,shared,False,False,False
+122,2,dark sunglasses,pilot,farmer,shared,False,False,False
+123,2,shovel,farmer,teacher,shared,False,False,False
+123,2,book,teacher,farmer,farmer,False,True,True
+124,2,blue gloves,nurse,pilot,shared,False,False,False
+124,2,dark sunglasses,pilot,nurse,shared,False,False,False
+125,2,blue gloves,nurse,teacher,nurse,False,True,False
+125,2,book,teacher,nurse,teacher,False,True,False
+126,2,dark sunglasses,pilot,pilot,shared,False,False,False
+126,2,book,teacher,pilot,pilot,False,True,True
+127,2,red apron,barista,barista,shared,False,False,False
+127,2,white hat,chef,barista,shared,False,False,False
+128,2,red apron,barista,chef,shared,False,False,False
+128,2,pan,chef,barista,none,False,False,False
+129,2,red apron,barista,cyclist,unclear,False,False,False
+129,2,yellow helmet,cyclist,barista,unclear,False,False,False
+130,2,red apron,barista,farmer,barista,False,True,False
+130,2,shovel,farmer,barista,unclear,False,False,False
+131,2,red apron,barista,barista,unclear,False,False,False
+131,2,blue gloves,nurse,barista,shared,False,False,False
+132,2,red apron,barista,barista,shared,False,False,False
+132,2,dark sunglasses,pilot,pilot,shared,False,False,False
+133,2,red apron,barista,barista,shared,False,False,False
+133,2,book,teacher,teacher,unclear,False,False,False
+134,2,white hat,chef,chef,chef,False,True,True
+134,2,yellow helmet,cyclist,cyclist,cyclist,False,True,True
+135,2,pan,chef,chef,chef,False,True,True
+135,2,yellow helmet,cyclist,cyclist,cyclist,False,True,True
+137,2,pan,chef,chef,none,False,False,False
+137,2,shovel,farmer,farmer,shared,False,False,False
+139,2,pan,chef,chef,unclear,False,False,False
+139,2,blue gloves,nurse,chef,shared,False,False,False
+140,2,white hat,chef,pilot,shared,False,False,False
+140,2,dark sunglasses,pilot,pilot,shared,False,False,False
+141,2,pan,chef,chef,pilot,False,True,False
+141,2,dark sunglasses,pilot,chef,shared,False,False,False
+142,3,red apron,barista,chef,none,False,False,False
+142,3,white hat,chef,barista,chef,False,True,False
+142,3,yellow helmet,cyclist,chef,none,False,False,False
+143,3,red apron,barista,chef,none,False,False,False
+143,3,pan,chef,barista,unclear,False,False,False
+143,3,yellow helmet,cyclist,chef,none,False,False,False
+144,3,red apron,barista,chef,none,False,False,False
+144,3,white hat,chef,farmer,shared,False,False,False
+144,3,shovel,farmer,farmer,none,False,False,False
+145,3,red apron,barista,barista,shared,True,False,False
+145,3,pan,chef,farmer,none,True,False,False
+145,3,shovel,farmer,chef,none,True,False,False
+146,3,red apron,barista,chef,none,False,False,False
+146,3,white hat,chef,nurse,shared,False,False,False
+146,3,blue gloves,nurse,barista,none,False,False,False
+148,3,red apron,barista,barista,none,False,False,False
+148,3,white hat,chef,chef,shared,False,False,False
+148,3,dark sunglasses,pilot,chef,shared,False,False,False
+149,3,red apron,barista,chef,none,True,False,False
+149,3,pan,chef,barista,unclear,True,False,False
+149,3,dark sunglasses,pilot,barista,shared,True,False,False
+150,3,red apron,barista,barista,none,False,False,False
+150,3,white hat,chef,chef,shared,False,False,False
+150,3,book,teacher,chef,shared,False,False,False
+154,3,red apron,barista,barista,none,False,False,False
+154,3,yellow helmet,cyclist,cyclist,unclear,False,False,False
+154,3,dark sunglasses,pilot,pilot,shared,False,False,False
+155,3,red apron,barista,teacher,none,False,False,False
+155,3,yellow helmet,cyclist,cyclist,cyclist,False,True,True
+155,3,book,teacher,barista,shared,False,False,False
+157,3,red apron,barista,barista,none,False,False,False
+157,3,shovel,farmer,pilot,none,False,False,False
+157,3,dark sunglasses,pilot,farmer,shared,False,False,False
+158,3,red apron,barista,teacher,none,False,False,False
+158,3,shovel,farmer,farmer,none,False,False,False
+158,3,book,teacher,farmer,shared,False,False,False
+161,3,red apron,barista,teacher,none,False,False,False
+161,3,dark sunglasses,pilot,pilot,shared,False,False,False
+161,3,book,teacher,barista,shared,False,False,False
+162,3,white hat,chef,chef,shared,False,False,False
+162,3,yellow helmet,cyclist,cyclist,cyclist,False,True,True
+162,3,shovel,farmer,chef,none,False,False,False
+163,3,pan,chef,chef,chef,False,True,True
+163,3,yellow helmet,cyclist,farmer,cyclist,False,True,False
+163,3,shovel,farmer,chef,none,False,False,False
+164,3,white hat,chef,chef,chef,False,True,True
+164,3,yellow helmet,cyclist,nurse,cyclist,False,True,False
+164,3,blue gloves,nurse,chef,none,False,False,False
+165,3,pan,chef,chef,cyclist,False,True,False
+165,3,yellow helmet,cyclist,cyclist,cyclist,False,True,True
+165,3,blue gloves,nurse,nurse,shared,False,False,False
+166,3,white hat,chef,chef,chef,False,True,True
+166,3,yellow helmet,cyclist,cyclist,cyclist,False,True,True
+166,3,dark sunglasses,pilot,chef,shared,False,False,False
+167,4,red apron,barista,cyclist,none,False,False,False
+167,4,white hat,chef,barista,shared,False,False,False
+167,4,yellow helmet,cyclist,cyclist,unclear,False,False,False
+167,4,shovel,farmer,barista,none,False,False,False
+171,4,red apron,barista,pilot,none,True,False,False
+171,4,white hat,chef,chef,none,True,False,False
+171,4,yellow helmet,cyclist,barista,unclear,True,False,False
+171,4,dark sunglasses,pilot,chef,shared,True,False,False
+174,4,red apron,barista,chef,none,True,False,False
+174,4,pan,chef,teacher,none,True,False,False
+174,4,yellow helmet,cyclist,chef,none,True,False,False
+174,4,book,teacher,teacher,unclear,True,False,False
+183,4,red apron,barista,barista,none,True,False,False
+183,4,white hat,chef,chef,shared,True,False,False
+183,4,blue gloves,nurse,nurse,none,True,False,False
+183,4,book,teacher,chef,shared,True,False,False
+200,4,red apron,barista,chef,shared,True,False,False
+200,4,white hat,chef,barista,shared,True,False,False
+200,4,dark sunglasses,pilot,chef,shared,True,False,False
+200,4,book,teacher,teacher,shared,True,False,False
+202,4,red apron,barista,farmer,nurse,False,True,False
+202,4,yellow helmet,cyclist,nurse,unclear,False,False,False
+202,4,shovel,farmer,barista,none,False,False,False
+202,4,blue gloves,nurse,barista,shared,False,False,False
+203,4,red apron,barista,cyclist,barista,True,False,False
+203,4,yellow helmet,cyclist,farmer,cyclist,True,False,False
+203,4,shovel,farmer,pilot,absent,True,False,False
+203,4,dark sunglasses,pilot,farmer,shared,True,False,False
+204,4,red apron,barista,barista,none,False,False,False
+204,4,yellow helmet,cyclist,farmer,unclear,False,False,False
+204,4,shovel,farmer,cyclist,none,False,False,False
+204,4,book,teacher,teacher,shared,False,False,False
+205,4,red apron,barista,pilot,shared,False,False,False
+205,4,yellow helmet,cyclist,barista,shared,False,False,False
+205,4,blue gloves,nurse,nurse,shared,False,False,False
+205,4,dark sunglasses,pilot,nurse,shared,False,False,False
+206,4,red apron,barista,teacher,none,False,False,False
+206,4,yellow helmet,cyclist,cyclist,unclear,False,False,False
+206,4,blue gloves,nurse,barista,none,False,False,False
+206,4,book,teacher,nurse,shared,False,False,False
+207,4,red apron,barista,barista,shared,True,False,False
+207,4,yellow helmet,cyclist,teacher,none,True,False,False
+207,4,dark sunglasses,pilot,pilot,shared,True,False,False
+207,4,book,teacher,teacher,shared,True,False,False
+208,4,red apron,barista,pilot,shared,False,False,False
+208,4,shovel,farmer,barista,barista,False,True,True
+208,4,blue gloves,nurse,farmer,none,False,False,False
+208,4,dark sunglasses,pilot,barista,shared,False,False,False
+209,4,red apron,barista,farmer,shared,False,False,False
+209,4,shovel,farmer,barista,none,False,False,False
+209,4,blue gloves,nurse,teacher,none,False,False,False
+209,4,book,teacher,barista,shared,False,False,False
+210,4,red apron,barista,barista,shared,True,False,False
+210,4,shovel,farmer,teacher,none,True,False,False
+210,4,dark sunglasses,pilot,farmer,shared,True,False,False
+210,4,book,teacher,teacher,shared,True,False,False
+211,4,red apron,barista,teacher,shared,False,False,False
+211,4,blue gloves,nurse,barista,shared,False,False,False
+211,4,dark sunglasses,pilot,pilot,shared,False,False,False
+211,4,book,teacher,pilot,shared,False,False,False
+212,4,white hat,chef,chef,shared,True,False,False
+212,4,yellow helmet,cyclist,farmer,farmer,True,False,False
+212,4,shovel,farmer,chef,none,True,False,False
+212,4,blue gloves,nurse,nurse,none,True,False,False
+213,4,pan,chef,chef,shared,True,False,False
+213,4,yellow helmet,cyclist,farmer,cyclist,True,False,False
+213,4,shovel,farmer,cyclist,none,True,False,False
+213,4,blue gloves,nurse,nurse,cyclist,True,False,False
+214,4,white hat,chef,chef,shared,True,False,False
+214,4,yellow helmet,cyclist,pilot,cyclist,True,False,False
+214,4,shovel,farmer,chef,none,True,False,False
+214,4,dark sunglasses,pilot,chef,shared,True,False,False
+215,4,pan,chef,chef,none,False,False,False
+215,4,yellow helmet,cyclist,cyclist,chef,False,True,False
+215,4,shovel,farmer,chef,none,False,False,False
+215,4,dark sunglasses,pilot,pilot,shared,False,False,False
+217,4,pan,chef,teacher,cyclist,True,False,False
+217,4,yellow helmet,cyclist,cyclist,unclear,True,False,False
+217,4,shovel,farmer,chef,none,True,False,False
+217,4,book,teacher,cyclist,shared,True,False,False
+218,4,white hat,chef,pilot,shared,False,False,False
+218,4,yellow helmet,cyclist,nurse,chef,False,True,False
+218,4,blue gloves,nurse,chef,chef,False,True,True
+218,4,dark sunglasses,pilot,chef,shared,False,False,False
+219,4,pan,chef,chef,nurse,False,True,False
+219,4,yellow helmet,cyclist,pilot,none,False,False,False
+219,4,blue gloves,nurse,chef,none,False,False,False
+219,4,dark sunglasses,pilot,nurse,shared,False,False,False
+220,4,white hat,chef,teacher,unclear,True,False,False
+220,4,yellow helmet,cyclist,cyclist,shared,True,False,False
+220,4,blue gloves,nurse,nurse,none,True,False,False
+220,4,book,teacher,teacher,shared,True,False,False
+221,4,pan,chef,chef,none,False,False,False
+221,4,yellow helmet,cyclist,teacher,chef,False,True,False
+221,4,blue gloves,nurse,chef,none,False,False,False
+221,4,book,teacher,nurse,shared,False,False,False
+223,4,pan,chef,teacher,none,True,False,False
+223,4,yellow helmet,cyclist,chef,cyclist,True,False,False
+223,4,dark sunglasses,pilot,teacher,shared,True,False,False
+223,4,book,teacher,pilot,shared,True,False,False
+224,4,white hat,chef,chef,shared,False,False,False
+224,4,shovel,farmer,nurse,none,False,False,False
+224,4,blue gloves,nurse,nurse,nurse,False,True,True
+224,4,dark sunglasses,pilot,chef,shared,False,False,False
+226,4,white hat,chef,farmer,shared,True,False,False
+226,4,shovel,farmer,chef,none,True,False,False
+226,4,blue gloves,nurse,chef,none,True,False,False
+226,4,book,teacher,teacher,shared,True,False,False
+227,4,pan,chef,chef,unclear,True,False,False
+227,4,shovel,farmer,chef,none,True,False,False
+227,4,blue gloves,nurse,nurse,shared,True,False,False
+227,4,book,teacher,chef,shared,True,False,False
