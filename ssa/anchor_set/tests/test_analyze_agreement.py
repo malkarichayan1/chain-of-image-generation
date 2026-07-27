@@ -128,6 +128,45 @@ def test_compare_annotator_reports_inter_rater_kappa(tmp_path, monkeypatch, caps
     assert "2/3" in out or "0.667" in out or "66.7" in out
 
 
+def test_analyze_excludes_count_broken_images_from_accuracy(tmp_path, monkeypatch):
+    """A counts_<annotator>.json marking an image count-broken must force its rows out of the
+    accuracy denominator, even though the human named a real subject for the attribute."""
+    manifest = _manifest()  # prompt_id 0 (n=2, 2 attrs), prompt_id 6 (n=3, 1 attr)
+    labels = {
+        ac.label_key(0, "red apron"): "barista",      # would be correct
+        ac.label_key(0, "yellow helmet"): "cyclist",   # predicted barista -> would be wrong
+        ac.label_key(6, "hat"): "a",                    # correct, different image
+    }
+    art = _write_run(tmp_path, manifest, labels)
+    (art / "counts_t.json").write_text(json.dumps({ac.count_key(0): ac.COUNT_BROKEN}))
+    monkeypatch.setattr(aa, "ARTIFACTS_DIR", art)
+    monkeypatch.setattr(aa, "MANIFEST_PATH", art / "manifest.json")
+
+    summary = aa.analyze("t")
+
+    # both prompt_id=0 rows excluded (count-broken); only prompt_id=6's row is scored
+    assert summary["overall"]["n_scored"] == 1
+    assert summary["overall"]["n_correct"] == 1
+    assert summary["by_stratum"][2]["n_scored"] == 0
+
+
+def test_analyze_without_counts_file_is_unaffected(tmp_path, monkeypatch):
+    """No counts_<annotator>.json present (e.g. the original SD1.5/SDXL runs) must reproduce
+    the exact pre-counts-wiring behavior -- no row excluded for count reasons."""
+    labels = {
+        ac.label_key(0, "red apron"): "barista",
+        ac.label_key(0, "yellow helmet"): "cyclist",
+        ac.label_key(6, "hat"): "a",
+    }
+    art = _write_run(tmp_path, _manifest(), labels)
+    monkeypatch.setattr(aa, "ARTIFACTS_DIR", art)
+    monkeypatch.setattr(aa, "MANIFEST_PATH", art / "manifest.json")
+
+    summary = aa.analyze("t")
+
+    assert summary["overall"]["n_scored"] == 3
+
+
 def test_format_summary_handles_empty_stratum():
     summary = ac.summarize_agreement([
         {"prompt_id": 0, "n": 2, "attribute": "x", "intended_subject": "a",
