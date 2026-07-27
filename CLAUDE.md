@@ -126,18 +126,22 @@ recolors instead of localized edits — which is what forced the one-shot framin
   location. Also wired `analyze_agreement.py` to actually use the count-broken exclusion
   `anchor_common.py` already supported but the script never called with (it silently
   no-ops when no counts file exists, so old runs are unaffected).
-  **Result, `docs/anchor-set-growth-round-results.md`: not done.** Akhil is 100% complete
-  (306/306 labels, 105/105 counts); Grace is 52.6% (161/306 labels) — still labeling.
-  Cohen's kappa on the 161 overlapping judgments so far: **0.681, short of the κ ≥ 0.7
-  target** (expected to move, not final — recompute once Grace finishes; no code changes
-  needed, `cohens_kappa` already converges to whatever keys both annotators have answered).
-  Count-clean kappa (same pair, per-image): 0.914, comfortably clears target. 87% of label
-  disagreements (33/38) are boundary/sentinel calls (unclear vs. shared vs. none vs. a real
-  subject), not core binding disagreement. Separately concerning: 96/306 rows are
-  count-broken (Akhil's own per-image judgment), leaving only 40 scored rows — a 13%
-  effective yield vs. the original 23-image set's ~51%, well short of the ~150-effective
-  floor the protocol sized the batch for. Not yet investigated: whether the growth/backfill
-  seed pool is systematically harder to render than the original 23 prompts.
+  **Grace finished labeling 2026-07-27** (100%, 306/306 labels, 105/105 counts — landed
+  directly on `origin/main` as commit `9382f4f`, reconciled into the canonical
+  `ssa/anchor_set/artifacts_sdxl/` location the same way Workstream 2's earlier merge was).
+  Both annotators now fully complete. Recomputed on the full 306 overlapping judgments:
+  Cohen's kappa **0.682 — still short of the κ ≥ 0.7 target, and barely moved from the
+  0.681 measured on Grace's partial 161** (the earlier "expected to move" framing was
+  wrong — going from 161→306 judgments didn't close the gap). Count-clean kappa (same
+  pair, per-image judgment, now 105 overlapping vs. the earlier 92): **0.924**, still
+  comfortably clears target. The disagreement-category breakdown (87% boundary/sentinel,
+  33/38) has NOT been recomputed on the full 71-disagreement set — that number is stale
+  and specific to the 161-judgment partial state; don't cite it past that scope. Separately
+  concerning, unchanged since Akhil's counts were already 100%: 96/306 rows are
+  count-broken, leaving only 40 scored rows — a 13% effective yield vs. the original
+  23-image set's ~51%, well short of the ~150-effective floor the protocol sized the batch
+  for. Not yet investigated: whether the growth/backfill seed pool is systematically harder
+  to render than the original 23 prompts.
 
 ### B. Chain / Delta-Mask metric (branch `feature/spatial-semantic-alignment-metric`, single file
 `pilot/spatial_semantic_alignment.py`, authored by Pranav, commit `5452a16`)
@@ -342,8 +346,13 @@ application of it. Validate the primitive, then spend that trust on the hard pro
    already-windowed n=2 result answers the same question with real human labels.
 7. Everything else (VQAScore correlation, causal intervention via A&E) —
    strengthens a submission but isn't load-bearing for a first draft.
-8. **Scaffolded 2026-07-27, branch `sdxl`, NOT yet run on real data — blocked on Workstream 2**
-   (the labeling-protocol growth run) **finishing.** Five Part A validation experiments,
+8. **Scaffolded 2026-07-27 on branch `sdxl`; merged to `main` 2026-07-27 now that Workstream 2
+   (Grace's labeling) finished — unblocked and smoke-tested against the real, complete
+   `artifacts_sdxl` data for all three annotators (chayan/grace/akhil), no crashes.** These
+   are exploratory smoke-test numbers only, not a reviewed result — group mates should run
+   `py -3 run_five_experiments.py --artifacts-dir artifacts_sdxl --annotator <name>` from
+   inside `ssa/anchor_set/` themselves and treat the output as a first look, not a finding.
+   Five Part A validation experiments,
    pre-registered in `docs/part-a-five-experiment-battery-design.md`: (1) headline accuracy
    per subject count vs. 1/n chance, with per-stratum binomial significance
    (`exp1_accuracy_by_n.py`); (2) early-window vs. full-trajectory attention accuracy
