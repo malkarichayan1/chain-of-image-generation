@@ -41,26 +41,28 @@ SHUFFLE_SEED = 20260723  # fixed so the labeling order is reproducible across re
 # labels_*.json files from earlier passes.
 GUIDELINES_BANNER = """\
 ============================================================
- Labeling Guidelines for Workstream 2
+ Labeling Guidelines for Workstream 2 (REVISED FOR FLUX)
 ============================================================
 COUNT CHECK (once per image):
   Count-Clean  = the image renders the EXACT number of distinct subjects
-                 requested in the prompt.
-  Count-Broken = the image is missing subjects, merges subjects together,
-                 or adds extra subjects.
+                 requested in the prompt, AND you can clearly tell them apart.
+  Count-Broken = the image is missing subjects, adds extra subjects, or 
+                 subjects are so identical (e.g. they both have the same 
+                 clothes and props) that you cannot tell which is which.
 
 ATTRIBUTE CHECK (once per attribute):
   Present  = the requested attribute clearly attaches to the correct subject.
   Missing  = the attribute is completely absent from the image.
-  Shared   = the attribute accidentally leaks onto / is shared by multiple
-             subjects (e.g. both characters wearing red hats when only one
-             was supposed to).
+  Shared   = the attribute leaks onto multiple subjects (e.g., both 
+             characters wear red aprons when only one was supposed to). 
+             If an attribute is shared, ALWAYS mark it as Shared! Do not 
+             guess which subject "owns" it more.
   Unclear  = the render is too blurry, occluded, or low quality to
              definitively confirm if the attribute is present.
 
 Example -- prompt: "A barista in a red apron and a chef in a blue hat"
-  Count check : both a barista AND a chef shown -> Count-Clean.
-                only one person shown -> Count-Broken.
+  Count check : barista AND chef clearly distinguishable -> Count-Clean.
+                both people look like baristas wearing red aprons -> Count-Broken.
   Attribute   : barista has a red apron -> Present.
                 chef has a white hat instead of blue -> Missing.
                 both wearing red aprons -> Shared.

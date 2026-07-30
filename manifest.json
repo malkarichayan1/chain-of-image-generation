@@ -1,5 +1,5 @@
 {
-  "model": "stabilityai/stable-diffusion-xl-base-1.0",
+  "model": "black-forest-labs/FLUX.1-dev",
   "candidate_seeds": [
     7,
     42,
@@ -13,7 +13,7 @@
     {
       "prompt_id": 0,
       "n": 2,
-      "prompt": "a photo of a barista wearing a red apron and a cyclist wearing a yellow helmet",
+      "prompt": "a photo of two people standing side by side, on the left a barista in a red apron, on the right a man wearing a cycling jersey in a yellow bike helmet",
       "subjects": [
         "barista",
         "cyclist"
@@ -36,7 +36,7 @@
     {
       "prompt_id": 1,
       "n": 2,
-      "prompt": "a photo of a chef wearing a white hat and a farmer holding a shovel",
+      "prompt": "a photo of two people standing side by side, on the left a chef in a tall white chef hat, on the right a farmer holding a wooden shovel",
       "subjects": [
         "chef",
         "farmer"
@@ -59,7 +59,7 @@
     {
       "prompt_id": 2,
       "n": 2,
-      "prompt": "a photo of a nurse wearing blue gloves and a pilot wearing dark sunglasses",
+      "prompt": "a photo of two people standing side by side, on the left a nurse wearing blue gloves, on the right a pilot wearing dark sunglasses",
       "subjects": [
         "nurse",
         "pilot"
@@ -82,7 +82,7 @@
     {
       "prompt_id": 3,
       "n": 2,
-      "prompt": "a photo of a teacher holding a book and a cyclist wearing a yellow helmet",
+      "prompt": "a photo of two people standing side by side, on the left a teacher holding a book, on the right a man wearing a cycling jersey in a yellow bike helmet",
       "subjects": [
         "teacher",
         "cyclist"
@@ -105,7 +105,7 @@
     {
       "prompt_id": 4,
       "n": 2,
-      "prompt": "a photo of a nurse wearing blue gloves and a farmer holding a shovel",
+      "prompt": "a photo of two people standing side by side, on the left a nurse wearing blue gloves, on the right a farmer holding a wooden shovel",
       "subjects": [
         "nurse",
         "farmer"
@@ -128,7 +128,7 @@
     {
       "prompt_id": 5,
       "n": 2,
-      "prompt": "a photo of a pilot wearing dark sunglasses and a barista wearing a red apron",
+      "prompt": "a photo of two people standing side by side, on the left a pilot wearing dark sunglasses, on the right a barista in a red apron",
       "subjects": [
         "pilot",
         "barista"
@@ -151,7 +151,7 @@
     {
       "prompt_id": 6,
       "n": 3,
-      "prompt": "a photo of a barista wearing a red apron, a cyclist wearing a yellow helmet, and a chef wearing a white hat",
+      "prompt": "a photo of three people standing side by side, on the left a barista in a red apron, in the middle a man wearing a cycling jersey in a yellow bike helmet, on the right a chef in a tall white chef hat",
       "subjects": [
         "barista",
         "cyclist",
@@ -179,7 +179,7 @@
     {
       "prompt_id": 7,
       "n": 3,
-      "prompt": "a photo of a chef holding a pan, a farmer holding a shovel, and a nurse wearing blue gloves",
+      "prompt": "a photo of three people standing side by side, on the left a chef holding a black frying pan, in the middle a farmer holding a wooden shovel, on the right a nurse wearing blue gloves",
       "subjects": [
         "chef",
         "farmer",
@@ -207,7 +207,7 @@
     {
       "prompt_id": 8,
       "n": 3,
-      "prompt": "a photo of a pilot wearing dark sunglasses, a teacher holding a book, and a barista wearing a red apron",
+      "prompt": "a photo of three people standing side by side, on the left a pilot wearing dark sunglasses, in the middle a teacher holding a book, on the right a barista in a red apron",
       "subjects": [
         "pilot",
         "teacher",
@@ -235,7 +235,7 @@
     {
       "prompt_id": 9,
       "n": 3,
-      "prompt": "a photo of a nurse wearing blue gloves, a cyclist wearing a yellow helmet, and a farmer holding a shovel",
+      "prompt": "a photo of three people standing side by side, on the left a nurse wearing blue gloves, in the middle a man wearing a cycling jersey in a yellow bike helmet, on the right a farmer holding a wooden shovel",
       "subjects": [
         "nurse",
         "cyclist",
@@ -263,7 +263,7 @@
     {
       "prompt_id": 10,
       "n": 3,
-      "prompt": "a photo of a teacher holding a book, a pilot wearing dark sunglasses, and a chef wearing a white hat",
+      "prompt": "a photo of three people standing side by side, on the left a teacher holding a book, in the middle a pilot wearing dark sunglasses, on the right a chef in a tall white chef hat",
       "subjects": [
         "teacher",
         "pilot",
@@ -291,7 +291,7 @@
     {
       "prompt_id": 11,
       "n": 3,
-      "prompt": "a photo of a barista wearing a red apron, a nurse wearing blue gloves, and a cyclist wearing a yellow helmet",
+      "prompt": "a photo of three people standing side by side, on the left a barista in a red apron, in the middle a nurse wearing blue gloves, on the right a man wearing a cycling jersey in a yellow bike helmet",
       "subjects": [
         "barista",
         "nurse",
@@ -319,7 +319,7 @@
     {
       "prompt_id": 12,
       "n": 4,
-      "prompt": "a photo of a barista wearing a red apron, a cyclist wearing a yellow helmet, a chef wearing a white hat, and a farmer holding a shovel",
+      "prompt": "a photo of four people standing side by side, on the far left a barista in a red apron, on the center-left a man wearing a cycling jersey in a yellow bike helmet, on the center-right a chef in a tall white chef hat, on the far right a farmer holding a wooden shovel",
       "subjects": [
         "barista",
         "cyclist",
@@ -352,7 +352,7 @@
     {
       "prompt_id": 13,
       "n": 4,
-      "prompt": "a photo of a nurse wearing blue gloves, a pilot wearing dark sunglasses, a teacher holding a book, and a chef holding a pan",
+      "prompt": "a photo of four people standing side by side, on the far left a nurse wearing blue gloves, on the center-left a pilot wearing dark sunglasses, on the center-right a teacher holding a book, on the far right a chef holding a black frying pan",
       "subjects": [
         "nurse",
         "pilot",
@@ -385,7 +385,7 @@
     {
       "prompt_id": 14,
       "n": 4,
-      "prompt": "a photo of a farmer holding a shovel, a barista wearing a red apron, a cyclist wearing a yellow helmet, and a nurse wearing blue gloves",
+      "prompt": "a photo of four people standing side by side, on the far left a farmer holding a wooden shovel, on the center-left a barista in a red apron, on the center-right a man wearing a cycling jersey in a yellow bike helmet, on the far right a nurse wearing blue gloves",
       "subjects": [
         "farmer",
         "barista",
@@ -418,7 +418,7 @@
     {
       "prompt_id": 15,
       "n": 4,
-      "prompt": "a photo of a chef wearing a white hat, a teacher holding a book, a pilot wearing dark sunglasses, and a cyclist wearing a yellow helmet",
+      "prompt": "a photo of four people standing side by side, on the far left a chef in a tall white chef hat, on the center-left a teacher holding a book, on the center-right a pilot wearing dark sunglasses, on the far right a man wearing a cycling jersey in a yellow bike helmet",
       "subjects": [
         "chef",
         "teacher",
@@ -451,7 +451,7 @@
     {
       "prompt_id": 17,
       "n": 4,
-      "prompt": "a photo of a cyclist wearing a yellow helmet, a chef holding a pan, a teacher holding a book, and a nurse wearing blue gloves",
+      "prompt": "a photo of four people standing side by side, on the far left a man wearing a cycling jersey in a yellow bike helmet, on the center-left a chef holding a black frying pan, on the center-right a teacher holding a book, on the far right a nurse wearing blue gloves",
       "subjects": [
         "cyclist",
         "chef",
@@ -484,7 +484,7 @@
     {
       "prompt_id": 18,
       "n": 2,
-      "prompt": "a photo of a chef wearing a white hat and a nurse wearing blue gloves",
+      "prompt": "a photo of two people standing side by side, on the left a chef in a tall white chef hat, on the right a nurse wearing blue gloves",
       "subjects": [
         "chef",
         "nurse"
@@ -507,7 +507,7 @@
     {
       "prompt_id": 19,
       "n": 2,
-      "prompt": "a photo of a farmer holding a shovel and a teacher holding a book",
+      "prompt": "a photo of two people standing side by side, on the left a farmer holding a wooden shovel, on the right a teacher holding a book",
       "subjects": [
         "farmer",
         "teacher"
@@ -530,7 +530,7 @@
     {
       "prompt_id": 20,
       "n": 3,
-      "prompt": "a photo of a barista wearing a red apron, a chef holding a pan, and a nurse wearing blue gloves",
+      "prompt": "a photo of three people standing side by side, on the left a barista in a red apron, in the middle a chef holding a black frying pan, on the right a nurse wearing blue gloves",
       "subjects": [
         "barista",
         "chef",
@@ -558,7 +558,7 @@
     {
       "prompt_id": 21,
       "n": 3,
-      "prompt": "a photo of a cyclist wearing a yellow helmet, a pilot wearing dark sunglasses, and a teacher holding a book",
+      "prompt": "a photo of three people standing side by side, on the left a man wearing a cycling jersey in a yellow bike helmet, in the middle a pilot wearing dark sunglasses, on the right a teacher holding a book",
       "subjects": [
         "cyclist",
         "pilot",
@@ -586,7 +586,7 @@
     {
       "prompt_id": 22,
       "n": 4,
-      "prompt": "a photo of a chef wearing a white hat, a farmer holding a shovel, a nurse wearing blue gloves, and a teacher holding a book",
+      "prompt": "a photo of four people standing side by side, on the far left a chef in a tall white chef hat, on the center-left a farmer holding a wooden shovel, on the center-right a nurse wearing blue gloves, on the far right a teacher holding a book",
       "subjects": [
         "chef",
         "farmer",
@@ -619,7 +619,7 @@
     {
       "prompt_id": 23,
       "n": 4,
-      "prompt": "a photo of a barista wearing a red apron, a cyclist wearing a yellow helmet, a chef holding a pan, and a pilot wearing dark sunglasses",
+      "prompt": "a photo of four people standing side by side, on the far left a barista in a red apron, on the center-left a man wearing a cycling jersey in a yellow bike helmet, on the center-right a chef holding a black frying pan, on the far right a pilot wearing dark sunglasses",
       "subjects": [
         "barista",
         "cyclist",
@@ -652,7 +652,7 @@
     {
       "prompt_id": 100,
       "n": 2,
-      "prompt": "a photo of a barista wearing a red apron and a chef wearing a white hat",
+      "prompt": "a photo of two people standing side by side, on the left a barista in a red apron, on the right a chef in a tall white chef hat",
       "subjects": [
         "barista",
         "chef"
@@ -675,7 +675,7 @@
     {
       "prompt_id": 101,
       "n": 2,
-      "prompt": "a photo of a barista wearing a red apron and a chef holding a pan",
+      "prompt": "a photo of two people standing side by side, on the left a barista in a red apron, on the right a chef holding a black frying pan",
       "subjects": [
         "barista",
         "chef"
@@ -698,7 +698,7 @@
     {
       "prompt_id": 104,
       "n": 2,
-      "prompt": "a photo of a barista wearing a red apron and a nurse wearing blue gloves",
+      "prompt": "a photo of two people standing side by side, on the left a barista in a red apron, on the right a nurse wearing blue gloves",
       "subjects": [
         "barista",
         "nurse"
@@ -721,7 +721,7 @@
     {
       "prompt_id": 105,
       "n": 2,
-      "prompt": "a photo of a barista wearing a red apron and a pilot wearing dark sunglasses",
+      "prompt": "a photo of two people standing side by side, on the left a barista in a red apron, on the right a pilot wearing dark sunglasses",
       "subjects": [
         "barista",
         "pilot"
@@ -744,7 +744,7 @@
     {
       "prompt_id": 106,
       "n": 2,
-      "prompt": "a photo of a barista wearing a red apron and a teacher holding a book",
+      "prompt": "a photo of two people standing side by side, on the left a barista in a red apron, on the right a teacher holding a book",
       "subjects": [
         "barista",
         "teacher"
@@ -767,7 +767,7 @@
     {
       "prompt_id": 107,
       "n": 2,
-      "prompt": "a photo of a chef wearing a white hat and a cyclist wearing a yellow helmet",
+      "prompt": "a photo of two people standing side by side, on the left a chef in a tall white chef hat, on the right a man wearing a cycling jersey in a yellow bike helmet",
       "subjects": [
         "chef",
         "cyclist"
@@ -790,7 +790,7 @@
     {
       "prompt_id": 108,
       "n": 2,
-      "prompt": "a photo of a chef holding a pan and a cyclist wearing a yellow helmet",
+      "prompt": "a photo of two people standing side by side, on the left a chef holding a black frying pan, on the right a man wearing a cycling jersey in a yellow bike helmet",
       "subjects": [
         "chef",
         "cyclist"
@@ -813,7 +813,7 @@
     {
       "prompt_id": 110,
       "n": 2,
-      "prompt": "a photo of a chef holding a pan and a farmer holding a shovel",
+      "prompt": "a photo of two people standing side by side, on the left a chef holding a black frying pan, on the right a farmer holding a wooden shovel",
       "subjects": [
         "chef",
         "farmer"
@@ -836,7 +836,7 @@
     {
       "prompt_id": 111,
       "n": 2,
-      "prompt": "a photo of a chef wearing a white hat and a nurse wearing blue gloves",
+      "prompt": "a photo of two people standing side by side, on the left a chef in a tall white chef hat, on the right a nurse wearing blue gloves",
       "subjects": [
         "chef",
         "nurse"
@@ -859,7 +859,7 @@
     {
       "prompt_id": 112,
       "n": 2,
-      "prompt": "a photo of a chef holding a pan and a nurse wearing blue gloves",
+      "prompt": "a photo of two people standing side by side, on the left a chef holding a black frying pan, on the right a nurse wearing blue gloves",
       "subjects": [
         "chef",
         "nurse"
@@ -882,7 +882,7 @@
     {
       "prompt_id": 113,
       "n": 2,
-      "prompt": "a photo of a chef wearing a white hat and a pilot wearing dark sunglasses",
+      "prompt": "a photo of two people standing side by side, on the left a chef in a tall white chef hat, on the right a pilot wearing dark sunglasses",
       "subjects": [
         "chef",
         "pilot"
@@ -905,7 +905,7 @@
     {
       "prompt_id": 114,
       "n": 2,
-      "prompt": "a photo of a chef holding a pan and a pilot wearing dark sunglasses",
+      "prompt": "a photo of two people standing side by side, on the left a chef holding a black frying pan, on the right a pilot wearing dark sunglasses",
       "subjects": [
         "chef",
         "pilot"
@@ -928,7 +928,7 @@
     {
       "prompt_id": 115,
       "n": 2,
-      "prompt": "a photo of a chef wearing a white hat and a teacher holding a book",
+      "prompt": "a photo of two people standing side by side, on the left a chef in a tall white chef hat, on the right a teacher holding a book",
       "subjects": [
         "chef",
         "teacher"
@@ -951,7 +951,7 @@
     {
       "prompt_id": 116,
       "n": 2,
-      "prompt": "a photo of a chef holding a pan and a teacher holding a book",
+      "prompt": "a photo of two people standing side by side, on the left a chef holding a black frying pan, on the right a teacher holding a book",
       "subjects": [
         "chef",
         "teacher"
@@ -974,7 +974,7 @@
     {
       "prompt_id": 118,
       "n": 2,
-      "prompt": "a photo of a cyclist wearing a yellow helmet and a nurse wearing blue gloves",
+      "prompt": "a photo of two people standing side by side, on the left a man wearing a cycling jersey in a yellow bike helmet, on the right a nurse wearing blue gloves",
       "subjects": [
         "cyclist",
         "nurse"
@@ -997,7 +997,7 @@
     {
       "prompt_id": 119,
       "n": 2,
-      "prompt": "a photo of a cyclist wearing a yellow helmet and a pilot wearing dark sunglasses",
+      "prompt": "a photo of two people standing side by side, on the left a man wearing a cycling jersey in a yellow bike helmet, on the right a pilot wearing dark sunglasses",
       "subjects": [
         "cyclist",
         "pilot"
@@ -1020,7 +1020,7 @@
     {
       "prompt_id": 120,
       "n": 2,
-      "prompt": "a photo of a cyclist wearing a yellow helmet and a teacher holding a book",
+      "prompt": "a photo of two people standing side by side, on the left a man wearing a cycling jersey in a yellow bike helmet, on the right a teacher holding a book",
       "subjects": [
         "cyclist",
         "teacher"
@@ -1043,7 +1043,7 @@
     {
       "prompt_id": 121,
       "n": 2,
-      "prompt": "a photo of a farmer holding a shovel and a nurse wearing blue gloves",
+      "prompt": "a photo of two people standing side by side, on the left a farmer holding a wooden shovel, on the right a nurse wearing blue gloves",
       "subjects": [
         "farmer",
         "nurse"
@@ -1066,7 +1066,7 @@
     {
       "prompt_id": 122,
       "n": 2,
-      "prompt": "a photo of a farmer holding a shovel and a pilot wearing dark sunglasses",
+      "prompt": "a photo of two people standing side by side, on the left a farmer holding a wooden shovel, on the right a pilot wearing dark sunglasses",
       "subjects": [
         "farmer",
         "pilot"
@@ -1089,7 +1089,7 @@
     {
       "prompt_id": 123,
       "n": 2,
-      "prompt": "a photo of a farmer holding a shovel and a teacher holding a book",
+      "prompt": "a photo of two people standing side by side, on the left a farmer holding a wooden shovel, on the right a teacher holding a book",
       "subjects": [
         "farmer",
         "teacher"
@@ -1112,7 +1112,7 @@
     {
       "prompt_id": 124,
       "n": 2,
-      "prompt": "a photo of a nurse wearing blue gloves and a pilot wearing dark sunglasses",
+      "prompt": "a photo of two people standing side by side, on the left a nurse wearing blue gloves, on the right a pilot wearing dark sunglasses",
       "subjects": [
         "nurse",
         "pilot"
@@ -1135,7 +1135,7 @@
     {
       "prompt_id": 125,
       "n": 2,
-      "prompt": "a photo of a nurse wearing blue gloves and a teacher holding a book",
+      "prompt": "a photo of two people standing side by side, on the left a nurse wearing blue gloves, on the right a teacher holding a book",
       "subjects": [
         "nurse",
         "teacher"
@@ -1158,7 +1158,7 @@
     {
       "prompt_id": 126,
       "n": 2,
-      "prompt": "a photo of a pilot wearing dark sunglasses and a teacher holding a book",
+      "prompt": "a photo of two people standing side by side, on the left a pilot wearing dark sunglasses, on the right a teacher holding a book",
       "subjects": [
         "pilot",
         "teacher"
@@ -1181,7 +1181,7 @@
     {
       "prompt_id": 127,
       "n": 2,
-      "prompt": "a photo of a barista wearing a red apron and a chef wearing a white hat",
+      "prompt": "a photo of two people standing side by side, on the left a barista in a red apron, on the right a chef in a tall white chef hat",
       "subjects": [
         "barista",
         "chef"
@@ -1204,7 +1204,7 @@
     {
       "prompt_id": 128,
       "n": 2,
-      "prompt": "a photo of a barista wearing a red apron and a chef holding a pan",
+      "prompt": "a photo of two people standing side by side, on the left a barista in a red apron, on the right a chef holding a black frying pan",
       "subjects": [
         "barista",
         "chef"
@@ -1227,7 +1227,7 @@
     {
       "prompt_id": 129,
       "n": 2,
-      "prompt": "a photo of a barista wearing a red apron and a cyclist wearing a yellow helmet",
+      "prompt": "a photo of two people standing side by side, on the left a barista in a red apron, on the right a man wearing a cycling jersey in a yellow bike helmet",
       "subjects": [
         "barista",
         "cyclist"
@@ -1250,7 +1250,7 @@
     {
       "prompt_id": 130,
       "n": 2,
-      "prompt": "a photo of a barista wearing a red apron and a farmer holding a shovel",
+      "prompt": "a photo of two people standing side by side, on the left a barista in a red apron, on the right a farmer holding a wooden shovel",
       "subjects": [
         "barista",
         "farmer"
@@ -1273,7 +1273,7 @@
     {
       "prompt_id": 131,
       "n": 2,
-      "prompt": "a photo of a barista wearing a red apron and a nurse wearing blue gloves",
+      "prompt": "a photo of two people standing side by side, on the left a barista in a red apron, on the right a nurse wearing blue gloves",
       "subjects": [
         "barista",
         "nurse"
@@ -1296,7 +1296,7 @@
     {
       "prompt_id": 132,
       "n": 2,
-      "prompt": "a photo of a barista wearing a red apron and a pilot wearing dark sunglasses",
+      "prompt": "a photo of two people standing side by side, on the left a barista in a red apron, on the right a pilot wearing dark sunglasses",
       "subjects": [
         "barista",
         "pilot"
@@ -1319,7 +1319,7 @@
     {
       "prompt_id": 133,
       "n": 2,
-      "prompt": "a photo of a barista wearing a red apron and a teacher holding a book",
+      "prompt": "a photo of two people standing side by side, on the left a barista in a red apron, on the right a teacher holding a book",
       "subjects": [
         "barista",
         "teacher"
@@ -1342,7 +1342,7 @@
     {
       "prompt_id": 134,
       "n": 2,
-      "prompt": "a photo of a chef wearing a white hat and a cyclist wearing a yellow helmet",
+      "prompt": "a photo of two people standing side by side, on the left a chef in a tall white chef hat, on the right a man wearing a cycling jersey in a yellow bike helmet",
       "subjects": [
         "chef",
         "cyclist"
@@ -1365,7 +1365,7 @@
     {
       "prompt_id": 135,
       "n": 2,
-      "prompt": "a photo of a chef holding a pan and a cyclist wearing a yellow helmet",
+      "prompt": "a photo of two people standing side by side, on the left a chef holding a black frying pan, on the right a man wearing a cycling jersey in a yellow bike helmet",
       "subjects": [
         "chef",
         "cyclist"
@@ -1388,7 +1388,7 @@
     {
       "prompt_id": 137,
       "n": 2,
-      "prompt": "a photo of a chef holding a pan and a farmer holding a shovel",
+      "prompt": "a photo of two people standing side by side, on the left a chef holding a black frying pan, on the right a farmer holding a wooden shovel",
       "subjects": [
         "chef",
         "farmer"
@@ -1411,7 +1411,7 @@
     {
       "prompt_id": 139,
       "n": 2,
-      "prompt": "a photo of a chef holding a pan and a nurse wearing blue gloves",
+      "prompt": "a photo of two people standing side by side, on the left a chef holding a black frying pan, on the right a nurse wearing blue gloves",
       "subjects": [
         "chef",
         "nurse"
@@ -1434,7 +1434,7 @@
     {
       "prompt_id": 140,
       "n": 2,
-      "prompt": "a photo of a chef wearing a white hat and a pilot wearing dark sunglasses",
+      "prompt": "a photo of two people standing side by side, on the left a chef in a tall white chef hat, on the right a pilot wearing dark sunglasses",
       "subjects": [
         "chef",
         "pilot"
@@ -1457,7 +1457,7 @@
     {
       "prompt_id": 141,
       "n": 2,
-      "prompt": "a photo of a chef holding a pan and a pilot wearing dark sunglasses",
+      "prompt": "a photo of two people standing side by side, on the left a chef holding a black frying pan, on the right a pilot wearing dark sunglasses",
       "subjects": [
         "chef",
         "pilot"
@@ -1480,7 +1480,7 @@
     {
       "prompt_id": 142,
       "n": 3,
-      "prompt": "a photo of a barista wearing a red apron, a chef wearing a white hat, and a cyclist wearing a yellow helmet",
+      "prompt": "a photo of three people standing side by side, on the left a barista in a red apron, in the middle a chef in a tall white chef hat, on the right a man wearing a cycling jersey in a yellow bike helmet",
       "subjects": [
         "barista",
         "chef",
@@ -1508,7 +1508,7 @@
     {
       "prompt_id": 143,
       "n": 3,
-      "prompt": "a photo of a barista wearing a red apron, a chef holding a pan, and a cyclist wearing a yellow helmet",
+      "prompt": "a photo of three people standing side by side, on the left a barista in a red apron, in the middle a chef holding a black frying pan, on the right a man wearing a cycling jersey in a yellow bike helmet",
       "subjects": [
         "barista",
         "chef",
@@ -1536,7 +1536,7 @@
     {
       "prompt_id": 144,
       "n": 3,
-      "prompt": "a photo of a barista wearing a red apron, a chef wearing a white hat, and a farmer holding a shovel",
+      "prompt": "a photo of three people standing side by side, on the left a barista in a red apron, in the middle a chef in a tall white chef hat, on the right a farmer holding a wooden shovel",
       "subjects": [
         "barista",
         "chef",
@@ -1564,7 +1564,7 @@
     {
       "prompt_id": 145,
       "n": 3,
-      "prompt": "a photo of a barista wearing a red apron, a chef holding a pan, and a farmer holding a shovel",
+      "prompt": "a photo of three people standing side by side, on the left a barista in a red apron, in the middle a chef holding a black frying pan, on the right a farmer holding a wooden shovel",
       "subjects": [
         "barista",
         "chef",
@@ -1592,7 +1592,7 @@
     {
       "prompt_id": 146,
       "n": 3,
-      "prompt": "a photo of a barista wearing a red apron, a chef wearing a white hat, and a nurse wearing blue gloves",
+      "prompt": "a photo of three people standing side by side, on the left a barista in a red apron, in the middle a chef in a tall white chef hat, on the right a nurse wearing blue gloves",
       "subjects": [
         "barista",
         "chef",
@@ -1620,7 +1620,7 @@
     {
       "prompt_id": 148,
       "n": 3,
-      "prompt": "a photo of a barista wearing a red apron, a chef wearing a white hat, and a pilot wearing dark sunglasses",
+      "prompt": "a photo of three people standing side by side, on the left a barista in a red apron, in the middle a chef in a tall white chef hat, on the right a pilot wearing dark sunglasses",
       "subjects": [
         "barista",
         "chef",
@@ -1648,7 +1648,7 @@
     {
       "prompt_id": 149,
       "n": 3,
-      "prompt": "a photo of a barista wearing a red apron, a chef holding a pan, and a pilot wearing dark sunglasses",
+      "prompt": "a photo of three people standing side by side, on the left a barista in a red apron, in the middle a chef holding a black frying pan, on the right a pilot wearing dark sunglasses",
       "subjects": [
         "barista",
         "chef",
@@ -1676,7 +1676,7 @@
     {
       "prompt_id": 150,
       "n": 3,
-      "prompt": "a photo of a barista wearing a red apron, a chef wearing a white hat, and a teacher holding a book",
+      "prompt": "a photo of three people standing side by side, on the left a barista in a red apron, in the middle a chef in a tall white chef hat, on the right a teacher holding a book",
       "subjects": [
         "barista",
         "chef",
@@ -1704,7 +1704,7 @@
     {
       "prompt_id": 154,
       "n": 3,
-      "prompt": "a photo of a barista wearing a red apron, a cyclist wearing a yellow helmet, and a pilot wearing dark sunglasses",
+      "prompt": "a photo of three people standing side by side, on the left a barista in a red apron, in the middle a man wearing a cycling jersey in a yellow bike helmet, on the right a pilot wearing dark sunglasses",
       "subjects": [
         "barista",
         "cyclist",
@@ -1732,7 +1732,7 @@
     {
       "prompt_id": 155,
       "n": 3,
-      "prompt": "a photo of a barista wearing a red apron, a cyclist wearing a yellow helmet, and a teacher holding a book",
+      "prompt": "a photo of three people standing side by side, on the left a barista in a red apron, in the middle a man wearing a cycling jersey in a yellow bike helmet, on the right a teacher holding a book",
       "subjects": [
         "barista",
         "cyclist",
@@ -1760,7 +1760,7 @@
     {
       "prompt_id": 157,
       "n": 3,
-      "prompt": "a photo of a barista wearing a red apron, a farmer holding a shovel, and a pilot wearing dark sunglasses",
+      "prompt": "a photo of three people standing side by side, on the left a barista in a red apron, in the middle a farmer holding a wooden shovel, on the right a pilot wearing dark sunglasses",
       "subjects": [
         "barista",
         "farmer",
@@ -1788,7 +1788,7 @@
     {
       "prompt_id": 158,
       "n": 3,
-      "prompt": "a photo of a barista wearing a red apron, a farmer holding a shovel, and a teacher holding a book",
+      "prompt": "a photo of three people standing side by side, on the left a barista in a red apron, in the middle a farmer holding a wooden shovel, on the right a teacher holding a book",
       "subjects": [
         "barista",
         "farmer",
@@ -1816,7 +1816,7 @@
     {
       "prompt_id": 161,
       "n": 3,
-      "prompt": "a photo of a barista wearing a red apron, a pilot wearing dark sunglasses, and a teacher holding a book",
+      "prompt": "a photo of three people standing side by side, on the left a barista in a red apron, in the middle a pilot wearing dark sunglasses, on the right a teacher holding a book",
       "subjects": [
         "barista",
         "pilot",
@@ -1844,7 +1844,7 @@
     {
       "prompt_id": 162,
       "n": 3,
-      "prompt": "a photo of a chef wearing a white hat, a cyclist wearing a yellow helmet, and a farmer holding a shovel",
+      "prompt": "a photo of three people standing side by side, on the left a chef in a tall white chef hat, in the middle a man wearing a cycling jersey in a yellow bike helmet, on the right a farmer holding a wooden shovel",
       "subjects": [
         "chef",
         "cyclist",
@@ -1872,7 +1872,7 @@
     {
       "prompt_id": 163,
       "n": 3,
-      "prompt": "a photo of a chef holding a pan, a cyclist wearing a yellow helmet, and a farmer holding a shovel",
+      "prompt": "a photo of three people standing side by side, on the left a chef holding a black frying pan, in the middle a man wearing a cycling jersey in a yellow bike helmet, on the right a farmer holding a wooden shovel",
       "subjects": [
         "chef",
         "cyclist",
@@ -1900,7 +1900,7 @@
     {
       "prompt_id": 164,
       "n": 3,
-      "prompt": "a photo of a chef wearing a white hat, a cyclist wearing a yellow helmet, and a nurse wearing blue gloves",
+      "prompt": "a photo of three people standing side by side, on the left a chef in a tall white chef hat, in the middle a man wearing a cycling jersey in a yellow bike helmet, on the right a nurse wearing blue gloves",
       "subjects": [
         "chef",
         "cyclist",
@@ -1928,7 +1928,7 @@
     {
       "prompt_id": 165,
       "n": 3,
-      "prompt": "a photo of a chef holding a pan, a cyclist wearing a yellow helmet, and a nurse wearing blue gloves",
+      "prompt": "a photo of three people standing side by side, on the left a chef holding a black frying pan, in the middle a man wearing a cycling jersey in a yellow bike helmet, on the right a nurse wearing blue gloves",
       "subjects": [
         "chef",
         "cyclist",
@@ -1956,7 +1956,7 @@
     {
       "prompt_id": 166,
       "n": 3,
-      "prompt": "a photo of a chef wearing a white hat, a cyclist wearing a yellow helmet, and a pilot wearing dark sunglasses",
+      "prompt": "a photo of three people standing side by side, on the left a chef in a tall white chef hat, in the middle a man wearing a cycling jersey in a yellow bike helmet, on the right a pilot wearing dark sunglasses",
       "subjects": [
         "chef",
         "cyclist",
@@ -1984,7 +1984,7 @@
     {
       "prompt_id": 167,
       "n": 4,
-      "prompt": "a photo of a barista wearing a red apron, a chef wearing a white hat, a cyclist wearing a yellow helmet, and a farmer holding a shovel",
+      "prompt": "a photo of four people standing side by side, on the far left a barista in a red apron, on the center-left a chef in a tall white chef hat, on the center-right a man wearing a cycling jersey in a yellow bike helmet, on the far right a farmer holding a wooden shovel",
       "subjects": [
         "barista",
         "chef",
@@ -2017,7 +2017,7 @@
     {
       "prompt_id": 171,
       "n": 4,
-      "prompt": "a photo of a barista wearing a red apron, a chef wearing a white hat, a cyclist wearing a yellow helmet, and a pilot wearing dark sunglasses",
+      "prompt": "a photo of four people standing side by side, on the far left a barista in a red apron, on the center-left a chef in a tall white chef hat, on the center-right a man wearing a cycling jersey in a yellow bike helmet, on the far right a pilot wearing dark sunglasses",
       "subjects": [
         "barista",
         "chef",
@@ -2050,7 +2050,7 @@
     {
       "prompt_id": 174,
       "n": 4,
-      "prompt": "a photo of a barista wearing a red apron, a chef holding a pan, a cyclist wearing a yellow helmet, and a teacher holding a book",
+      "prompt": "a photo of four people standing side by side, on the far left a barista in a red apron, on the center-left a chef holding a black frying pan, on the center-right a man wearing a cycling jersey in a yellow bike helmet, on the far right a teacher holding a book",
       "subjects": [
         "barista",
         "chef",
@@ -2083,7 +2083,7 @@
     {
       "prompt_id": 183,
       "n": 4,
-      "prompt": "a photo of a barista wearing a red apron, a chef wearing a white hat, a nurse wearing blue gloves, and a teacher holding a book",
+      "prompt": "a photo of four people standing side by side, on the far left a barista in a red apron, on the center-left a chef in a tall white chef hat, on the center-right a nurse wearing blue gloves, on the far right a teacher holding a book",
       "subjects": [
         "barista",
         "chef",
@@ -2116,7 +2116,7 @@
     {
       "prompt_id": 200,
       "n": 4,
-      "prompt": "a photo of a barista wearing a red apron, a chef wearing a white hat, a pilot wearing dark sunglasses, and a teacher holding a book",
+      "prompt": "a photo of four people standing side by side, on the far left a barista in a red apron, on the center-left a chef in a tall white chef hat, on the center-right a pilot wearing dark sunglasses, on the far right a teacher holding a book",
       "subjects": [
         "barista",
         "chef",
@@ -2149,7 +2149,7 @@
     {
       "prompt_id": 202,
       "n": 4,
-      "prompt": "a photo of a barista wearing a red apron, a cyclist wearing a yellow helmet, a farmer holding a shovel, and a nurse wearing blue gloves",
+      "prompt": "a photo of four people standing side by side, on the far left a barista in a red apron, on the center-left a man wearing a cycling jersey in a yellow bike helmet, on the center-right a farmer holding a wooden shovel, on the far right a nurse wearing blue gloves",
       "subjects": [
         "barista",
         "cyclist",
@@ -2182,7 +2182,7 @@
     {
       "prompt_id": 203,
       "n": 4,
-      "prompt": "a photo of a barista wearing a red apron, a cyclist wearing a yellow helmet, a farmer holding a shovel, and a pilot wearing dark sunglasses",
+      "prompt": "a photo of four people standing side by side, on the far left a barista in a red apron, on the center-left a man wearing a cycling jersey in a yellow bike helmet, on the center-right a farmer holding a wooden shovel, on the far right a pilot wearing dark sunglasses",
       "subjects": [
         "barista",
         "cyclist",
@@ -2215,7 +2215,7 @@
     {
       "prompt_id": 204,
       "n": 4,
-      "prompt": "a photo of a barista wearing a red apron, a cyclist wearing a yellow helmet, a farmer holding a shovel, and a teacher holding a book",
+      "prompt": "a photo of four people standing side by side, on the far left a barista in a red apron, on the center-left a man wearing a cycling jersey in a yellow bike helmet, on the center-right a farmer holding a wooden shovel, on the far right a teacher holding a book",
       "subjects": [
         "barista",
         "cyclist",
@@ -2248,7 +2248,7 @@
     {
       "prompt_id": 205,
       "n": 4,
-      "prompt": "a photo of a barista wearing a red apron, a cyclist wearing a yellow helmet, a nurse wearing blue gloves, and a pilot wearing dark sunglasses",
+      "prompt": "a photo of four people standing side by side, on the far left a barista in a red apron, on the center-left a man wearing a cycling jersey in a yellow bike helmet, on the center-right a nurse wearing blue gloves, on the far right a pilot wearing dark sunglasses",
       "subjects": [
         "barista",
         "cyclist",
@@ -2281,7 +2281,7 @@
     {
       "prompt_id": 206,
       "n": 4,
-      "prompt": "a photo of a barista wearing a red apron, a cyclist wearing a yellow helmet, a nurse wearing blue gloves, and a teacher holding a book",
+      "prompt": "a photo of four people standing side by side, on the far left a barista in a red apron, on the center-left a man wearing a cycling jersey in a yellow bike helmet, on the center-right a nurse wearing blue gloves, on the far right a teacher holding a book",
       "subjects": [
         "barista",
         "cyclist",
@@ -2314,7 +2314,7 @@
     {
       "prompt_id": 207,
       "n": 4,
-      "prompt": "a photo of a barista wearing a red apron, a cyclist wearing a yellow helmet, a pilot wearing dark sunglasses, and a teacher holding a book",
+      "prompt": "a photo of four people standing side by side, on the far left a barista in a red apron, on the center-left a man wearing a cycling jersey in a yellow bike helmet, on the center-right a pilot wearing dark sunglasses, on the far right a teacher holding a book",
       "subjects": [
         "barista",
         "cyclist",
@@ -2347,7 +2347,7 @@
     {
       "prompt_id": 208,
       "n": 4,
-      "prompt": "a photo of a barista wearing a red apron, a farmer holding a shovel, a nurse wearing blue gloves, and a pilot wearing dark sunglasses",
+      "prompt": "a photo of four people standing side by side, on the far left a barista in a red apron, on the center-left a farmer holding a wooden shovel, on the center-right a nurse wearing blue gloves, on the far right a pilot wearing dark sunglasses",
       "subjects": [
         "barista",
         "farmer",
@@ -2380,7 +2380,7 @@
     {
       "prompt_id": 209,
       "n": 4,
-      "prompt": "a photo of a barista wearing a red apron, a farmer holding a shovel, a nurse wearing blue gloves, and a teacher holding a book",
+      "prompt": "a photo of four people standing side by side, on the far left a barista in a red apron, on the center-left a farmer holding a wooden shovel, on the center-right a nurse wearing blue gloves, on the far right a teacher holding a book",
       "subjects": [
         "barista",
         "farmer",
@@ -2413,7 +2413,7 @@
     {
       "prompt_id": 210,
       "n": 4,
-      "prompt": "a photo of a barista wearing a red apron, a farmer holding a shovel, a pilot wearing dark sunglasses, and a teacher holding a book",
+      "prompt": "a photo of four people standing side by side, on the far left a barista in a red apron, on the center-left a farmer holding a wooden shovel, on the center-right a pilot wearing dark sunglasses, on the far right a teacher holding a book",
       "subjects": [
         "barista",
         "farmer",
@@ -2446,7 +2446,7 @@
     {
       "prompt_id": 211,
       "n": 4,
-      "prompt": "a photo of a barista wearing a red apron, a nurse wearing blue gloves, a pilot wearing dark sunglasses, and a teacher holding a book",
+      "prompt": "a photo of four people standing side by side, on the far left a barista in a red apron, on the center-left a nurse wearing blue gloves, on the center-right a pilot wearing dark sunglasses, on the far right a teacher holding a book",
       "subjects": [
         "barista",
         "nurse",
@@ -2479,7 +2479,7 @@
     {
       "prompt_id": 212,
       "n": 4,
-      "prompt": "a photo of a chef wearing a white hat, a cyclist wearing a yellow helmet, a farmer holding a shovel, and a nurse wearing blue gloves",
+      "prompt": "a photo of four people standing side by side, on the far left a chef in a tall white chef hat, on the center-left a man wearing a cycling jersey in a yellow bike helmet, on the center-right a farmer holding a wooden shovel, on the far right a nurse wearing blue gloves",
       "subjects": [
         "chef",
         "cyclist",
@@ -2512,7 +2512,7 @@
     {
       "prompt_id": 213,
       "n": 4,
-      "prompt": "a photo of a chef holding a pan, a cyclist wearing a yellow helmet, a farmer holding a shovel, and a nurse wearing blue gloves",
+      "prompt": "a photo of four people standing side by side, on the far left a chef holding a black frying pan, on the center-left a man wearing a cycling jersey in a yellow bike helmet, on the center-right a farmer holding a wooden shovel, on the far right a nurse wearing blue gloves",
       "subjects": [
         "chef",
         "cyclist",
@@ -2545,7 +2545,7 @@
     {
       "prompt_id": 214,
       "n": 4,
-      "prompt": "a photo of a chef wearing a white hat, a cyclist wearing a yellow helmet, a farmer holding a shovel, and a pilot wearing dark sunglasses",
+      "prompt": "a photo of four people standing side by side, on the far left a chef in a tall white chef hat, on the center-left a man wearing a cycling jersey in a yellow bike helmet, on the center-right a farmer holding a wooden shovel, on the far right a pilot wearing dark sunglasses",
       "subjects": [
         "chef",
         "cyclist",
@@ -2578,7 +2578,7 @@
     {
       "prompt_id": 215,
       "n": 4,
-      "prompt": "a photo of a chef holding a pan, a cyclist wearing a yellow helmet, a farmer holding a shovel, and a pilot wearing dark sunglasses",
+      "prompt": "a photo of four people standing side by side, on the far left a chef holding a black frying pan, on the center-left a man wearing a cycling jersey in a yellow bike helmet, on the center-right a farmer holding a wooden shovel, on the far right a pilot wearing dark sunglasses",
       "subjects": [
         "chef",
         "cyclist",
@@ -2611,7 +2611,7 @@
     {
       "prompt_id": 217,
       "n": 4,
-      "prompt": "a photo of a chef holding a pan, a cyclist wearing a yellow helmet, a farmer holding a shovel, and a teacher holding a book",
+      "prompt": "a photo of four people standing side by side, on the far left a chef holding a black frying pan, on the center-left a man wearing a cycling jersey in a yellow bike helmet, on the center-right a farmer holding a wooden shovel, on the far right a teacher holding a book",
       "subjects": [
         "chef",
         "cyclist",
@@ -2644,7 +2644,7 @@
     {
       "prompt_id": 218,
       "n": 4,
-      "prompt": "a photo of a chef wearing a white hat, a cyclist wearing a yellow helmet, a nurse wearing blue gloves, and a pilot wearing dark sunglasses",
+      "prompt": "a photo of four people standing side by side, on the far left a chef in a tall white chef hat, on the center-left a man wearing a cycling jersey in a yellow bike helmet, on the center-right a nurse wearing blue gloves, on the far right a pilot wearing dark sunglasses",
       "subjects": [
         "chef",
         "cyclist",
@@ -2677,7 +2677,7 @@
     {
       "prompt_id": 219,
       "n": 4,
-      "prompt": "a photo of a chef holding a pan, a cyclist wearing a yellow helmet, a nurse wearing blue gloves, and a pilot wearing dark sunglasses",
+      "prompt": "a photo of four people standing side by side, on the far left a chef holding a black frying pan, on the center-left a man wearing a cycling jersey in a yellow bike helmet, on the center-right a nurse wearing blue gloves, on the far right a pilot wearing dark sunglasses",
       "subjects": [
         "chef",
         "cyclist",
@@ -2710,7 +2710,7 @@
     {
       "prompt_id": 220,
       "n": 4,
-      "prompt": "a photo of a chef wearing a white hat, a cyclist wearing a yellow helmet, a nurse wearing blue gloves, and a teacher holding a book",
+      "prompt": "a photo of four people standing side by side, on the far left a chef in a tall white chef hat, on the center-left a man wearing a cycling jersey in a yellow bike helmet, on the center-right a nurse wearing blue gloves, on the far right a teacher holding a book",
       "subjects": [
         "chef",
         "cyclist",
@@ -2743,7 +2743,7 @@
     {
       "prompt_id": 221,
       "n": 4,
-      "prompt": "a photo of a chef holding a pan, a cyclist wearing a yellow helmet, a nurse wearing blue gloves, and a teacher holding a book",
+      "prompt": "a photo of four people standing side by side, on the far left a chef holding a black frying pan, on the center-left a man wearing a cycling jersey in a yellow bike helmet, on the center-right a nurse wearing blue gloves, on the far right a teacher holding a book",
       "subjects": [
         "chef",
         "cyclist",
@@ -2776,7 +2776,7 @@
     {
       "prompt_id": 223,
       "n": 4,
-      "prompt": "a photo of a chef holding a pan, a cyclist wearing a yellow helmet, a pilot wearing dark sunglasses, and a teacher holding a book",
+      "prompt": "a photo of four people standing side by side, on the far left a chef holding a black frying pan, on the center-left a man wearing a cycling jersey in a yellow bike helmet, on the center-right a pilot wearing dark sunglasses, on the far right a teacher holding a book",
       "subjects": [
         "chef",
         "cyclist",
@@ -2809,7 +2809,7 @@
     {
       "prompt_id": 224,
       "n": 4,
-      "prompt": "a photo of a chef wearing a white hat, a farmer holding a shovel, a nurse wearing blue gloves, and a pilot wearing dark sunglasses",
+      "prompt": "a photo of four people standing side by side, on the far left a chef in a tall white chef hat, on the center-left a farmer holding a wooden shovel, on the center-right a nurse wearing blue gloves, on the far right a pilot wearing dark sunglasses",
       "subjects": [
         "chef",
         "farmer",
@@ -2842,7 +2842,7 @@
     {
       "prompt_id": 226,
       "n": 4,
-      "prompt": "a photo of a chef wearing a white hat, a farmer holding a shovel, a nurse wearing blue gloves, and a teacher holding a book",
+      "prompt": "a photo of four people standing side by side, on the far left a chef in a tall white chef hat, on the center-left a farmer holding a wooden shovel, on the center-right a nurse wearing blue gloves, on the far right a teacher holding a book",
       "subjects": [
         "chef",
         "farmer",
@@ -2875,7 +2875,7 @@
     {
       "prompt_id": 227,
       "n": 4,
-      "prompt": "a photo of a chef holding a pan, a farmer holding a shovel, a nurse wearing blue gloves, and a teacher holding a book",
+      "prompt": "a photo of four people standing side by side, on the far left a chef holding a black frying pan, on the center-left a farmer holding a wooden shovel, on the center-right a nurse wearing blue gloves, on the far right a teacher holding a book",
       "subjects": [
         "chef",
         "farmer",
@@ -2905,5 +2905,6 @@
         }
       ]
     }
-  ]
+  ],
+  "_prompt_rewrite_note": "Prompts rewritten from original SDXL versions to be FLUX.1-dev friendly: explicit spatial positioning, extra visual anchors per subject, 'in a' binding, 'cyclist' replaced with 'man wearing a cycling jersey' to avoid rendering as a bicycle object."
 }

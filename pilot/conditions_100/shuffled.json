@@ -1,0 +1,2170 @@
+[
+  {
+    "item_index": 12,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Bartender with wavy hair?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 12,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Bartender wearing glasses?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 12,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Bartender with brown hair?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 13,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Housekeeping Staff with tote bag in hand?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 13,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Housekeeping Staff with mustache?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 13,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Housekeeping Staff with water bottle in hand?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 13,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Housekeeping Staff wearing headphones?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 14,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Janitor wearing necklace?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 14,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Janitor wearing latex gloves?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 14,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Janitor with camera in hand?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 18,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Housekeeping Staff wearing sunglasses?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 3
+  },
+  {
+    "item_index": 18,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Housekeeping Staff with camera in hand?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 3
+  },
+  {
+    "item_index": 18,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Housekeeping Staff with Black hair?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 3
+  },
+  {
+    "item_index": 19,
+    "question_col": "question_attr_2",
+    "question_text": "Is there an Airline Pilot with coffee cup in hand?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 19,
+    "question_col": "question_attr_3",
+    "question_text": "Is there an Airline Pilot with bun hair?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 19,
+    "question_col": "question_attr_4",
+    "question_text": "Is there an Airline Pilot with tablet in hand?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 20,
+    "question_col": "question_attr_1",
+    "question_text": "Is there an Airman with a beard?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 20,
+    "question_col": "question_attr_3",
+    "question_text": "Is there an Airman with white hair?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 20,
+    "question_col": "question_attr_4",
+    "question_text": "Is there an Airman wearing glasses?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 21,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Hotel Front Desk Clerk with brown hair?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 21,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Hotel Front Desk Clerk wearing sunglasses?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 23,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Plumber wearing latex gloves?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 23,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Plumber is surprised?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 23,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Plumber wearing necklace?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 27,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Sailor wearing rings?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 27,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Sailor is clean-shaven?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 27,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Sailor with suitcase in hand?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 29,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Barista with red hair?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 29,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Barista with grocery bag in hand?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 29,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Barista with shaved head hair?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 30,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Theme Park Employee with stubble?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 30,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Theme Park Employee with buzz cut hair?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 30,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Theme Park Employee with tattoos on ankle?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 30,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Theme Park Employee wearing piercings on Ears?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 31,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Supermarket Employee wearing glasses?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 31,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Supermarket Employee wearing Winter gloves?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 31,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Supermarket Employee with coffee cup in hand?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 31,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Supermarket Employee wearing bracelet?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 37,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Chef wearing latex gloves?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 37,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Chef wearing an anklet?",
+    "claimed_step": 4,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 37,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Chef is surprised?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 37,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Chef wearing glasses?",
+    "claimed_step": 4,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 46,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Bouncer wearing latex gloves?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 46,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Bouncer wearing glasses?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 48,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Flight Attendant wearing Winter gloves?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 48,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Flight Attendant with Coffee cup in hand?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 48,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Flight Attendant wearing glasses?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 49,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Paramedic wearing leather gloves?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 49,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Paramedic wearing piercings on ears?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 49,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Paramedic with water bottle in hand?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 51,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Nurse with Smartphone in hand?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 51,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Nurse wearing glasses?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 51,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Nurse with tattoos on neck?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 52,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Pharmacist wearing earrings?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 52,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Pharmacist with tattoos on ankle?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 52,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Pharmacist with laptop in hand?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 58,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Plumber wearing leather gloves?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 58,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Plumber with camera in hand?",
+    "claimed_step": 4,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 58,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Plumber with coffee cup in hand?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 62,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Construction Worker with a mustache?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 62,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Construction Worker with a suitcase in hand?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 63,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Chef with tattoos on leg?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 63,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Chef is crying?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 63,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Chef with bun hair?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 63,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Chef is serious?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 66,
+    "question_col": "question_attr_1",
+    "question_text": "Is there an Electrician with camera in hand?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 66,
+    "question_col": "question_attr_3",
+    "question_text": "Is there an Electrician with suitcase in hand?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 67,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Plumber wearing headphones?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 67,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Plumber is content?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 67,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Plumber with ponytail hair?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 68,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Lifeguard with coffee cup in hand?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 68,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Lifeguard with red hair?",
+    "claimed_step": 4,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 68,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Lifeguard with tattoos on arm?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 68,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Lifeguard with straight hair?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 69,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Sailor wearing earrings?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 3
+  },
+  {
+    "item_index": 69,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Sailor with dreadlocks hair?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 3
+  },
+  {
+    "item_index": 69,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Sailor with tattoos on leg?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 3
+  },
+  {
+    "item_index": 69,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Sailor wearing leather gloves?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 3
+  },
+  {
+    "item_index": 70,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Pharmacist with bun hair?",
+    "claimed_step": 4,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 70,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Pharmacist with water bottle in hand?",
+    "claimed_step": 4,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 70,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Pharmacist is thoughtful?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 73,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Plumber wearing glasses?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 73,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Plumber with beard?",
+    "claimed_step": 4,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 73,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Plumber is happy?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 78,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Bartender wearing earrings?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 78,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Bartender is clean-shaven?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 78,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Bartender is laughing?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 79,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Security Guard with apple in hand?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 79,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Security Guard wearing Necklace?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 80,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Soldier wearing glasses?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 80,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Soldier is clean-shaven?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 80,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Soldier with brown hair?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 80,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Soldier wearing latex gloves?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 82,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Firefighter wearing earrings?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 82,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Firefighter wearing latex gloves?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 86,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Doctor with tattoos on leg?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 86,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Doctor is confused?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 86,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Doctor with Smartphone in hand?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 86,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Doctor wearing latex gloves?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 87,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Doctor with blue eyes?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 87,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Doctor with stubble?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 87,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Doctor wearing latex gloves?",
+    "claimed_step": 4,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 87,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Doctor is crying?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 97,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Surgeon wearing leather gloves?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 97,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Surgeon with tablet in hand?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 97,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Surgeon wearing glasses?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 97,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Surgeon with bun hair?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 100,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Pharmacist with blonde hair?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 100,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Pharmacist wearing latex gloves?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 100,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Pharmacist is joyful?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 100,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Pharmacist is confused?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 102,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Casino Dealer is sad?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 102,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Casino Dealer with coffee cup in hand?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 102,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Casino Dealer wearing headphones?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 105,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Firefighter with straight hair?",
+    "claimed_step": 4,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 105,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Firefighter with Smartphone in hand?",
+    "claimed_step": 4,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 105,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Firefighter is excited?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 106,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Marine with fades hair?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 106,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Marine with water bottle in hand?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 106,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Marine with beard?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 106,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Marine wearing sunglasses?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 107,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Bartender with coffee cup in hand?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 107,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Bartender with curly hair?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 107,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Bartender wearing rings?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 107,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Bartender with tattoos on neck?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 108,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Correctional Officer with red hair?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 108,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Correctional Officer with tattoos on leg?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 108,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Correctional Officer is crying?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 111,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Doctor with tattoos on arm?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 111,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Doctor with briefcase in hand?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 111,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Doctor is surprised?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 111,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Doctor with buzz cut hair?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 115,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Flight Attendant wearing glasses?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 115,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Flight Attendant is thoughtful?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 115,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Flight Attendant with black hair?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 115,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Flight Attendant with a mustache?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 126,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Pharmacist wearing rings?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 126,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Pharmacist is happy?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 129,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Casino Dealer with sideburns?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 129,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Casino Dealer is worried?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 129,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Casino Dealer with Smartphone in hand?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 129,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Casino Dealer wearing glasses?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 132,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Cruise Ship Crew with sandwich in hand?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 132,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Cruise Ship Crew with stubble?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 133,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Flight Attendant with white hair?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 133,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Flight Attendant is clean-shaven?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 134,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Surgeon wearing glasses?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 134,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Surgeon with sideburns?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 142,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Postal Worker wearing sunglasses?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 142,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Postal Worker is joyful?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 142,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Postal Worker with an eyebrow piercing?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 142,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Postal Worker is worried?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 156,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Postal Worker with long hair?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 156,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Postal Worker with backpack in hand?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 156,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Postal Worker with soda can in hand?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 156,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Postal Worker with red hair?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 157,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Marine wearing Winter gloves?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 157,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Marine with soda can in hand?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 157,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Marine with tattoos on ankle?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 157,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Marine with red hair?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 160,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Bank Teller with tattoos on neck?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 160,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Bank Teller with fades hair?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 160,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Bank Teller wearing nose piercings?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 161,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Cruise Ship Crew is crying?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 161,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Cruise Ship Crew with black hair?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 161,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Cruise Ship Crew wearing sunglasses?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 171,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Theme Park Employee wearing bracelet?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 171,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Theme Park Employee with sideburns?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 171,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Theme Park Employee with coffee cup in hand?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 176,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Surgeon wearing latex gloves?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 176,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Surgeon is serious?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 176,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Surgeon wearing earrings?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 180,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Bank Teller is angry?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 180,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Bank Teller wearing headphones?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 180,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Bank Teller is serious?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 184,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Surgeon wearing lip piercings?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 184,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Surgeon with backpack in hand?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 185,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Pharmacist is content?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 185,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Pharmacist with Black hair?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 185,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Pharmacist wearing Winter gloves?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 187,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Soldier with water bottle in hand?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 187,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Soldier wearing bracelet?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 187,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Soldier wearing sunglasses?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 191,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a State Park Ranger is Happy?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 191,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a State Park Ranger is serious?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 194,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Firefighter with tablet in hand?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 194,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Firefighter wearing sunglasses?",
+    "claimed_step": 4,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 200,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Supermarket Employee with buzz cut hair?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 200,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Supermarket Employee wearing sunglasses?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 202,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a State Park Ranger wearing piercings in ears?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 202,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a State Park Ranger with suitcase in hand?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 202,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a State Park Ranger with red hair?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 202,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a State Park Ranger wearing necklace?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 205,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Housekeeping Staff wearing earrings?",
+    "claimed_step": 4,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 205,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Housekeeping Staff with purse in hand?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 205,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Housekeeping Staff with a Beard?",
+    "claimed_step": 4,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 206,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Marine with camera in hand?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 206,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Marine with tattoos on ankle?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 206,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Marine with brown hair?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 207,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Soldier wearing rings?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 207,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Soldier wearing lip piercing?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 207,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Soldier with tattoos on neck?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 213,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Paramedic wearing latex gloves?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 213,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Paramedic with white hair?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 213,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Paramedic with wavy hair?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 221,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Plumber is scared?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 221,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Plumber is content?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 221,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Plumber wearing glasses?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 221,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Plumber with suitcase in hand?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 222,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Construction Worker with coffee cup in hand?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 222,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Construction Worker is scared?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 222,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Construction Worker with goatee?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 222,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Construction Worker is excited?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 223,
+    "question_col": "question_attr_1",
+    "question_text": "Is there an Airman with laptop in hand?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 223,
+    "question_col": "question_attr_2",
+    "question_text": "Is there an Airman with undercut hair?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 223,
+    "question_col": "question_attr_4",
+    "question_text": "Is there an Airman wearing lip piercings?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 224,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Flight Attendant with white hair?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 224,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Flight Attendant wearing glasses?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 224,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Flight Attendant with tablet in hand?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 224,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Flight Attendant is excited?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 225,
+    "question_col": "question_attr_2",
+    "question_text": "Is there an Electrician with blonde hair?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 225,
+    "question_col": "question_attr_3",
+    "question_text": "Is there an Electrician wearing watch?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 225,
+    "question_col": "question_attr_4",
+    "question_text": "Is there an Electrician with beard?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 229,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Sailor wearing leather gloves?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 229,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Sailor with tablet in hand?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 229,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Sailor with curly hair?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 234,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Referee / Umpire with sideburns?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 234,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Referee / Umpire with bun hair?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 234,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Referee / Umpire with soda can in hand?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 234,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Referee / Umpire wearing leather gloves?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 245,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Sailor wearing latex gloves?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 245,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Sailor is clean-shaven?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 245,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Sailor with black hair?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 247,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Bouncer is joyful?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 247,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Bouncer wearing sunglasses?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 252,
+    "question_col": "question_attr_1",
+    "question_text": "Is there an Electrician with briefcase in hand?",
+    "claimed_step": 4,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 252,
+    "question_col": "question_attr_2",
+    "question_text": "Is there an Electrician wearing earrings?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 252,
+    "question_col": "question_attr_3",
+    "question_text": "Is there an Electrician with apple in hand?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 252,
+    "question_col": "question_attr_4",
+    "question_text": "Is there an Electrician with green eyes?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 254,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Supermarket Employee laughing?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 254,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Supermarket Employee with tattoos on leg?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 254,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Supermarket Employee with braids hair?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 258,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Casino Dealer with suitcase in hand?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 258,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Casino Dealer wearing leather gloves?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 258,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Casino Dealer is laughing?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 271,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Paramedic with tablet in hand?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 271,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Paramedic with tattoos on arm?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 271,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Paramedic wearing anklet?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 271,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Paramedic wearing glasses?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 288,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Construction Worker with ponytail hair?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 288,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Construction Worker with suitcase in hand?",
+    "claimed_step": 4,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 293,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Barista wearing Winter gloves?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 293,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Barista wearing piercings on ears?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 293,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Barista with black hair?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 296,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Doctor smiling?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 2
+  },
+  {
+    "item_index": 296,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Doctor wearing anklet?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 2
+  },
+  {
+    "item_index": 296,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Doctor with tote bag in hand?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 2
+  },
+  {
+    "item_index": 302,
+    "question_col": "question_attr_1",
+    "question_text": "Is there an Airline Pilot wearing latex gloves?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 302,
+    "question_col": "question_attr_2",
+    "question_text": "Is there an Airline Pilot with brown eyes?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 302,
+    "question_col": "question_attr_3",
+    "question_text": "Is there an Airline Pilot with coffee cup in hand?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 310,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Firefighter is worried?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 310,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Firefighter wearing piercings on ears?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 310,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Firefighter wearing a watch?",
+    "claimed_step": 4,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 314,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Marine with grocery bag in hand?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 314,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Marine wearing sunglasses?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 314,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Marine with tattoos on neck?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 314,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Marine is joyful?",
+    "claimed_step": 3,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 315,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Correctional Officer with stubble?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 315,
+    "question_col": "question_attr_2",
+    "question_text": "Is there a Correctional Officer with grocery bag in hand?",
+    "claimed_step": 1,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 315,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Correctional Officer is surprised?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  },
+  {
+    "item_index": 315,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Correctional Officer wearing headphones?",
+    "claimed_step": 2,
+    "source": "shuffled_within_chain",
+    "final_step": 4
+  }
+]
