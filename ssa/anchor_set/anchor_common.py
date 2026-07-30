@@ -188,18 +188,11 @@ def save_labels(path: Path, labels: Dict[str, str]) -> None:
 
 def resolve_image_path(artifacts_dir: Path, stored_path: str) -> Path:
     """manifest.json's image_path strings are baked in at generation time relative to the
-    GPU script's OWN artifacts folder -- which both generate_anchor_images.py and
-    generate_anchor_images_sdxl.py name literally "artifacts" (a per-Kaggle-session
-    convention, unrelated to wherever the manifest gets downloaded to locally). So every
-    manifest, SD1.5 or SDXL, stores paths shaped like "artifacts/images/p6.png" regardless
-    of run. Naively resolving that string relative to the current working directory always
-    lands in the SD1.5 folder, even when --artifacts-dir points elsewhere. This strips that
-    baked-in "artifacts/" prefix and rejoins the remainder onto the CURRENT local
-    artifacts_dir instead, so the SDXL run's images resolve correctly too."""
-    rel = stored_path
-    prefix = "artifacts/"
-    if rel.startswith(prefix):
-        rel = rel[len(prefix):]
+    GPU script's OWN artifacts folder..."""
+    rel = Path(stored_path)
+    # Strip the top-level directory if it starts with "artifacts"
+    if rel.parts and rel.parts[0].startswith("artifacts"):
+        rel = Path(*rel.parts[1:])
     return (Path(artifacts_dir) / rel).resolve()
 
 
