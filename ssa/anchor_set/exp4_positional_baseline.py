@@ -29,7 +29,7 @@ from typing import Dict, List, Sequence, Tuple
 import pandas as pd
 from scipy import stats
 
-from anchor_common import build_agreement_rows, chance_baseline, load_labels
+from anchor_common import build_agreement_rows, chance_baseline, load_labels, locate_attribute_phrase
 
 
 def nearest_subject_baseline(prompt: str, subjects: Sequence[str], attribute: str) -> str:
@@ -40,9 +40,7 @@ def nearest_subject_baseline(prompt: str, subjects: Sequence[str], attribute: st
     subject precedes the attribute at all. Within a direction, nearest (smallest gap) wins;
     since subjects occupy distinct positions, exact same-direction ties can't occur for real
     prompts, but Python's stable sort resolves them by `subjects` list order regardless."""
-    attr_idx = prompt.find(attribute)
-    if attr_idx < 0:
-        raise ValueError(f"attribute {attribute!r} not found in prompt {prompt!r}")
+    attr_idx, _ = locate_attribute_phrase(prompt, attribute)
     preceding: List[Tuple[int, str]] = []
     following: List[Tuple[int, str]] = []
     for subject in subjects:

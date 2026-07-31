@@ -102,3 +102,15 @@ def test_unscored_rows_excluded_from_all_reports():
     assert report["n"] == 0
     assert report["metric_accuracy"] is None
     assert report["baseline_accuracy"] is None
+
+
+def test_nearest_subject_baseline_handles_subphrase_attribute_mismatch():
+    """Real FLUX case: manifest attribute is 'yellow helmet', prompt says 'yellow bike helmet'.
+    Before this fix, prompt.find('yellow helmet') returns -1 and this raises ValueError."""
+    prompt = ("a photo of four people standing side by side, on the far left a barista in a "
+              "red apron, on the center-left a dancer wearing a cycling jersey in a yellow bike "
+              "helmet, on the center-right a farmer holding a wooden shovel, on the far right "
+              "a nurse wearing blue gloves")
+    subjects = ["barista", "dancer", "farmer", "nurse"]
+    result = exp4.nearest_subject_baseline(prompt, subjects, "yellow helmet")
+    assert result == "dancer"
