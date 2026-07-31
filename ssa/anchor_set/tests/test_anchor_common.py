@@ -380,3 +380,15 @@ def test_locate_attribute_phrase_raises_when_a_content_word_is_truly_absent():
 def test_locate_attribute_phrase_raises_on_attribute_with_no_content_words():
     with pytest.raises(ValueError, match="content words"):
         ac.locate_attribute_phrase("a barista wearing a red apron", "   ")
+
+
+def test_locate_attribute_phrase_matches_words_forward_in_order_not_independently():
+    """A decoy 'helmet' appears before the real 'yellow ... helmet' phrase -- an unordered
+    matcher could pair 'yellow' with the later helmet and the decoy 'helmet' with nothing,
+    or otherwise produce a wrong span. Locks in that words are matched strictly in order,
+    each search continuing forward from the previous word's own match, not just "somewhere
+    in the prompt"."""
+    prompt = "a helmet on the shelf, and a cyclist wearing a yellow bike helmet"
+    idx, span = ac.locate_attribute_phrase(prompt, "yellow helmet")
+    assert span == "yellow bike helmet"
+    assert prompt[idx:idx + len(span)] == span
