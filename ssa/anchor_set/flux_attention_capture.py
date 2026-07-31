@@ -19,7 +19,7 @@ in docs/superpowers/specs/2026-07-31-flux-attention-hook-design.md.
 
 Memory note (this makes the design doc's step-5 slicing concrete): storing the FULL attention
 matrix per layer per step is infeasible at real FLUX scale (24 heads x 4096 image tokens x ~512
-text tokens x 4 bytes = ~384MB PER LAYER PER STEP; x19 layers x25 steps = ~180GB). Instead,
+text tokens x 4 bytes = ~192MB PER LAYER PER STEP; x19 layers x25 steps = ~89GB). Instead,
 FluxAttentionStore is told the exact set of target T5 token column indices to keep BEFORE
 generation starts (every attribute's tokens are known from the prompt spec up front -- see
 attribute_target_token_indices()), and FluxCustomAttnProcessor slices to (image_rows x those
@@ -49,7 +49,18 @@ class FluxAttentionStore:
     """Per-step, per-layer attention captured for a fixed set of target T5 token columns,
     already head-averaged and detached to CPU. `target_token_indices` must be set via reset()
     before generation starts -- pass the UNION of every attribute's token indices for the
-    current prompt, so one generation pass captures everything every attribute will need."""
+    current prompt, so one generation pass captures everything every attribute will need.
+
+    HARD PRECONDITION: batch size must be 1. If called with batch > 1, generation output
+    stays correct but captured attention silently keeps only the first image's data with no
+    error. See FluxCustomAttnProcessor.__call__ for the assert that enforces this.
+
+    UNHANDLED CASE: classifier-free guidance (negative_prompt + true_cfg_scale > 1) calls
+    the transformer twice per denoising step (cond, then uncond) as separate batch-1 passes.
+    If ever enabled, the second call would silently overwrite the first, corrupting captured
+    data. This module keys by (current_step, layer_name) and does not differentiate cond vs.
+    uncond branches. Future maintainers adding CFG support should either record both branches
+    separately or raise an error on CFG."""
 
     def __init__(self):
         self.step_store: Dict[int, Dict[str, torch.Tensor]] = {}
@@ -75,7 +86,10 @@ class FluxCustomAttnProcessor:
     """Manual recompute of FluxAttnProcessor's math (see module docstring) for ONE double
     block. Captures attn_probs[image_rows, store.target_token_indices], averaged over heads,
     into `store`; otherwise produces output equivalent to the stock processor (verified, see
-    module docstring) so hooked generation is unaffected."""
+    module docstring) so hooked generation is unaffected.
+
+    Assumes batch size 1 (see FluxAttentionStore HARD PRECONDITION). Enforced by assert
+    before self.store.add_attention(...)."""
 
     def __init__(self, store: FluxAttentionStore, layer_name: str):
         self.store = store
@@ -118,6 +132,7 @@ class FluxCustomAttnProcessor:
             text_len = encoder_hidden_states.shape[1]
             image_rows = attn_probs[:, :, text_len:, :]                          # (b, heads, img, seq)
             target_cols = image_rows[..., self.store.target_token_indices]       # (b, heads, img, n_targets)
+            assert query.shape[0] == 1, "FluxCustomAttnProcessor assumes batch size 1 (see module docstring)"
             self.store.add_attention(self.layer_name, target_cols.mean(dim=1)[0])  # (img, n_targets)
 
         hidden_states = attn_probs @ v
