@@ -107,8 +107,8 @@ def test_unscored_rows_excluded_from_all_reports():
 def test_nearest_subject_baseline_handles_subphrase_attribute_mismatch():
     """Real FLUX case (artifacts_flux/manifest.json, prompt_id 1): manifest attribute is
     'white hat', prompt says 'tall white chef hat'. Subject 'chef' appears literally in the
-    prompt, so this isolates the attribute-side fix without touching the separate,
-    undocumented subject-side gap (see the KNOWN GAP comment in nearest_subject_baseline)."""
+    prompt, so this isolates the attribute-side fix without touching the separately
+    documented subject-side gap (see the KNOWN GAP comment in nearest_subject_baseline)."""
     prompt = ("a photo of two people standing side by side, on the left a chef in a tall "
               "white chef hat, on the right a farmer holding a wooden shovel")
     subjects = ["chef", "farmer"]
