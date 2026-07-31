@@ -1,6 +1,5 @@
 artifacts/images/
 artifacts/*.png
-artifacts_flux/images/
 artifacts_sdxl/images/
 .pytest_cache/
 __pycache__/
