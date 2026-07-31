@@ -347,3 +347,36 @@ def test_binomial_test_vs_chance_below_chance_is_not_significant_one_sided():
     # A one-sided ("greater") test: doing WORSE than chance must not read as "beats chance."
     p = ac.binomial_test_vs_chance(2, 20, 0.5)
     assert p > 0.99
+
+
+# --------------------------------------------------------------------------- locate_attribute_phrase
+
+def test_locate_attribute_phrase_exact_match_returns_attribute_unchanged():
+    prompt = "a photo of a barista wearing a red apron and a cyclist wearing a yellow helmet"
+    idx, span = ac.locate_attribute_phrase(prompt, "red apron")
+    assert idx == prompt.find("red apron")
+    assert span == "red apron"
+
+
+def test_locate_attribute_phrase_falls_back_to_content_words_on_subphrase_mismatch():
+    """Real case from artifacts_flux/manifest.json: the manifest's attribute field says
+    'yellow helmet' but the actual prompt says 'yellow bike helmet' -- exact substring match
+    fails, so this must fall back to spanning from the first content word to the last."""
+    prompt = ("a photo of four people standing side by side, on the far left a barista in a "
+              "red apron, on the center-left a man wearing a cycling jersey in a yellow bike "
+              "helmet, on the center-right a farmer holding a wooden shovel, on the far right "
+              "a nurse wearing blue gloves")
+    idx, span = ac.locate_attribute_phrase(prompt, "yellow helmet")
+    assert span == "yellow bike helmet"
+    assert prompt[idx:idx + len(span)] == span
+
+
+def test_locate_attribute_phrase_raises_when_a_content_word_is_truly_absent():
+    prompt = "a barista wearing a red apron"
+    with pytest.raises(ValueError, match="green"):
+        ac.locate_attribute_phrase(prompt, "green scarf")
+
+
+def test_locate_attribute_phrase_raises_on_attribute_with_no_content_words():
+    with pytest.raises(ValueError, match="content words"):
+        ac.locate_attribute_phrase("a barista wearing a red apron", "   ")

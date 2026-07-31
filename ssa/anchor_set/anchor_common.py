@@ -173,6 +173,33 @@ def mean_mass_in_box(attn_map: np.ndarray, box: Sequence[float]) -> float:
     return float(attn_map[y0:y1, x0:x1].mean())
 
 
+def locate_attribute_phrase(prompt: str, attribute: str) -> Tuple[int, str]:
+    """Where `attribute` actually occurs in `prompt`, and what substring to treat as "the
+    phrase" for downstream token lookup. Tries an exact substring match first (unchanged
+    behavior for every attribute that already matches verbatim). Falls back to spanning from
+    the first to the last content word of `attribute` found in `prompt`, in order -- handles
+    manifest attribute strings that are a strict sub-phrase of a longer descriptive phrase in
+    the actual prompt (e.g. attribute="yellow helmet", prompt="...yellow bike helmet...").
+    Raises ValueError if any content word is missing, or if `attribute` has none at all."""
+    idx = prompt.find(attribute)
+    if idx >= 0:
+        return idx, attribute
+    words = re.findall(r"[a-zA-Z]+", attribute.lower())
+    if not words:
+        raise ValueError(f"attribute {attribute!r} has no content words to match")
+    positions: List[int] = []
+    search_from = 0
+    for word in words:
+        pos = prompt.lower().find(word, search_from)
+        if pos == -1:
+            raise ValueError(
+                f"attribute {attribute!r} word {word!r} not found in prompt {prompt!r}")
+        positions.append(pos)
+        search_from = pos + len(word)
+    start, end = positions[0], positions[-1] + len(words[-1])
+    return start, prompt[start:end]
+
+
 def predicted_owner_from_attention(
     attn_map: np.ndarray, subject_boxes: Dict[str, Sequence[float]]
 ) -> Tuple[str, Dict[str, float]]:
