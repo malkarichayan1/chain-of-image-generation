@@ -18,6 +18,7 @@ the result the memo's decision gate reads.
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 from typing import Dict, List, Optional, Sequence, Tuple
 
@@ -28,15 +29,20 @@ from scipy import stats
 LABEL_NONE = "none"        # the attribute never visibly rendered on anyone
 LABEL_UNCLEAR = "unclear"  # rendered but the annotator cannot assign ownership
 LABEL_SHARED = "shared"    # rendered on MORE THAN ONE subject (attribute leakage)
-NON_SUBJECT_LABELS = frozenset({LABEL_NONE, LABEL_UNCLEAR, LABEL_SHARED})
+LABEL_ABSENT = "absent"    # the intended SUBJECT was never rendered (count-broken) -- a
+                            # rendering-failure fact, distinct from `none` (the subject
+                            # exists, but this attribute never showed up on anyone).
+NON_SUBJECT_LABELS = frozenset({LABEL_NONE, LABEL_UNCLEAR, LABEL_SHARED, LABEL_ABSENT})
 
 # `shared` is deliberately split out of `unclear`. Both are "not one subject", but they are
 # different facts: `unclear` is missing data (the annotator could not tell), while `shared`
 # is a binding OUTCOME (the model bound the attribute to several subjects at once) that the
-# metric can be asked to predict. Strict scoring excludes all three -- preserving every
+# metric can be asked to predict. Strict scoring excludes all four -- preserving every
 # already-published accuracy number -- while shared-aware scoring (see `margin_threshold`
-# in build_agreement_rows) readmits only `shared` as an extra predictable class.
-MISSING_DATA_LABELS = frozenset({LABEL_NONE, LABEL_UNCLEAR})
+# in build_agreement_rows) readmits only `shared` as an extra predictable class. `absent`
+# joins `none`/`unclear` here (not `shared`): like them it is missing data about BINDING,
+# not a binding outcome a metric could ever be scored against.
+MISSING_DATA_LABELS = frozenset({LABEL_NONE, LABEL_UNCLEAR, LABEL_ABSENT})
 
 
 # ---------------------------------------------------------------------------
@@ -76,6 +82,79 @@ def validate_specs(specs: Sequence[dict]) -> None:
                 raise ValueError(
                     f"prompt {s['id']}: attribute {attribute!r} not a substring of prompt "
                     f"(token lookup on Kaggle would fail): {s['prompt']!r}")
+
+
+# ---------------------------------------------------------------------------
+# Prompt layout parsing (for label_images.py's on-screen clarity, not scoring)
+# ---------------------------------------------------------------------------
+
+# Every anchor prompt places its n subjects with one of these fixed positional phrases, in
+# left-to-right generation order (see prompt_specs.json / build_growth_specs.py). Longer
+# phrases first defensively, though it's not load-bearing: "on the far left" can never be
+# mistaken for "on the left" mid-match, since the character right after "on the " differs
+# ('f' vs 'l') at the very first point the two alternatives diverge.
+_POSITION_MARKERS = (
+    "on the far left", "on the center-left", "on the center-right", "on the far right",
+    "on the left", "in the middle", "on the right",
+)
+_POSITION_PATTERN = re.compile("(" + "|".join(_POSITION_MARKERS) + ")")
+
+
+def parse_prompt_layout(prompt: str, subjects: Sequence[str]
+                         ) -> Optional[List[Tuple[str, Optional[str]]]]:
+    """Split `prompt` on its positional markers and pair each resulting segment with the
+    corresponding entry in `subjects`, in prompt order. Returns None -- never a guessed
+    position -- when the marker count doesn't equal len(subjects) (a malformed or
+    hand-edited prompt); callers must fall back to plain, position-free display rather than
+    risk showing a wrong position.
+
+    Each returned tuple is (position, gloss). `position` is the marker with its "on the "/
+    "in the " prefix stripped (e.g. "far left", "middle"). `gloss` is the subject's own
+    prompt segment, but ONLY when the subject name does not literally appear in it --
+    otherwise None, since there's nothing to clarify. This is what surfaces FLUX's "cyclist"
+    being phrased as "a man wearing a cycling jersey": the manifest's subjects list says
+    `cyclist`, but that word never appears in the prompt itself, so an annotator matching
+    subject names against prompt text would never find it without this gloss."""
+    parts = _POSITION_PATTERN.split(prompt)
+    # re.split with one capturing group interleaves: [preamble, marker, segment, marker, ...]
+    markers = parts[1::2]
+    segments = parts[2::2]
+    if len(markers) != len(subjects) or len(segments) != len(subjects):
+        return None
+    layout: List[Tuple[str, Optional[str]]] = []
+    for subject, marker, segment in zip(subjects, markers, segments):
+        segment = segment.strip(" ,.")
+        position = marker.replace("on the ", "").replace("in the ", "")
+        gloss = None if subject.lower() in segment.lower() else segment
+        layout.append((position, gloss))
+    return layout
+
+
+_TRAILING_PREPOSITION = re.compile(r"\s+(in|with|wearing|holding)\s+(a|an)?\s*$",
+                                    re.IGNORECASE)
+
+
+def redact_attribute_clause(gloss: str, attribute: str) -> str:
+    """Trim a subject's naming gloss (from parse_prompt_layout) so it stops before the
+    clause that names `attribute`, keeping only the subject-IDENTITY portion. Guards
+    against a real leak: cyclist's gloss is "a man wearing a cycling jersey in a yellow
+    bike helmet" -- shown unredacted next to a menu option while asking "which subject has
+    the yellow helmet?", it spells out the answer. Only clarifies naming, never spoils
+    binding.
+
+    Finds the earliest position any content word of `attribute` appears in `gloss`
+    (case-insensitive), cuts there, then strips a dangling trailing preposition left over
+    from the cut (e.g. "...cycling jersey in a" -> "...cycling jersey"). Returns `gloss`
+    unchanged if `attribute` shares no words with it (nothing to redact -- e.g. asking
+    about the barista's "red apron" must not touch cyclist's gloss at all), or if
+    redaction would strip the gloss down to nothing (better an unredacted gloss than a
+    blank one)."""
+    words = re.findall(r"[a-zA-Z]+", attribute.lower())
+    positions = [p for p in (gloss.lower().find(w) for w in words) if p != -1]
+    if not positions:
+        return gloss
+    trimmed = _TRAILING_PREPOSITION.sub("", gloss[:min(positions)]).rstrip(" ,")
+    return trimmed if trimmed else gloss
 
 
 # ---------------------------------------------------------------------------

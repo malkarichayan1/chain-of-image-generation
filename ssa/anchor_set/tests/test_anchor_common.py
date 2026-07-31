@@ -182,6 +182,101 @@ def test_chance_baseline():
     assert ac.chance_baseline(4) == 0.25
 
 
+def test_absent_excluded_from_denominator_same_as_none_and_unclear():
+    """`absent` (Subject Absent / Not Evaluable) marks a count-broken-caused gap, not a
+    binding outcome -- it must be excluded from scoring exactly like `none`/`unclear`, so
+    adding it never moves an already-published accuracy number."""
+    labels = {
+        ac.label_key(0, "red apron"): "barista",       # correct
+        ac.label_key(0, "yellow helmet"): ac.LABEL_ABSENT,  # excluded
+        ac.label_key(1, "white hat"): ac.LABEL_UNCLEAR,     # excluded
+    }
+    summary = ac.summarize_agreement(ac.build_agreement_rows(_manifest(), labels))
+    overall = summary["overall"]
+    assert overall["n_labeled"] == 3
+    assert overall["n_scored"] == 1
+    assert overall["n_correct"] == 1
+
+
+def test_label_absent_is_in_both_sentinel_sets():
+    assert ac.LABEL_ABSENT in ac.NON_SUBJECT_LABELS
+    assert ac.LABEL_ABSENT in ac.MISSING_DATA_LABELS
+    assert ac.LABEL_ABSENT not in {ac.LABEL_NONE, ac.LABEL_UNCLEAR, ac.LABEL_SHARED}
+
+
+# --------------------------------------------------------------------------- prompt layout
+
+def test_parse_prompt_layout_n2():
+    prompt = ("a photo of two people standing side by side, on the left a barista in a red "
+              "apron, on the right a man wearing a cycling jersey in a yellow bike helmet")
+    layout = ac.parse_prompt_layout(prompt, ["barista", "cyclist"])
+    assert layout is not None
+    assert layout[0] == ("left", None)  # "barista" appears in its own segment -> no gloss
+    position, gloss = layout[1]
+    assert position == "right"
+    assert gloss == "a man wearing a cycling jersey in a yellow bike helmet"
+
+
+def test_parse_prompt_layout_n3():
+    prompt = ("a photo of three people standing side by side, on the left a barista in a red "
+              "apron, in the middle a chef in a tall white chef hat, on the right a farmer "
+              "holding a wooden shovel")
+    layout = ac.parse_prompt_layout(prompt, ["barista", "chef", "farmer"])
+    assert [p for p, _g in layout] == ["left", "middle", "right"]
+    assert all(g is None for _p, g in layout)  # all three subject names appear verbatim
+
+
+def test_parse_prompt_layout_n4():
+    prompt = ("a photo of four people standing side by side, on the far left a barista in a "
+              "red apron, on the center-left a man wearing a cycling jersey in a yellow bike "
+              "helmet, on the center-right a chef in a tall white chef hat, on the far right "
+              "a farmer holding a wooden shovel")
+    layout = ac.parse_prompt_layout(prompt, ["barista", "cyclist", "chef", "farmer"])
+    assert [p for p, _g in layout] == ["far left", "center-left", "center-right", "far right"]
+    assert layout[1][1] == "a man wearing a cycling jersey in a yellow bike helmet"
+
+
+def test_parse_prompt_layout_returns_none_on_marker_count_mismatch():
+    """Never guess a wrong position: if the marker count doesn't match len(subjects) --
+    a malformed or hand-edited prompt -- callers must fall back to plain (position-free)
+    display rather than risk a mislabeled position."""
+    prompt = "a photo of two people standing side by side, on the left a barista in a red apron"
+    assert ac.parse_prompt_layout(prompt, ["barista", "cyclist"]) is None
+
+
+def test_parse_prompt_layout_returns_none_when_no_markers_present():
+    assert ac.parse_prompt_layout("a barista and a chef", ["barista", "chef"]) is None
+
+
+# --------------------------------------------------------------------------- gloss redaction
+
+def test_redact_attribute_clause_strips_the_matching_attribute_clause():
+    """The real leak this guards against: cyclist's naming gloss is "a man wearing a
+    cycling jersey in a yellow bike helmet" -- when the annotator is being asked about the
+    'yellow helmet' attribute, showing that gloss unredacted spells out the answer right
+    next to the menu option it belongs to. Only the identity-establishing clause ("a man
+    wearing a cycling jersey") should survive; the attribute clause must be cut."""
+    gloss = "a man wearing a cycling jersey in a yellow bike helmet"
+    trimmed = ac.redact_attribute_clause(gloss, "yellow helmet")
+    assert trimmed == "a man wearing a cycling jersey"
+    assert "yellow" not in trimmed and "helmet" not in trimmed
+
+
+def test_redact_attribute_clause_no_overlap_returns_gloss_unchanged():
+    """Asking about a DIFFERENT attribute (e.g. the barista's red apron) must not touch
+    cyclist's gloss at all -- there's nothing to redact, and the identity clarification is
+    still useful context for that question too."""
+    gloss = "a man wearing a cycling jersey in a yellow bike helmet"
+    assert ac.redact_attribute_clause(gloss, "red apron") == gloss
+
+
+def test_redact_attribute_clause_never_returns_empty():
+    """If redaction would strip the ENTIRE gloss (a pathological/future prompt shape),
+    fall back to the untrimmed gloss rather than show a blank clarification."""
+    gloss = "yellow helmet"
+    assert ac.redact_attribute_clause(gloss, "yellow helmet") == gloss
+
+
 # --------------------------------------------------------------------------- count-clean
 
 def test_pending_count_targets_only_detected_and_uncounted():
