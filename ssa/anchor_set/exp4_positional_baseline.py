@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from pathlib import Path
 from typing import Dict, List, Sequence, Tuple
 
@@ -30,6 +31,47 @@ import pandas as pd
 from scipy import stats
 
 from anchor_common import build_agreement_rows, chance_baseline, load_labels, locate_attribute_phrase
+
+
+def _locate_subject_in_prompt(prompt: str, subject: str) -> int:
+    """Find the position of a subject in the prompt, with fallback for paraphrased subjects.
+
+    First tries exact substring match. Falls back to finding a word in the prompt that shares
+    a common prefix with the subject's words, which handles cases like subject="cyclist"
+    appearing in the prompt as "cycling jersey" (both share the "cycl" prefix).
+
+    Raises ValueError if the subject or any matching word cannot be located."""
+    # Try exact match first
+    idx = prompt.find(subject)
+    if idx >= 0:
+        return idx
+
+    # Fall back to finding a word with a shared prefix
+    subject_words = re.findall(r"[a-zA-Z]+", subject.lower())
+    if not subject_words:
+        raise ValueError(f"subject {subject!r} has no content words to match")
+
+    # Extract all words from the prompt
+    prompt_words = re.finditer(r"[a-zA-Z]+", prompt.lower())
+
+    # For each subject word, try to find a prompt word that shares a prefix (stem matching)
+    for subj_word in subject_words:
+        best_match_pos = None
+        for prompt_match in re.finditer(r"[a-zA-Z]+", prompt.lower()):
+            prompt_word = prompt_match.group()
+            # Check if they share a prefix (at least 4 chars or at least 70% of the shorter word)
+            common_prefix_len = len(
+                [c for c, p in zip(subj_word, prompt_word) if c == p]
+            )
+            min_word_len = min(len(subj_word), len(prompt_word))
+            if common_prefix_len >= max(4, int(0.7 * min_word_len)):
+                best_match_pos = prompt_match.start()
+                break
+
+        if best_match_pos is not None:
+            return best_match_pos
+
+    raise ValueError(f"subject {subject!r} not found in prompt {prompt!r}")
 
 
 def nearest_subject_baseline(prompt: str, subjects: Sequence[str], attribute: str) -> str:
@@ -44,8 +86,9 @@ def nearest_subject_baseline(prompt: str, subjects: Sequence[str], attribute: st
     preceding: List[Tuple[int, str]] = []
     following: List[Tuple[int, str]] = []
     for subject in subjects:
-        subj_idx = prompt.find(subject)
-        if subj_idx < 0:
+        try:
+            subj_idx = _locate_subject_in_prompt(prompt, subject)
+        except ValueError:
             continue
         (preceding if subj_idx <= attr_idx else following).append(
             (abs(subj_idx - attr_idx), subject))
