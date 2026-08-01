@@ -196,3 +196,160 @@ def test_processor_captures_correct_column_identity():
     # However, both [1, 3] and [3, 1] *share* columns 1 and 3, so they should be
     # highly correlated but with column order swapped
     assert captured_a.shape == captured_b.shape  # Just double-check shape consistency
+
+
+# --------------------------------------------------------------------------- FluxAttentionCapture
+
+class _FakeFluxPipeline:
+    def __init__(self, transformer):
+        self.transformer = transformer
+
+
+def test_hook_pipeline_replaces_only_double_blocks():
+    m = _tiny_transformer(num_layers=2, num_single_layers=2)
+    capture = fac.FluxAttentionCapture()
+    capture.hook_pipeline(_FakeFluxPipeline(m), target_token_indices=[0, 1])
+    for name, proc in m.attn_processors.items():
+        if name.startswith("transformer_blocks."):
+            assert isinstance(proc, fac.FluxCustomAttnProcessor)
+        else:
+            assert not isinstance(proc, fac.FluxCustomAttnProcessor)
+
+
+def test_unhook_pipeline_restores_stock_processor_everywhere():
+    from diffusers.models.transformers.transformer_flux import FluxAttnProcessor
+    m = _tiny_transformer(num_layers=1, num_single_layers=1)
+    capture = fac.FluxAttentionCapture()
+    pipe = _FakeFluxPipeline(m)
+    capture.hook_pipeline(pipe, target_token_indices=[0])
+    capture.unhook_pipeline(pipe)
+    assert all(type(p) is FluxAttnProcessor for p in m.attn_processors.values())
+
+
+def test_cross_attention_map_shape_and_finiteness():
+    m = _tiny_transformer(num_layers=1, num_single_layers=0)
+    capture = fac.FluxAttentionCapture()
+    capture.hook_pipeline(_FakeFluxPipeline(m), target_token_indices=[0, 1])
+    with torch.no_grad():
+        m(**_forward_inputs(img_seq=9))  # perfect square -> 3x3 native grid
+    result = capture.cross_attention_map(target_indices_position=[0, 1],
+                                         target_resolution=(12, 12), max_steps=25)
+    assert result.shape == (12, 12)
+    assert np.isfinite(result).all()
+
+
+def test_cross_attention_map_respects_max_steps():
+    """max_steps=0 must exclude every captured step (steps are 0-indexed, so max_steps=0 means
+    'use nothing') -- the empty-store return path, not an error."""
+    m = _tiny_transformer(num_layers=1, num_single_layers=0)
+    capture = fac.FluxAttentionCapture()
+    capture.hook_pipeline(_FakeFluxPipeline(m), target_token_indices=[0])
+    with torch.no_grad():
+        m(**_forward_inputs(img_seq=9))
+    result = capture.cross_attention_map(target_indices_position=[0],
+                                         target_resolution=(5, 5), max_steps=0)
+    assert result.shape == (5, 5)
+    assert (result == 0).all()
+
+
+def test_cross_attention_map_raises_when_store_empty():
+    capture = fac.FluxAttentionCapture()
+    with pytest.raises(ValueError, match="empty"):
+        capture.cross_attention_map(target_indices_position=[0], target_resolution=(8, 8), max_steps=25)
+
+
+def test_cross_attention_map_averages_across_layers_and_steps():
+    """Directly populates step_store with synthetic multi-layer, multi-step tensors of known
+    values so the plain-mean-across-(steps x layers) aggregation is actually exercised by the
+    suite, not just true by inspection. img_seq=4 -> native 2x2 grid; target_resolution matches
+    the native grid so bilinear upsampling is an identity and the expected value is a bare
+    elementwise mean of the four (layer, step) tensors."""
+    capture = fac.FluxAttentionCapture()
+    capture.store.target_token_indices = [0]
+    capture.store.step_store = {
+        0: {
+            "layer_a": torch.tensor([[1.0], [2.0], [3.0], [4.0]]),
+            "layer_b": torch.tensor([[5.0], [6.0], [7.0], [8.0]]),
+        },
+        1: {
+            "layer_a": torch.tensor([[9.0], [10.0], [11.0], [12.0]]),
+            "layer_b": torch.tensor([[13.0], [14.0], [15.0], [16.0]]),
+        },
+    }
+    result = capture.cross_attention_map(target_indices_position=[0],
+                                         target_resolution=(2, 2), max_steps=25)
+    expected = (np.array([1, 2, 3, 4]) + np.array([5, 6, 7, 8])
+                + np.array([9, 10, 11, 12]) + np.array([13, 14, 15, 16])) / 4.0
+    np.testing.assert_allclose(result, expected.reshape(2, 2), atol=1e-4)
+
+
+def test_hook_pipeline_twice_without_unhook_is_safe():
+    """Locks in that re-hooking without an intervening unhook_pipeline() is safe: no leaked
+    processor from the first hook, no double-wrapping, and a clean store reset to the second
+    call's target_token_indices."""
+    m = _tiny_transformer(num_layers=1, num_single_layers=1)
+    capture = fac.FluxAttentionCapture()
+    pipe = _FakeFluxPipeline(m)
+    capture.hook_pipeline(pipe, target_token_indices=[0, 1])
+    capture.hook_pipeline(pipe, target_token_indices=[2])  # re-hook, different indices, no unhook
+    for name, proc in m.attn_processors.items():
+        if name.startswith("transformer_blocks."):
+            assert isinstance(proc, fac.FluxCustomAttnProcessor)
+        else:
+            assert not isinstance(proc, fac.FluxCustomAttnProcessor)
+    assert capture.store.target_token_indices == [2]
+    with torch.no_grad():
+        m(**_forward_inputs(img_seq=9))
+    for layer_maps in capture.store.step_store.values():
+        for tensor in layer_maps.values():
+            assert tensor.shape == (9, 1)  # only the second hook's single target index -- no leak
+
+
+def test_cross_attention_map_raises_on_negative_target_indices_position():
+    m = _tiny_transformer(num_layers=1, num_single_layers=0)
+    capture = fac.FluxAttentionCapture()
+    capture.hook_pipeline(_FakeFluxPipeline(m), target_token_indices=[0, 1])
+    with torch.no_grad():
+        m(**_forward_inputs(img_seq=9))
+    with pytest.raises(ValueError, match="out of range"):
+        capture.cross_attention_map(target_indices_position=[-1],
+                                     target_resolution=(5, 5), max_steps=25)
+
+
+def test_cross_attention_map_raises_on_out_of_range_target_indices_position():
+    m = _tiny_transformer(num_layers=1, num_single_layers=0)
+    capture = fac.FluxAttentionCapture()
+    capture.hook_pipeline(_FakeFluxPipeline(m), target_token_indices=[0, 1])  # 2 captured columns
+    with torch.no_grad():
+        m(**_forward_inputs(img_seq=9))
+    with pytest.raises(ValueError, match="out of range"):
+        capture.cross_attention_map(target_indices_position=[2],  # valid range is {0, 1}
+                                     target_resolution=(5, 5), max_steps=25)
+
+
+def test_cross_attention_map_raises_on_empty_target_indices_position():
+    m = _tiny_transformer(num_layers=1, num_single_layers=0)
+    capture = fac.FluxAttentionCapture()
+    capture.hook_pipeline(_FakeFluxPipeline(m), target_token_indices=[0, 1])
+    with torch.no_grad():
+        m(**_forward_inputs(img_seq=9))
+    with pytest.raises(ValueError, match="non-empty"):
+        capture.cross_attention_map(target_indices_position=[],
+                                     target_resolution=(5, 5), max_steps=25)
+
+
+def test_cross_attention_map_raises_on_mismatched_grid_sizes():
+    """Synthetic case for the 'shouldn't happen per the module's own claim' grid-mismatch guard:
+    one layer reports a 2x2 native grid (img_seq=4), another reports 3x3 (img_seq=9). Must raise
+    a domain-specific ValueError naming both sizes rather than a bare numpy broadcast error."""
+    capture = fac.FluxAttentionCapture()
+    capture.store.target_token_indices = [0]
+    capture.store.step_store = {
+        0: {
+            "layer_a": torch.zeros(4, 1),  # 2x2
+            "layer_b": torch.zeros(9, 1),  # 3x3 -- mismatched
+        },
+    }
+    with pytest.raises(ValueError, match="inconsistent"):
+        capture.cross_attention_map(target_indices_position=[0],
+                                     target_resolution=(5, 5), max_steps=25)

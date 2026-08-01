@@ -147,3 +147,91 @@ class FluxCustomAttnProcessor:
             encoder_hidden_states = attn.to_add_out(encoder_hidden_states.contiguous())
             return hidden_states, encoder_hidden_states
         return hidden_states
+
+
+class FluxAttentionCapture:
+    """hook_pipeline/unhook_pipeline/cross_attention_map, mirroring
+    generate_anchor_images_sdxl.py's AttentionCapture -- but FLUX-specific: only the 19 double
+    blocks are hooked (see module docstring), and there is exactly one native image resolution
+    across every hooked layer, so aggregation across (steps x layers) is a plain mean, no
+    per-resolution weighting."""
+
+    def __init__(self):
+        self.store = FluxAttentionStore()
+
+    def hook_pipeline(self, pipeline, target_token_indices: Sequence[int]) -> None:
+        """Wires FluxCustomAttnProcessor onto every double block (`transformer_blocks.*`) of
+        `pipeline.transformer`. `target_token_indices` are RAW T5 sequence positions (indices into
+        the tokenizer's output for the full prompt) -- NOT positions into any already-captured
+        tensor; that translation (raw T5 index -> captured-column position) is the caller's job,
+        see `cross_attention_map`'s `target_indices_position` parameter. Safe to call again
+        without an intervening `unhook_pipeline()`: re-wraps from the pipeline's current
+        attn_processors and calls `store.reset()`, so there is no double-wrapping or leaked state
+        from a prior hook."""
+        self.store.reset(target_token_indices)
+        processors = dict(pipeline.transformer.attn_processors)
+        for name in processors:
+            if name.startswith("transformer_blocks."):
+                processors[name] = FluxCustomAttnProcessor(self.store, name)
+        pipeline.transformer.set_attn_processor(processors)
+
+    def unhook_pipeline(self, pipeline) -> None:
+        """Resets ALL of `pipeline.transformer`'s attention processors -- both double
+        (`transformer_blocks.*`) and single (`single_transformer_blocks.*`) blocks -- back to the
+        stock FluxAttnProcessor. This is NOT a scoped inverse of hook_pipeline's surgical
+        double-block-only replacement; it's a full reset to default, deliberately matching
+        generate_anchor_images_sdxl.py's broadcast-a-single-instance unhook pattern."""
+        from diffusers.models.transformers.transformer_flux import FluxAttnProcessor
+        pipeline.transformer.set_attn_processor(FluxAttnProcessor())
+
+    def cross_attention_map(self, target_indices_position: Sequence[int],
+                            target_resolution: Tuple[int, int], max_steps: int) -> np.ndarray:
+        """Average, over every captured double-block layer at steps < max_steps, the columns at
+        `target_indices_position` (indices INTO store.target_token_indices -- the position this
+        attribute's tokens occupy within the columns that were actually captured, NOT raw T5
+        sequence positions), then upsample from the native image grid to target_resolution.
+        Returns an all-zero map (not an error) when max_steps excludes every captured step --
+        distinct from an empty store, which IS an error (nothing was ever captured).
+
+        Raises ValueError if target_indices_position is empty, if any entry is negative or
+        out-of-range for the columns actually captured (numpy would otherwise silently treat a
+        negative index as wrapping from the end rather than erroring), or if captured layers/steps
+        disagree on the native image grid size (should not happen per this module's one-native-
+        resolution design, but fails loudly with both sizes named rather than a generic numpy
+        broadcast error if it ever does)."""
+        if not self.store.step_store:
+            raise ValueError("Attention store is empty. Did you call hook_pipeline() and generate?")
+        if not target_indices_position:
+            raise ValueError("target_indices_position must be non-empty")
+        n_captured = len(self.store.target_token_indices)
+        for pos in target_indices_position:
+            if pos < 0 or pos >= n_captured:
+                raise ValueError(
+                    f"target_indices_position entry {pos} is out of range for the {n_captured} "
+                    "captured columns -- these must be positions INTO the columns actually "
+                    "captured (store.target_token_indices), not raw T5 sequence positions")
+        accum = None
+        side = None
+        count = 0
+        for step_idx, layer_maps in self.store.step_store.items():
+            if step_idx >= max_steps:
+                continue
+            for tensor in layer_maps.values():
+                arr = tensor.numpy()[:, target_indices_position].mean(axis=-1)  # (img_seq,)
+                this_side = int(round(math.sqrt(arr.shape[0])))
+                if this_side * this_side != arr.shape[0]:
+                    raise ValueError(f"image token count {arr.shape[0]} is not a perfect square")
+                if accum is None:
+                    side = this_side
+                    accum = np.zeros((side, side), dtype=np.float32)
+                elif this_side != side:
+                    raise ValueError(
+                        "inconsistent native image grid size across captured layers/steps: "
+                        f"expected {side}x{side}, got {this_side}x{this_side}")
+                accum += arr.reshape(side, side)
+                count += 1
+        if count == 0:
+            return np.zeros(target_resolution, dtype=np.float32)
+        avg = torch.from_numpy(accum / count).unsqueeze(0).unsqueeze(0)
+        up = F.interpolate(avg, size=target_resolution, mode="bilinear", align_corners=False)
+        return up.squeeze(0).squeeze(0).numpy()
