@@ -176,27 +176,66 @@ def mean_mass_in_box(attn_map: np.ndarray, box: Sequence[float]) -> float:
 def locate_attribute_phrase(prompt: str, attribute: str) -> Tuple[int, str]:
     """Where `attribute` actually occurs in `prompt`, and what substring to treat as "the
     phrase" for downstream token lookup. Tries an exact substring match first (unchanged
-    behavior for every attribute that already matches verbatim). Falls back to spanning from
-    the first to the last content word of `attribute` found in `prompt`, in order -- handles
-    manifest attribute strings that are a strict sub-phrase of a longer descriptive phrase in
-    the actual prompt (e.g. attribute="yellow helmet", prompt="...yellow bike helmet...").
-    Raises ValueError if any content word is missing, or if `attribute` has none at all."""
-    idx = prompt.find(attribute)
-    if idx >= 0:
-        return idx, attribute
+    behavior for every attribute that already matches verbatim), but anchored to word
+    boundaries (`\\b`) so a single-word `attribute` like "red" can never match inside a
+    larger word like "shredded". Falls back to the SHORTEST left-to-right span that contains
+    every content word of `attribute`, each matched as a whole word (also `\\b`-anchored) --
+    handles manifest attribute strings that are a strict sub-phrase of a longer descriptive
+    phrase in the actual prompt (e.g. attribute="yellow helmet", prompt="...yellow bike
+    helmet...").  Taking the shortest span, rather than the first occurrence of each word, is
+    what keeps two subjects sharing a word (e.g. both "wearing something red") from producing
+    a span that stretches across the unrelated clause in between -- see the regression tests
+    for the concrete case this fixes. Raises ValueError if any content word is missing
+    anywhere in the prompt, if `attribute` has no content words at all, or if the words that
+    ARE present never appear in a valid left-to-right order.
+
+    Known limitation, currently dormant (verified against every real prompt in
+    prompt_specs.json / artifacts_flux/manifest.json / artifacts_sdxl/*.json -- zero
+    occurrences): the shortest-span fallback is scoped to the whole prompt, not to any one
+    subject's clause. If two different subjects' clauses both happen to contain all of
+    `attribute`'s content words (e.g. two subjects near each other each mentioning "red" and
+    "apron" in different combinations), this can silently pick a span from the wrong
+    subject's clause -- this function has no clause-boundary information to disambiguate
+    with. A caller working with less-controlled prompt text that wants a stronger guarantee
+    should pre-scope `prompt` to the relevant subject's clause before calling."""
     words = re.findall(r"[a-zA-Z]+", attribute.lower())
     if not words:
         raise ValueError(f"attribute {attribute!r} has no content words to match")
-    positions: List[int] = []
-    search_from = 0
+
+    exact = re.search(r"\b" + re.escape(attribute) + r"\b", prompt)
+    if exact:
+        return exact.start(), attribute
+
+    prompt_lower = prompt.lower()
+    occurrences: List[List[Tuple[int, int]]] = []
     for word in words:
-        pos = prompt.lower().find(word, search_from)
-        if pos == -1:
+        matches = [(m.start(), m.end())
+                   for m in re.finditer(r"\b" + re.escape(word) + r"\b", prompt_lower)]
+        if not matches:
             raise ValueError(
                 f"attribute {attribute!r} word {word!r} not found in prompt {prompt!r}")
-        positions.append(pos)
-        search_from = pos + len(word)
-    start, end = positions[0], positions[-1] + len(words[-1])
+        occurrences.append(matches)
+
+    best_span: Optional[Tuple[int, int]] = None
+    for start0, end0 in occurrences[0]:
+        cursor = end0
+        valid = True
+        for matches in occurrences[1:]:
+            next_match = next((m for m in matches if m[0] >= cursor), None)
+            if next_match is None:
+                valid = False
+                break
+            cursor = next_match[1]
+        if not valid:
+            continue
+        if best_span is None or (cursor - start0) < (best_span[1] - best_span[0]):
+            best_span = (start0, cursor)
+
+    if best_span is None:
+        raise ValueError(
+            f"attribute {attribute!r} words all appear in prompt {prompt!r} but never in a "
+            f"valid left-to-right order")
+    start, end = best_span
     return start, prompt[start:end]
 
 

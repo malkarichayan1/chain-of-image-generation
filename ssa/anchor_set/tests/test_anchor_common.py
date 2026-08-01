@@ -382,6 +382,38 @@ def test_locate_attribute_phrase_raises_on_attribute_with_no_content_words():
         ac.locate_attribute_phrase("a barista wearing a red apron", "   ")
 
 
+def test_locate_attribute_phrase_does_not_span_across_unrelated_clauses_with_shared_word():
+    """Two subjects can share a word (e.g. both wearing something red) -- the shortest local
+    match must win, not a greedy span stretching across the unrelated clause in between."""
+    prompt = "a barista wearing a red hat and a cyclist wearing a red pinstriped apron"
+    idx, span = ac.locate_attribute_phrase(prompt, "red apron")
+    assert span == "red pinstriped apron"
+    assert prompt[idx:idx + len(span)] == span
+
+
+def test_locate_attribute_phrase_uses_word_boundaries_not_substring_match():
+    """"red" must not match inside "shredded" -- word matching must be boundary-anchored,
+    not a plain substring search."""
+    prompt = "a chef holding shredded lettuce and wearing a crimson apron"
+    with pytest.raises(ValueError, match="red"):
+        ac.locate_attribute_phrase(prompt, "red apron")
+
+
+def test_locate_attribute_phrase_raises_on_empty_string_attribute():
+    prompt = "a barista wearing a red apron"
+    with pytest.raises(ValueError, match="content words"):
+        ac.locate_attribute_phrase(prompt, "")
+
+
+def test_locate_attribute_phrase_exact_match_path_is_also_word_boundary_anchored():
+    """A single-word attribute must not exact-match inside a larger word either -- "red"
+    must not match inside "shredded" via the fast substring path any more than it does via
+    the word-by-word fallback path."""
+    prompt = "a chef holding shredded lettuce and wearing a crimson smock"
+    with pytest.raises(ValueError, match="red"):
+        ac.locate_attribute_phrase(prompt, "red")
+
+
 def test_locate_attribute_phrase_matches_words_forward_in_order_not_independently():
     """A decoy 'helmet' appears before the real 'yellow ... helmet' phrase -- an unordered
     matcher could pair 'yellow' with the later helmet and the decoy 'helmet' with nothing,

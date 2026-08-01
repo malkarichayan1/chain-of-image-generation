@@ -32,7 +32,7 @@ def test_nearest_subject_prefers_preceding_over_equidistant_following():
     Preceding wins by design (matches the user's own "apron comes right after barista" framing
     and the real prompt template, where the intended subject always precedes its attribute) --
     order-independent, not a list-order tie-break."""
-    prompt = "SUBJ1xxxxATTRxxxxSUBJ2"
+    prompt = "SUBJ1 xxxx ATTR xxxx SUBJ2"
     assert exp4.nearest_subject_baseline(prompt, ["SUBJ1", "SUBJ2"], "ATTR") == "SUBJ1"
     assert exp4.nearest_subject_baseline(prompt, ["SUBJ2", "SUBJ1"], "ATTR") == "SUBJ1"
 
