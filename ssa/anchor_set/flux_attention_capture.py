@@ -38,7 +38,7 @@ resolution-squared-weighted composite.
 from __future__ import annotations
 
 import math
-from typing import Dict, List, Sequence, Tuple
+from typing import Dict, List, Sequence, Set, Tuple
 
 import numpy as np
 import torch
@@ -235,3 +235,66 @@ class FluxAttentionCapture:
         avg = torch.from_numpy(accum / count).unsqueeze(0).unsqueeze(0)
         up = F.interpolate(avg, size=target_resolution, mode="bilinear", align_corners=False)
         return up.squeeze(0).squeeze(0).numpy()
+
+
+def flux_token_indices(tokenizer_2, prompt: str, attribute: str) -> List[int]:
+    """T5 token indices for `attribute` within `prompt` -- analogous to
+    generate_anchor_images_sdxl.py's token_indices(), but against tokenizer_2 (T5): T5 tokens,
+    not CLIP's, are what actually enter FLUX's joint attention sequence. Falls back through
+    locate_attribute_phrase when `attribute` is a strict sub-phrase of the prompt's actual
+    wording (e.g. "yellow helmet" vs. "...yellow bike helmet...").
+
+    KNOWN LIMITATION: this is a first-match, content-only token search -- it discards the
+    character offset locate_attribute_phrase already computed and instead finds the FIRST
+    occurrence of the matched phrase's token sequence in the tokenized prompt. If `attribute`'s
+    matched phrase occurs more than once in `prompt` (e.g. two different subjects both "wearing
+    a red apron"), every call with that identical (prompt, attribute) pair returns the SAME
+    first occurrence -- there is no way from this function alone to select a later occurrence.
+    attribute_target_token_indices() guards its own caller against the resulting silent data
+    loss by requiring attribute strings to be unique per prompt; a caller invoking this function
+    directly, outside that guard, is NOT protected and must ensure uniqueness itself."""
+    from anchor_common import locate_attribute_phrase
+
+    _, matched_phrase = locate_attribute_phrase(prompt, attribute)
+    ids = tokenizer_2(prompt, padding="max_length", max_length=512, truncation=True).input_ids
+    target = tokenizer_2(matched_phrase, add_special_tokens=False).input_ids
+    if not target:
+        raise ValueError(f"phrase {matched_phrase!r} tokenized to nothing")
+    for i in range(len(ids) - len(target) + 1):
+        if ids[i:i + len(target)] == target:
+            return list(range(i, i + len(target)))
+    raise ValueError(f"phrase {matched_phrase!r} not found in prompt tokens: {prompt!r}")
+
+
+def attribute_target_token_indices(
+    tokenizer_2, prompt: str, subject_attribute_pairs: Sequence[Tuple[str, str]]
+) -> Tuple[Dict[str, List[int]], List[int]]:
+    """Per-attribute token indices, plus their sorted-deduplicated union -- the union is what
+    FluxAttentionCapture.hook_pipeline() needs BEFORE generation starts, since every attribute
+    for this prompt must be captured in the same generation pass (attention cannot be captured
+    twice from one run). Returns ({attribute: [indices]}, [union of all indices]).
+
+    Requires every attribute string across `subject_attribute_pairs` to be unique. This is a
+    direct consequence of flux_token_indices' own first-match, content-only limitation (see its
+    docstring): two subjects sharing identical attribute text (e.g. both "wearing a red apron")
+    would otherwise silently collide in `per_attribute` (keyed by attribute string) and both
+    resolve to the SAME first occurrence's token indices -- the second subject's real occurrence
+    is dropped with no exception anywhere. Raises ValueError up front, before doing any token
+    lookups, naming the duplicate attribute text and both subjects involved, rather than let
+    that data loss happen silently."""
+    seen: Dict[str, str] = {}
+    for subject, attribute in subject_attribute_pairs:
+        if attribute in seen:
+            raise ValueError(
+                f"duplicate attribute text {attribute!r} for subjects {seen[attribute]!r} and "
+                f"{subject!r} -- attribute_target_token_indices requires unique attribute "
+                "strings per prompt (see flux_token_indices' first-match limitation)")
+        seen[attribute] = subject
+
+    per_attribute: Dict[str, List[int]] = {}
+    union: Set[int] = set()
+    for _subject, attribute in subject_attribute_pairs:
+        idxs = flux_token_indices(tokenizer_2, prompt, attribute)
+        per_attribute[attribute] = idxs
+        union.update(idxs)
+    return per_attribute, sorted(union)

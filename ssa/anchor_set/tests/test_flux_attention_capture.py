@@ -5,6 +5,7 @@ inside ssa/anchor_set/:  py -3 -m pytest tests/"""
 import math
 import sys
 from pathlib import Path
+from typing import List
 
 import numpy as np
 import pytest
@@ -353,3 +354,85 @@ def test_cross_attention_map_raises_on_mismatched_grid_sizes():
     with pytest.raises(ValueError, match="inconsistent"):
         capture.cross_attention_map(target_indices_position=[0],
                                      target_resolution=(5, 5), max_steps=25)
+
+
+# --------------------------------------------------------------------------- token indices
+
+class _FakeT5Tokenizer:
+    """Whitespace/word tokenizer stand-in -- exercises flux_token_indices' index arithmetic
+    without downloading the real (multi-GB) T5-XXL tokenizer. One integer id per distinct word,
+    so token positions map 1:1 to word positions and are easy to assert on directly."""
+
+    def __init__(self):
+        self._vocab: dict = {}
+
+    def _ids_for(self, text: str) -> List[int]:
+        out = []
+        for word in text.split():
+            out.append(self._vocab.setdefault(word, len(self._vocab) + 1))
+        return out
+
+    def __call__(self, text, padding=None, max_length=None, truncation=None,
+                add_special_tokens=True):
+        ids = self._ids_for(text)
+        if padding == "max_length" and max_length:
+            ids = (ids + [0] * max_length)[:max_length]
+
+        class _Result:
+            pass
+        result = _Result()
+        result.input_ids = ids
+        return result
+
+
+def test_flux_token_indices_exact_match():
+    tok = _FakeT5Tokenizer()
+    prompt = "a barista wearing a red apron and a cyclist wearing a yellow helmet"
+    idxs = fac.flux_token_indices(tok, prompt, "red apron")
+    words = prompt.split()
+    assert idxs == [words.index("red"), words.index("red") + 1]
+
+
+def test_flux_token_indices_fallback_on_subphrase_mismatch():
+    tok = _FakeT5Tokenizer()
+    prompt = ("a photo of a man wearing a cycling jersey in a yellow bike helmet standing "
+              "next to a farmer")
+    idxs = fac.flux_token_indices(tok, prompt, "yellow helmet")
+    words = prompt.split()
+    yellow_pos = words.index("yellow")
+    assert idxs == [yellow_pos, yellow_pos + 1, yellow_pos + 2]  # "yellow bike helmet"
+
+
+def test_flux_token_indices_raises_when_phrase_truly_absent():
+    tok = _FakeT5Tokenizer()
+    with pytest.raises(ValueError):
+        fac.flux_token_indices(tok, "a barista wearing a red apron", "green scarf")
+
+
+# --------------------------------------------------------------------------- union helper
+
+def test_attribute_target_token_indices_unions_across_attributes():
+    tok = _FakeT5Tokenizer()
+    prompt = "a barista wearing a red apron and a cyclist wearing a yellow helmet"
+    pairs = [("barista", "red apron"), ("cyclist", "yellow helmet")]
+    per_attr, union = fac.attribute_target_token_indices(tok, prompt, pairs)
+    assert set(per_attr["red apron"]) <= set(union)
+    assert set(per_attr["yellow helmet"]) <= set(union)
+    assert union == sorted(union)  # deterministic ordering
+    assert len(union) == len(set(union))  # no duplicates
+
+
+def test_attribute_target_token_indices_raises_on_duplicate_attribute_text():
+    """Regression test for a real bug (code review, confirmed by direct execution): two
+    subjects sharing identical attribute text used to silently collide in `per_attribute`
+    (keyed by attribute string alone) -- the second subject's real token occurrence was
+    dropped with no exception, since flux_token_indices always returns the FIRST occurrence
+    of the matched phrase for a given (prompt, attribute) pair. This must now raise loudly
+    instead of silently losing the waiter's real "red apron" occurrence at word positions
+    15-16 (barista's is at 7-8)."""
+    tok = _FakeT5Tokenizer()
+    prompt = ("a photo of a barista wearing a red apron and a waiter also wearing a "
+              "red apron")
+    pairs = [("barista", "red apron"), ("waiter", "red apron")]
+    with pytest.raises(ValueError, match="duplicate attribute"):
+        fac.attribute_target_token_indices(tok, prompt, pairs)
