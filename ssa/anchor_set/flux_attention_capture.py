@@ -76,7 +76,7 @@ class FluxAttentionStore:
 
     def add_attention(self, layer_name: str, head_averaged: torch.Tensor) -> None:
         """`head_averaged`: (image_seq_len, n_targets) for one layer at the current step."""
-        self.step_store.setdefault(self.current_step, {})[layer_name] = head_averaged.detach().cpu()
+        self.step_store.setdefault(self.current_step, {})[layer_name] = head_averaged.detach().float().cpu()
 
     def step(self) -> None:
         self.current_step += 1

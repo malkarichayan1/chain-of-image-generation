@@ -69,6 +69,32 @@ def test_store_add_attention_keys_by_current_step():
     assert store.step_store[1]["layer_a"].sum().item() == 18
 
 
+def test_add_attention_casts_bfloat16_to_float32():
+    """Regression test for a real bug, reproduced end-to-end (not theorized): on real GPU
+    hardware DTYPE is torch.bfloat16, so every tensor FluxCustomAttnProcessor captures is
+    bfloat16. Before this fix, add_attention only called .detach().cpu() with no dtype cast,
+    and torch.Tensor.numpy() raises `TypeError: Got unsupported ScalarType BFloat16` for a
+    bfloat16 CPU tensor (confirmed directly against this torch install) -- cross_attention_map's
+    internal tensor.numpy() call would crash on every real GPU run, every single prompt, and
+    since generate_and_score's try/except in main() swallows the exception, all 105 prompts
+    would silently land as detected=False, attributes=[] with zero usable attention data.
+    Exercises the actual failure path: a bfloat16 tensor through add_attention, then
+    cross_attention_map's own .numpy() call -- not a standalone dtype assertion."""
+    store = fac.FluxAttentionStore()
+    store.reset([0, 1])
+    bf16_tensor = torch.ones(9, 2, dtype=torch.bfloat16)  # 3x3 native image grid, 2 targets
+    store.add_attention("layer_a", bf16_tensor)
+    # The cast must happen at capture time (add_attention), not deferred to cross_attention_map.
+    assert store.step_store[0]["layer_a"].dtype == torch.float32
+
+    capture = fac.FluxAttentionCapture()
+    capture.store = store
+    result = capture.cross_attention_map(target_indices_position=[0, 1],
+                                         target_resolution=(6, 6), max_steps=25)
+    assert result.shape == (6, 6)
+    assert np.isfinite(result).all()
+
+
 # --------------------------------------------------------------------------- processor equivalence
 
 def test_hooked_output_matches_stock_within_float_tolerance():
