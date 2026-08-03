@@ -142,6 +142,59 @@ recolors instead of localized edits — which is what forced the one-shot framin
   23-image set's ~51%, well short of the ~150-effective floor the protocol sized the batch
   for. Not yet investigated: whether the growth/backfill seed pool is systematically harder
   to render than the original 23 prompts.
+- **Workstream 3 — FLUX.1-dev cross-attention capture, designed 2026-07-31, implemented and
+  run 2026-08-02/03, branch `worktree-flux-attention-hook` (merged into
+  `claude/flux1-dev-experiments-xx0irs` 2026-08-03, commit `3e2d218`).** `artifacts_flux/`
+  already had 105 FLUX images (103/105 detected) with full Chayan/Akhil/Grace labels, but
+  `generate_anchor_images_flux.py` had never actually captured cross-attention — every
+  `model_scores` entry was a hardcoded `"unavailable"` placeholder (0/301 rows real).
+  Design doc `docs/superpowers/specs/2026-07-31-flux-attention-hook-design.md`: FLUX's stock
+  `FluxAttnProcessor` never materializes an attention matrix (fused SDPA call), so
+  `FluxAttentionCapture`/`FluxCustomAttnProcessor` (`ssa/anchor_set/flux_attention_capture.py`,
+  new) recompute q/k/v projections and softmax manually on the 19 `FluxTransformerBlock`
+  double blocks only (the 38 single blocks are explicitly out of scope — no
+  encoder/image-token boundary to hook cleanly). Constraint: reuse the *same* 105 prompts and
+  pinned per-image seeds already in the manifest (no new images, no relabeling, so the
+  existing 227+ labels stay valid) — small pixel-level drift from recomputing attention via
+  unfused softmax instead of a fused kernel is expected and accepted, not a bug. Also fixed a
+  shared phrase-matching gap (`"yellow helmet"` vs. prompt text `"...yellow bike
+  helmet..."`) that independently broke both T5 token lookup and
+  `exp4_positional_baseline.py`'s baseline on ~40 rows.
+  **Verified 2026-08-03 before running experiments, per Pranav's handoff:** all 105 images
+  present on disk; every detected row's attribute count matches `n`; all attribute entries
+  now carry real (non-placeholder) `model_scores` **and** `model_scores_full` values — 0/301
+  `"unavailable"` rows remain; seeds match the SDXL manifest's pinned seeds exactly on every
+  overlapping `prompt_id` (0 mismatches) — FLUX's own prompt text is deliberately reworded
+  for FLUX's phrasing needs (e.g. explicit "on the left / on the right" spatial framing),
+  not a bug, per the design doc's non-goals; full test suite (190 tests) passes, 1 GPU-only
+  equivalence test skips without `torch` installed. **Ran the real (not smoke-test) 5-
+  experiment battery (`run_five_experiments.py`) against `artifacts_flux` for all three
+  annotators — first real run against populated FLUX attention data:**
+  - Exp 1 (accuracy vs. chance): every stratum clears chance by a wide margin and every
+    p<0.0001 for all 3 annotators (n=2 ~97.5%, n=3 ~92.9–95.6%, n=4 ~71.5–73.1%, vs.
+    50/33/25% chance).
+  - Exp 2 (early-window vs. full-trajectory): effectively identical (McNemar p=1.0, all
+    annotators) — FLUX's binding decision looks settled within the early window.
+  - Exp 3 (attention-randomization falsification, the design doc's designated primary claim
+    since Exp 4 has no headroom at n=2): real beats cross-item-scrambled overwhelmingly
+    (McNemar p≈1.8e-33 chayan/akhil, 2.2e-29 grace); median scrambled accuracy sits right at
+    chance in every stratum, as it should if attention content — not scramble artifacts —
+    drives the real result.
+  - Exp 4 (vs. nearest-subject-noun baseline, post phrase-matching fix): metric beats the
+    baseline overall (84.6–86.0% vs. 77.7–78.9%, McNemar p=0.013–0.027) — confirms the
+    design doc's prediction that n=2 has no headroom (baseline already ~88–89% there) but the
+    pooled result still clears significance.
+  - Exp 5 (count-clean subset): 0 rows excluded as count-broken for any annotator — all-rows
+    and count-clean tables are identical, unlike the SDXL growth batch's 96/306 count-broken
+    problem.
+  - Inter-rater reliability on this label set is strong: chayan-akhil kappa=0.954,
+    chayan-grace kappa=0.958 (301 overlapping judgments each) — well above the SDXL anchor
+    set's 0.682, so these numbers aren't resting on shaky ground truth.
+  Outputs: `five_experiments_{chayan,akhil,grace}.{json,md}` and `agreement_chayan.csv` in
+  `artifacts_flux/`. **Not yet done:** re-run Part C's robustness battery (Holm correction,
+  leave-one-out, RNG sweep) against this FLUX data — only run so far against the SD1.5 chain
+  data; and the single blocks remain out of scope per the design doc, so this result speaks
+  only to the 19 double blocks' attention.
 
 ### B. Chain / Delta-Mask metric (branch `feature/spatial-semantic-alignment-metric`, single file
 `pilot/spatial_semantic_alignment.py`, authored by Pranav, commit `5452a16`)
