@@ -107,7 +107,7 @@ def test_unscored_rows_excluded_from_all_reports():
     assert report["baseline_accuracy"] is None
 
 
-def test_nearest_subject_baseline_handles_subphrase_attribute_mismatch():
+def test_nearest_subject_baseline_handles_subphrase_subject_mismatch():
     """Real FLUX case: manifest attribute is 'yellow helmet', prompt says 'yellow bike helmet'.
     Before this fix, prompt.find('yellow helmet') returns -1 and this raises ValueError."""
     prompt = ("a photo of four people standing side by side, on the far left a barista in a "
@@ -158,3 +158,15 @@ def test_nearest_subject_baseline_raises_when_fallback_itself_fails():
     subjects = ["cyclist", "pilot"]
     with pytest.raises(ValueError, match="none of"):
         exp4.nearest_subject_baseline(prompt, subjects, "yellow bike helmet")
+
+
+def test_nearest_subject_baseline_handles_subphrase_attribute_mismatch():
+    """Real FLUX case (artifacts_flux/manifest.json, prompt_id 1): manifest attribute is
+    'white hat', prompt says 'tall white chef hat'. Subject 'chef' appears literally in the
+    prompt, so this isolates the attribute-side fix from the subject-side fallback covered by
+    test_nearest_subject_baseline_handles_subphrase_subject_mismatch above."""
+    prompt = ("a photo of two people standing side by side, on the left a chef in a tall "
+              "white chef hat, on the right a farmer holding a wooden shovel")
+    subjects = ["chef", "farmer"]
+    result = exp4.nearest_subject_baseline(prompt, subjects, "white hat")
+    assert result == "chef"

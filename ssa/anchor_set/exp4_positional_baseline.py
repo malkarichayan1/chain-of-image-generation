@@ -48,7 +48,10 @@ def nearest_subject_baseline(prompt: str, subjects: Sequence[str], attribute: st
     cycling jersey...". This is real, not hypothetical: 47/105 (~45%) of
     artifacts_flux/manifest.json rows have at least one subject label with no literal match.
     If the fallback itself can't resolve (marker count mismatch), that subject is skipped,
-    same as the old behavior."""
+    same as the old behavior. Note this is a positional/structural fallback, not the fuzzy
+    morphological matching an earlier revision tried and reverted (see anchor_common.py's
+    subject_char_positions docstring) -- it doesn't guess word forms, only reuses the
+    prompt template's own subject markers."""
     attr_idx, _ = locate_attribute_phrase(prompt, attribute)
     fallback_positions: Optional[List[int]] = None
     preceding: List[Tuple[int, str]] = []
@@ -56,6 +59,13 @@ def nearest_subject_baseline(prompt: str, subjects: Sequence[str], attribute: st
     for i, subject in enumerate(subjects):
         subj_idx = prompt.find(subject)
         if subj_idx < 0:
+            # Paraphrased subjects (e.g. manifest subject "cyclist" vs. prompt text "a man
+            # wearing a cycling jersey") are resolved via subject_char_positions'
+            # positional-marker fallback below, not via fuzzy/morphological word matching --
+            # an earlier revision tried the fuzzy approach and reverted it (see
+            # anchor_common.py's subject_char_positions docstring) because it would change
+            # what this deliberately-simple baseline measures. If the fallback itself can't
+            # resolve (marker count mismatch), the subject is still skipped, same as before.
             if fallback_positions is None:
                 fallback_positions = subject_char_positions(prompt, subjects)
             if fallback_positions is None:
