@@ -182,6 +182,129 @@ def test_chance_baseline():
     assert ac.chance_baseline(4) == 0.25
 
 
+def test_absent_excluded_from_denominator_same_as_none_and_unclear():
+    """`absent` (Subject Absent / Not Evaluable) marks a count-broken-caused gap, not a
+    binding outcome -- it must be excluded from scoring exactly like `none`/`unclear`, so
+    adding it never moves an already-published accuracy number."""
+    labels = {
+        ac.label_key(0, "red apron"): "barista",       # correct
+        ac.label_key(0, "yellow helmet"): ac.LABEL_ABSENT,  # excluded
+        ac.label_key(1, "white hat"): ac.LABEL_UNCLEAR,     # excluded
+    }
+    summary = ac.summarize_agreement(ac.build_agreement_rows(_manifest(), labels))
+    overall = summary["overall"]
+    assert overall["n_labeled"] == 3
+    assert overall["n_scored"] == 1
+    assert overall["n_correct"] == 1
+
+
+def test_label_absent_is_in_both_sentinel_sets():
+    assert ac.LABEL_ABSENT in ac.NON_SUBJECT_LABELS
+    assert ac.LABEL_ABSENT in ac.MISSING_DATA_LABELS
+    assert ac.LABEL_ABSENT not in {ac.LABEL_NONE, ac.LABEL_UNCLEAR, ac.LABEL_SHARED}
+
+
+# --------------------------------------------------------------------------- prompt layout
+
+def test_parse_prompt_layout_n2():
+    prompt = ("a photo of two people standing side by side, on the left a barista in a red "
+              "apron, on the right a man wearing a cycling jersey in a yellow bike helmet")
+    layout = ac.parse_prompt_layout(prompt, ["barista", "cyclist"])
+    assert layout is not None
+    assert layout[0] == ("left", None)  # "barista" appears in its own segment -> no gloss
+    position, gloss = layout[1]
+    assert position == "right"
+    assert gloss == "a man wearing a cycling jersey in a yellow bike helmet"
+
+
+def test_parse_prompt_layout_n3():
+    prompt = ("a photo of three people standing side by side, on the left a barista in a red "
+              "apron, in the middle a chef in a tall white chef hat, on the right a farmer "
+              "holding a wooden shovel")
+    layout = ac.parse_prompt_layout(prompt, ["barista", "chef", "farmer"])
+    assert [p for p, _g in layout] == ["left", "middle", "right"]
+    assert all(g is None for _p, g in layout)  # all three subject names appear verbatim
+
+
+def test_parse_prompt_layout_n4():
+    prompt = ("a photo of four people standing side by side, on the far left a barista in a "
+              "red apron, on the center-left a man wearing a cycling jersey in a yellow bike "
+              "helmet, on the center-right a chef in a tall white chef hat, on the far right "
+              "a farmer holding a wooden shovel")
+    layout = ac.parse_prompt_layout(prompt, ["barista", "cyclist", "chef", "farmer"])
+    assert [p for p, _g in layout] == ["far left", "center-left", "center-right", "far right"]
+    assert layout[1][1] == "a man wearing a cycling jersey in a yellow bike helmet"
+
+
+def test_parse_prompt_layout_returns_none_on_marker_count_mismatch():
+    """Never guess a wrong position: if the marker count doesn't match len(subjects) --
+    a malformed or hand-edited prompt -- callers must fall back to plain (position-free)
+    display rather than risk a mislabeled position."""
+    prompt = "a photo of two people standing side by side, on the left a barista in a red apron"
+    assert ac.parse_prompt_layout(prompt, ["barista", "cyclist"]) is None
+
+
+def test_parse_prompt_layout_returns_none_when_no_markers_present():
+    assert ac.parse_prompt_layout("a barista and a chef", ["barista", "chef"]) is None
+
+
+# --------------------------------------------------------------------------- gloss redaction
+
+def test_redact_attribute_clause_strips_the_matching_attribute_clause():
+    """The real leak this guards against: cyclist's naming gloss is "a man wearing a
+    cycling jersey in a yellow bike helmet" -- when the annotator is being asked about the
+    'yellow helmet' attribute, showing that gloss unredacted spells out the answer right
+    next to the menu option it belongs to. Only the identity-establishing clause ("a man
+    wearing a cycling jersey") should survive; the attribute clause must be cut."""
+    gloss = "a man wearing a cycling jersey in a yellow bike helmet"
+    trimmed = ac.redact_attribute_clause(gloss, "yellow helmet")
+    assert trimmed == "a man wearing a cycling jersey"
+    assert "yellow" not in trimmed and "helmet" not in trimmed
+
+
+def test_redact_attribute_clause_no_overlap_returns_gloss_unchanged():
+    """Asking about a DIFFERENT attribute (e.g. the barista's red apron) must not touch
+    cyclist's gloss at all -- there's nothing to redact, and the identity clarification is
+    still useful context for that question too."""
+    gloss = "a man wearing a cycling jersey in a yellow bike helmet"
+    assert ac.redact_attribute_clause(gloss, "red apron") == gloss
+
+
+def test_redact_attribute_clause_never_returns_empty():
+    """If redaction would strip the ENTIRE gloss (a pathological/future prompt shape),
+    fall back to the untrimmed gloss rather than show a blank clarification."""
+    gloss = "yellow helmet"
+    assert ac.redact_attribute_clause(gloss, "yellow helmet") == gloss
+
+
+# --------------------------------------------------------------------------- subject char positions
+
+def test_subject_char_positions_lands_inside_each_subjects_own_segment():
+    """Real FLUX-style 4-subject prompt: 'cyclist' never appears literally (only 'a man
+    wearing a cycling jersey...' does), so this is the fallback nearest_subject_baseline
+    needs. Each returned offset should sit inside that subject's own descriptive segment --
+    concretely, the 'cyclist' offset must land before its 'yellow bike helmet' attribute
+    clause, not before its own identity clause."""
+    prompt = ("a photo of four people standing side by side, on the far left a barista in a "
+              "red apron, on the center-left a man wearing a cycling jersey in a yellow bike "
+              "helmet, on the center-right a farmer holding a wooden shovel, on the far right "
+              "a nurse wearing blue gloves")
+    subjects = ["barista", "cyclist", "farmer", "nurse"]
+    positions = ac.subject_char_positions(prompt, subjects)
+    assert positions is not None
+    assert len(positions) == 4
+    cyclist_idx = positions[1]
+    # `m.end()` lands right at the marker boundary (may include a leading space before the
+    # segment text itself) -- check it opens onto cyclist's own segment, not exact equality.
+    assert prompt[cyclist_idx:].lstrip().startswith("a man wearing a cycling jersey")
+    assert cyclist_idx < prompt.index("yellow bike helmet")
+
+
+def test_subject_char_positions_returns_none_on_marker_count_mismatch():
+    prompt = "a photo of two people standing side by side, on the left a barista in a red apron"
+    assert ac.subject_char_positions(prompt, ["barista", "cyclist"]) is None
+
+
 # --------------------------------------------------------------------------- count-clean
 
 def test_pending_count_targets_only_detected_and_uncounted():
@@ -252,3 +375,68 @@ def test_binomial_test_vs_chance_below_chance_is_not_significant_one_sided():
     # A one-sided ("greater") test: doing WORSE than chance must not read as "beats chance."
     p = ac.binomial_test_vs_chance(2, 20, 0.5)
     assert p > 0.99
+
+
+# --------------------------------------------------------------------------- locate_attribute_phrase
+
+def test_locate_attribute_phrase_exact_match_returns_attribute_unchanged():
+    prompt = "a photo of a barista wearing a red apron and a cyclist wearing a yellow helmet"
+    idx, span = ac.locate_attribute_phrase(prompt, "red apron")
+    assert idx == prompt.find("red apron")
+    assert span == "red apron"
+
+
+def test_locate_attribute_phrase_falls_back_to_content_words_on_subphrase_mismatch():
+    """Real case from artifacts_flux/manifest.json: the manifest's attribute field says
+    'yellow helmet' but the actual prompt says 'yellow bike helmet' -- exact substring match
+    fails, so this must fall back to spanning from the first content word to the last."""
+    prompt = ("a photo of four people standing side by side, on the far left a barista in a "
+              "red apron, on the center-left a man wearing a cycling jersey in a yellow bike "
+              "helmet, on the center-right a farmer holding a wooden shovel, on the far right "
+              "a nurse wearing blue gloves")
+    idx, span = ac.locate_attribute_phrase(prompt, "yellow helmet")
+    assert span == "yellow bike helmet"
+    assert prompt[idx:idx + len(span)] == span
+
+
+def test_locate_attribute_phrase_raises_when_a_content_word_is_truly_absent():
+    prompt = "a barista wearing a red apron"
+    with pytest.raises(ValueError, match="green"):
+        ac.locate_attribute_phrase(prompt, "green scarf")
+
+
+def test_locate_attribute_phrase_raises_on_attribute_with_no_content_words():
+    with pytest.raises(ValueError, match="content words"):
+        ac.locate_attribute_phrase("a barista wearing a red apron", "   ")
+
+
+def test_locate_attribute_phrase_does_not_span_across_unrelated_clauses_with_shared_word():
+    """Two subjects can share a word (e.g. both wearing something red) -- the shortest local
+    match must win, not a greedy span stretching across the unrelated clause in between."""
+    prompt = "a barista wearing a red hat and a cyclist wearing a red pinstriped apron"
+    idx, span = ac.locate_attribute_phrase(prompt, "red apron")
+    assert span == "red pinstriped apron"
+    assert prompt[idx:idx + len(span)] == span
+
+
+def test_locate_attribute_phrase_uses_word_boundaries_not_substring_match():
+    """"red" must not match inside "shredded" -- word matching must be boundary-anchored,
+    not a plain substring search."""
+    prompt = "a chef holding shredded lettuce and wearing a crimson apron"
+    with pytest.raises(ValueError, match="red"):
+        ac.locate_attribute_phrase(prompt, "red apron")
+
+
+def test_locate_attribute_phrase_raises_on_empty_string_attribute():
+    prompt = "a barista wearing a red apron"
+    with pytest.raises(ValueError, match="content words"):
+        ac.locate_attribute_phrase(prompt, "")
+
+
+def test_locate_attribute_phrase_exact_match_path_is_also_word_boundary_anchored():
+    """A single-word attribute must not exact-match inside a larger word either -- "red"
+    must not match inside "shredded" via the fast substring path any more than it does via
+    the word-by-word fallback path."""
+    prompt = "a chef holding shredded lettuce and wearing a crimson smock"
+    with pytest.raises(ValueError, match="red"):
+        ac.locate_attribute_phrase(prompt, "red")

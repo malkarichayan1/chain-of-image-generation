@@ -24,12 +24,13 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
-from typing import Dict, List, Sequence, Tuple
+from typing import Dict, List, Optional, Sequence, Tuple
 
 import pandas as pd
 from scipy import stats
 
-from anchor_common import build_agreement_rows, chance_baseline, load_labels
+from anchor_common import (build_agreement_rows, chance_baseline, load_labels,
+                            locate_attribute_phrase, subject_char_positions)
 
 
 def nearest_subject_baseline(prompt: str, subjects: Sequence[str], attribute: str) -> str:
@@ -39,16 +40,27 @@ def nearest_subject_baseline(prompt: str, subjects: Sequence[str], attribute: st
     subject beat a preceding one). Falls back to the nearest following subject only when no
     subject precedes the attribute at all. Within a direction, nearest (smallest gap) wins;
     since subjects occupy distinct positions, exact same-direction ties can't occur for real
-    prompts, but Python's stable sort resolves them by `subjects` list order regardless."""
-    attr_idx = prompt.find(attribute)
-    if attr_idx < 0:
-        raise ValueError(f"attribute {attribute!r} not found in prompt {prompt!r}")
+    prompts, but Python's stable sort resolves them by `subjects` list order regardless.
+
+    Subject lookup itself tries a literal substring match first, then falls back to
+    `subject_char_positions` (positional-marker split) when a subject's category name never
+    appears literally in the prompt -- e.g. FLUX's "cyclist", phrased as "a man wearing a
+    cycling jersey...". This is real, not hypothetical: 47/105 (~45%) of
+    artifacts_flux/manifest.json rows have at least one subject label with no literal match.
+    If the fallback itself can't resolve (marker count mismatch), that subject is skipped,
+    same as the old behavior."""
+    attr_idx, _ = locate_attribute_phrase(prompt, attribute)
+    fallback_positions: Optional[List[int]] = None
     preceding: List[Tuple[int, str]] = []
     following: List[Tuple[int, str]] = []
-    for subject in subjects:
+    for i, subject in enumerate(subjects):
         subj_idx = prompt.find(subject)
         if subj_idx < 0:
-            continue
+            if fallback_positions is None:
+                fallback_positions = subject_char_positions(prompt, subjects)
+            if fallback_positions is None:
+                continue
+            subj_idx = fallback_positions[i]
         (preceding if subj_idx <= attr_idx else following).append(
             (abs(subj_idx - attr_idx), subject))
     if not preceding and not following:

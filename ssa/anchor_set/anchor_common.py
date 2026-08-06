@@ -18,6 +18,7 @@ the result the memo's decision gate reads.
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 from typing import Dict, List, Optional, Sequence, Tuple
 
@@ -28,15 +29,20 @@ from scipy import stats
 LABEL_NONE = "none"        # the attribute never visibly rendered on anyone
 LABEL_UNCLEAR = "unclear"  # rendered but the annotator cannot assign ownership
 LABEL_SHARED = "shared"    # rendered on MORE THAN ONE subject (attribute leakage)
-NON_SUBJECT_LABELS = frozenset({LABEL_NONE, LABEL_UNCLEAR, LABEL_SHARED})
+LABEL_ABSENT = "absent"    # the intended SUBJECT was never rendered (count-broken) -- a
+                            # rendering-failure fact, distinct from `none` (the subject
+                            # exists, but this attribute never showed up on anyone).
+NON_SUBJECT_LABELS = frozenset({LABEL_NONE, LABEL_UNCLEAR, LABEL_SHARED, LABEL_ABSENT})
 
 # `shared` is deliberately split out of `unclear`. Both are "not one subject", but they are
 # different facts: `unclear` is missing data (the annotator could not tell), while `shared`
 # is a binding OUTCOME (the model bound the attribute to several subjects at once) that the
-# metric can be asked to predict. Strict scoring excludes all three -- preserving every
+# metric can be asked to predict. Strict scoring excludes all four -- preserving every
 # already-published accuracy number -- while shared-aware scoring (see `margin_threshold`
-# in build_agreement_rows) readmits only `shared` as an extra predictable class.
-MISSING_DATA_LABELS = frozenset({LABEL_NONE, LABEL_UNCLEAR})
+# in build_agreement_rows) readmits only `shared` as an extra predictable class. `absent`
+# joins `none`/`unclear` here (not `shared`): like them it is missing data about BINDING,
+# not a binding outcome a metric could ever be scored against.
+MISSING_DATA_LABELS = frozenset({LABEL_NONE, LABEL_UNCLEAR, LABEL_ABSENT})
 
 
 # ---------------------------------------------------------------------------
@@ -79,6 +85,79 @@ def validate_specs(specs: Sequence[dict]) -> None:
 
 
 # ---------------------------------------------------------------------------
+# Prompt layout parsing (for label_images.py's on-screen clarity, not scoring)
+# ---------------------------------------------------------------------------
+
+# Every anchor prompt places its n subjects with one of these fixed positional phrases, in
+# left-to-right generation order (see prompt_specs.json / build_growth_specs.py). Longer
+# phrases first defensively, though it's not load-bearing: "on the far left" can never be
+# mistaken for "on the left" mid-match, since the character right after "on the " differs
+# ('f' vs 'l') at the very first point the two alternatives diverge.
+_POSITION_MARKERS = (
+    "on the far left", "on the center-left", "on the center-right", "on the far right",
+    "on the left", "in the middle", "on the right",
+)
+_POSITION_PATTERN = re.compile("(" + "|".join(_POSITION_MARKERS) + ")")
+
+
+def parse_prompt_layout(prompt: str, subjects: Sequence[str]
+                         ) -> Optional[List[Tuple[str, Optional[str]]]]:
+    """Split `prompt` on its positional markers and pair each resulting segment with the
+    corresponding entry in `subjects`, in prompt order. Returns None -- never a guessed
+    position -- when the marker count doesn't equal len(subjects) (a malformed or
+    hand-edited prompt); callers must fall back to plain, position-free display rather than
+    risk showing a wrong position.
+
+    Each returned tuple is (position, gloss). `position` is the marker with its "on the "/
+    "in the " prefix stripped (e.g. "far left", "middle"). `gloss` is the subject's own
+    prompt segment, but ONLY when the subject name does not literally appear in it --
+    otherwise None, since there's nothing to clarify. This is what surfaces FLUX's "cyclist"
+    being phrased as "a man wearing a cycling jersey": the manifest's subjects list says
+    `cyclist`, but that word never appears in the prompt itself, so an annotator matching
+    subject names against prompt text would never find it without this gloss."""
+    parts = _POSITION_PATTERN.split(prompt)
+    # re.split with one capturing group interleaves: [preamble, marker, segment, marker, ...]
+    markers = parts[1::2]
+    segments = parts[2::2]
+    if len(markers) != len(subjects) or len(segments) != len(subjects):
+        return None
+    layout: List[Tuple[str, Optional[str]]] = []
+    for subject, marker, segment in zip(subjects, markers, segments):
+        segment = segment.strip(" ,.")
+        position = marker.replace("on the ", "").replace("in the ", "")
+        gloss = None if subject.lower() in segment.lower() else segment
+        layout.append((position, gloss))
+    return layout
+
+
+_TRAILING_PREPOSITION = re.compile(r"\s+(in|with|wearing|holding)\s+(a|an)?\s*$",
+                                    re.IGNORECASE)
+
+
+def redact_attribute_clause(gloss: str, attribute: str) -> str:
+    """Trim a subject's naming gloss (from parse_prompt_layout) so it stops before the
+    clause that names `attribute`, keeping only the subject-IDENTITY portion. Guards
+    against a real leak: cyclist's gloss is "a man wearing a cycling jersey in a yellow
+    bike helmet" -- shown unredacted next to a menu option while asking "which subject has
+    the yellow helmet?", it spells out the answer. Only clarifies naming, never spoils
+    binding.
+
+    Finds the earliest position any content word of `attribute` appears in `gloss`
+    (case-insensitive), cuts there, then strips a dangling trailing preposition left over
+    from the cut (e.g. "...cycling jersey in a" -> "...cycling jersey"). Returns `gloss`
+    unchanged if `attribute` shares no words with it (nothing to redact -- e.g. asking
+    about the barista's "red apron" must not touch cyclist's gloss at all), or if
+    redaction would strip the gloss down to nothing (better an unredacted gloss than a
+    blank one)."""
+    words = re.findall(r"[a-zA-Z]+", attribute.lower())
+    positions = [p for p in (gloss.lower().find(w) for w in words) if p != -1]
+    if not positions:
+        return gloss
+    trimmed = _TRAILING_PREPOSITION.sub("", gloss[:min(positions)]).rstrip(" ,")
+    return trimmed if trimmed else gloss
+
+
+# ---------------------------------------------------------------------------
 # Prediction from attention (DUPLICATED inline in generate_anchor_images.py)
 # ---------------------------------------------------------------------------
 
@@ -92,6 +171,93 @@ def mean_mass_in_box(attn_map: np.ndarray, box: Sequence[float]) -> float:
     if x1 <= x0 or y1 <= y0:
         return 0.0
     return float(attn_map[y0:y1, x0:x1].mean())
+
+
+def locate_attribute_phrase(prompt: str, attribute: str) -> Tuple[int, str]:
+    """Where `attribute` actually occurs in `prompt`, and what substring to treat as "the
+    phrase" for downstream token lookup. Tries an exact substring match first (unchanged
+    behavior for every attribute that already matches verbatim), but anchored to word
+    boundaries (`\\b`) so a single-word `attribute` like "red" can never match inside a
+    larger word like "shredded". Falls back to the SHORTEST left-to-right span that contains
+    every content word of `attribute`, each matched as a whole word (also `\\b`-anchored) --
+    handles manifest attribute strings that are a strict sub-phrase of a longer descriptive
+    phrase in the actual prompt (e.g. attribute="yellow helmet", prompt="...yellow bike
+    helmet...").  Taking the shortest span, rather than the first occurrence of each word, is
+    what keeps two subjects sharing a word (e.g. both "wearing something red") from producing
+    a span that stretches across the unrelated clause in between -- see the regression tests
+    for the concrete case this fixes. Raises ValueError if any content word is missing
+    anywhere in the prompt, if `attribute` has no content words at all, or if the words that
+    ARE present never appear in a valid left-to-right order.
+
+    Known limitation, currently dormant (verified against every real prompt in
+    prompt_specs.json / artifacts_flux/manifest.json / artifacts_sdxl/*.json -- zero
+    occurrences): the shortest-span fallback is scoped to the whole prompt, not to any one
+    subject's clause. If two different subjects' clauses both happen to contain all of
+    `attribute`'s content words (e.g. two subjects near each other each mentioning "red" and
+    "apron" in different combinations), this can silently pick a span from the wrong
+    subject's clause -- this function has no clause-boundary information to disambiguate
+    with. A caller working with less-controlled prompt text that wants a stronger guarantee
+    should pre-scope `prompt` to the relevant subject's clause before calling."""
+    words = re.findall(r"[a-zA-Z]+", attribute.lower())
+    if not words:
+        raise ValueError(f"attribute {attribute!r} has no content words to match")
+
+    exact = re.search(r"\b" + re.escape(attribute) + r"\b", prompt)
+    if exact:
+        return exact.start(), attribute
+
+    prompt_lower = prompt.lower()
+    occurrences: List[List[Tuple[int, int]]] = []
+    for word in words:
+        matches = [(m.start(), m.end())
+                   for m in re.finditer(r"\b" + re.escape(word) + r"\b", prompt_lower)]
+        if not matches:
+            raise ValueError(
+                f"attribute {attribute!r} word {word!r} not found in prompt {prompt!r}")
+        occurrences.append(matches)
+
+    best_span: Optional[Tuple[int, int]] = None
+    for start0, end0 in occurrences[0]:
+        cursor = end0
+        valid = True
+        for matches in occurrences[1:]:
+            next_match = next((m for m in matches if m[0] >= cursor), None)
+            if next_match is None:
+                valid = False
+                break
+            cursor = next_match[1]
+        if not valid:
+            continue
+        if best_span is None or (cursor - start0) < (best_span[1] - best_span[0]):
+            best_span = (start0, cursor)
+
+    if best_span is None:
+        raise ValueError(
+            f"attribute {attribute!r} words all appear in prompt {prompt!r} but never in a "
+            f"valid left-to-right order")
+    start, end = best_span
+    return start, prompt[start:end]
+
+
+def subject_char_positions(prompt: str, subjects: Sequence[str]) -> Optional[List[int]]:
+    """Character offset of where each subject in `subjects` (in prompt order) actually sits
+    in `prompt`, via the same positional-marker split `parse_prompt_layout` uses -- a
+    fallback for subjects whose category name never appears literally in the prompt text
+    (e.g. FLUX's "cyclist", phrased as "a man wearing a cycling jersey..."), where a literal
+    substring search has nothing to anchor on. Returns the position right after each
+    subject's marker (start of that subject's descriptive segment). Returns None, matching
+    parse_prompt_layout's contract, when the marker count doesn't equal len(subjects) --
+    callers must fall back further rather than guess.
+
+    Placed alongside `locate_attribute_phrase` rather than in the "prompt layout parsing"
+    section above (`parse_prompt_layout`/`redact_attribute_clause`, which exist purely for
+    label_images.py's on-screen display) because this function's only real caller,
+    `nearest_subject_baseline` in exp4_positional_baseline.py, feeds directly into
+    Experiment 4's scored baseline accuracy / McNemar test -- it IS scoring, not display."""
+    matches = list(_POSITION_PATTERN.finditer(prompt))
+    if len(matches) != len(subjects):
+        return None
+    return [m.end() for m in matches]
 
 
 def predicted_owner_from_attention(

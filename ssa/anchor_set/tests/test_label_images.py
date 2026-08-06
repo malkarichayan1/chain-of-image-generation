@@ -26,11 +26,58 @@ def _manifest():
 
 def test_build_menu_maps_numbers_and_sentinels():
     """`s` (shared) was added after the first labeling passes: `unclear` had been carrying
-    both "I can't tell" and "it's on several people at once", which are different facts."""
+    both "I can't tell" and "it's on several people at once", which are different facts.
+    `a` (absent) was added for the FLUX round: "the intended subject was never drawn" is a
+    count-failure fact, distinct from `none` ("the subject exists, but this attribute
+    never showed up")."""
     choice_map, menu = li.build_menu(["barista", "cyclist"])
     assert choice_map == {"1": "barista", "2": "cyclist", "n": ac.LABEL_NONE,
-                          "u": ac.LABEL_UNCLEAR, "s": ac.LABEL_SHARED}
+                          "u": ac.LABEL_UNCLEAR, "s": ac.LABEL_SHARED, "a": ac.LABEL_ABSENT}
     assert "barista" in menu and "none" in menu and "unclear" in menu and "shared" in menu
+    assert "absent" in menu
+
+
+def test_build_menu_without_layout_omits_position_tags():
+    """No `layout` arg (the pre-FLUX call shape) must render exactly as before -- no
+    bracketed position tag -- so every existing caller stays unaffected."""
+    _choice_map, menu = li.build_menu(["barista", "cyclist"])
+    assert "[" not in menu
+
+
+def test_build_menu_with_layout_shows_position_and_gloss():
+    """A subject whose name literally appears in its own prompt segment (barista) gets no
+    gloss -- nothing to clarify. One that doesn't (cyclist, phrased "a man wearing a
+    cycling jersey" in FLUX prompts) gets its prompt wording surfaced inline."""
+    layout = [("left", None),
+              ("right", "a man wearing a cycling jersey in a yellow bike helmet")]
+    _choice_map, menu = li.build_menu(["barista", "cyclist"], layout=layout)
+    assert "[left]" in menu and "[right]" in menu
+    assert "a man wearing a cycling jersey" in menu
+    # barista's own menu line must not carry a gloss parenthetical (its gloss is None)
+    barista_line = next(line for line in menu.splitlines() if "1) barista" in line)
+    assert "(" not in barista_line
+
+
+def test_build_menu_redacts_gloss_matching_the_current_attribute():
+    """The real leak this closes: without an `attribute` arg, cyclist's gloss spells out
+    "in a yellow bike helmet" right next to the option while asking about the yellow
+    helmet -- handing the annotator the answer. Passing the current attribute must trim it."""
+    layout = [("left", None),
+              ("right", "a man wearing a cycling jersey in a yellow bike helmet")]
+    _choice_map, menu = li.build_menu(["barista", "cyclist"], layout=layout,
+                                       attribute="yellow helmet")
+    assert "a man wearing a cycling jersey" in menu
+    assert "yellow" not in menu and "helmet" not in menu
+
+
+def test_build_menu_does_not_redact_unrelated_attribute():
+    """Asking about a different attribute (barista's red apron) must not touch cyclist's
+    gloss -- there's nothing to redact, and the naming clarification is still useful."""
+    layout = [("left", None),
+              ("right", "a man wearing a cycling jersey in a yellow bike helmet")]
+    _choice_map, menu = li.build_menu(["barista", "cyclist"], layout=layout,
+                                       attribute="red apron")
+    assert "a man wearing a cycling jersey in a yellow bike helmet" in menu
 
 
 def test_relabel_requeues_only_rows_carrying_a_targeted_label():
@@ -79,6 +126,14 @@ def test_prompt_one_rejects_then_accepts():
     assert got == "barista"
 
 
+def test_prompt_one_accepts_absent():
+    choice_map, menu = li.build_menu(["barista", "cyclist"])
+    img = {"prompt_id": 0, "prompt": "p0"}
+    attr = {"attribute": "red apron"}
+    got = li.prompt_one(img, attr, choice_map, menu, input_fn=lambda _p: "a")
+    assert got == ac.LABEL_ABSENT
+
+
 def test_blindness_predicted_owner_never_shown(capsys):
     """The metric's guess must not leak into the prompt the annotator sees."""
     choice_map, menu = li.build_menu(["barista", "cyclist"])
@@ -119,15 +174,42 @@ def test_run_opens_images_under_current_artifacts_dir_not_baked_in_prefix(tmp_pa
 
 
 def test_prompt_count_clean_accepts_y_and_n():
-    img = {"prompt_id": 0, "subjects": ["barista", "cyclist"]}
+    img = {"prompt_id": 0, "subjects": ["barista", "cyclist"], "prompt": "a barista and a cyclist"}
     assert li.prompt_count_clean(img, input_fn=lambda _p: "y") == ac.COUNT_CLEAN
     assert li.prompt_count_clean(img, input_fn=lambda _p: "n") == ac.COUNT_BROKEN
 
 
 def test_prompt_count_clean_rejects_then_accepts():
-    img = {"prompt_id": 0, "subjects": ["barista", "cyclist"]}
+    img = {"prompt_id": 0, "subjects": ["barista", "cyclist"], "prompt": "a barista and a cyclist"}
     answers = iter(["x", "yes", "n"])  # two invalid, then valid
     assert li.prompt_count_clean(img, input_fn=lambda _p: next(answers)) == ac.COUNT_BROKEN
+
+
+def test_prompt_count_clean_prints_full_prompt_and_positions(capsys):
+    """The count-check screen previously showed only the bare subject list, never the
+    prompt itself -- an annotator had no text to check subject count/order against.
+    When the prompt's positional markers parse cleanly, each subject is also tagged with
+    its position, and any name/prompt-wording mismatch (cyclist / "a man wearing a cycling
+    jersey") is surfaced as a note."""
+    img = {"prompt_id": 12, "subjects": ["barista", "cyclist"],
+           "prompt": "a photo of two people standing side by side, on the left a barista in "
+                     "a red apron, on the right a man wearing a cycling jersey in a yellow "
+                     "bike helmet"}
+    li.prompt_count_clean(img, input_fn=lambda _p: "y")
+    out = capsys.readouterr().out
+    assert img["prompt"] in out
+    assert "[left]" in out and "[right]" in out
+    assert "a man wearing a cycling jersey" in out
+
+
+def test_prompt_count_clean_falls_back_when_prompt_unparseable(capsys):
+    """A prompt with no recognizable positional markers must still list the subjects --
+    just without position tags -- rather than error or silently drop the subject list."""
+    img = {"prompt_id": 0, "subjects": ["barista", "cyclist"], "prompt": "a barista and a cyclist"}
+    li.prompt_count_clean(img, input_fn=lambda _p: "y")
+    out = capsys.readouterr().out
+    assert "barista" in out and "cyclist" in out
+    assert "(left -> right)" not in out  # the position-tagged line is never printed
 
 
 def test_run_asks_count_clean_once_per_image_and_persists(tmp_path, monkeypatch):
@@ -153,11 +235,11 @@ def test_run_asks_count_clean_once_per_image_and_persists(tmp_path, monkeypatch)
     li.run("tester", input_fn=_boom)
 
 
-def test_run_prints_workstream_2_guidelines_banner(tmp_path, monkeypatch, capsys):
-    """The 2026-07-25 Workstream 2 guidelines (Count-Clean/Count-Broken definition, the
-    Present/Missing/Shared/Unclear attribute taxonomy) must be shown every time run() is
-    invoked -- including a no-op resume -- so Grace/Akhil see the reminder every session,
-    not just once via a message."""
+def test_run_prints_guidelines_banner(tmp_path, monkeypatch, capsys):
+    """The labeling guidelines (Count-Clean/Count-Broken, and the Present/Wrong Subject/
+    Missing/Shared/Unclear/Subject-Absent attribute taxonomy, revised 2026-07-30 for the
+    FLUX round) must be shown every time run() is invoked -- including a no-op resume --
+    so every annotator sees the reminder every session, not just once via a message."""
     (tmp_path / "artifacts").mkdir()
     manifest_path = tmp_path / "artifacts" / "manifest.json"
     manifest_path.write_text(json.dumps(_manifest()))
@@ -167,8 +249,10 @@ def test_run_prints_workstream_2_guidelines_banner(tmp_path, monkeypatch, capsys
 
     li.run("tester", input_fn=lambda _p: "n")  # answer everything, drains all targets
     out = capsys.readouterr().out
-    for phrase in ("Count-Clean", "Count-Broken", "Present", "Missing", "Shared", "Unclear"):
-        assert phrase in out
+    for phrase in ("Count-Clean", "Count-Broken", "Present", "Missing", "Shared", "Unclear",
+                   "Wrong Subject", "Observed Owner", "Subject Absent", "Not Evaluable",
+                   "background"):
+        assert phrase in out, f"banner missing {phrase!r}"
 
     # No-op resume (nothing pending) must STILL show the banner.
     def _boom(_p):
@@ -176,6 +260,46 @@ def test_run_prints_workstream_2_guidelines_banner(tmp_path, monkeypatch, capsys
     li.run("tester", input_fn=_boom)
     out2 = capsys.readouterr().out
     assert "Count-Clean" in out2
+
+
+def _manifest_with_positions():
+    return {"images": [
+        {"prompt_id": 0, "n": 2, "detected": True, "subjects": ["barista", "cyclist"],
+         "prompt": "a photo of two people standing side by side, on the left a barista in a "
+                   "red apron, on the right a man wearing a cycling jersey in a yellow bike "
+                   "helmet",
+         "image_path": "artifacts/images/p0.png",
+         "attributes": [
+             {"attribute": "red apron", "intended_subject": "barista",
+              "predicted_owner": "cyclist", "model_scores": {}},
+             {"attribute": "yellow helmet", "intended_subject": "cyclist",
+              "predicted_owner": "cyclist", "model_scores": {}}]},
+    ]}
+
+
+def test_run_wires_prompt_layout_into_the_attribute_menu(tmp_path, monkeypatch, capsys):
+    """End-to-end: run() must compute the layout from each image's own prompt and pass it
+    into build_menu, so the position/gloss tags actually reach the annotator's screen, not
+    just the unit-tested build_menu() call in isolation."""
+    (tmp_path / "artifacts").mkdir()
+    manifest_path = tmp_path / "artifacts" / "manifest.json"
+    manifest_path.write_text(json.dumps(_manifest_with_positions()))
+    monkeypatch.setattr(li, "ARTIFACTS_DIR", tmp_path / "artifacts")
+    monkeypatch.setattr(li, "MANIFEST_PATH", manifest_path)
+    monkeypatch.setattr(li, "_open_image", lambda _p: None)
+
+    li.run("tester", input_fn=lambda p: "y" if "count" in p else "1")
+    out = capsys.readouterr().out
+    assert "[left]" in out and "[right]" in out
+    assert "a man wearing a cycling jersey" in out
+    # Anti-leak regression: the question line itself legitimately says "yellow helmet"
+    # (that's the question, not a leak) -- but cyclist's GLOSS in that question's own menu
+    # must not repeat it a second time via the untrimmed "...in a yellow bike helmet"
+    # clause, which would spell out the answer right next to the option.
+    menu_block = out[out.index("Which subject is wearing/holding the 'yellow helmet'"):]
+    menu_block = menu_block.split("\n\n", 1)[0]
+    assert "a man wearing a cycling jersey" in menu_block
+    assert "yellow bike helmet" not in menu_block
 
 
 def test_run_only_detected_and_resumes(tmp_path, monkeypatch):

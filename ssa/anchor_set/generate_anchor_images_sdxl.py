@@ -395,16 +395,36 @@ ANCHOR_PROMPTS = [
 # ANCHOR_PROMPTS catalog (e.g. for a from-scratch run).
 # 2026-07-25: scoped to the n=4 backfill batch (ids 200-227, see build_growth_specs.py's
 # build_n4_backfill_specs). ids 0-23 and 100-184 (the previous two runs) are already done.
-GROWTH_PROMPT_IDS = set(range(200, 228))
+# 2026-07-31: set to None for the Experiment 2 model_scores_full backfill rerun (see
+# PIN_SEEDS_FROM_MANIFEST below) -- that rerun must cover every prompt id already in
+# artifacts_sdxl/manifest.json, not just one growth batch, or exp2_window_ablation.py's
+# is_full_trajectory_available() check (requires EVERY detected attribute to have the field)
+# will still report the manifest as unavailable. Re-scope to a specific batch again for any
+# future growth run that isn't this backfill.
+GROWTH_PROMPT_IDS = None
 
-# Set to a manifest.json path (e.g. "artifacts_sdxl/manifest.json", uploaded as a Kaggle
-# dataset input) to force every prompt to reuse ITS OWN already-recorded `seed` instead of
-# running the CANDIDATE_SEEDS/growth/backfill retry loop -- a guaranteed pixel-identical
-# rerun, used to backfill model_scores_full onto an anchor set that's already been generated,
-# boxed, and human-labeled without regenerating (and thereby invalidating) any of it. None
-# (the default) leaves seed selection exactly as before this patch. Same
+# Set to a manifest.json path to force every prompt to reuse ITS OWN already-recorded `seed`
+# instead of running the CANDIDATE_SEEDS/growth/backfill retry loop -- a guaranteed
+# pixel-identical rerun, used to backfill model_scores_full onto an anchor set that's already
+# been generated, boxed, and human-labeled without regenerating (and thereby invalidating)
+# any of it. None (the default) leaves seed selection exactly as before this patch. Same
 # edit-the-constant-before-pushing convention as GROWTH_PROMPT_IDS -- this script has no
 # argparse anywhere and Kaggle kernels don't take custom argv.
+#
+# 2026-07-31: NOT YET SET FOR A REAL RUN. This project's Kaggle kernels have never used a
+# dataset input before now (every kernel-metadata*.json here has dataset_sources: []) --
+# there is no existing convention to copy. Before pushing this script to backfill
+# model_scores_full:
+#   1. Upload the current artifacts_sdxl/manifest.json as a new private Kaggle dataset.
+#   2. Add that dataset's slug to kernel-metadata-sdxl.json's "dataset_sources" (see the
+#      placeholder + comment left there).
+#   3. Set this constant to the resulting mount path, e.g.
+#      "/kaggle/input/<dataset-slug>/manifest.json" (exact slug depends on step 1).
+#   4. After the run, DO NOT overwrite artifacts_sdxl/manifest.json with the kernel's output
+#      directly -- run backfill_model_scores_full.py against the original and the rerun's
+#      output instead. That script verifies the rerun actually reproduced the same
+#      predicted_owner/model_scores before trusting its model_scores_full, since GPU kernels
+#      are not always bit-deterministic across runs even with the same seed.
 PIN_SEEDS_FROM_MANIFEST: Optional[str] = None
 
 # =============================================================================

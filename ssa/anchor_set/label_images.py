@@ -20,53 +20,70 @@ import os
 import random
 import sys
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional, Tuple
 
 from anchor_common import (
-    COUNT_BROKEN, COUNT_CLEAN, LABEL_NONE, LABEL_SHARED, LABEL_UNCLEAR, count_key, label_key,
-    load_labels, save_labels, pending_label_targets, resolve_image_path,
+    COUNT_BROKEN, COUNT_CLEAN, LABEL_ABSENT, LABEL_NONE, LABEL_SHARED, LABEL_UNCLEAR,
+    count_key, label_key, load_labels, parse_prompt_layout, redact_attribute_clause,
+    save_labels, pending_label_targets, resolve_image_path,
 )
 
 ARTIFACTS_DIR = Path("artifacts")
 MANIFEST_PATH = ARTIFACTS_DIR / "manifest.json"
 SHUFFLE_SEED = 20260723  # fixed so the labeling order is reproducible across resume sessions
 
-# 2026-07-25 Workstream 2 labeling guidelines (Grace / Akhil growth-round annotators).
+# 2026-07-30 labeling guidelines (FLUX round: chayan/grace/akhil, full double coverage).
 # Printed once at the start of every run() call -- including a resume with nothing
 # pending -- so it's the first thing an annotator sees whenever they launch the tool, not
 # just something they were told once in a message. Wording matches the official guideline
-# text verbatim; the underlying stored values (COUNT_CLEAN/COUNT_BROKEN, and the subject
-# name / LABEL_NONE / LABEL_SHARED / LABEL_UNCLEAR options below) are unchanged, so this is
-# a presentation-only alignment -- it does not break compatibility with already-recorded
-# labels_*.json files from earlier passes.
+# text verbatim. `Wrong Subject` is not a new stored value -- it's the existing behavior of
+# picking a non-intended subject from the menu, now named and explained so annotators don't
+# read "which subject has X" as "does the intended subject have X". `Subject Absent / Not
+# Evaluable` IS new: see LABEL_ABSENT in anchor_common.py.
 GUIDELINES_BANNER = """\
 ============================================================
  Labeling Guidelines for Workstream 2 (REVISED FOR FLUX)
 ============================================================
 COUNT CHECK (once per image):
-  Count-Clean  = the image renders the EXACT number of distinct subjects
-                 requested in the prompt, AND you can clearly tell them apart.
-  Count-Broken = the image is missing subjects, adds extra subjects, or 
-                 subjects are so identical (e.g. they both have the same 
-                 clothes and props) that you cannot tell which is which.
+  Count-Clean  = the image renders the exact number of distinct subjects
+                 requested in the prompt.
+  Count-Broken = the image is missing subjects, merges subjects together,
+                 adds extra subjects, or duplicates a subject. Small or
+                 out-of-focus background bystanders do NOT count as extra
+                 subjects unless they duplicate a primary character.
 
 ATTRIBUTE CHECK (once per attribute):
-  Present  = the requested attribute clearly attaches to the correct subject.
-  Missing  = the attribute is completely absent from the image.
-  Shared   = the attribute leaks onto multiple subjects (e.g., both 
-             characters wear red aprons when only one was supposed to). 
-             If an attribute is shared, ALWAYS mark it as Shared! Do not 
-             guess which subject "owns" it more.
-  Unclear  = the render is too blurry, occluded, or low quality to
-             definitively confirm if the attribute is present.
+  Present        = the requested attribute is clearly visible and clearly
+                    attaches to ONLY the correct subject.
+  Wrong Subject  = the attribute is rendered, but attached to the wrong
+                    person. Pick whoever ACTUALLY has it from the menu --
+                    that records the Observed Owner.
+  Missing        = the attribute is completely absent from the image. If
+                    you cannot confidently confirm OR rule it out, use
+                    Unclear rather than Missing.
+  Shared         = the attribute accidentally leaks onto / is shared by
+                    multiple subjects, one of which is the correct subject.
+  Unclear        = you can't definitively confirm if the attribute is
+                    present or who owns it. Includes: the item sits right
+                    between two people, subject boundaries overlap, colors
+                    are borderline, professional identities can't be told
+                    apart, or the item is mostly cut off / hidden.
+  Subject Absent / Not Evaluable
+                 = the intended subject was never drawn in the image
+                    (Count-Broken). Use this INSTEAD of Missing so count
+                    failures don't get mixed up with binding failures.
 
 Example -- prompt: "A barista in a red apron and a chef in a blue hat"
-  Count check : barista AND chef clearly distinguishable -> Count-Clean.
-                both people look like baristas wearing red aprons -> Count-Broken.
+  Count check : both a barista AND a chef shown -> Count-Clean.
+                only one person shown -> Count-Broken.
   Attribute   : barista has a red apron -> Present.
-                chef has a white hat instead of blue -> Missing.
+                chef is wearing the red apron instead -> Wrong Subject
+                  (pick "chef" -- that's the Observed Owner).
+                neither person has an apron -> Missing.
                 both wearing red aprons -> Shared.
                 chef's hat completely hidden off-screen -> Unclear.
+                the barista was never drawn in the image -> Subject
+                  Absent / Not Evaluable.
 ============================================================
 """
 
@@ -101,23 +118,54 @@ def _open_image(abs_path: Path) -> None:
         print(f"  open it manually: {abs_path}")
 
 
-def build_menu(subjects: List[str]) -> Tuple[Dict[str, str], str]:
-    """Map single-key inputs to labels: 1..n -> subjects, plus n(one)/u(nclear)/s(hared).
-    Returns (choice_map, help_text).
+def build_menu(subjects: List[str],
+               layout: Optional[List[Tuple[str, Optional[str]]]] = None,
+               attribute: Optional[str] = None,
+               ) -> Tuple[Dict[str, str], str]:
+    """Map single-key inputs to labels: 1..n -> subjects, plus n(one)/u(nclear)/s(hared)/
+    a(bsent). Returns (choice_map, help_text).
 
     `shared` is distinct from `unclear` on purpose. "It's painted on three of them" is a
     binding OUTCOME the metric can be scored against (see anchor_common.margin_from_scores);
     "I can't tell who has it" is missing data. Folding both into `unclear`, as the first
-    labeling passes did, throws the former away."""
+    labeling passes did, throws the former away. `absent` is distinct from `none` the same
+    way: the intended SUBJECT never rendered at all (a count failure), not just this
+    attribute never showing up on a subject who does exist.
+
+    `layout` (optional, from anchor_common.parse_prompt_layout): when given, each subject's
+    menu line is tagged with its position (e.g. "[far left]") and, only when the subject
+    name doesn't literally appear in its own prompt segment, a gloss of how the prompt
+    actually phrases it (surfaces cases like FLUX's "cyclist" -> "a man wearing a cycling
+    jersey"). None (the default, and what every pre-FLUX caller still passes) renders
+    exactly as before -- no tags.
+
+    `attribute` (optional): the attribute THIS question is asking about. When given, any
+    gloss is passed through anchor_common.redact_attribute_clause first -- otherwise a
+    subject's own gloss can spell out the answer to the very question being asked (e.g.
+    cyclist's gloss mentions their "yellow bike helmet", which is exactly what "which
+    subject has the yellow helmet?" is trying to find out blind)."""
     choice_map: Dict[str, str] = {str(i + 1): s for i, s in enumerate(subjects)}
     choice_map[LABEL_NONE[0]] = LABEL_NONE        # 'n'
     choice_map[LABEL_UNCLEAR[0]] = LABEL_UNCLEAR  # 'u'
     choice_map[LABEL_SHARED[0]] = LABEL_SHARED    # 's'
-    lines = ["    (pick the subject if the attribute is PRESENT on them, else:)"]
-    lines += [f"    {i + 1}) {s}" for i, s in enumerate(subjects)]
+    choice_map[LABEL_ABSENT[0]] = LABEL_ABSENT    # 'a'
+    lines = ["    (pick whoever ACTUALLY has it -- correct subject = Present, "
+              "wrong subject = Wrong Subject:)"]
+    for i, subject in enumerate(subjects):
+        tag = ""
+        if layout is not None:
+            position, gloss = layout[i]
+            tag = f"   [{position}]"
+            if gloss:
+                if attribute is not None:
+                    gloss = redact_attribute_clause(gloss, attribute)
+                tag += f' (prompt calls them: "{gloss}")'
+        lines.append(f"    {i + 1}) {subject}{tag}")
     lines.append(f"    n) {LABEL_NONE} / Missing (attribute completely absent from the image)")
     lines.append(f"    s) {LABEL_SHARED} / Shared (leaks onto / is shared by multiple subjects)")
     lines.append(f"    u) {LABEL_UNCLEAR} / Unclear (too blurry/occluded/low-quality to confirm)")
+    lines.append(f"    a) {LABEL_ABSENT} / Subject Absent -- Not Evaluable "
+                  "(intended subject was never drawn; use instead of Missing)")
     return choice_map, "\n".join(lines)
 
 
@@ -126,8 +174,23 @@ def prompt_count_clean(img: dict, input_fn=input) -> str:
     render as a visually DISTINCT person? Passing Mask R-CNN's headcount check is not
     enough -- two subjects can render as duplicate/interchangeable people (see
     anchor_common.COUNT_CLEAN's docstring), which makes the binding question for that image
-    ill-posed no matter how good the metric is. Re-asks until 'y' or 'n' is entered."""
-    print(f"\n[p{img['prompt_id']}] COUNT CHECK -- intended subjects: {', '.join(img['subjects'])}")
+    ill-posed no matter how good the metric is. Re-asks until 'y' or 'n' is entered.
+
+    Shows the full prompt (previously omitted entirely -- there was no text to check the
+    rendered subject count/order against) plus, when parse_prompt_layout can read the
+    prompt's positional markers, each subject tagged with its position and, where the
+    prompt's own wording doesn't contain the subject name, a clarifying note."""
+    print(f"\n[p{img['prompt_id']}] COUNT CHECK")
+    print(f"  prompt: {img['prompt']}")
+    layout = parse_prompt_layout(img["prompt"], img["subjects"])
+    if layout is not None:
+        tagged = [f"{s} [{pos}]" for s, (pos, _gloss) in zip(img["subjects"], layout)]
+        print(f"  intended subjects (left -> right): {', '.join(tagged)}")
+        for subject, (_pos, gloss) in zip(img["subjects"], layout):
+            if gloss:
+                print(f'    note: prompt calls the "{subject}" -> "{gloss}"')
+    else:
+        print(f"  intended subjects: {', '.join(img['subjects'])}")
     print("  Does the image render the EXACT number of distinct subjects requested --")
     print("  not missing anyone, not merging two subjects into one, not adding extras?")
     print("    y) yes -- Count-Clean")
@@ -192,7 +255,8 @@ def run(annotator: str, input_fn=input, relabel: frozenset = frozenset()) -> Dic
             save_labels(cpath, counts)
 
         subjects = img["subjects"]
-        choice_map, menu = build_menu(subjects)
+        layout = parse_prompt_layout(img["prompt"], subjects)
+        choice_map, menu = build_menu(subjects, layout, attr["attribute"])
         answer = prompt_one(img, attr, choice_map, menu, input_fn=input_fn)
         labels[label_key(img["prompt_id"], attr["attribute"])] = answer
         save_labels(lpath, labels)
@@ -211,7 +275,7 @@ def main() -> None:
                          "'artifacts_sdxl' for the SDXL run, so it never touches the SD1.5 "
                          "run's data in 'artifacts' (default)")
     ap.add_argument("--relabel", nargs="+", default=[],
-                    choices=[LABEL_NONE, LABEL_UNCLEAR, LABEL_SHARED],
+                    choices=[LABEL_NONE, LABEL_UNCLEAR, LABEL_SHARED, LABEL_ABSENT],
                     help="re-ask only the rows currently carrying these labels, leaving "
                          "settled subject judgments untouched. Use '--relabel unclear' to "
                          "split an older pass's ambiguous rows into shared vs genuinely "

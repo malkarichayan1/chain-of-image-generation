@@ -31,8 +31,11 @@ def test_nearest_subject_prefers_preceding_over_equidistant_following():
     """SUBJ1 precedes ATTR (gap 9), SUBJ2 follows ATTR (gap 9) -- an exact tie by raw distance.
     Preceding wins by design (matches the user's own "apron comes right after barista" framing
     and the real prompt template, where the intended subject always precedes its attribute) --
-    order-independent, not a list-order tie-break."""
-    prompt = "SUBJ1xxxxATTRxxxxSUBJ2"
+    order-independent, not a list-order tie-break. Tokens are space-delimited (real prompts
+    always have whitespace around words); locate_attribute_phrase's exact match is
+    word-boundary-anchored and can't match a token glued directly to neighboring text with no
+    delimiter at all."""
+    prompt = "SUBJ1 xxxx ATTR xxxx SUBJ2"
     assert exp4.nearest_subject_baseline(prompt, ["SUBJ1", "SUBJ2"], "ATTR") == "SUBJ1"
     assert exp4.nearest_subject_baseline(prompt, ["SUBJ2", "SUBJ1"], "ATTR") == "SUBJ1"
 
@@ -102,3 +105,56 @@ def test_unscored_rows_excluded_from_all_reports():
     assert report["n"] == 0
     assert report["metric_accuracy"] is None
     assert report["baseline_accuracy"] is None
+
+
+def test_nearest_subject_baseline_handles_subphrase_attribute_mismatch():
+    """Real FLUX case: manifest attribute is 'yellow helmet', prompt says 'yellow bike helmet'.
+    Before this fix, prompt.find('yellow helmet') returns -1 and this raises ValueError."""
+    prompt = ("a photo of four people standing side by side, on the far left a barista in a "
+              "red apron, on the center-left a man wearing a cycling jersey in a yellow bike "
+              "helmet, on the center-right a farmer holding a wooden shovel, on the far right "
+              "a nurse wearing blue gloves")
+    subjects = ["barista", "cyclist", "farmer", "nurse"]
+    result = exp4.nearest_subject_baseline(prompt, subjects, "yellow helmet")
+    assert result == "cyclist"
+
+
+def test_nearest_subject_baseline_reuses_fallback_positions_across_subjects(monkeypatch):
+    """Two subjects in the same call ('cyclist' and 'pilot') both miss a literal match --
+    exercises the lazy-cache reuse in nearest_subject_baseline's loop: fallback_positions
+    should be computed once (via subject_char_positions) and reused for every subject that
+    needs it, not recomputed per subject."""
+    prompt = ("a photo of four people standing side by side, on the far left a barista in a "
+              "red apron, on the center-left a man wearing a cycling jersey in a yellow bike "
+              "helmet, on the center-right a person wearing aviator sunglasses and a leather "
+              "jacket with a green scarf, on the far right a nurse wearing blue gloves")
+    subjects = ["barista", "cyclist", "pilot", "nurse"]
+
+    call_count = 0
+    original = exp4.subject_char_positions
+
+    def counting_wrapper(p, s):
+        nonlocal call_count
+        call_count += 1
+        return original(p, s)
+
+    monkeypatch.setattr(exp4, "subject_char_positions", counting_wrapper)
+
+    result = exp4.nearest_subject_baseline(prompt, subjects, "green scarf")
+    assert result == "pilot"
+    assert call_count == 1
+
+
+def test_nearest_subject_baseline_raises_when_fallback_itself_fails():
+    """The fallback's own marker-count check can fail too (a malformed/hand-edited prompt):
+    here only ONE positional marker is present for TWO subjects, neither of which appears
+    literally in the prompt ('cyclist' phrased as 'a man wearing a cycling jersey...',
+    'pilot' phrased as 'a person wearing aviator sunglasses...'). subject_char_positions
+    returns None, every subject ends up unmatched, and nearest_subject_baseline must raise
+    ValueError rather than silently return a wrong guess."""
+    prompt = ("a photo of two people standing side by side, on the left a man wearing a "
+              "cycling jersey in a yellow bike helmet, and a person wearing aviator "
+              "sunglasses in a green scarf")
+    subjects = ["cyclist", "pilot"]
+    with pytest.raises(ValueError, match="none of"):
+        exp4.nearest_subject_baseline(prompt, subjects, "yellow bike helmet")

@@ -383,6 +383,85 @@ application of it. Validate the primitive, then spend that trust on the hard pro
    so the whole pipeline is smoke-tested end-to-end today; 54 new tests added (112 → 166,
    `py -3 -m pytest tests/` from inside `ssa/anchor_set/`). Everything here reads/writes only
    `artifacts_dummy/` — zero writes to `artifacts_sdxl/` or any real label/count file.
+9. **Workstream 3 — the five-experiment battery actually run on the real, fully-annotated
+   SDXL anchor set, done 2026-07-29, branch `sdxl`.** `run_five_experiments.py --artifacts-dir
+   artifacts_sdxl --annotator <chayan|grace|akhil>` executed for all three annotators, writing
+   `five_experiments_<name>.{json,md}` into `artifacts_sdxl/`. **This is not the clean
+   confirmation the design doc left open — two of the five experiments came back negative or
+   null, consistently across all three annotators:**
+   - **Experiment 4 (positional baseline) — the naive "guess the nearest subject noun in the
+     prompt" heuristic significantly BEATS the attention metric for every annotator**: chayan
+     45.7% vs. 74.3% (McNemar p=0.031, n=35), grace 54.0% vs. 76.2% (p=0.0125, n=63), akhil
+     38.6% vs. 59.6% (p=0.023, n=57). This is the sharpest negative result in the battery —
+     the core "attention adds value beyond a trivial heuristic" claim does not survive contact
+     with the real labels.
+   - **Experiment 1 (headline accuracy vs. chance) is weak and mostly non-significant.** No
+     annotator clears p<0.05 overall; the closest are akhil's n=3 (56.2% vs. 33.3%, p=0.050,
+     right at the boundary) and chayan's n=4 (46.2% vs. 25.0%, p=0.080). Grace's numbers are
+     directionally best (n=2 64.3% p=0.093, n=3 52.9% p=0.076) but still short.
+   - **Experiment 3 (attention-randomization falsification) is annotator-dependent, not a
+     clean pass.** Real beats scrambled significantly for grace only (McNemar p=0.0037, n=63);
+     for chayan (p=0.774, n=35) and akhil (p=0.851, n=57) scrambling attention does not hurt
+     accuracy — consistent with Experiment 4's finding that attention isn't doing much
+     discriminative work for those two annotators' label sets.
+   - **Experiment 2 stayed unavailable for all three**, as already documented — the
+     `model_scores_full` Kaggle rerun still hasn't happened.
+   - **Experiment 5 surfaced a data-completeness gap, not a finding**: there is no
+     `counts_chayan.json` anywhere in the repo (only `counts_grace.json`/`counts_akhil.json`
+     exist), so chayan's run silently treated all 35 scored rows as count-clean (`load_labels`
+     returns `{}` on a missing path with no warning) — chayan's "0 excluded" line is a missing-
+     counts-file artifact, not a real "zero rendering failures" result. For grace/akhil, where
+     counts data exists, restricting to count-clean rows didn't change the overall picture much
+     (grace 54.0%→56.9%, akhil 38.6%→50.0%, both on much smaller n).
+   - Net read: the primitive this whole project is built on — that cross-attention encodes
+     usable subject-binding signal beyond what a trivial textual-proximity heuristic already
+     gives you — is not supported by the real, double-annotated data. This needs to be dealt
+     with honestly in Part A's writeup rather than treated as a smoke-test artifact; it's the
+     first real negative result from Workstream 3, one annotator's counts file needs backfilling
+     before Experiment 5 is trustworthy for chayan, and Experiment 2 is still the one remaining
+     genuinely-blocked piece (needs the Kaggle full-trajectory rerun).
+10. **Delta-mask pivot investigated 2026-07-29, branch `sdxl` — one promising-but-unconfirmed
+    result and one hard blocker.** Starting point: Part C's ablation already showed the Part B
+    money result is carried by **Phase A (the delta mask), not Phase B (attention)** — random,
+    content-free attention reproduces `real vs shuffled`/`real vs substituted`. Combined with
+    Workstream 3's negative attention findings, that suggested reframing around the delta mask
+    and dropping attention from the headline. Three experiments, all pure numpy over the
+    existing 100%-complete segmentation cache (`pi_level_experiment/lock_confound_analysis.py`,
+    `coig_delta_mask_check.py`, 96 tests passing):
+    - **E1 (lock strength, SD1.5 chains):** the proxy chains DO have a real lock —
+      `persists_to_final=0.750` vs Track 1 Gemini's 0.833 — so they are a valid testbed.
+      But `appears_at_step=0.300` vs Gemini's 1.000: 70% of real rows are noise-floor zeros.
+    - **E2 (delta vs. a plain presence check):** pooled over all shuffled rows, a trivial
+      presence check (`curr_mask_area`, no delta at all) **beats** the delta mask
+      (p=0.0004 vs p=0.0054) — the same shape as Experiment 4's baseline problem. But that
+      pools two different cases. Splitting `shuffled` by claim direction — LATE
+      (`claimed_step > true_step`, attribute leaked in earlier and the lock keeps it visible,
+      so a presence check is fooled) vs EARLY (not yet rendered, no lock possible) — gives a
+      clean dissociation under the pre-registered clustered test: **`curr_mask_area` goes
+      blind in the lock scenario (p=0.0008 → 0.3193) while `delta_area` survives
+      (p=0.0011 → 0.0196).** Three caveats keep this from being a result: AUROC does not
+      corroborate the strong version (0.590 vs 0.571 — both weak per-row, curr still
+      numerically higher), the p-value gap may be zero-inflation rather than signal, and
+      **the split was found post-hoc**, after the pooled comparison went the wrong way.
+    - **E4 (confirm on real Gemini/CoIG chains) — BLOCKED, and this is the important one.**
+      Track 1's per-step images are still on disk (`coig/create_images/multi_step_out/`, all
+      10 pilot items x 6 steps), so this was runnable. It could not be evaluated: **CLIPSeg
+      detects the attributes at most 27.8% of the time on CoIG images** (Track 1's VQA judge:
+      100%), and a full threshold sweep shows this is not miscalibration — below T=0.50
+      detection only improves by hallucinating, with the substituted control rising in
+      lockstep. CoIG items are four people at 1024x1024 with attributes like "mustache";
+      CLIPSeg-rd64 works internally at 352x352.
+    **Net read, and it cuts deeper than the delta mask.** CLIPSeg is the binding constraint
+    under *every* Part B number — the money result, all five contrasts, Holm correction, the
+    whole Part C/D battery — all computed on the ~30% of rows the segmenter could see, a
+    subset already known to be non-random (`selection_effect_check.py`: 92%/67%/58% detection
+    by subject count). It also **explains** the "~30% real hit rate" that `RESULTS.md`
+    currently calls unexplained pipeline noise: it is segmenter resolution limits. Nothing
+    about the delta-mask idea is falsified — it was never given a working input on CoIG.
+    **This promotes the segmenter swap (item 5's D4, currently framed as a robustness
+    nicety) to the critical path:** Grounding DINO or SAM with box prompts, or OWL-ViT,
+    which already has a working CPU harness here (`owlvit_cross_check.py`). Not yet done:
+    porting any of this into `RESULTS.md` or the proposal.
 
 ## Branch/file pointers
 
