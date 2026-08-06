@@ -113,6 +113,8 @@ def get_client() -> genai.Client:
     load_dotenv()
     api_key = os.getenv("GOOGLE_AI_API_KEY")
     if not api_key:
+        if os.getenv("USE_OPENROUTER") == "1":
+            return "dummy_client"
         raise ValueError("GOOGLE_AI_API_KEY is required")
     return genai.Client(api_key=api_key)
 
@@ -123,7 +125,7 @@ def ask_yes_no(
     question: str,
     model: str = "gemini-flash-latest",
     temperature: float = 0.0,
-    max_retries: int = 3,
+    max_retries: int = 6,
 ) -> str:
     """Returns "yes", "no", or "error"."""
     if _use_openrouter():
