@@ -1,1 +1,0 @@
-Experiment 2 -- UNAVAILABLE: this manifest has no model_scores_full/predicted_owner_full on every detected attribute. Rerun generate_anchor_images_sdxl.py (with the additive model_scores_full patch) against the seeds already pinned in this manifest before this experiment can run -- see docs/part-a-five-experiment-battery-design.md, Experiment 2.
