@@ -1,0 +1,196 @@
+{
+  "experiment_1": {
+    "overall": {
+      "n_labeled": 306,
+      "n_scored": 57,
+      "n_correct": 22,
+      "n_excluded": 249,
+      "accuracy": 0.38596491228070173,
+      "chance": null,
+      "margin_over_chance": null,
+      "p_value": null
+    },
+    "by_stratum": {
+      "2": {
+        "n_labeled": 88,
+        "n_scored": 18,
+        "n_correct": 9,
+        "n_excluded": 70,
+        "accuracy": 0.5,
+        "chance": 0.5,
+        "margin_over_chance": 0.0,
+        "p_value": 0.5927352905273438
+      },
+      "3": {
+        "n_labeled": 78,
+        "n_scored": 16,
+        "n_correct": 9,
+        "n_excluded": 62,
+        "accuracy": 0.5625,
+        "chance": 0.3333333333333333,
+        "margin_over_chance": 0.22916666666666669,
+        "p_value": 0.04996248146287383
+      },
+      "4": {
+        "n_labeled": 140,
+        "n_scored": 23,
+        "n_correct": 4,
+        "n_excluded": 117,
+        "accuracy": 0.17391304347826086,
+        "chance": 0.25,
+        "margin_over_chance": -0.07608695652173914,
+        "p_value": 0.8630432843872882
+      }
+    }
+  },
+  "experiment_2": {
+    "available": false,
+    "message": "Experiment 2 -- UNAVAILABLE: this manifest has no model_scores_full/predicted_owner_full on every detected attribute. Rerun generate_anchor_images_sdxl.py (with the additive model_scores_full patch) against the seeds already pinned in this manifest before this experiment can run -- see docs/part-a-five-experiment-battery-design.md, Experiment 2."
+  },
+  "experiment_3": {
+    "sweep": {
+      "2": {
+        "n_seeds": 200,
+        "median_accuracy": 0.5,
+        "chance": 0.5,
+        "frac_not_significantly_different_from_chance": 0.97
+      },
+      "3": {
+        "n_seeds": 200,
+        "median_accuracy": 0.3125,
+        "chance": 0.3333333333333333,
+        "frac_not_significantly_different_from_chance": 0.99
+      },
+      "4": {
+        "n_seeds": 200,
+        "median_accuracy": 0.21739130434782608,
+        "chance": 0.25,
+        "frac_not_significantly_different_from_chance": 0.985
+      }
+    },
+    "mcnemar": {
+      "n": 57,
+      "real_only_correct": 13,
+      "scrambled_only_correct": 15,
+      "n_discordant": 28,
+      "p_value": 0.8505540192127228
+    }
+  },
+  "experiment_4": {
+    "headline": {
+      "n": 57,
+      "metric_accuracy": 0.38596491228070173,
+      "baseline_accuracy": 0.5964912280701754
+    },
+    "mcnemar": {
+      "n": 57,
+      "metric_only_correct": 6,
+      "baseline_only_correct": 18,
+      "n_discordant": 24,
+      "p_value": 0.022655844688415527
+    },
+    "by_stratum": {
+      "2": {
+        "n": 18,
+        "metric_accuracy": 0.5,
+        "baseline_accuracy": 0.7222222222222222,
+        "chance": 0.5
+      },
+      "3": {
+        "n": 16,
+        "metric_accuracy": 0.5625,
+        "baseline_accuracy": 0.75,
+        "chance": 0.3333333333333333
+      },
+      "4": {
+        "n": 23,
+        "metric_accuracy": 0.17391304347826086,
+        "baseline_accuracy": 0.391304347826087,
+        "chance": 0.25
+      }
+    }
+  },
+  "experiment_5": {
+    "all": {
+      "overall": {
+        "n_labeled": 306,
+        "n_scored": 57,
+        "n_correct": 22,
+        "n_excluded": 249,
+        "accuracy": 0.38596491228070173,
+        "chance": null,
+        "margin_over_chance": null
+      },
+      "by_stratum": {
+        "2": {
+          "n_labeled": 88,
+          "n_scored": 18,
+          "n_correct": 9,
+          "n_excluded": 70,
+          "accuracy": 0.5,
+          "chance": 0.5,
+          "margin_over_chance": 0.0
+        },
+        "3": {
+          "n_labeled": 78,
+          "n_scored": 16,
+          "n_correct": 9,
+          "n_excluded": 62,
+          "accuracy": 0.5625,
+          "chance": 0.3333333333333333,
+          "margin_over_chance": 0.22916666666666669
+        },
+        "4": {
+          "n_labeled": 140,
+          "n_scored": 23,
+          "n_correct": 4,
+          "n_excluded": 117,
+          "accuracy": 0.17391304347826086,
+          "chance": 0.25,
+          "margin_over_chance": -0.07608695652173914
+        }
+      }
+    },
+    "count_clean": {
+      "overall": {
+        "n_labeled": 306,
+        "n_scored": 40,
+        "n_correct": 20,
+        "n_excluded": 266,
+        "accuracy": 0.5,
+        "chance": null,
+        "margin_over_chance": null
+      },
+      "by_stratum": {
+        "2": {
+          "n_labeled": 88,
+          "n_scored": 18,
+          "n_correct": 9,
+          "n_excluded": 70,
+          "accuracy": 0.5,
+          "chance": 0.5,
+          "margin_over_chance": 0.0
+        },
+        "3": {
+          "n_labeled": 78,
+          "n_scored": 14,
+          "n_correct": 8,
+          "n_excluded": 64,
+          "accuracy": 0.5714285714285714,
+          "chance": 0.3333333333333333,
+          "margin_over_chance": 0.23809523809523808
+        },
+        "4": {
+          "n_labeled": 140,
+          "n_scored": 8,
+          "n_correct": 3,
+          "n_excluded": 132,
+          "accuracy": 0.375,
+          "chance": 0.25,
+          "margin_over_chance": 0.125
+        }
+      }
+    },
+    "n_excluded_as_count_broken": 96
+  }
+}
