@@ -58,7 +58,7 @@ MAX_STEPS = int(NUM_INFERENCE_STEPS * EARLY_WINDOW_FRACTION)
 IMG_SIZE = 1024            # Full resolution
 DETECTION_SCORE_THRESH = 0.7
 
-ARTIFACTS_DIR = Path("artifacts_flux")
+ARTIFACTS_DIR = Path("artifacts_flux_hard")
 IMAGES_DIR = ARTIFACTS_DIR / "images"
 MANIFEST_PATH = ARTIFACTS_DIR / "manifest.json"
 
