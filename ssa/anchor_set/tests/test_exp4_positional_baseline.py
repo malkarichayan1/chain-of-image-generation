@@ -32,7 +32,7 @@ def test_nearest_subject_prefers_preceding_over_equidistant_following():
     Preceding wins by design (matches the user's own "apron comes right after barista" framing
     and the real prompt template, where the intended subject always precedes its attribute) --
     order-independent, not a list-order tie-break."""
-    prompt = "SUBJ1xxxxATTRxxxxSUBJ2"
+    prompt = "SUBJ1 xxxx ATTR xxxx SUBJ2"
     assert exp4.nearest_subject_baseline(prompt, ["SUBJ1", "SUBJ2"], "ATTR") == "SUBJ1"
     assert exp4.nearest_subject_baseline(prompt, ["SUBJ2", "SUBJ1"], "ATTR") == "SUBJ1"
 
@@ -102,3 +102,15 @@ def test_unscored_rows_excluded_from_all_reports():
     assert report["n"] == 0
     assert report["metric_accuracy"] is None
     assert report["baseline_accuracy"] is None
+
+
+def test_nearest_subject_baseline_handles_subphrase_attribute_mismatch():
+    """Real FLUX case (artifacts_flux/manifest.json, prompt_id 1): manifest attribute is
+    'white hat', prompt says 'tall white chef hat'. Subject 'chef' appears literally in the
+    prompt, so this isolates the attribute-side fix without touching the separately
+    documented subject-side gap (see the KNOWN GAP comment in nearest_subject_baseline)."""
+    prompt = ("a photo of two people standing side by side, on the left a chef in a tall "
+              "white chef hat, on the right a farmer holding a wooden shovel")
+    subjects = ["chef", "farmer"]
+    result = exp4.nearest_subject_baseline(prompt, subjects, "white hat")
+    assert result == "chef"
