@@ -24,3 +24,17 @@ image_service/storageState.json
 # manifest.json) -- pulled back from Kaggle, not committed (docs/part-b-strengthening-design.md)
 pi_level_experiment/artifacts/
 pi_level_experiment/artifacts_growth/
+
+# Agent tooling state (session data, worktrees) -- machine-local, never shared
+.claude/
+.codex/
+
+# Anchor-set scratch. Images are already covered by the *.png rule above; these entries
+# cover the non-image leftovers so `git status` stays readable.
+#   _kaggle_push_*/   staging copies of a generator + kernel metadata, made at push time
+#   artifacts_dummy/  synthetic fixtures, regenerate with `python make_dummy_artifacts.py`
+# Kaggle run logs are reproducible from the kernel and are large; the manifests beside
+# them ARE committed, since they carry the seeds and scores the paper's numbers rest on.
+ssa/anchor_set/_kaggle_push_*/
+ssa/anchor_set/artifacts_dummy/
+ssa/anchor_set/**/*.log
