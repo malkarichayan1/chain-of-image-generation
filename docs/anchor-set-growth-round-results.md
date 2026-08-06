@@ -1,5 +1,16 @@
 # Metric-A Anchor Set — Growth Round Results (2026-07-27)
 
+> **Provenance warning — do not cite the per-experiment numbers below.** This document was
+> written against an earlier `anchor_common.py`. The `anchor_common.py` sync in the FLUX merge
+> shifted row counts: akhil's n=4 stratum is recorded here as 23 rows / 17.4%, where current code
+> gives 21 / 19.0%. The κ figures and the protocol narrative still stand; the battery numbers do
+> not. Canonical, single-code-state outputs are
+> `ssa/anchor_set/artifacts_sdxl/five_experiments_<annotator>.{json,md}`, and the paper's tables
+> are in [`raw-attention-paper-briefing.md`](raw-attention-paper-briefing.md).
+>
+> One figure below is also stale in scope: the "87% of disagreements (33/38)" breakdown was
+> computed on Grace's partial 161 judgments, not the full 306. It has not been recomputed.
+
 Companion to `docs/anchor-set-labeling-protocol.md`. Produced by:
 ```
 py -3 analyze_agreement.py --annotator akhil --artifacts-dir artifacts_sdxl --compare-annotator grace
