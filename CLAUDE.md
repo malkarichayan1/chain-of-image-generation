@@ -121,6 +121,67 @@ all and does no computation.
 
 Six comparisons, six significant losses for attention.
 
+### The hard-prompt-set results (§9.1, executed 2026-08-07)
+
+`artifacts_flux_hard/` (100 prompts, n=4/5/6, IDs 300–399, 83 detected) is now triple-labeled by
+akhil, grace, and pranav (409 rows each) — chayan's pass is 4 rows and is excluded everywhere
+below, per instruction. Inter-rater κ on this harder set is **0.889–0.912** (vs. 0.954/0.958 on
+the original FLUX set), still excellent agreement despite the images being much harder to read.
+A majority-vote consensus label set (`build_consensus_labels.py`, new) resolved 357/409 rows
+unanimously, 48/409 by 2-of-3 majority, and left only 4/409 with no consensus.
+
+The set moved the needle but did not fully hit its own target:
+
+| Metric | Original FLUX | FLUX-hard |
+|---|---|---|
+| Prompt-obeyed rate (Exp 6 baseline accuracy) | ~94–96% | **~77–80%** |
+| Misbound rows available for C3 (per annotator) | 11–16 | **60–73** (62 on consensus) |
+| Attention accuracy overall | ~85% | **~42–44%** |
+
+Obedience dropped from ~95% to ~80% — real progress, but short of the ≥150-row / ~50%-failure
+target in §9.1 below (FLUX.1-dev is more obedient than the design assumed even under prior-fight
+and near-duplicate-subject pressure). Still, this is a 4-6x jump in misbound-row count.
+
+**C2 replicates decisively on the hard set.** Attention (42.7%/41.9%/42.3%/42.8% for
+akhil/grace/pranav/consensus) loses to the prompt-obeyed baseline (80.1%/80.2%/77.1%/80.1%) by an
+even wider margin than on the original set; McNemar p < 1e-20 for all four label sets
+(`exp6_prompt_baseline.py`).
+
+**C3 crosses into real, if modest, significance for the first time.** `exp7_misbound_subset.py`'s
+own per-stratum tests still don't clear p<0.05 individually (small n per stratum), but a pooled
+one-sided exact test across strata (Poisson-binomial over each row's own 1/n chance — an
+ad hoc/exploratory combination, not Holm-corrected against the rest of the battery) gives:
+akhil p=0.034, grace p=0.052, pranav p=0.027, consensus p=0.029, all at ~29% accuracy against
+~18.5% mean chance. C3 moves from "wide-CI non-rejection" to "weak positive, borderline
+significant" — not yet the paper's fully-powered central experiment the §9.1 target envisioned,
+but no longer underpowered noise either.
+
+**New: the within-item token-permutation control now exists** (`exp3b_within_item_permutation.py`,
+briefing §5.4's "control the battery should have had" — pure re-analysis of already-captured
+`model_scores`, no GPU). Within one image, it swaps which attribute's own attention map feeds
+each attribute's ownership call (a derangement over n≥3 attribute slots) and checks whether
+accuracy survives. On the **original FLUX set**, permuted accuracy falls significantly *below*
+chance (median 0.029 vs. chance 0.333 at n=3; 0.10 vs. 0.25 at n=4; real-vs-permuted McNemar
+p≈1e-27 to 1e-29 across all three annotators) — attention there is so decisively
+attribute-specific that borrowing any other attribute's map from the same image actively
+anti-predicts. On **FLUX-hard**, that specificity is much weaker (permuted accuracy close to
+chance, falsification-clean fraction 0.63–0.97 depending on stratum), though real still beats
+permuted (McNemar p≈4e-13). Read together: attention *does* carry attribute-specific content
+(a genuine rebuttal to the weakest form of C4 — it is not simply "generic salience"), but that
+specificity itself degrades under exactly the harder conditions where C3 needs it most. This is
+a discussion-section point, not a change to C1–C3.
+
+**Discriminant validity now checked on FLUX (§9.2)**, closing the gap `discriminant_validity_check.py`
+left open (it had only ever run on SDXL). `recompute_boxes.py` recovered boxes for all 103
+detected FLUX images (CPU, Mask R-CNN + CLIP, cached to `artifacts_flux/boxes.json`) and the
+result is clean across all three annotators: `predicted_owner` beats the trivial "always guess
+the biggest box" baseline by a wide margin (84.6–86.0% vs. 35.3–36.2%, McNemar p≈1e-37), the
+metric's own pick lands on the biggest box at a rate indistinguishable from chance (34.7% vs.
+34.3%, p=0.47), the prompt's intended subject also isn't biased toward the biggest box (34.3% vs.
+34.3% chance, p=0.52 — no anchor-set construct-validity confound either), and confidence margin
+doesn't track box-size dominance (Spearman r=-0.10, p=0.07). `predicted_owner` is not a
+box-geometry artifact on FLUX.
+
 ### Three things not to misreport
 
 - **Experiment 4's FLUX "win" is over a degraded baseline.** On SDXL's prompt template,
@@ -188,6 +249,8 @@ Consequences, which must travel with any Part B number:
 | `proposal/SSA-Metric-Memo.md` | Original falsification battery (§8) referenced throughout |
 | `ssa/anchor_set/` | The one-shot audit: generators, `exp{1..7}_*.py`, `anchor_common.py`, artifacts |
 | `ssa/anchor_set/flux_attention_capture.py` | The MMDiT capture (claim C7) |
+| `ssa/anchor_set/exp3b_within_item_permutation.py` | Sharper Exp-3 control (briefing §5.4): within-image attribute-map derangement, n≥3 |
+| `ssa/anchor_set/build_consensus_labels.py` | Majority-vote consensus across annotators' `labels_*.json`/`counts_*.json` |
 | `ssa/coig_ssa_colab.ipynb` | Original metric-A notebook, ~9MB — edit via JSON script, not Read/NotebookEdit |
 | `pi_level_experiment/` | The chain track: generate → segment → score → analyze, plus `RESULTS.md` |
 | `pilot/` | CR pilot (§2) and `spatial_semantic_alignment.py`, the chain metric |
@@ -201,6 +264,17 @@ py -3 run_five_experiments.py --artifacts-dir artifacts_flux --annotator chayan
 
 # Inter-rater agreement
 py -3 analyze_agreement.py --artifacts-dir artifacts_flux --annotator chayan --compare-annotator grace
+
+# Majority-vote consensus across annotators, then run the battery against it
+py -3 build_consensus_labels.py --artifacts-dir artifacts_flux_hard --annotators akhil grace pranav
+py -3 run_five_experiments.py --artifacts-dir artifacts_flux_hard --annotator consensus
+
+# Sharper Exp-3 falsification control (within-item token permutation, n>=3, no GPU)
+py -3 exp3b_within_item_permutation.py --artifacts-dir artifacts_flux --annotator chayan
+
+# Discriminant validity (box-geometry artifact check) -- boxes.json must exist first
+py -3 recompute_boxes.py --artifacts-dir artifacts_flux          # CPU, Mask R-CNN + CLIP, cached
+py -3 discriminant_validity_check.py --artifacts-dir artifacts_flux --annotator chayan
 
 # Tests -- must be run from INSIDE the package dir; the repo root fails to import stage modules
 cd ssa/anchor_set && py -3 -m pytest tests/ -q
@@ -220,25 +294,37 @@ Do not reintroduce it.
 
 ## 6. What to do next
 
-**The blocking experiment (briefing §9.1) — nothing else matters as much.** Our models are too
-obedient. FLUX binds correctly on ~94% of rows, leaving 11–16 discriminative rows per annotator,
-and every underpowered result traces to that. Build a prompt set where models fail ~50% of the
-time: higher subject counts (n = 4–6), attribute–subject pairings that fight object priors (a
-*chef* in a *cycling helmet*), confusable attributes within a prompt (two different-colored
-aprons, not an apron and a helmet), near-duplicate subjects. **Target ≥ 150 rows where
-`human_label != intended_subject`.** That converts C3 from a wide-CI non-rejection into the
-paper's properly-powered central experiment. `build_hard_prompts.py` and `artifacts_flux_hard/`
-are this work, started; Chayan's labels are in, the other annotators' are not.
+**The blocking experiment (briefing §9.1) — executed 2026-08-07, partial success.** akhil, grace,
+and pranav triple-labeled `artifacts_flux_hard/` (chayan's 4-row pass excluded). It moved
+prompt-obedience from ~94% to ~80% and misbound rows from 11–16 to 60–73 per annotator — a real
+gain, but short of the ≥150-row / ~50%-failure target below. C3's pooled significance is now
+p≈0.03–0.05 (weak positive, not the fully-powered central experiment envisioned) — see §3's new
+"hard-prompt-set results" subsection for the full numbers. **If more power is still wanted:** the
+remaining gap is that FLUX.1-dev is more obedient than the design assumed even under prior-fight
+and near-duplicate-subject pressure — the next lever is probably *more* subjects per image (n=7+)
+or attribute types that fight priors even harder, not more prompts at the same n=4–6 difficulty.
 
-**Cheap re-analyses, no GPU, days not weeks:**
-- Within-item token permutation at n ≥ 3 — the control the battery should have had (§3).
-- Discriminant validity on FLUX — `discriminant_validity_check.py` exists and has only ever run
-  on SDXL. Needs `recompute_boxes.py` against the FLUX images first. A reviewer will ask.
-- Part C robustness battery on FLUX — Holm, leave-one-prompt-out, RNG sweep. Currently
-  SD1.5-chain-only; the FLUX p-values are single runs at a frozen operating point.
-- Majority-vote consensus ground truth across the three annotators at κ ≈ 0.95.
+**Cheap re-analyses, no GPU, days not weeks — status as of 2026-08-07:**
+- ~~Within-item token permutation at n ≥ 3~~ **DONE** — `exp3b_within_item_permutation.py` (new).
+  Reveals a genuinely new, disclosable finding: permuted accuracy falls *below* chance on the
+  original FLUX set (attention there is decisively attribute-specific) but is much weaker on
+  FLUX-hard (see §3). Worth a paragraph in the discussion section.
+- ~~Discriminant validity on FLUX~~ **DONE** — `recompute_boxes.py` + `discriminant_validity_check.py`
+  ran clean on all 103 detected FLUX images, all 3 annotators. No box-geometry artifact (§3).
+- ~~Majority-vote consensus ground truth~~ **DONE for FLUX-hard** — `build_consensus_labels.py`
+  (new): 357/409 unanimous, 48/409 majority, 4/409 no-consensus. Not yet run for the original
+  `artifacts_flux/` (chayan+akhil+grace) — same script, `--artifacts-dir artifacts_flux
+  --annotators chayan akhil grace`, would take minutes if wanted.
+- **Part C robustness battery on FLUX — still BLOCKED, not attempted.** This is the chain
+  track's `pi_level_experiment/` validation battery (Holm/leave-one-out/RNG-sweep machinery in
+  `rng_sweep.py`/`analyze_results.py`), and `pi_level_experiment/` has zero FLUX chain data or
+  FLUX references anywhere (checked 2026-08-07) — `generate_chains.py` has never been run on
+  FLUX. Despite the "no GPU" framing in the briefing, the re-analysis tooling being GPU-free
+  doesn't help when the underlying FLUX chains don't exist yet; generating them is a Kaggle GPU
+  round-trip (full Stage 1/2/3 chain pipeline), not a cheap re-analysis. Flagging rather than
+  silently skipping.
 - Backfill `model_scores_full` so Experiment 2 stops reporting "unavailable" on SDXL
-  (`backfill_model_scores_full.py`); it already runs on FLUX.
+  (`backfill_model_scores_full.py`); it already runs on FLUX. Untouched this pass.
 
 **Deferred but valuable:** VQAScore correlation on the same rows; causal intervention via
 Attend-and-Excite steering (sharp, given the causal-vs-observational distinction the paper
@@ -246,7 +332,10 @@ draws); the 38 FLUX single blocks, currently out of scope in the capture.
 
 **Documentation debt:** `proposal/CPGA-Research-Proposal.md` still describes the two-track plan
 and does not carry §3 or §4. `pi_level_experiment/RESULTS.md` still calls the ~30% hit rate
-unexplained noise. Both need the corrections above before anything is submitted.
+unexplained noise.
+`docs/raw-attention-paper-briefing.md` itself has not yet been updated with the hard-prompt-set/
+consensus/permutation-control/discriminant-validity results above — its §5.3, §5.4, §8.2 (claim
+strength table), and §9 all predate this pass and should be revised before anything is submitted.
 
 ---
 

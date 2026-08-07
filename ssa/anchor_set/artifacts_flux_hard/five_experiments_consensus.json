@@ -1,0 +1,222 @@
+{
+  "experiment_1": {
+    "overall": {
+      "n_labeled": 405,
+      "n_scored": 311,
+      "n_correct": 133,
+      "n_excluded": 94,
+      "accuracy": 0.42765273311897106,
+      "chance": null,
+      "margin_over_chance": null,
+      "p_value": null
+    },
+    "by_stratum": {
+      "4": {
+        "n_labeled": 96,
+        "n_scored": 79,
+        "n_correct": 44,
+        "n_excluded": 17,
+        "accuracy": 0.5569620253164557,
+        "chance": 0.25,
+        "margin_over_chance": 0.30696202531645567,
+        "p_value": 5.986228264261175e-09
+      },
+      "5": {
+        "n_labeled": 202,
+        "n_scored": 160,
+        "n_correct": 70,
+        "n_excluded": 42,
+        "accuracy": 0.4375,
+        "chance": 0.2,
+        "margin_over_chance": 0.2375,
+        "p_value": 8.641967712297966e-12
+      },
+      "6": {
+        "n_labeled": 107,
+        "n_scored": 72,
+        "n_correct": 19,
+        "n_excluded": 35,
+        "accuracy": 0.2638888888888889,
+        "chance": 0.16666666666666666,
+        "margin_over_chance": 0.09722222222222224,
+        "p_value": 0.024594967321766734
+      }
+    }
+  },
+  "experiment_2": {
+    "available": true,
+    "per_stratum": {
+      "4": {
+        "n_scored": 79,
+        "early_accuracy": 0.5569620253164557,
+        "full_accuracy": 0.569620253164557,
+        "chance": 0.25
+      },
+      "5": {
+        "n_scored": 160,
+        "early_accuracy": 0.4375,
+        "full_accuracy": 0.45,
+        "chance": 0.2
+      },
+      "6": {
+        "n_scored": 72,
+        "early_accuracy": 0.2638888888888889,
+        "full_accuracy": 0.25,
+        "chance": 0.16666666666666666
+      }
+    },
+    "mcnemar": {
+      "n": 311,
+      "early_only_correct": 1,
+      "full_only_correct": 3,
+      "n_discordant": 4,
+      "p_value": 0.625
+    }
+  },
+  "experiment_3": {
+    "sweep": {
+      "4": {
+        "n_seeds": 200,
+        "median_accuracy": 0.25316455696202533,
+        "chance": 0.25,
+        "frac_not_significantly_different_from_chance": 0.965
+      },
+      "5": {
+        "n_seeds": 200,
+        "median_accuracy": 0.2,
+        "chance": 0.2,
+        "frac_not_significantly_different_from_chance": 0.955
+      },
+      "6": {
+        "n_seeds": 200,
+        "median_accuracy": 0.16666666666666666,
+        "chance": 0.16666666666666666,
+        "frac_not_significantly_different_from_chance": 0.94
+      }
+    },
+    "mcnemar": {
+      "n": 311,
+      "real_only_correct": 108,
+      "scrambled_only_correct": 39,
+      "n_discordant": 147,
+      "p_value": 1.1047851223224009e-08
+    }
+  },
+  "experiment_4": {
+    "headline": {
+      "n": 311,
+      "metric_accuracy": 0.42765273311897106,
+      "baseline_accuracy": 0.8006430868167203
+    },
+    "mcnemar": {
+      "n": 311,
+      "metric_only_correct": 18,
+      "baseline_only_correct": 134,
+      "n_discordant": 152,
+      "p_value": 4.14829527597977e-23
+    },
+    "by_stratum": {
+      "4": {
+        "n": 79,
+        "metric_accuracy": 0.5569620253164557,
+        "baseline_accuracy": 0.9873417721518988,
+        "chance": 0.25
+      },
+      "5": {
+        "n": 160,
+        "metric_accuracy": 0.4375,
+        "baseline_accuracy": 0.8,
+        "chance": 0.2
+      },
+      "6": {
+        "n": 72,
+        "metric_accuracy": 0.2638888888888889,
+        "baseline_accuracy": 0.5972222222222222,
+        "chance": 0.16666666666666666
+      }
+    }
+  },
+  "experiment_5": {
+    "all": {
+      "overall": {
+        "n_labeled": 405,
+        "n_scored": 311,
+        "n_correct": 133,
+        "n_excluded": 94,
+        "accuracy": 0.42765273311897106,
+        "chance": null,
+        "margin_over_chance": null
+      },
+      "by_stratum": {
+        "4": {
+          "n_labeled": 96,
+          "n_scored": 79,
+          "n_correct": 44,
+          "n_excluded": 17,
+          "accuracy": 0.5569620253164557,
+          "chance": 0.25,
+          "margin_over_chance": 0.30696202531645567
+        },
+        "5": {
+          "n_labeled": 202,
+          "n_scored": 160,
+          "n_correct": 70,
+          "n_excluded": 42,
+          "accuracy": 0.4375,
+          "chance": 0.2,
+          "margin_over_chance": 0.2375
+        },
+        "6": {
+          "n_labeled": 107,
+          "n_scored": 72,
+          "n_correct": 19,
+          "n_excluded": 35,
+          "accuracy": 0.2638888888888889,
+          "chance": 0.16666666666666666,
+          "margin_over_chance": 0.09722222222222224
+        }
+      }
+    },
+    "count_clean": {
+      "overall": {
+        "n_labeled": 405,
+        "n_scored": 305,
+        "n_correct": 133,
+        "n_excluded": 100,
+        "accuracy": 0.4360655737704918,
+        "chance": null,
+        "margin_over_chance": null
+      },
+      "by_stratum": {
+        "4": {
+          "n_labeled": 96,
+          "n_scored": 79,
+          "n_correct": 44,
+          "n_excluded": 17,
+          "accuracy": 0.5569620253164557,
+          "chance": 0.25,
+          "margin_over_chance": 0.30696202531645567
+        },
+        "5": {
+          "n_labeled": 202,
+          "n_scored": 160,
+          "n_correct": 70,
+          "n_excluded": 42,
+          "accuracy": 0.4375,
+          "chance": 0.2,
+          "margin_over_chance": 0.2375
+        },
+        "6": {
+          "n_labeled": 107,
+          "n_scored": 66,
+          "n_correct": 19,
+          "n_excluded": 41,
+          "accuracy": 0.2878787878787879,
+          "chance": 0.16666666666666666,
+          "margin_over_chance": 0.12121212121212124
+        }
+      }
+    },
+    "n_excluded_as_count_broken": 6
+  }
+}

@@ -1,7 +1,8 @@
 # Raw Cross-Attention Tracks Intent, Not Realization
 
 **A ground-up briefing for the paper**
-CPGA / CoIG Faithfulness Project · Prepared 2026-08-03 · Branch `claude/flux1-dev-experiments-xx0irs`
+CPGA / CoIG Faithfulness Project · Prepared 2026-08-03 · Revised 2026-08-07 · Branch `main`
+(the repo was consolidated onto `main` 2026-08-06 — see `CLAUDE.md`)
 
 ---
 
@@ -9,22 +10,23 @@ CPGA / CoIG Faithfulness Project · Prepared 2026-08-03 · Branch `claude/flux1-
 
 We set out to build a faithfulness metric that reads a diffusion model's own cross-attention to
 decide which subject an attribute is bound to ("is the red apron on the barista or the cyclist?").
-Across two model families, three human annotators, and roughly 600 human-labeled attribute
-judgments, the metric works in the narrow sense that it beats random guessing — and fails in the
-sense that matters.
+Across two model families, four human annotators (Chayan, Akhil, Grace, Pranav), and roughly 1,080
+human-labeled attribute judgments across four anchor sets, the metric works in the narrow sense
+that it beats random guessing — and fails in the sense that matters.
 
 The finding that organizes the paper is this:
 
 > **A trivial baseline that never looks at the image — "assume the model rendered what the prompt
 > asked for" — significantly outperforms the attention-based metric on every model and every
-> annotator we have tested.** Six independent comparisons, six losses for attention, all at
-> p < 0.05, most at p < 1e-4.
+> annotator we have tested.** Ten independent comparisons (six on the original prompt sets, four
+> on a harder retest), ten losses for attention, all at p < 0.05, most at p < 1e-4.
 
 And the follow-through that explains it:
 
 > On the subset of rows where the model *disobeyed* the prompt — the only rows where a faithfulness
 > metric can add value over simply reading the prompt — attention's accuracy at predicting the
-> **rendered** outcome is not distinguishable from chance in any of six tests.
+> **rendered** outcome was not distinguishable from chance in the original six (underpowered)
+> tests, and remains only weakly, marginally above chance in a properly-powered retest (§5.5).
 
 Attention is not noise. On FLUX it beats a randomization control at p ≈ 1e-33. But the information
 it carries appears to be information about **the prompt**, which is only predictive of the image
@@ -38,10 +40,15 @@ attention is *informative* but not *faithful*, and the field's mistake was never
 an informed baseline — is very close to what our data shows for diffusion cross-attention.
 
 **Status of the evidence:** the headline baseline comparison is solid (n = 265–273 per test on
-FLUX, p ≈ 1e-5). The mechanistic follow-up (attention at chance on disobeyed rows) is directionally
-consistent across all six tests but **underpowered** — 11–36 rows per test, wide confidence
-intervals. Fixing that underpowering is the single most important remaining experiment, and §9 says
-how.
+FLUX, p ≈ 1e-5). The mechanistic follow-up (attention at chance on disobeyed rows) was originally
+directionally consistent across all six tests but **underpowered** — 11–36 rows per test, wide
+confidence intervals. A hard-prompt-set retest (§5.5, executed 2026-08-07) raised that to 60–73
+misbound rows per annotator and pushed the pooled test into real, if modest, significance
+(p ≈ 0.03–0.05 on 3 of 4 label sets) — genuine progress, though short of the ≥150-row target §9.1
+originally set. The same pass also ran the sharper falsification control §5.4 recommended but
+never executed (§5.6): a new, unanticipated finding is that attention's attribute-specificity is
+strong on easy images and degrades on hard ones — exactly where the paper's central claim needs it
+most.
 
 ---
 
@@ -149,8 +156,11 @@ Three datasets, built in sequence:
 | `artifacts/` | SD1.5 | ~23 | ~68 | Chayan | — |
 | `artifacts_sdxl/` | SDXL | 105 detected (137 attempted) | 306 | Chayan, Akhil, Grace | **0.682** (0.914–0.924 count-clean) |
 | `artifacts_flux/` | FLUX.1-dev | 103 detected (105 attempted) | 301 | Chayan, Akhil, Grace | **0.954 / 0.958** |
+| `artifacts_flux_hard/` | FLUX.1-dev, harder prompts | 83 detected (100 attempted) | 409 | Akhil, Grace, Pranav | **0.889–0.912** |
 
-Prompts are templated across three strata by subject count: n = 2, 3, 4 (chance = 50%, 33.3%, 25%).
+Prompts in the first three sets are templated across three strata by subject count: n = 2, 3, 4
+(chance = 50%, 33.3%, 25%). The FLUX-hard set (§5.5, added 2026-08-07) uses n = 4, 5, 6 (chance =
+25%, 20%, 16.7%) specifically to lower the chance floor and raise binding complexity.
 
 ---
 
@@ -173,6 +183,17 @@ and ground truth itself doesn't correlate with box size. But the headline compar
 
 We recorded this correctly at the time as "the effect is genuinely marginal/noisy." What we did not
 do was ask whether a *smarter* trivial baseline would beat it too.
+
+**Update, 2026-08-07 — the same check, closed for FLUX.** This discriminant-validity check had
+only ever run on SDXL/SD1.5. `recompute_boxes.py` recovered subject boxes for all 103 detected
+FLUX images (CPU, Mask R-CNN + CLIP, no re-generation), and the result is unambiguous where
+SD1.5/SDXL were marginal: `predicted_owner` beats "always guess the biggest box" by a wide margin
+(84.6–86.0% vs. 35.3–36.2%, McNemar p ≈ 1e-37, all three annotators), the metric's own pick lands
+on the biggest box at a rate indistinguishable from chance (34.7% vs. 34.3%, p = 0.47), the
+anchor set's own construct validity is clean too — `intended_subject` isn't biased toward the
+biggest box either (34.3% vs. 34.3% chance, p = 0.52) — and attention margin doesn't track
+box-size dominance (Spearman r = -0.10, p = 0.07). On FLUX, `predicted_owner` is not a
+box-geometry artifact — one plausible "boring explanation" is closed.
 
 **The five-experiment battery on SDXL.** Re-run with current code for this document:
 
@@ -367,6 +388,97 @@ Recommendation: reinstate the within-item token permutation as an additional con
 is cheap — pure re-analysis of already-captured `model_scores` — and it is the control that would
 actually distinguish "attention encodes binding" from "attention encodes something."
 
+### 5.5 The hard-prompt-set retest (executed 2026-08-07)
+
+§9.1 named this as the single most important remaining experiment: FLUX obeys too well (~94% of
+rows) to properly power the §5.3 test. `build_hard_prompts.py` generated 100 prompts at n = 4/5/6
+(IDs 300–399) designed to fight the model harder — confusable same-type attributes (two aprons,
+two helmets, two hats, two gloves, each pair a different color), attribute–subject prior fights (a
+*chef* in a *cycling helmet*), and near-duplicate subjects (chef + baker, nurse + doctor, barista +
+waiter, cyclist + biker). 83/100 images detected the right subject count; akhil, grace, and pranav
+each labeled all 409 rows (chayan's pass, 4 rows, is excluded throughout — too incomplete to use).
+Inter-rater κ = 0.889–0.912 — still excellent agreement, a shade below the original set's
+0.954/0.958, consistent with these images genuinely being harder to read. A majority-vote
+consensus label set (`build_consensus_labels.py`, new) resolved 357/409 rows unanimously, 48/409 by
+2-of-3 majority, and left only 4/409 with no consensus.
+
+**Did it hit the target? Partially.**
+
+| Metric | Original FLUX (§4–§5.3) | FLUX-hard |
+|---|---|---|
+| Prompt-obeyed rate (`intended_subject == human_label`) | ~94–96% | **~77–80%** |
+| Misbound rows available for the C3 test (per annotator) | 11–16 | **60–73** (62 on consensus) |
+| Attention accuracy overall | ~85% | **~42–44%** |
+
+Obedience dropped meaningfully — from ~95% to ~80% — and misbound rows jumped 4–6×. But §9.1's
+target was ≥150 misbound rows / ~50% failure, and FLUX.1-dev turned out to be more obedient than
+the design assumed even under prior-fight and near-duplicate-subject pressure. The prompt
+engineering worked directionally; it did not fully close the power gap.
+
+**C2 replicates, decisively, on the harder set.** Re-running §5.1's baseline comparison:
+
+| Annotator | n (scored) | Attention | Prompt-obeyed | McNemar |
+|---|---|---|---|---|
+| akhil | 316 | 42.7% | **80.1%** | p ≈ 1.3e-23 |
+| grace | 308 | 41.9% | **80.2%** | p ≈ 5.5e-24 |
+| pranav | 319 | 42.3% | **77.1%** | p ≈ 7.3e-21 |
+| consensus | 311 | 42.8% | **80.1%** | p ≈ 4.1e-23 |
+
+The gap is if anything wider than on the original set (§5.1: ~10 points on FLUX; here, ~37–38
+points). Harder images do not help attention — they help the case for the prompt baseline.
+
+**C3 crosses into real, if modest, significance for the first time.** Re-running §5.3's
+misbound-subset test, the per-stratum tests still individually don't clear p < 0.05 (small n once
+split by n=4/5/6) — but a pooled one-sided test across strata (Poisson-binomial over each row's own
+1/n chance; an exploratory combination of our own construction, **not** Holm-corrected against the
+rest of the battery) gives:
+
+| Annotator | n (misbound) | Correct | Accuracy | Mean chance | Pooled p (one-sided) |
+|---|---|---|---|---|---|
+| akhil | 63 | 18 | 28.6% | 18.5% | **0.034** |
+| grace | 61 | 17 | 27.9% | 18.7% | 0.052 |
+| pranav | 73 | 21 | 28.8% | 18.9% | **0.027** |
+| consensus | 62 | 18 | 29.0% | 18.5% | **0.029** |
+
+C3 moves from "wide-CI non-rejection" (§5.3's original six tests, all p > 0.1) to "weak positive,
+borderline significant" on three of four label sets. This is genuine movement — not the
+fully-powered central experiment §9.1 envisioned, but no longer indistinguishable from noise
+either. If the paper wants a harder result here, the next lever is probably more subjects per
+image (n = 7+), not more prompts at the current n = 4–6 difficulty — FLUX's obedience floor
+appears to sit closer to ~80% than ~50% even under real compositional pressure.
+
+### 5.6 The within-item token-permutation control, executed
+
+§5.4 recommended reinstating the sharper falsification control the original memo specified —
+permuting *which attribute's own attention map* feeds a prediction, within one image, rather than
+scrambling values across images. That control now exists (`exp3b_within_item_permutation.py`) and
+has been run against both the original FLUX set and FLUX-hard.
+
+The result is a genuinely new finding, not anticipated by §5.4's diagnosis. **On the original FLUX
+set, permuted accuracy falls significantly *below* chance**: median 0.029 against chance 0.333 at
+n = 3, and 0.10 against 0.25 at n = 4. A paired McNemar between real and permuted correctness is
+overwhelming (p ≈ 1e-27 to 1e-29 across all three annotators, real winning 148–149 discordant rows
+to permuted's 15–18). That is not the "no better than chance" result a clean falsification control
+usually reports — it means attention on FLUX is so decisively attribute-specific that handing the
+metric a *different real attribute's* attention map from the *same image* actively misleads it,
+more often than a coin flip would.
+
+**On FLUX-hard, that specificity is markedly weaker.** Permuted accuracy sits close to chance at
+n = 4 and n = 5 (falsification-clean fraction 0.625–0.635 — roughly a third of seeds *do* detect a
+below-chance effect, but most don't) and is indistinguishable from chance at n = 6 (0.965 clean
+fraction). Real still beats permuted (McNemar p ≈ 4.2e-13), so some attribute specificity
+survives, but far less decisively than on the easier set.
+
+**Read together, this is a two-sided update to C4.** The original §5.4 critique was analytic:
+existing controls could not separate "attention encodes binding" from "attention encodes
+anything." This new control answers that question directly, for the first time — on easy images,
+attention plainly does encode attribute-specific content, not generic salience (a real rebuttal to
+the weakest version of that worry). But that same specificity is precisely what erodes on harder
+images, in the same direction and over the same population where C3 needs attention to be
+informative. It does not change C1–C3's substance; it supplies a mechanistic explanation for why
+C3's effect stays small even in the better-powered retest — the underlying signal itself gets
+noisier exactly as the images get harder.
+
 ---
 
 ## 6. Convergent evidence from the chain track
@@ -394,6 +506,13 @@ SDXL the metric's edge never reached significance across two sample sizes.
 So we now have three independent lines — chain ablation, box baseline, prompt baseline — all
 saying that raw cross-attention is not carrying the discriminative weight we attributed to it. That
 convergence is the strongest thing the paper has.
+
+**A fourth line was attempted and found blocked, not negative.** Extending Part C's Holm/leave-
+one-out/RNG-sweep robustness battery (`pi_level_experiment/rng_sweep.py` /
+`analyze_results.py`) to FLUX chains was checked 2026-08-07: `pi_level_experiment/` has zero FLUX
+chain data anywhere, and `generate_chains.py` has never been run on FLUX. Extending it needs a new
+Kaggle GPU chain-generation round-trip (the full Stage 1/2/3 pipeline), not a re-analysis — flagged
+in §9.2 as still blocked rather than silently dropped.
 
 ---
 
@@ -469,22 +588,35 @@ likely reviewer objection ("but A&E proved attention works").
 > Raw cross-attention in text-to-image diffusion models encodes the *prompt's intended*
 > attribute-subject binding rather than the *image's realized* binding. It therefore appears highly
 > accurate on benchmarks where models usually obey their prompts, while adding no measurable value
-> over simply reading the prompt — and providing no reliable signal precisely on the failure cases a
-> faithfulness metric exists to detect.
+> over simply reading the prompt — and providing, at best, a weak and marginally-significant signal
+> on the failure cases a faithfulness metric exists to detect.
+
+*(Updated 2026-08-07: the properly-powered retest in §5.5 found ~29% accuracy against ~18.5%
+chance on prompt-violating rows — pooled p ≈ 0.03–0.05 on 3 of 4 label sets. That is a real,
+disclosable effect, not zero — but it is far below the ~85% headline accuracy and not something a
+faithfulness metric could be built on. "No reliable signal" was the honest read of the original,
+underpowered six-test null; "weak, marginal signal" is the honest read now that the test has
+power. Either way, the core argument — attention adds nothing over the prompt baseline (C2, still
+6/6 at p<0.05) and what little it retains on the hard cases is small and architecture-dependent
+(§5.6) — is unchanged.)*
 
 ### 8.2 Claims, and what supports each
 
 | # | Claim | Evidence | Strength |
 |---|---|---|---|
 | C1 | Attention-based binding prediction beats chance on both architectures | Exp 1, both models, 3 annotators | **Strong** |
-| C2 | It nonetheless loses to a prompt-only baseline, universally | §5.1, 6/6 tests, p < 0.05 | **Strong** |
-| C3 | On prompt-violating rows, attention is not distinguishable from chance | §5.3, 6/6 non-rejections | **Weak — underpowered** |
-| C4 | Randomization controls as usually run cannot separate "encodes binding" from "encodes anything" | §5.4, code analysis + scrambled ≈ 1/n | **Strong (analytic)** |
+| C2 | It nonetheless loses to a prompt-only baseline, universally | §5.1, §5.5: 10/10 tests (6 original + 4 hard-set), p < 0.05 | **Strong** |
+| C3 | On prompt-violating rows, attention beats chance only weakly | §5.3 (original, underpowered) + §5.5 (hard-set retest: pooled p≈0.03–0.05, 3/4 label sets) | **Weak-positive — properly powered for the first time, borderline significant** |
+| C4 | Randomization controls as usually run cannot separate "encodes binding" from "encodes anything" — and when the sharper control IS run, attention turns out to be genuinely attribute-specific on easy images | §5.4 (analytic) + §5.6 (executed: permuted accuracy below chance on FLUX, McNemar p≈1e-27–1e-29) | **Strong (analytic, now also empirical)** |
 | C5 | Attention quality is architecture-dependent (MMDiT ≫ UNet) but the conclusion is not | §3.1 vs §4; Exp 3 fails on SDXL, passes on FLUX | **Moderate** |
 | C6 | Replacing attention with noise reproduces chain-metric significance | Part C Step 6 | **Strong** |
 | C7 | Extracting interpretable attention from MMDiT requires manual softmax recomputation | `flux_attention_capture.py` | **Methods contribution** |
+| C8 | Attention's attribute-specificity itself degrades on harder images — exactly where C3 needs it most | §5.6: below-chance permuted accuracy on FLUX vs. near-chance on FLUX-hard | **Moderate — one dataset pair, directionally clean, new 2026-08-07** |
 
-C2 is the headline. C3 is the mechanism and is currently the weakest link — §9.1 exists to fix it.
+C2 is the headline, and now the more thoroughly tested one (10/10 comparisons across both prompt
+sets). C3 was the weakest link; the §9.1 hard-prompt-set retest (§5.5) materially improved its
+power and moved it into real-but-modest significance, though not to the fully-powered target
+originally set — see §9 for what, if anything, is still worth doing about it.
 
 ### 8.3 Structure
 
@@ -493,10 +625,14 @@ C2 is the headline. C3 is the mechanism and is currently the weakest link — §
 2. **Related work** — the NLP attention-interpretability debate; DAAM / A&E / P2P; the
    judge-metric line; the causal-vs-observational distinction (§7.2).
 3. **Method** — anchor-set protocol, the metric, the MMDiT capture (C7).
-4. **Experiments** — the five-experiment battery on both architectures.
-5. **The baseline analysis** — §5.1–5.3. The paper's core.
-6. **Control adequacy** — §5.4. Why standard randomization controls under-test.
-7. **Convergent evidence** — §6, the chain ablation.
+4. **Experiments** — the five-experiment battery on both architectures, plus the hard-prompt-set
+   retest (§5.5).
+5. **The baseline analysis** — §5.1–5.3, §5.5. The paper's core.
+6. **Control adequacy** — §5.4, §5.6. Why standard randomization controls under-test, and what the
+   sharper control found when it was actually run (attention IS attribute-specific on easy images,
+   less so on hard ones — C8).
+7. **Convergent evidence** — §6, the chain ablation, plus the closed FLUX discriminant-validity
+   check (§3.1).
 8. **Discussion** — what attention is good for (steering, per A&E) vs. what it is not good for
    (scoring); implications for work that uses attention-derived masks as pseudo-ground-truth.
 9. **Limitations** — §9.
@@ -506,42 +642,58 @@ C2 is the headline. C3 is the mechanism and is currently the weakest link — §
 This is an empirical/analysis paper with a negative headline. Those are publishable when the
 methodology is airtight and the finding is actionable, but they are held to a *higher* evidentiary
 bar than positive results, because "we didn't find it" and "it isn't there" are easy to confuse.
-Concretely: C3 must be properly powered before submission. A workshop on interpretability or
-evaluation is a realistic first target; a main-track submission needs §9.1 done.
+Concretely: C3 needed to be properly powered before submission. §9.1's retest (§5.5, executed
+2026-08-07) materially improved that — pooled p ≈ 0.03–0.05 on 3/4 label sets — but did not reach
+the original ≥150-row target, and the effect size (~10 points over chance) is modest. A workshop
+on interpretability or evaluation looks solidly supported by the current evidence; whether a
+main-track submission needs a further-hardened prompt set (§5.5's closing note: more subjects per
+image, not more prompts at the current difficulty) is now the open editorial call, not a hard
+blocker.
 
 ---
 
 ## 9. What is missing
 
-### 9.1 The blocking experiment: a hard prompt set
+### 9.1 The blocking experiment: a hard prompt set — EXECUTED 2026-08-07, partial success
 
-**The binding constraint is that our models are too obedient.** FLUX binds correctly on ~94% of
-rows, which leaves 11–16 discriminative rows per annotator. Every underpowered result in this
-document traces to that.
+**The original binding constraint was that our models were too obedient.** FLUX bound correctly on
+~94% of rows, leaving 11–16 discriminative rows per annotator, and every underpowered result in
+this document traced to that.
 
-Build a prompt set where models fail ~50% of the time:
-- Higher subject counts (n = 4–6).
-- Attribute–subject pairings that fight object priors (a *chef* in a *cycling helmet*).
-- Confusable attributes within a prompt (two different-colored aprons rather than an apron and a
-  helmet).
-- Near-duplicate subjects (two chefs distinguished only by attribute).
+`build_hard_prompts.py` built exactly the prompt set specified: higher subject counts (n = 4–6),
+attribute–subject pairings that fight object priors (a *chef* in a *cycling helmet*), confusable
+attributes within a prompt (two different-colored aprons, not an apron and a helmet), and
+near-duplicate subjects (chef + baker, nurse + doctor, barista + waiter, cyclist + biker). akhil,
+grace, and pranav triple-labeled all 409 rows. Full results: §5.5.
 
-Target ≥ 150 rows where `human_label != intended_subject`. That converts C3 from a wide-CI
-non-rejection into the paper's central, properly-powered experiment. **Nothing else on this list
-matters as much.**
+**It worked, partially.** Misbound rows went from 11–16 to 60–73 per annotator (62 on consensus) —
+a 4–6× increase — and C3's significance moved from "non-rejection, p > 0.1 on all six original
+tests" to "weak positive, pooled p ≈ 0.03–0.05 on 3/4 label sets." **It did not hit the ≥150-row /
+~50%-failure target**: FLUX.1-dev's prompt-obedience only fell to ~80%, not ~50%, even under this
+level of compositional pressure. The paper now has a better-powered C3 result, not the
+fully-powered one originally envisioned.
 
-### 9.2 Cheap re-analyses (no GPU, days not weeks)
+**If more power is still wanted, the next lever is probably n = 7+ subjects per image**, not more
+prompts at the current n = 4–6 difficulty — see §5.5's closing paragraph.
 
-- **Within-item token permutation at n ≥ 3** (§5.4) — the control the battery should have had. Pure
-  re-analysis of existing `model_scores`.
-- **Discriminant validity on FLUX** — `discriminant_validity_check.py` exists and has only ever been
-  run on SDXL. Needs `recompute_boxes.py` against the FLUX images first (CPU, cached). A reviewer
-  will ask.
-- **Part C robustness battery on FLUX** — Holm correction across the five experiments, leave-one-
-  prompt-out, RNG sweep. Currently SD1.5-chain-only. The FLUX p-values in §4 are single runs at a
-  frozen operating point.
-- **Majority-vote / consensus ground truth** — we have three annotators at κ ≈ 0.95 and currently
-  analyze them separately. A consensus label set would tighten every interval slightly.
+### 9.2 Cheap re-analyses (no GPU, days not weeks) — status as of 2026-08-07
+
+- ~~**Within-item token permutation at n ≥ 3**~~ **DONE** — `exp3b_within_item_permutation.py`.
+  Results in §5.6: a genuinely new finding (permuted accuracy falls below chance on easy FLUX
+  images, much weaker on hard ones — C8), not just the falsification control the battery lacked.
+- ~~**Discriminant validity on FLUX**~~ **DONE** — `recompute_boxes.py` +
+  `discriminant_validity_check.py` ran clean on all 103 detected FLUX images, all 3 annotators.
+  Results in §3.1's update. No box-geometry artifact.
+- **Part C robustness battery on FLUX — still BLOCKED, not attempted.** Checked 2026-08-07:
+  `pi_level_experiment/` (the chain track this refers to — the Holm/leave-one-out/RNG-sweep
+  machinery in `rng_sweep.py`/`analyze_results.py`) has zero FLUX chain data or FLUX references
+  anywhere; `generate_chains.py` has never been run on FLUX. The re-analysis tooling being GPU-free
+  doesn't help when the underlying FLUX chains don't exist — generating them is a full Kaggle GPU
+  round-trip (the Stage 1/2/3 chain pipeline), not a cheap re-analysis. Genuinely deferred, not
+  silently dropped (§6).
+- ~~**Majority-vote / consensus ground truth**~~ **DONE for FLUX-hard** — `build_consensus_labels.py`
+  (new): 357/409 unanimous, 48/409 majority, 4/409 no-consensus (§5.5). Not yet run for the
+  original `artifacts_flux/` (chayan + akhil + grace) — same script, minutes of work if wanted.
 
 ### 9.3 Deferred but valuable
 
@@ -563,6 +715,12 @@ matters as much.**
 - Ownership-by-bounding-box-containment is itself an approximation; overlapping subjects are
   genuinely ambiguous.
 - All results are for the early-window aggregation on double blocks only.
+- The §5.5 hard-prompt-set C3 result rests on a pooled (Poisson-binomial, cross-strata) test that
+  is exploratory — our own construction, not pre-registered, and not corrected for the other tests
+  in the battery. `exp7_misbound_subset.py`'s own per-stratum output still does not clear p < 0.05
+  on any individual stratum for any label set.
+- FLUX-hard's prompt-obedience rate (~80%) fell short of the ~50% design target; the harder
+  prompts moved the needle without fully closing the power gap (§5.5).
 
 ---
 
@@ -573,30 +731,48 @@ All commands from `ssa/anchor_set/`. Requires `numpy`, `scipy`, `pandas` (no GPU
 ```bash
 # Five-experiment battery
 python3 run_five_experiments.py --artifacts-dir artifacts_flux --annotator chayan
-python3 run_five_experiments.py --artifacts-dir artifacts_sdxl --annotator akhil
+python3 run_five_experiments.py --artifacts-dir artifacts_flux_hard --annotator consensus
+
+# Central-table experiments (§5.1, §5.3) -- now committed scripts, not inline analysis
+python3 exp6_prompt_baseline.py --artifacts-dir artifacts_flux --annotator chayan
+python3 exp7_misbound_subset.py --artifacts-dir artifacts_flux --annotator chayan
+
+# Hard-prompt-set consensus labels (§5.5)
+python3 build_consensus_labels.py --artifacts-dir artifacts_flux_hard --annotators akhil grace pranav
+
+# Within-item token-permutation control (§5.6)
+python3 exp3b_within_item_permutation.py --artifacts-dir artifacts_flux --annotator chayan
+
+# Discriminant validity on FLUX (§3.1 update) -- boxes.json must exist first
+python3 recompute_boxes.py --artifacts-dir artifacts_flux
+python3 discriminant_validity_check.py --artifacts-dir artifacts_flux --annotator chayan
 
 # Agreement + inter-rater kappa
 python3 analyze_agreement.py --artifacts-dir artifacts_flux \
         --annotator chayan --compare-annotator grace
 
-# Test suite (190 tests, 1 GPU-only skip)
+# Test suite (274 tests)
 python3 -m pytest tests/ -q
 ```
 
-The §5.1 and §5.3 analyses are not yet committed as scripts — they were run inline for this
-document. **They should be turned into `exp6_prompt_baseline.py` and
-`exp7_misbound_subset.py` and tested**, both because they are now the paper's core results and
-because nothing in this repo should be load-bearing without a test. That is the first code task.
+The §5.1 and §5.3 analyses were run inline for the original version of this document; they are now
+committed, tested scripts (`exp6_prompt_baseline.py`, `exp7_misbound_subset.py`), since they are
+the paper's core results and nothing in this repo should be load-bearing without a test.
 
 ### Key files
 
 | Path | What |
 |---|---|
-| `ssa/anchor_set/artifacts_flux/` | FLUX images, manifest, 3× labels/counts, results |
+| `ssa/anchor_set/artifacts_flux/` | FLUX images, manifest, 3× labels/counts, results, `boxes.json` |
+| `ssa/anchor_set/artifacts_flux_hard/` | FLUX-hard images/manifest, 3× labels/counts + consensus, results (§5.5) |
 | `ssa/anchor_set/artifacts_sdxl/` | SDXL equivalent |
 | `ssa/anchor_set/flux_attention_capture.py` | MMDiT capture (C7) |
 | `ssa/anchor_set/anchor_common.py` | Shared scoring/agreement logic |
-| `ssa/anchor_set/exp{1..5}_*.py` | The battery |
+| `ssa/anchor_set/exp{1..7}_*.py` | The battery, incl. prompt baseline (6, §5.1) and misbound subset (7, §5.3) |
+| `ssa/anchor_set/exp3b_within_item_permutation.py` | Sharper Exp-3 falsification control (§5.6) |
+| `ssa/anchor_set/build_consensus_labels.py` | Majority-vote consensus across annotators (§5.5) |
+| `ssa/anchor_set/build_hard_prompts.py` | Generates the FLUX-hard prompt set (§5.5) |
+| `ssa/anchor_set/recompute_boxes.py`, `discriminant_validity_check.py` | Box-geometry artifact check (§3.1) |
 | `docs/superpowers/specs/2026-07-31-flux-attention-hook-design.md` | Capture design |
 | `docs/part-a-five-experiment-battery-design.md` | Battery pre-registration |
 | `docs/anchor-set-labeling-protocol.md` | Labeling protocol |
@@ -617,5 +793,14 @@ run, and we have the apparatus to run it properly: two architectures, three anno
 about what cross-attention actually encodes, and the answer — the prompt, not the picture — is more
 interesting than another metric would have been.
 
-The work between here and a submission is mostly one experiment: a prompt set hard enough that the
-models disobey often enough to measure. Everything else is re-analysis we can do this week.
+The work between here and a submission was mostly one experiment: a prompt set hard enough that
+the models disobey often enough to measure. That experiment has now been run (§5.5, 2026-08-07) —
+it materially improved C3's power (pooled p ≈ 0.03–0.05 on 3/4 label sets) without fully closing
+the gap to the original ≥150-row target, and it turned up a genuinely new finding along the way
+(§5.6, C8: attention's attribute-specificity itself degrades on hard images). Three of the four
+cheap re-analyses in §9.2 are also done; the fourth (Part C robustness on FLUX) is blocked on new
+GPU chain data, not on analysis time (§6, §9.2).
+
+What's left is mostly writing. This document's numbers are current as of 2026-08-07, but
+`proposal/CPGA-Research-Proposal.md` and `pi_level_experiment/RESULTS.md` still predate all of
+§3–§6 above and need the same corrections before anything is submitted.
