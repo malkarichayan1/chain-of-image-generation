@@ -1,8 +1,8 @@
 # Raw Cross-Attention Tracks Intent, Not Realization
 
 **A ground-up briefing for the paper**
-CPGA / CoIG Faithfulness Project · Prepared 2026-08-03 · Revised 2026-08-07 · Branch `main`
-(the repo was consolidated onto `main` 2026-08-06 — see `CLAUDE.md`)
+CPGA / CoIG Faithfulness Project · Prepared 2026-08-03 · Revised 2026-08-07, 2026-08-14 ·
+Branch `hard-prompt-set-retest` (consolidated onto `main` 2026-08-06 — see `CLAUDE.md`)
 
 ---
 
@@ -49,6 +49,15 @@ originally set. The same pass also ran the sharper falsification control §5.4 r
 never executed (§5.6): a new, unanticipated finding is that attention's attribute-specificity is
 strong on easy images and degrades on hard ones — exactly where the paper's central claim needs it
 most.
+
+**Update, 2026-08-14:** the baseline-loss finding (C2) now replicates for an entirely different
+signal — VQAScore, a SOTA judge-based metric, loses to the prompt-obeyed baseline just as badly
+as attention does, on both anchor sets (§5.7, new claim C9). Two more "boring explanation" checks
+closed clean (CLIPScore discriminant validity, §3.1). The taxonomy capture that would give C3 its
+mechanistic depth-band/timestep answer is code-complete and test-covered but has never been run;
+an A100 session has been requested and granted to run it (§9.3, `docs/a100-session-runbook.md`).
+The causal-steering experiment (#20) had its intervention mechanism fixed (it previously
+perturbed latents, not attention) but likewise has not yet run on real FLUX.
 
 ---
 
@@ -194,6 +203,22 @@ anchor set's own construct validity is clean too — `intended_subject` isn't bi
 biggest box either (34.3% vs. 34.3% chance, p = 0.52) — and attention margin doesn't track
 box-size dominance (Spearman r = -0.10, p = 0.07). On FLUX, `predicted_owner` is not a
 box-geometry artifact — one plausible "boring explanation" is closed.
+
+**A second boring explanation, closed 2026-08-14 — is attention just CLIPScore in disguise?**
+`exp10_clipscore_discriminant.py` scores each candidate subject's crop against the attribute's
+caption with CLIP directly (no attention involved) and compares that prediction to attention's
+own `predicted_owner`:
+
+| Set | n | Agreement (attn vs. CLIP) | Attention acc | CLIPScore acc | McNemar |
+|---|---|---|---|---|---|
+| `artifacts_flux` (chayan) | 297 | 74.4% | **84.6%** | 67.4% | p = 4.3e-10 |
+| `artifacts_flux_hard` (consensus) | 405 | 55.1% | **42.8%** | 37.0% | p = 0.044 |
+
+Attention disagrees with a pure CLIP-alignment prediction on 26–45% of rows and beats it
+significantly on both sets — attention is not simply reproducing CLIPScore's judgment. Carry
+the same caveat CLIPScore's own discriminant check has to: `assign_subjects` (the box-labeling
+step) already uses this identical CLIP checkpoint, so part of the agreement rate is inherited
+through a shared upstream step, not pure independent convergence.
 
 **The five-experiment battery on SDXL.** Re-run with current code for this document:
 
@@ -479,6 +504,38 @@ informative. It does not change C1–C3's substance; it supplies a mechanistic e
 C3's effect stays small even in the better-powered retest — the underlying signal itself gets
 noisier exactly as the images get harder.
 
+### 5.7 C2 replicates for a completely different signal: VQAScore (executed 2026-08-14)
+
+§9.3 listed "VQAScore correlation" as deferred but valuable — it is no longer deferred.
+`vqa_score_flux.py` (BLIP-VQA-base, ~385M params — a local CPU job, not a GPU one) asks "is
+the person wearing/holding X?" per (subject crop, attribute) and takes the argmax across
+crops as VQAScore's own binding prediction, directly comparable to `predicted_owner`.
+
+| Set | n | Attention acc | VQAScore acc | Head-to-head McNemar | VQAScore vs. prompt-obeyed baseline | VQAScore on misbound subset |
+|---|---|---|---|---|---|---|
+| `artifacts_flux` (chayan) | 297 | 84.6% | 82.4% | p = 0.238 (n.s.) | 82.4% vs. 94.1%, p = 3.3e-06 | 50.0% (8/16) |
+| `artifacts_flux_hard` (consensus) | 405 | 42.8% | 44.7% | p = 0.263 (n.s.) | 44.7% vs. 80.1%, p = 3.5e-19 | 41.9% (26/62) |
+
+Three things this adds, none of them small:
+
+1. **Attention and a SOTA judge-based metric are statistically indistinguishable, on both
+   anchor sets.** This directly answers §7.3's positioning question — we do not need to
+   hedge "we are auditing an internal signal, not competing on benchmark accuracy" as
+   strongly as before. On these anchor sets, the internal signal and the external judge
+   perform the same.
+2. **C2 is not attention-specific.** VQAScore loses to the prompt-obeyed baseline by margins
+   as large as attention's own (p = 3.3e-06 easy, p = 3.5e-19 hard). Whatever makes "assume
+   the prompt was obeyed" such a strong baseline is not a quirk of reading cross-attention —
+   it reproduces for an entirely different architecture and an entirely different signal
+   (a fine-tuned VQA judge, not an internal activation).
+3. **VQAScore does not rescue C3.** On the misbound subset — the rows a faithfulness metric
+   exists to catch — VQAScore (41.9% hard, 50.0% easy but n=16) tracks attention's own
+   ~42–43% (hard) and roughly matches it (easy, both small-n). A SOTA judge model does not
+   do meaningfully better than raw attention on exactly the cases that matter most.
+
+This is a genuinely new claim (C9, §8.2) rather than a restatement of C2 — it generalizes
+C2's mechanism claim beyond the metric under audit.
+
 ---
 
 ## 6. Convergent evidence from the chain track
@@ -561,9 +618,12 @@ likely reviewer objection ("but A&E proved attention works").
 ### 7.3 The competitive landscape (from the project's 2026-07-22 literature check)
 
 - **T2I-CompBench / CompBench++** and **VQAScore** are the established SOTA line for one-shot
-  attribute binding. We do not beat them and should not claim to — different instrument. They are
-  *judge-based*; ours is *internal-state-based*. The honest positioning is that we are auditing an
-  internal signal, not competing on benchmark accuracy.
+  attribute binding. **Updated 2026-08-14 (§5.7):** we now have the head-to-head — attention and
+  VQAScore are statistically indistinguishable on both FLUX anchor sets (McNemar p = 0.24–0.26),
+  and VQAScore loses to the prompt-obeyed baseline by margins as large as attention's own. We do
+  not beat VQAScore, but we do not lose to it either; the honest positioning is now sharper than
+  "different instrument" — the judge-based SOTA line has the *same* failure mode we found in the
+  internal signal.
 - The field reportedly still regards VQA-judge metrics as unreliable for attribute binding and leans
   on human eval — which is why our human anchor set is the right validation currency.
 - **ConceptAttention** and 2025 causal/norm-based attribution work reportedly moved past raw
@@ -571,13 +631,24 @@ likely reviewer objection ("but A&E proved attention works").
   with human ground truth. That is a natural citation relationship and a natural place for our
   contribution to sit.
 - Chain/lock-confound faithfulness (Track 1's territory) has no dominant competitor; closest
-  adjacent work is 2025 (BPM, ComplexBench-Edit) and is not attention-based.
+  adjacent work is 2025 (ComplexBench-Edit — confirmed above; "BPM" unverified, see the citation
+  hygiene note) and is not attention-based.
 
-> **Citation hygiene warning.** The items in §7.3 come from this project's internal literature
-> notes, not from a verified search in this session. ConceptAttention, FreeMask, BPM, and
-> ComplexBench-Edit in particular need their titles, venues, authors, and claims checked against the
-> actual papers before anything is written down. The §7.1 and §7.2 items I am confident about, but
-> verify years and venues anyway. **Do not let any citation reach a draft unverified.**
+> **Citation hygiene — verified 2026-08-14.** §7.1's three papers are all confirmed correct as
+> cited: **Jain & Wallace, "Attention is not Explanation," NAACL-HLT 2019** (ACL Anthology
+> N19-1357, pp. 3543–3556); **Wiegreffe & Pinter, "Attention is not not Explanation," EMNLP-IJCNLP
+> 2019** (ACL Anthology D19-1002, pp. 11–20); **Serrano & Smith, "Is Attention Interpretable?",
+> ACL 2019** (pp. 2931–2951). §7.3's three named papers are also confirmed: **ConceptAttention:
+> Diffusion Transformers Learn Highly Interpretable Features**, Helbling, Meral, Hoover, Yanardag,
+> Chau, arXiv:2502.04320; **FreeMask: Rethinking the Importance of Attention Masks for Zero-Shot
+> Video Editing**, Cai, Zhao, Yuan, Zhang, Zhang, Huang, arXiv:2409.20500; **ComplexBench-Edit:
+> Benchmarking Complex Instruction-Driven Image Editing via Compositional Dependencies**, Wang,
+> Zhou, Wang, Wang, Zhang, arXiv:2506.12830, ACMMM 2025 Dataset Track. **"BPM" could NOT be
+> verified** — three targeted searches (direct title, acronym-plus-domain, "binding problem"
+> synonyms) found no paper matching that name in this space. Either the acronym is mis-transcribed
+> from the original internal note, or it refers to something too obscure to surface. **Do not cite
+> "BPM" in any draft until whoever wrote the original literature note identifies the actual paper**
+> — drop the reference rather than guess.
 
 ---
 
@@ -612,11 +683,13 @@ power. Either way, the core argument — attention adds nothing over the prompt 
 | C6 | Replacing attention with noise reproduces chain-metric significance | Part C Step 6 | **Strong** |
 | C7 | Extracting interpretable attention from MMDiT requires manual softmax recomputation | `flux_attention_capture.py` | **Methods contribution** |
 | C8 | Attention's attribute-specificity itself degrades on harder images — exactly where C3 needs it most | §5.6: below-chance permuted accuracy on FLUX vs. near-chance on FLUX-hard | **Moderate — one dataset pair, directionally clean, new 2026-08-07** |
+| C9 | C2's failure mode is not attention-specific — a SOTA judge-based metric (VQAScore) loses to the prompt-obeyed baseline just as badly, and does not do better than attention on the misbound subset | §5.7, executed 2026-08-14: both FLUX sets, p = 3.3e-06 / 3.5e-19 | **Strong — 2/2 tests, both anchor sets, new 2026-08-14** |
 
 C2 is the headline, and now the more thoroughly tested one (10/10 comparisons across both prompt
-sets). C3 was the weakest link; the §9.1 hard-prompt-set retest (§5.5) materially improved its
-power and moved it into real-but-modest significance, though not to the fully-powered target
-originally set — see §9 for what, if anything, is still worth doing about it.
+sets, plus C9's independent replication on a different signal entirely). C3 was the weakest link;
+the §9.1 hard-prompt-set retest (§5.5) materially improved its power and moved it into
+real-but-modest significance, though not to the fully-powered target originally set — see §9 for
+what, if anything, is still worth doing about it.
 
 ### 8.3 Structure
 
@@ -695,13 +768,26 @@ prompts at the current n = 4–6 difficulty — see §5.5's closing paragraph.
   (new): 357/409 unanimous, 48/409 majority, 4/409 no-consensus (§5.5). Not yet run for the
   original `artifacts_flux/` (chayan + akhil + grace) — same script, minutes of work if wanted.
 
-### 9.3 Deferred but valuable
+### 9.3 Status update, 2026-08-14 — an A100 session is now in hand
 
-- **VQAScore correlation** — how does a judge-based metric do on the same rows, especially the
-  prompt-violating ones? Directly positions us against the SOTA line.
-- **Causal intervention via A&E steering** — the memo's Tier-2 #4. Now doubly interesting given the
-  causal-vs-observational distinction in §7.2: if steering attention changes the image but observing
-  attention doesn't predict it, that is a sharp, quotable result.
+- ~~**VQAScore correlation**~~ **DONE** — §5.7 (new C9). Executed on both anchor sets, local CPU:
+  attention and VQAScore are statistically indistinguishable, and VQAScore replicates C2's
+  baseline-loss just as badly. This directly positions us against the SOTA judge-based line.
+- **Taxonomy capture (#14/#16/#17/#18) → #19** — code and tests are complete
+  (`taxonomy_capture_flux.py`, `exp9_taxonomy_analysis.py`, pre-registered easy-select/
+  hard-test split, Holm/BH-corrected), but has never been run — it needs ~10–15 GPU-hr per
+  set. An A100 session was requested and granted 2026-08-14; see
+  `docs/a100-session-runbook.md`. This is the paper's most consequential open experiment: if
+  any depth-band/timestep cell tracks the rendered image on the hard set's misbound rows, the
+  paper's conclusion changes (§5, §9.1's original framing).
+- **Causal intervention via A&E-style steering (#20)** — the memo's Tier-2 #4. Mechanism
+  fixed 2026-08-14: `FluxSteeringAttnProcessor` now scales `attn_probs` toward a target
+  attribute's tokens on a recipient subject's image rows (verified against a tiny transformer:
+  no-op at strength=0, real effect at strength>0). Not yet run on real FLUX — needs the A100,
+  and its target (layers, steps) is provisional pending #19's actual verdict. Still doubly
+  interesting given the causal-vs-observational distinction in §7.2: if steering attention
+  changes the image but observing attention doesn't predict it, that is a sharp, quotable
+  result — ground truth for "success" will be CLIP-judged unless a human pass is added.
 - **The 38 FLUX single blocks** — out of scope in the current capture. If the double-block result is
   challenged, this is the first place to look.
 
@@ -747,6 +833,19 @@ python3 exp3b_within_item_permutation.py --artifacts-dir artifacts_flux --annota
 python3 recompute_boxes.py --artifacts-dir artifacts_flux
 python3 discriminant_validity_check.py --artifacts-dir artifacts_flux --annotator chayan
 
+# CLIPScore discriminant validity (§3.1 update, second boring explanation) -- CPU, ~10 min
+python3 exp10_clipscore_discriminant.py --artifacts-dir artifacts_flux --annotator chayan
+
+# VQAScore baseline (§5.7, C9) -- CPU, blip-vqa-base (~385M params), no GPU needed
+python3 vqa_score_flux.py --artifacts-dir artifacts_flux
+python3 vqa_agreement_check.py --artifacts-dir artifacts_flux --annotator chayan
+
+# Taxonomy capture (#14/#16/#17/#18 -> #19, §9.3) -- GPU (A100), see docs/a100-session-runbook.md
+python3 taxonomy_capture_flux.py --artifacts-dir artifacts_flux --limit 3   # smoke test first
+python3 taxonomy_capture_flux.py --artifacts-dir artifacts_flux
+python3 exp9_taxonomy_analysis.py --easy-dir artifacts_flux --easy-annotator chayan \
+    --hard-dir artifacts_flux_hard --hard-annotator consensus
+
 # Agreement + inter-rater kappa
 python3 analyze_agreement.py --artifacts-dir artifacts_flux \
         --annotator chayan --compare-annotator grace
@@ -773,6 +872,13 @@ the paper's core results and nothing in this repo should be load-bearing without
 | `ssa/anchor_set/build_consensus_labels.py` | Majority-vote consensus across annotators (§5.5) |
 | `ssa/anchor_set/build_hard_prompts.py` | Generates the FLUX-hard prompt set (§5.5) |
 | `ssa/anchor_set/recompute_boxes.py`, `discriminant_validity_check.py` | Box-geometry artifact check (§3.1) |
+| `ssa/anchor_set/exp10_clipscore_discriminant.py` | CLIPScore discriminant validity, second boring explanation (§3.1) |
+| `ssa/anchor_set/vqa_score_flux.py`, `vqa_agreement_check.py` | VQAScore baseline, C9 (§5.7) |
+| `ssa/anchor_set/taxonomy_capture_flux.py`, `exp9_taxonomy_analysis.py` | Taxonomy capture + #19 analysis (§9.3) — capture needs the A100 |
+| `ssa/anchor_set/flux_attention_capture.py` | MMDiT capture (C7) + `FluxSteeringAttnProcessor` for #20 (§9.3) |
+| `ssa/anchor_set/exp20_attention_steering.py` | Causal attention steering, #20 (§9.3) |
+| `docs/a100-session-runbook.md` | Metered A100 session plan for the taxonomy capture |
+| `docs/remaining-experiments-runbook.md` | Triage of all remaining experiments, run order, why |
 | `docs/superpowers/specs/2026-07-31-flux-attention-hook-design.md` | Capture design |
 | `docs/part-a-five-experiment-battery-design.md` | Battery pre-registration |
 | `docs/anchor-set-labeling-protocol.md` | Labeling protocol |
@@ -801,6 +907,13 @@ the gap to the original ≥150-row target, and it turned up a genuinely new find
 cheap re-analyses in §9.2 are also done; the fourth (Part C robustness on FLUX) is blocked on new
 GPU chain data, not on analysis time (§6, §9.2).
 
-What's left is mostly writing. This document's numbers are current as of 2026-08-07, but
-`proposal/CPGA-Research-Proposal.md` and `pi_level_experiment/RESULTS.md` still predate all of
-§3–§6 above and need the same corrections before anything is submitted.
+**Update, 2026-08-14:** `pi_level_experiment/RESULTS.md`'s "unexplained pipeline noise" framing
+has been corrected (it is a CLIPSeg resolution ceiling, diagnosed 2026-07-29) and
+`proposal/CPGA-Research-Proposal.md` now carries a status banner pointing here, rather than
+silently going stale. Citations in §7.1/§7.3 are verified against the actual papers, with one
+exception ("BPM," unverifiable — flagged, not guessed at). Two new results landed: VQAScore
+replicates C2 on both anchor sets (§5.7, C9), and a second discriminant-validity check
+(CLIPScore) closed clean (§3.1). What's left is now genuinely mostly-execution rather than
+writing: an A100 session has been requested and granted for the taxonomy capture that would
+give C3 its mechanistic answer (§9.3), and the causal-steering experiment's intervention
+mechanism is fixed and ready to run once that capture identifies a target cell.

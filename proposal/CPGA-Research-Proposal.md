@@ -1,5 +1,27 @@
 # Testing the Validity of CoIG's Causal Relevance Metric - and Replacing It with a Validated Cross-Attention Signal
 
+> **STATUS, 2026-08-14 — this document is superseded as the project's current narrative.**
+> Everything below dates from the 2026-07-22 revision, when Track 2's "money result" (the
+> Delta-Mask/cross-attention chain metric beating Shuffled and Substituted, p = 0.0133/0.0038)
+> was the headline and read as a clean positive. **That framing did not survive later testing.**
+> A baseline nobody had run yet — "assume the model rendered what the prompt asked" — beat the
+> attention-based metric on every model and every annotator subsequently tested (6/6 original
+> comparisons, then 4/4 more on a harder retest, all p < 0.05). The chain-track "money result"
+> itself was also later shown (Part C Step 6 ablation) to be validated mostly by the delta mask,
+> not by attention content — replacing attention with literal random noise reproduced the
+> significance. The project's two tracks were subsequently merged into **one paper**, whose
+> current thesis is close to the opposite of this document's: raw cross-attention encodes the
+> *prompt's intent*, not the *image's realized outcome*, and adds no measurable value over
+> reading the prompt.
+>
+> **The current source of truth is
+> [`docs/raw-attention-paper-briefing.md`](../docs/raw-attention-paper-briefing.md)** (claims,
+> evidence, structure, venue read) and **[`CLAUDE.md`](../CLAUDE.md)** (repo state, what to do
+> next). This document is kept for provenance — the literature review below is still useful, and
+> Track 1's confound-confirmation pilot (§Methods) is still accurate and load-bearing — but its
+> "Ideal Results," "Proposal Summary," and any claim that Track 2's attention metric was
+> validated should not be cited without the correction above.
+
 ## Instructions
 
 Proposals must be specific and detailed so the direction of the research is clear. If you're not sure about a given item, please mark it as such and we can discuss.

@@ -436,12 +436,16 @@ or attribute types that fight priors even harder, not more prompts at the same n
 Attend-and-Excite steering (sharp, given the causal-vs-observational distinction the paper
 draws); the 38 FLUX single blocks, currently out of scope in the capture.
 
-**Documentation debt:** `proposal/CPGA-Research-Proposal.md` still describes the two-track plan
-and does not carry §3 or §4. `pi_level_experiment/RESULTS.md` still calls the ~30% hit rate
-unexplained noise.
-`docs/raw-attention-paper-briefing.md` itself has not yet been updated with the hard-prompt-set/
-consensus/permutation-control/discriminant-validity results above — its §5.3, §5.4, §8.2 (claim
-strength table), and §9 all predate this pass and should be revised before anything is submitted.
+**Documentation debt — cleared 2026-08-14.** `proposal/CPGA-Research-Proposal.md` now carries a
+status banner pointing to the briefing doc and explaining why its "Ideal Results"/"Proposal
+Summary" don't reflect the current thesis. `pi_level_experiment/RESULTS.md`'s "unexplained
+pipeline noise" framing is corrected with the CLIPSeg resolution-ceiling explanation (measured
+2026-07-29, previously only in memory). `docs/raw-attention-paper-briefing.md` §3.1/§5.7/§7.3/§8.2/§9.3
+updated with this session's CLIPScore discriminant validity, VQAScore replication (new claim C9),
+and A100/steering status; §7.1/§7.3 citations verified against the actual papers (ConceptAttention,
+FreeMask, ComplexBench-Edit all confirmed; "BPM" could not be verified and is flagged, not
+guessed at — whoever wrote the original literature note needs to identify the actual paper before
+it's cited anywhere).
 
 ---
 

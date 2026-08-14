@@ -1,5 +1,50 @@
 # Results: the combined SSA chain experiment
 
+## Correction (2026-07-29): the ~30% real hit rate is explained, and "unexplained pipeline
+## noise" is no longer the right framing
+
+Part D3 below (2026-07-23) reverted Part C Step 7's claim and re-labeled the ~30% hit rate as
+"unexplained pipeline noise in the SD1.5 generation / CLIPSeg detection pipeline." That was
+correct as far as it went, but "unexplained" stopped being accurate six days later: a
+threshold sweep (`coig_delta_mask_check.py`, `lock_confound_analysis.py`, measured
+2026-07-29) traced the mechanism.
+
+CLIPSeg detects the target attribute on real CoIG chains, at the frozen operating point
+(T=0.85), on only **2.8%** of rows (`appears_at_step`) — against the same rows' VQA-judge
+score of **100%**. This is not miscalibration; it is a resolution ceiling:
+
+| T | `appears_at_step` (real) | `appears_at_step` (substituted) |
+|---|---|---|
+| 0.85 (frozen operating point) | 0.028 | 0.000 |
+| 0.70 | 0.222 | 0.000 |
+| 0.60 (best clean point) | 0.278 | 0.000 |
+| 0.50 | 0.389 | 0.200 |
+| 0.05 | 0.667 | 0.600 |
+
+Below T=0.50, detection only improves by hallucinating — the substituted control's
+false-positive rate rises in lockstep. Under `calibrate_threshold.py`'s own criterion
+(maximize real detection subject to `substituted` staying exactly 0), the achievable ceiling
+is **0.278**, matching D3's ~30% almost exactly. CoIG items are four people at 1024×1024
+with attributes like "mustache" or "tote bag"; CLIPSeg-rd64 works internally at 352×352, so
+the target is a handful of pixels at model resolution. The same failure, less severe, shows
+up on the SD1.5 chains below (`appears_at_step` ≈ 0.300, via `lock_confound_analysis.py`).
+
+**Consequence for every number below:** Part B's headline, all five control contrasts, the
+Holm correction, and the whole Part C/D robustness battery are computed on the ~30% of rows
+CLIPSeg could see — and that subset is known non-random (`selection_effect_check.py`:
+detection falls 92%/67%/58% as subject count rises 2→3→4). Nothing about the delta-mask
+mechanism itself is falsified by this — it was never given a working input on real CoIG
+chains, since the chain-track results below all run on SD1.5-generated chains, not CoIG's
+own images. The critical-path fix is a segmenter swap (Grounding DINO, or SAM with box
+prompts; OWL-ViT already has a working CPU harness in `owlvit_cross_check.py`, used for D4
+below), not a robustness nicety.
+
+Wherever "unexplained pipeline noise" appears below (Part C Step 7, Part D3), read it as
+**explained**: a CLIPSeg resolution ceiling, not an unexplained defect in generation or
+segmentation.
+
+---
+
 ## Part D: ad-hoc defensibility checks (2026-07-23, pure numpy/pandas + hand-inspection, no GPU) -- one confirmed correction to Part C
 
 Triggered by an explicit "what still needs testing before the paper's claim is defensible"
