@@ -1,17 +1,21 @@
 #!/usr/bin/env python
 """
-VQAScore-style baseline for metric A's anchor set. Self-contained Kaggle GPU kernel:
-reads the already-generated SDXL images + boxes from the attached dataset
-(chayanmalkari/coig-metric-a-anchor-set-sdxl-images), NOT regenerating them (diffusion
-output is not guaranteed bit-reproducible across Kaggle sessions, unlike Mask R-CNN
-detection on an already-fixed image -- see recompute_boxes.py's docstring for that
-distinction).
+VQAScore-style baseline for metric A's anchor set, FLUX.1-dev variant. Self-contained
+Kaggle GPU kernel: reads the already-generated FLUX images + boxes from the attached
+dataset (see kernel-metadata-vqa-flux.json's dataset_sources), NOT regenerating them
+(diffusion output is not guaranteed bit-reproducible across Kaggle sessions, unlike
+Mask R-CNN detection on an already-fixed image -- see recompute_boxes.py's docstring for
+that distinction). Structurally identical to vqa_score_sdxl.py; split into its own file
+per this repo's convention for self-contained Kaggle kernels (generate_anchor_images.py /
+_sdxl / _flux), not because the logic differs by model -- it doesn't.
 
-For every detected image, crops to each subject's box (recompute_boxes.py's boxes.json)
-and asks BLIP-VQA-base (Salesforce/blip-vqa-base) "Is the person {phrase}?" per
-(subject crop, attribute) -- one question per candidate subject, so the argmax across
-crops becomes VQAScore's own binding prediction, directly comparable to the attention
-metric's own predicted_owner (same box crops, different signal).
+For every detected image, crops to each subject's box (recompute_boxes.py's boxes.json,
+already computed locally for artifacts_flux/ -- push it alongside the images/manifest
+when building the Kaggle dataset) and asks BLIP-VQA-base (Salesforce/blip-vqa-base) "Is
+the person {phrase}?" per (subject crop, attribute) -- one question per candidate
+subject, so the argmax across crops becomes VQAScore's own binding prediction, directly
+comparable to the attention metric's own predicted_owner (same box crops, different
+signal).
 
 P(yes) follows VQAScore's own normalization (Lin et al. 2024): softmax(yes) /
 (softmax(yes) + softmax(no)) over the FIRST generated token's logits, not the raw

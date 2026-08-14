@@ -1,0 +1,15 @@
+{
+  "id": "chayanmalkari/coig-metric-a-vqa-score-flux",
+  "title": "coig-metric-a-vqa-score-flux",
+  "code_file": "vqa_score_flux.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true,
+  "dataset_sources": [
+    "chayanmalkari/coig-metric-a-anchor-set-flux-images"
+  ],
+  "competition_sources": [],
+  "kernel_sources": []
+}

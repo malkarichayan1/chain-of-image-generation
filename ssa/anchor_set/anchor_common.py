@@ -158,6 +158,37 @@ def redact_attribute_clause(gloss: str, attribute: str) -> str:
 
 
 # ---------------------------------------------------------------------------
+# VQA-question phrasing (DUPLICATED inline in vqa_score_sdxl.py / vqa_score_flux.py --
+# those are self-contained Kaggle kernels, same "keep in sync" convention as ANCHOR_PROMPTS)
+# ---------------------------------------------------------------------------
+
+# Bare-noun attributes that are HELD rather than worn ("holding a book", not "wearing a
+# book"). Matched against the attribute string's LAST word, so any color/descriptor prefix
+# ("red apron" vs "book") never affects the held/worn classification.
+_HELD_NOUNS = frozenset({"book", "shovel", "pan"})
+
+# Plural-form worn attributes that take no article ("wearing dark sunglasses", not "wearing
+# a dark sunglasses"). Everything else worn is singular and gets "a" ("wearing a red apron").
+_NO_ARTICLE_WORN_NOUNS = frozenset({"gloves", "sunglasses", "glasses"})
+
+
+def attribute_question(attribute: str) -> str:
+    """A yes/no VQA question for one attribute string, e.g. "Is the person wearing a red
+    apron?" or "Is the person holding a book?" -- the question `vqa_score_sdxl.py` /
+    `vqa_score_flux.py` ask per (subject crop, attribute), whose P(yes) is VQAScore's
+    binding signal (Lin et al. 2024). Classifies by the attribute's LAST word only, so any
+    new color/descriptor combination (e.g. a hard-prompt-set "blue helmet") is covered
+    automatically without a per-attribute lookup table -- verified to reproduce every
+    entry of the anchor sets' original hand-written ATTRIBUTE_PHRASES dict exactly."""
+    last_word = attribute.rsplit(" ", 1)[-1].lower()
+    if last_word in _HELD_NOUNS:
+        return f"Is the person holding a {attribute}?"
+    if last_word in _NO_ARTICLE_WORN_NOUNS:
+        return f"Is the person wearing {attribute}?"
+    return f"Is the person wearing a {attribute}?"
+
+
+# ---------------------------------------------------------------------------
 # Prediction from attention (DUPLICATED inline in generate_anchor_images.py)
 # ---------------------------------------------------------------------------
 
