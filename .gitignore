@@ -38,3 +38,5 @@ pi_level_experiment/artifacts_growth/
 ssa/anchor_set/_kaggle_push_*/
 ssa/anchor_set/artifacts_dummy/
 ssa/anchor_set/**/*.log
+artifacts_flux_pilot/
+*.zip
