@@ -67,6 +67,7 @@ Output (one npz per image, so a Kaggle timeout loses at most one image):
         the arrays above -- without this the npz axes are meaningless), plus both
         reproduction checks. Rewritten after every image.
 """
+import argparse
 import json
 import math
 import os
@@ -394,10 +395,19 @@ def attribute_target_token_indices(tokenizer_2, prompt: str,
 # Orchestration
 # ---------------------------------------------------------------------------
 
-def find_input_dir() -> Path:
+def find_input_dir(local_dir=None) -> Path:
     """Locate the attached dataset by CONTENT (first dir holding manifest.json), searched
     recursively -- Kaggle's mount depth varies by how the dataset was created, so a
-    hardcoded /kaggle/input/<slug>/ path is fragile (same approach as vqa_score_flux.py)."""
+    hardcoded /kaggle/input/<slug>/ path is fragile (same approach as vqa_score_flux.py).
+
+    `local_dir` names the artifacts dir explicitly, which a non-Kaggle GPU run MUST do:
+    content search takes the first manifest.json alphabetically, so from ssa/anchor_set/ it
+    always resolves artifacts_flux and can never reach artifacts_flux_hard."""
+    if local_dir is not None:
+        path = Path(local_dir)
+        if not (path / "manifest.json").exists():
+            raise FileNotFoundError(f"no manifest.json in {path}")
+        return path
     roots = [Path("/kaggle/input"), Path(".")]
     for root in roots:
         if not root.exists():
@@ -409,6 +419,16 @@ def find_input_dir() -> Path:
     raise FileNotFoundError("no manifest.json found under /kaggle/input or .")
 
 
+def resolve_out_dir(input_dir: Path, local_mode: bool) -> Path:
+    """Where taxonomy_index.json and the npz files go.
+
+    Kaggle: the cwd (/kaggle/working) -- the input mount is read-only. Local: beside the
+    artifacts that were captured, which is where exp9_taxonomy_analysis.py reads them from,
+    and which keeps two datasets' indexes separate. Sharing one cwd-level index across both
+    sets would make the second run resume from the first's entries and merge them."""
+    return Path(input_dir) if local_mode else Path(".")
+
+
 def load_pipeline():
     from diffusers import FluxPipeline
     pipe = FluxPipeline.from_pretrained(MODEL_ID, torch_dtype=DTYPE)
@@ -417,7 +437,8 @@ def load_pipeline():
     return pipe
 
 
-def capture_one(pipe, img: dict, subject_boxes: Dict[str, list], input_dir: Path) -> dict:
+def capture_one(pipe, img: dict, subject_boxes: Dict[str, list], input_dir: Path,
+                out_dir: Path = OUT_DIR) -> dict:
     prompt_id, prompt = img["prompt_id"], img["prompt"]
     pairs = [(a["intended_subject"], a["attribute"]) for a in img["attributes"]]
     attributes = [a["attribute"] for a in img["attributes"]]
@@ -453,7 +474,7 @@ def capture_one(pipe, img: dict, subject_boxes: Dict[str, list], input_dir: Path
 
     n_heads = pipe.transformer.config.num_attention_heads
     in_box, ent = store.stack(len(attributes), len(subjects), n_heads)
-    np.savez_compressed(OUT_DIR / f"taxonomy_cells_p{prompt_id}.npz",
+    np.savez_compressed(out_dir / f"taxonomy_cells_p{prompt_id}.npz",
                         in_box_mass=in_box, entropy=ent)
 
     # --- Check 1: pixel-level reproduction against the stored, human-labeled image.
@@ -495,20 +516,33 @@ def capture_one(pipe, img: dict, subject_boxes: Dict[str, list], input_dir: Path
 
 
 def main() -> None:
-    input_dir = find_input_dir()
+    ap = argparse.ArgumentParser(description="Per-head/layer/step taxonomy capture (FLUX)")
+    ap.add_argument("--artifacts-dir", default=None,
+                    help="artifacts dir to capture (required off Kaggle -- content search "
+                         "cannot distinguish artifacts_flux from artifacts_flux_hard)")
+    ap.add_argument("--limit", type=int, default=None,
+                    help="stop after N images: use for the smoke test before committing "
+                         "the full run, so a bad repro check costs minutes not GPU-hours")
+    args = ap.parse_args()
+
+    input_dir = find_input_dir(local_dir=args.artifacts_dir)
+    out_dir = resolve_out_dir(input_dir, local_mode=args.artifacts_dir is not None)
+    index_path = out_dir / INDEX_PATH.name
     manifest = json.loads((input_dir / "manifest.json").read_text())
     boxes = json.loads((input_dir / "boxes.json").read_text())
-    print(f"device={DEVICE} dtype={DTYPE} input_dir={input_dir}")
+    print(f"device={DEVICE} dtype={DTYPE} input_dir={input_dir} out_dir={out_dir}")
 
     index: Dict[str, dict] = {}
-    if INDEX_PATH.exists():   # resume after a Kaggle timeout
-        index = json.loads(INDEX_PATH.read_text())
+    if index_path.exists():   # resume after a Kaggle timeout / time-window expiry
+        index = json.loads(index_path.read_text())
         print(f"resuming: {len(index)} image(s) already captured")
 
     pipe = load_pipeline()
     todo = [img for img in manifest["images"]
             if img.get("detected") and str(img["prompt_id"]) in boxes
             and str(img["prompt_id"]) not in index]
+    if args.limit is not None:
+        todo = todo[:args.limit]
     print(f"{len(todo)} image(s) to capture")
 
     t0 = time.time()
@@ -517,13 +551,13 @@ def main() -> None:
         eta = (elapsed / max(i, 1)) * (len(todo) - i) / 60.0
         print(f"\n=== p{img['prompt_id']} [{i + 1}/{len(todo)}] ~{eta:.0f}min left ===")
         try:
-            entry = capture_one(pipe, img, boxes[str(img["prompt_id"])], input_dir)
+            entry = capture_one(pipe, img, boxes[str(img["prompt_id"])], input_dir, out_dir)
         except Exception as e:
             print(f"  p{img['prompt_id']}: ERROR {type(e).__name__}: {e}")
             traceback.print_exc()
             continue
         index[str(img["prompt_id"])] = entry
-        INDEX_PATH.write_text(json.dumps(index, indent=2, sort_keys=True))
+        index_path.write_text(json.dumps(index, indent=2, sort_keys=True))
         print(f"  repro_diff={entry['repro_mean_abs_pixel_diff']} "
               f"exact_owner_match={entry['pooled_owner_matches_manifest']} "
               f"grid_owner_match={entry['pooled_owner_grid_matches_manifest']}")

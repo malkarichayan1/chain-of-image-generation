@@ -30,11 +30,12 @@ tests/test_vqa_agreement_check.py's drift guard checks the two stay byte-identic
 Output: vqa_scores.json, {prompt_id (str): {attribute: {subject: p_yes}}}, saved
 incrementally after each image so a Kaggle timeout doesn't lose completed work.
 """
+import argparse
 import json
 import subprocess
 import sys
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Optional, Union
 
 if "KAGGLE_KERNEL_RUN_TYPE" in __import__("os").environ:
     subprocess.check_call([
@@ -54,16 +55,45 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 OUT_PATH = Path("vqa_scores.json")
 
 
-def find_input_dir() -> Path:
+def find_input_dir(local_dir: Optional[Union[str, Path]] = None) -> Path:
     """Kaggle mounts the attached dataset somewhere under /kaggle/input/ -- locate it by
     content (first dir containing manifest.json), searched RECURSIVELY, rather than
     hardcoding a mount depth: a first attempt at /kaggle/input/<slug>/manifest.json found
-    the dataset actually nested one level deeper, under /kaggle/input/datasets/..."""
+    the dataset actually nested one level deeper, under /kaggle/input/datasets/...
+
+    `local_dir` runs the same kernel against a local artifacts dir instead. This experiment
+    never needed a GPU queue: blip-vqa-base is ~385M parameters and DEVICE already falls
+    back to CPU, so an anchor set scores locally in minutes -- the /kaggle/input-only lookup
+    was the sole thing gating it behind Kaggle."""
+    if local_dir is not None:
+        path = Path(local_dir)
+        if not (path / "manifest.json").exists():
+            raise FileNotFoundError(f"no manifest.json in {path}")
+        return path
     for candidate in sorted(Path("/kaggle/input").glob("**/manifest.json")):
         return candidate.parent
     available = list(Path("/kaggle/input").rglob("*")) if Path("/kaggle/input").exists() else []
     raise FileNotFoundError(
         f"no manifest.json found anywhere under /kaggle/input; contents: {available}")
+
+
+def load_existing_results(out_path: Path) -> Dict[str, Dict[str, Dict[str, float]]]:
+    """Prior run's vqa_scores.json, or {} if absent. The module docstring already promised
+    incremental saving would survive a timeout, but main() previously started from an empty
+    dict every run and overwrote the file -- so a timeout lost everything anyway. This is
+    the missing half of that promise."""
+    if not out_path.exists():
+        return {}
+    return json.loads(out_path.read_text())
+
+
+def pending_vqa_images(manifest: dict, boxes: Dict[str, dict],
+                       results: Dict[str, dict]) -> List[dict]:
+    """Detected images that have cached boxes and no score entry yet -- same convention as
+    recompute_boxes.pending_box_targets / exp10's pending_clip_targets."""
+    return [img for img in manifest["images"]
+            if img.get("detected") and str(img["prompt_id"]) in boxes
+            and str(img["prompt_id"]) not in results]
 
 _HELD_NOUNS = frozenset({"book", "shovel", "pan"})
 
@@ -120,24 +150,34 @@ def p_yes(processor, model, image: Image.Image, question: str,
 
 
 def main() -> None:
-    INPUT_DIR = find_input_dir()
+    ap = argparse.ArgumentParser(description="VQAScore baseline for metric A's anchor set")
+    ap.add_argument("--artifacts-dir", default=None,
+                    help="run locally against this dir instead of a Kaggle mount (CPU is "
+                         "fine -- blip-vqa-base is ~385M params)")
+    args = ap.parse_args()
+
+    INPUT_DIR = find_input_dir(local_dir=args.artifacts_dir)
     manifest = json.loads((INPUT_DIR / "manifest.json").read_text())
     boxes = json.loads((INPUT_DIR / "boxes.json").read_text())
+    # Kaggle writes to the kernel's cwd (/kaggle/working, the only writable dir); a local
+    # run writes beside the artifacts it scored, where vqa_agreement_check.py looks for it.
+    out_path = (INPUT_DIR / OUT_PATH.name) if args.artifacts_dir else OUT_PATH
 
     print(f"device={DEVICE}  input_dir={INPUT_DIR}  images_dir={INPUT_DIR / 'images'}")
-    processor, model = load_model()
 
-    results: Dict[str, Dict[str, Dict[str, float]]] = {}
+    results = load_existing_results(out_path)
+    todo = pending_vqa_images(manifest, boxes, results)
+    print(f"{len(todo)} image(s) pending VQA scoring ({len(results)} already cached)")
+    if not todo:
+        print(f"nothing to do -> {out_path}")
+        return
+
+    processor, model = load_model()
     debug_calls_left = 3
 
-    for img in manifest["images"]:
+    for img in todo:
         prompt_id = img["prompt_id"]
-        if not img.get("detected"):
-            continue
-        subject_boxes = boxes.get(str(prompt_id))
-        if not subject_boxes:
-            print(f"  p{prompt_id}: no box data, skipping")
-            continue
+        subject_boxes = boxes[str(prompt_id)]
 
         image_path = INPUT_DIR / "images" / f"p{prompt_id}.png"
         image = Image.open(image_path).convert("RGB")
@@ -155,11 +195,11 @@ def main() -> None:
             per_attribute[attr["attribute"]] = scores
 
         results[str(prompt_id)] = per_attribute
-        OUT_PATH.write_text(json.dumps(results, indent=2))
+        out_path.write_text(json.dumps(results, indent=2))
         print(f"  p{prompt_id}: scored {len(per_attribute)} attribute(s) x "
               f"{len(crops)} subject(s)")
 
-    print(f"\nDone. {len(results)}/{len(manifest['images'])} images scored -> {OUT_PATH}")
+    print(f"\nDone. {len(results)}/{len(manifest['images'])} images scored -> {out_path}")
 
 
 if __name__ == "__main__":

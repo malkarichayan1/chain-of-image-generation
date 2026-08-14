@@ -182,6 +182,23 @@ metric's own pick lands on the biggest box at a rate indistinguishable from chan
 doesn't track box-size dominance (Spearman r=-0.10, p=0.07). `predicted_owner` is not a
 box-geometry artifact on FLUX.
 
+### Discriminant validity vs. CLIPScore (#8, executed 2026-08-14, local CPU)
+
+`exp10_clipscore_discriminant.py` rules out "your attention metric is just CLIP alignment in
+disguise." CLIP scores each subject's crop against the attribute caption and predicts the
+argmax — a prediction that never touches attention.
+
+| Set | n | Agreement (attn vs. CLIP) | Attention acc | CLIPScore acc | McNemar |
+|---|---|---|---|---|---|
+| `artifacts_flux` (chayan) | 297 | 74.4% | **84.6%** | 67.4% | p = 4.3e-10 |
+| `artifacts_flux_hard` (consensus) | 405 | 55.1% | **42.8%** | 37.0% | p = 0.044 |
+
+Attention is not CLIPScore: they disagree on 26%/45% of rows, and attention wins both
+comparisons significantly. Attention accuracy reproduces the published 84.6%/42.8% exactly,
+which also validates the join. **Carry the caveat the script prints:** `assign_subjects`
+already uses this same CLIP checkpoint for box assignment, so agreement is partly
+architectural, not pure independent convergence.
+
 ### Three things not to misreport
 
 - **Experiment 4's FLUX "win" is over a degraded baseline.** On SDXL's prompt template,
@@ -241,6 +258,8 @@ Consequences, which must travel with any Part B number:
 | Path | What |
 |---|---|
 | `docs/raw-attention-paper-briefing.md` | **Start here.** The paper: claims, evidence, structure, gaps |
+| `docs/remaining-experiments-runbook.md` | Triage of the 12 remaining experiments: what to run, cut, or hold, and why |
+| `docs/a100-session-runbook.md` | **Metered A100 JupyterHub session plan** — overlap the 30 GB download with setup, smoke-test the repro gate before committing hours, what must NOT run there |
 | `docs/anchor-set-labeling-protocol.md` | Pre-registered labeling protocol (sentinels, count-broken handling) |
 | `docs/part-a-five-experiment-battery-design.md` | Battery pre-registration |
 | `docs/part-b-strengthening-design.md` | Chain-metric strengthening design, Stages 1–4 |
@@ -272,6 +291,18 @@ py -3 run_five_experiments.py --artifacts-dir artifacts_flux_hard --annotator co
 # Sharper Exp-3 falsification control (within-item token permutation, n>=3, no GPU)
 py -3 exp3b_within_item_permutation.py --artifacts-dir artifacts_flux --annotator chayan
 
+# CLIPScore discriminant validity (#8) -- CPU, ~10 min, caches to clip_scores.json
+py -3 exp10_clipscore_discriminant.py --artifacts-dir artifacts_flux_hard --annotator consensus
+
+# VQAScore (#31) -- CPU is fine (blip-vqa-base is ~385M params); --artifacts-dir = local mode
+py -3 vqa_score_flux.py --artifacts-dir artifacts_flux_hard
+py -3 vqa_agreement_check.py --artifacts-dir artifacts_flux_hard --annotator consensus
+
+# Taxonomy capture (#14/#16/#17/#18) -- GPU. --artifacts-dir is MANDATORY off Kaggle;
+# without it, content search always resolves artifacts_flux and writes the index to cwd.
+py -3 taxonomy_capture_flux.py --artifacts-dir artifacts_flux --limit 3   # smoke test first
+py -3 taxonomy_capture_flux.py --artifacts-dir artifacts_flux
+
 # Discriminant validity (box-geometry artifact check) -- boxes.json must exist first
 py -3 recompute_boxes.py --artifacts-dir artifacts_flux          # CPU, Mask R-CNN + CLIP, cached
 py -3 discriminant_validity_check.py --artifacts-dir artifacts_flux --annotator chayan
@@ -293,6 +324,38 @@ Do not reintroduce it.
 ---
 
 ## 6. What to do next
+
+### Status as of 2026-08-14 — read this first
+
+An **A100 has been requested and granted** (metered JupyterHub, clock starts at login). The
+only job that needs it is the taxonomy capture; see `docs/a100-session-runbook.md` before
+logging in. Triage of all 12 remaining experiments is in
+`docs/remaining-experiments-runbook.md`.
+
+| # | Experiment | Status |
+|---|---|---|
+| 13 | κ on disobeyed rows | **Done** (§3) |
+| 8 | CLIPScore discriminant | **Done 2026-08-14**, local CPU, both sets (§3) |
+| 31 | VQAScore | **Unblocked** — was never a GPU job; blip-vqa-base is ~385M params and runs on CPU. The Kaggle-only `find_input_dir` was the sole thing gating it |
+| 14/16/17/18 | Taxonomy capture | **The A100 job.** Code + tests ready; needs ~10–15 GPU-hr per set |
+| 19 | Intent-vs-realization | Analysis script ready and correct; blocked only on the capture above |
+| 20 | Attention steering | **Implementation is wrong** — perturbs latents, not `attn_probs`. Fix before running |
+| 30 | PixArt-Σ | Pilot only (no attention capture); sequenced behind #19 |
+| 21 | Controlled prompt-obedience | Conditional on #20's outcome |
+| 15 | Taxonomy on SDXL | Cut — dataset doesn't exist |
+
+**Pranav's 2026-08-14 push (`01a3626`) is code-only, no result JSONs.** It independently
+reimplements `exp9_taxonomy_analysis.py`, `exp10_clipscore_discriminant.py`,
+`taxonomy_capture_flux.py`, and `vqa_score_flux.py` under the same filenames with untested,
+non-pre-registered logic. Keep the tested versions on merge. Three specific problems with
+what he reported: his #19 selects and tests all 8 cells on the *same* hard-set rows with no
+correction (the §5 double-dip the runbook exists to prevent); his #20 injects Gaussian noise
+into latents rather than steering attention; his #30 captures no attention at all, so its
+54.4% is a CLIP-judged obedience rate, not a claim about attention. His
+`taxonomy_capture_flux.py` also pre-reduces inside the capture and never stores per-head
+data, so #16 is unrecoverable from its output and #19 cannot run against it.
+
+
 
 **The blocking experiment (briefing §9.1) — executed 2026-08-07, partial success.** akhil, grace,
 and pranav triple-labeled `artifacts_flux_hard/` (chayan's 4-row pass excluded). It moved

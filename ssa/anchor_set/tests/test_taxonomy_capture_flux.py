@@ -300,3 +300,43 @@ def test_add_rejects_a_non_square_image_grid():
 
     with pytest.raises(ValueError, match="perfect square"):
         store.add("transformer_blocks.0", torch.zeros(2, 8, 1))
+
+
+# --------------------------------------------------------------------------- input/output routing
+#
+# These guard an A100-specific failure mode that Kaggle's one-dataset-per-kernel mount hid.
+# Run locally from ssa/anchor_set/, the old find_input_dir() took the FIRST manifest.json
+# alphabetically -- always artifacts_flux, never artifacts_flux_hard -- and OUT_DIR=Path(".")
+# wrote taxonomy_index.json to the cwd rather than beside the artifacts, where
+# exp9_taxonomy_analysis.py reads it. Worse, a second run from the same cwd would RESUME
+# from the first set's index and silently merge two datasets into one capture.
+
+def test_find_input_dir_returns_explicit_local_dir(tmp_path):
+    (tmp_path / "manifest.json").write_text("{}")
+    assert tcf.find_input_dir(local_dir=tmp_path) == tmp_path
+
+
+def test_find_input_dir_raises_when_local_dir_has_no_manifest(tmp_path):
+    with pytest.raises(FileNotFoundError, match="manifest.json"):
+        tcf.find_input_dir(local_dir=tmp_path)
+
+
+def test_find_input_dir_does_not_silently_pick_a_sibling_dataset(tmp_path):
+    """The exact A100 footgun: two artifact dirs side by side, ask for the second."""
+    easy, hard = tmp_path / "artifacts_flux", tmp_path / "artifacts_flux_hard"
+    for d in (easy, hard):
+        d.mkdir()
+        (d / "manifest.json").write_text("{}")
+    assert tcf.find_input_dir(local_dir=hard) == hard
+
+
+def test_resolve_out_dir_defaults_beside_the_artifacts_it_captured(tmp_path):
+    """exp9_taxonomy_analysis.py reads taxonomy_index.json from the ARTIFACTS dir, so that
+    is where a local capture must land -- not the cwd it happened to be launched from."""
+    assert tcf.resolve_out_dir(input_dir=tmp_path, local_mode=True) == tmp_path
+
+
+def test_resolve_out_dir_stays_cwd_on_kaggle(tmp_path):
+    """Kaggle's input mount is read-only; /kaggle/working (the cwd) is the only writable
+    dir, so the Kaggle path must keep writing there."""
+    assert tcf.resolve_out_dir(input_dir=tmp_path, local_mode=False) == Path(".")
