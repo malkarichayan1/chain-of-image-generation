@@ -462,3 +462,159 @@ def test_attribute_target_token_indices_raises_on_duplicate_attribute_text():
     pairs = [("barista", "red apron"), ("waiter", "red apron")]
     with pytest.raises(ValueError, match="duplicate attribute"):
         fac.attribute_target_token_indices(tok, prompt, pairs)
+
+
+# --------------------------------------------------------------------------- steering (#20)
+#
+# exp20_attention_steering.py's first draft perturbed the LATENTS inside a spatial box during
+# a step window -- regional noise injection, not attention steering, and a different (weaker)
+# claim than "attention is causally efficacious." These test the real intervention: scaling
+# attn_probs toward a target attribute's text columns on a recipient subject's image rows,
+# renormalized so each affected row stays a valid distribution, before the `@ v` that turns
+# attention into the image -- inside FluxCustomAttnProcessor's own manual recompute, since
+# that is the only place attn_probs exists as a materialized tensor to scale (see module
+# docstring: FLUX's stock processor never forms one).
+
+def test_apply_steering_is_noop_at_strength_zero():
+    torch.manual_seed(0)
+    attn_probs = torch.softmax(torch.randn(1, 2, 14, 14), dim=-1)
+    row_mask = torch.zeros(9, dtype=torch.bool)
+    row_mask[0] = True
+    config = fac.SteeringConfig(target_layer_indices=frozenset({0}), step_start=0, step_end=5,
+                                target_col_indices=(1, 2), target_row_mask=row_mask, strength=0.0)
+    out = fac.apply_steering(attn_probs, text_len=5, config=config)
+    assert torch.allclose(out, attn_probs)
+
+
+def test_apply_steering_boosts_target_columns_on_target_rows_only():
+    torch.manual_seed(0)
+    attn_probs = torch.softmax(torch.randn(1, 2, 14, 14), dim=-1)
+    row_mask = torch.zeros(9, dtype=torch.bool)
+    row_mask[0] = True   # only image row 0 (-> full-sequence row text_len+0 = 5) is targeted
+    config = fac.SteeringConfig(target_layer_indices=frozenset({0}), step_start=0, step_end=5,
+                                target_col_indices=(1, 2), target_row_mask=row_mask, strength=3.0)
+    out = fac.apply_steering(attn_probs, text_len=5, config=config)
+
+    # Targeted row: mass on columns 1,2 strictly increased, row still sums to 1.
+    before_mass = attn_probs[0, :, 5, [1, 2]].sum()
+    after_mass = out[0, :, 5, [1, 2]].sum()
+    assert (after_mass > before_mass).item()
+    assert torch.allclose(out[0, :, 5, :].sum(dim=-1), torch.ones(2), atol=1e-5)
+
+    # Untargeted row (text_len+1 = 6): completely unchanged.
+    assert torch.allclose(out[0, :, 6, :], attn_probs[0, :, 6, :])
+
+
+def test_apply_steering_returns_new_tensor_not_a_mutated_view():
+    torch.manual_seed(0)
+    attn_probs = torch.softmax(torch.randn(1, 2, 14, 14), dim=-1)
+    original = attn_probs.clone()
+    row_mask = torch.ones(9, dtype=torch.bool)
+    config = fac.SteeringConfig(target_layer_indices=frozenset({0}), step_start=0, step_end=5,
+                                target_col_indices=(0,), target_row_mask=row_mask, strength=2.0)
+    fac.apply_steering(attn_probs, text_len=5, config=config)
+    assert torch.equal(attn_probs, original)   # input tensor must be untouched
+
+
+def test_apply_steering_noop_with_no_target_columns():
+    torch.manual_seed(0)
+    attn_probs = torch.softmax(torch.randn(1, 2, 14, 14), dim=-1)
+    row_mask = torch.ones(9, dtype=torch.bool)
+    config = fac.SteeringConfig(target_layer_indices=frozenset({0}), step_start=0, step_end=5,
+                                target_col_indices=(), target_row_mask=row_mask, strength=5.0)
+    out = fac.apply_steering(attn_probs, text_len=5, config=config)
+    assert torch.allclose(out, attn_probs)
+
+
+def test_steering_active_checks_layer_and_step_window():
+    config = fac.SteeringConfig(target_layer_indices=frozenset({7, 8, 9}), step_start=12,
+                                step_end=19, target_col_indices=(0,),
+                                target_row_mask=torch.ones(9, dtype=torch.bool), strength=1.0)
+    assert fac.steering_active(layer_index=8, current_step=15, config=config) is True
+    assert fac.steering_active(layer_index=6, current_step=15, config=config) is False   # wrong layer
+    assert fac.steering_active(layer_index=8, current_step=5, config=config) is False    # too early
+    assert fac.steering_active(layer_index=8, current_step=20, config=config) is False   # too late
+
+
+def test_steering_state_step_increments():
+    state = fac.SteeringState()
+    assert state.current_step == 0
+    state.step()
+    state.step()
+    assert state.current_step == 2
+
+
+def test_flux_steering_processor_matches_capture_processor_at_strength_zero():
+    """Equivalence check mirroring the module's own capture-vs-stock check (~2e-7): with
+    strength=0, FluxSteeringAttnProcessor must reproduce FluxCustomAttnProcessor's output
+    exactly -- steering machinery with nothing to steer changes nothing."""
+    transformer = _tiny_transformer(num_layers=2, num_single_layers=1)
+    inputs_a = _forward_inputs(img_seq=9, txt_seq=5, seed=1)
+    inputs_b = {k: (v.clone() if torch.is_tensor(v) else v) for k, v in inputs_a.items()}
+
+    capture = fac.FluxAttentionCapture()
+    capture.store.reset([0, 1])
+    processors = dict(transformer.attn_processors)
+    for name in list(processors):
+        if name.startswith("transformer_blocks."):
+            processors[name] = fac.FluxCustomAttnProcessor(capture.store, name)
+    transformer.set_attn_processor(processors)
+    with torch.no_grad():
+        out_capture = transformer(**inputs_a)[0]
+
+    state = fac.SteeringState()
+    row_mask = torch.ones(9, dtype=torch.bool)
+    config = fac.SteeringConfig(target_layer_indices=frozenset({0, 1}), step_start=0,
+                                step_end=10, target_col_indices=(0, 1), target_row_mask=row_mask,
+                                strength=0.0)
+    processors2 = dict(transformer.attn_processors)
+    li = 0
+    for name in list(processors2):
+        if name.startswith("transformer_blocks."):
+            processors2[name] = fac.FluxSteeringAttnProcessor(li, state, config)
+            li += 1
+    transformer.set_attn_processor(processors2)
+    with torch.no_grad():
+        out_steered = transformer(**inputs_b)[0]
+
+    assert torch.allclose(out_capture, out_steered, atol=1e-5)
+
+
+def test_flux_steering_processor_changes_output_when_active():
+    """With real strength, in the targeted window, output must differ from the unsteered
+    pass -- the whole point (claim C6-adjacent: steering is causally efficacious)."""
+    transformer = _tiny_transformer(num_layers=2, num_single_layers=1)
+    inputs_a = _forward_inputs(img_seq=9, txt_seq=5, seed=1)
+    inputs_b = {k: (v.clone() if torch.is_tensor(v) else v) for k, v in inputs_a.items()}
+
+    state0 = fac.SteeringState()
+    row_mask = torch.zeros(9, dtype=torch.bool)
+    row_mask[4] = True
+    config_noop = fac.SteeringConfig(target_layer_indices=frozenset({0, 1}), step_start=0,
+                                     step_end=10, target_col_indices=(0,), target_row_mask=row_mask,
+                                     strength=0.0)
+    processors = dict(transformer.attn_processors)
+    li = 0
+    for name in list(processors):
+        if name.startswith("transformer_blocks."):
+            processors[name] = fac.FluxSteeringAttnProcessor(li, state0, config_noop)
+            li += 1
+    transformer.set_attn_processor(processors)
+    with torch.no_grad():
+        out_unsteered = transformer(**inputs_a)[0]
+
+    state1 = fac.SteeringState()
+    config_active = fac.SteeringConfig(target_layer_indices=frozenset({0, 1}), step_start=0,
+                                       step_end=10, target_col_indices=(0,), target_row_mask=row_mask,
+                                       strength=8.0)
+    processors2 = dict(transformer.attn_processors)
+    li = 0
+    for name in list(processors2):
+        if name.startswith("transformer_blocks."):
+            processors2[name] = fac.FluxSteeringAttnProcessor(li, state1, config_active)
+            li += 1
+    transformer.set_attn_processor(processors2)
+    with torch.no_grad():
+        out_steered = transformer(**inputs_b)[0]
+
+    assert not torch.allclose(out_unsteered, out_steered, atol=1e-4)

@@ -38,7 +38,8 @@ resolution-squared-weighted composite.
 from __future__ import annotations
 
 import math
-from typing import Dict, List, Sequence, Set, Tuple
+from dataclasses import dataclass
+from typing import Dict, FrozenSet, List, Sequence, Set, Tuple
 
 import numpy as np
 import torch
@@ -134,6 +135,158 @@ class FluxCustomAttnProcessor:
             target_cols = image_rows[..., self.store.target_token_indices]       # (b, heads, img, n_targets)
             assert query.shape[0] == 1, "FluxCustomAttnProcessor assumes batch size 1 (see module docstring)"
             self.store.add_attention(self.layer_name, target_cols.mean(dim=1)[0])  # (img, n_targets)
+
+        hidden_states = attn_probs @ v
+        hidden_states = hidden_states.permute(0, 2, 1, 3).flatten(2, 3).to(query.dtype)
+
+        if encoder_hidden_states is not None:
+            encoder_hidden_states, hidden_states = hidden_states.split_with_sizes(
+                [encoder_hidden_states.shape[1], hidden_states.shape[1] - encoder_hidden_states.shape[1]],
+                dim=1)
+            hidden_states = attn.to_out[0](hidden_states.contiguous())
+            hidden_states = attn.to_out[1](hidden_states)
+            encoder_hidden_states = attn.to_add_out(encoder_hidden_states.contiguous())
+            return hidden_states, encoder_hidden_states
+        return hidden_states
+
+
+@dataclass(frozen=True)
+class SteeringConfig:
+    """Which (layer, step) cells to intervene on for experiment #20 (causal attention
+    steering), which text columns to boost, and onto which image rows.
+
+    `target_layer_indices`: double-block indices (0..18) to steer -- e.g. #19's mid blocks
+    7-12. `step_start`/`step_end`: inclusive denoising-step window (a SteeringState instance,
+    stepped once per denoising step via callback_on_step_end, tracks "current step" the same
+    way FluxAttentionStore does for capture). `target_col_indices`: raw T5 column positions
+    for the attribute being forced onto a subject it doesn't belong to (flux_token_indices'
+    output, NOT positions into any already-sliced tensor -- these index the full key
+    sequence directly, since text occupies columns [0, text_len) in the concatenated
+    [text, image] key axis FluxCustomAttnProcessor builds). `target_row_mask`: bool
+    (img_seq_len,) marking which image-token QUERY rows belong to the recipient subject's
+    box -- build this with taxonomy_capture_flux.box_to_grid_mask (already tested) against
+    the recipient's boxes.json entry, flattened row-major to match img_ids' i//side, i%side
+    layout. `strength`: multiplicative boost applied to target columns before renormalizing
+    each affected row back to a valid distribution -- 0.0 is an exact no-op."""
+    target_layer_indices: FrozenSet[int]
+    step_start: int
+    step_end: int
+    target_col_indices: Tuple[int, ...]
+    target_row_mask: torch.Tensor
+    strength: float
+
+
+class SteeringState:
+    """Denoising-step counter shared across every hooked block's FluxSteeringAttnProcessor,
+    incremented once per step by the caller's callback_on_step_end -- mirrors
+    FluxAttentionStore.step()'s convention, kept separate since steering and capture are
+    independent concerns that may run in the same or different generation passes."""
+
+    def __init__(self):
+        self.current_step: int = 0
+
+    def step(self) -> None:
+        self.current_step += 1
+
+
+def steering_active(layer_index: int, current_step: int, config: SteeringConfig) -> bool:
+    """Whether THIS block, at THIS step, is inside config's targeted (layer, step) cell."""
+    return (layer_index in config.target_layer_indices
+            and config.step_start <= current_step <= config.step_end)
+
+
+def apply_steering(attn_probs: torch.Tensor, text_len: int, config: SteeringConfig) -> torch.Tensor:
+    """Boosts `config.target_col_indices` on the full-sequence rows selected by
+    `config.target_row_mask` (offset by `text_len`, since image queries follow text queries
+    in the concatenated row axis -- same layout FluxCustomAttnProcessor's `image_rows` slice
+    already relies on), then renormalizes exactly those rows so each stays a valid
+    distribution over the full (text+image) key axis rather than just uniformly inflating
+    the recipient's total attention mass. A no-op (returns `attn_probs` unchanged, not even
+    cloned) at strength=0 or with no target columns/rows -- the common case for every
+    (layer, step) cell outside the targeted window, which must cost nothing.
+
+    Pure function, deliberately independent of the hook: `attn_probs` is never mutated
+    in-place, so this is testable in isolation from a real transformer forward pass, and
+    the caller is unaffected by aliasing if it re-uses `attn_probs` afterward for anything
+    else."""
+    if config.strength == 0.0 or not config.target_col_indices:
+        return attn_probs
+    row_idx = text_len + torch.nonzero(config.target_row_mask, as_tuple=True)[0]
+    if row_idx.numel() == 0:
+        return attn_probs
+    out = attn_probs.clone()
+    boosted = out[:, :, row_idx, :].clone()
+    cols = list(config.target_col_indices)
+    boosted[..., cols] = boosted[..., cols] * (1.0 + config.strength)
+    boosted = boosted / boosted.sum(dim=-1, keepdim=True)
+    out[:, :, row_idx, :] = boosted
+    return out
+
+
+class FluxSteeringAttnProcessor:
+    """Same manual recompute as FluxCustomAttnProcessor (see that class + module docstring
+    for why FLUX's stock processor never materializes attn_probs at all), but scales
+    attn_probs toward `config.target_col_indices` on `config.target_row_mask` rows -- inside
+    `config`'s (layer, step) window -- before the `@ v` that turns attention into the image.
+
+    This is the actual causal intervention experiment #20 needs. It is NOT what
+    exp20_attention_steering.py's first draft did: that perturbed the LATENTS inside a
+    spatial box during a step window (regional noise injection), which never touches
+    attention and supports a different, weaker claim than "steering ATTENTION changes the
+    image." Optionally also captures into `store` (pass a FluxAttentionStore, or None to
+    skip capture) so a steered generation's own attention can be inspected the same way an
+    unsteered one is."""
+
+    def __init__(self, layer_index: int, state: SteeringState, config: SteeringConfig,
+                store=None, layer_name: str = ""):
+        self.layer_index = layer_index
+        self.state = state
+        self.config = config
+        self.store = store
+        self.layer_name = layer_name
+
+    def __call__(self, attn, hidden_states, encoder_hidden_states=None,
+                 attention_mask=None, image_rotary_emb=None):
+        from diffusers.models.embeddings import apply_rotary_emb
+        from diffusers.models.transformers.transformer_flux import _get_qkv_projections
+
+        query, key, value, encoder_query, encoder_key, encoder_value = _get_qkv_projections(
+            attn, hidden_states, encoder_hidden_states)
+        query = query.unflatten(-1, (attn.heads, -1))
+        key = key.unflatten(-1, (attn.heads, -1))
+        value = value.unflatten(-1, (attn.heads, -1))
+        query = attn.norm_q(query)
+        key = attn.norm_k(key)
+
+        if attn.added_kv_proj_dim is not None:
+            encoder_query = encoder_query.unflatten(-1, (attn.heads, -1))
+            encoder_key = encoder_key.unflatten(-1, (attn.heads, -1))
+            encoder_value = encoder_value.unflatten(-1, (attn.heads, -1))
+            encoder_query = attn.norm_added_q(encoder_query)
+            encoder_key = attn.norm_added_k(encoder_key)
+            query = torch.cat([encoder_query, query], dim=1)
+            key = torch.cat([encoder_key, key], dim=1)
+            value = torch.cat([encoder_value, value], dim=1)
+
+        if image_rotary_emb is not None:
+            query = apply_rotary_emb(query, image_rotary_emb, sequence_dim=1)
+            key = apply_rotary_emb(key, image_rotary_emb, sequence_dim=1)
+
+        q = query.permute(0, 2, 1, 3)
+        k = key.permute(0, 2, 1, 3)
+        v = value.permute(0, 2, 1, 3)
+        scale = 1.0 / math.sqrt(q.shape[-1])
+        attn_probs = torch.softmax((q @ k.transpose(-1, -2)) * scale, dim=-1)
+
+        if encoder_hidden_states is not None:
+            text_len = encoder_hidden_states.shape[1]
+            if steering_active(self.layer_index, self.state.current_step, self.config):
+                attn_probs = apply_steering(attn_probs, text_len, self.config)
+            if self.store is not None:
+                image_rows = attn_probs[:, :, text_len:, :]
+                target_cols = image_rows[..., self.store.target_token_indices]
+                assert query.shape[0] == 1, "assumes batch size 1 (see FluxAttentionStore)"
+                self.store.add_attention(self.layer_name, target_cols.mean(dim=1)[0])
 
         hidden_states = attn_probs @ v
         hidden_states = hidden_states.permute(0, 2, 1, 3).flatten(2, 3).to(query.dtype)

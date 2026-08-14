@@ -182,10 +182,20 @@ py -3 exp9_taxonomy_analysis.py \
 
 ### Step 5 — #20, attention steering
 
-`FluxCustomAttnProcessor` already materializes an explicit `attn_probs` matrix (claim C7),
-so steering is scaling selected columns of `attn_probs` before the `@ v` in the hook that
-already exists — no fallback to SD needed, contrary to what the original doc worried about.
-Scope after #19 identifies the best cell to steer.
+**Implemented 2026-08-14** (CPU-testable up front, no GPU needed to write or verify the
+mechanism — only to run it for real). `flux_attention_capture.py` gained
+`FluxSteeringAttnProcessor`/`SteeringConfig`/`SteeringState`/`apply_steering`: scales
+selected columns of `attn_probs` (the matrix `FluxCustomAttnProcessor` already materializes
+per claim C7) toward a target attribute's tokens, on a recipient subject's image rows, inside
+a configurable (layer, step) window — renormalized so each affected row stays a valid
+distribution — before the `@ v` that turns attention into the image. 8 new tests, including
+two full-tiny-transformer checks: strength=0 reproduces the plain capture path exactly, and
+real strength changes the output. `exp20_attention_steering.py` was rewritten to use it.
+
+Scope the actual `--step-start`/`--step-end`/layers after #19 identifies the best cell —
+`DEFAULT_STEER_LAYERS`/`DEFAULT_STEER_START`/`DEFAULT_STEER_END` in the script are
+placeholders (mid blocks 7–12, steps 12–19) carried from the pre-registered design intent,
+not yet #19's measured output. Update them (or pass the CLI flags) once #19 runs.
 
 ### Conditional — #21
 

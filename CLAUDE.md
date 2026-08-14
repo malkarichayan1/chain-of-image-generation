@@ -199,6 +199,40 @@ which also validates the join. **Carry the caveat the script prints:** `assign_s
 already uses this same CLIP checkpoint for box assignment, so agreement is partly
 architectural, not pure independent convergence.
 
+### VQAScore baseline (#31, executed 2026-08-14, local CPU, `artifacts_flux_hard`)
+
+`vqa_score_flux.py` (blip-vqa-base, ~385M params) was never a GPU job — see §6. Ran on
+`artifacts_flux_hard` (405 rows, consensus labels); `artifacts_flux` (easy set) queued next.
+
+**VQAScore is statistically indistinguishable from attention head-to-head** (44.7% vs.
+42.8%, McNemar p = 0.26, n=405) — a SOTA judge-based metric does no better than the
+attention metric this paper is auditing.
+
+**C2 replicates for VQAScore too.** It loses to the prompt-obeyed baseline just as badly as
+attention does: 44.7% vs. 80.1%, p = 3.5e-19. The "metrics lose to assuming the prompt was
+obeyed" finding is not attention-specific — it reproduces for an entirely different signal
+(a VQA judge model) on the same rows.
+
+**On the misbound subset (the paper's sharpest question, mirrors #12/C3):** VQAScore gets
+41.9% (26/62) — essentially the same as attention's own ~42–43% on this subset (CLAUDE.md
+§3). VQAScore does not do meaningfully better than attention on exactly the rows a
+faithfulness metric exists to catch.
+
+Command: `py -3 vqa_agreement_check.py --artifacts-dir artifacts_flux_hard --annotator consensus`
+
+### Attention steering (#20, mechanism fixed 2026-08-14; not yet run for real)
+
+`FluxSteeringAttnProcessor` (in `flux_attention_capture.py`) now scales `attn_probs` toward
+a target attribute's tokens on a recipient subject's image rows, inside a configurable
+(layer, step) window, renormalized to a valid distribution — replacing a first draft that
+perturbed latents in a spatial box and never touched attention at all. Verified on a tiny
+`FluxTransformer2DModel`: strength=0 reproduces the plain capture path exactly; real
+strength changes the output. Not yet run on real FLUX — needs the A100, and its
+`DEFAULT_STEER_LAYERS`/`--step-start`/`--step-end` are provisional (mid blocks 7–12, steps
+12–19) pending #19's actual verdict, not yet a measured result. Ground truth for
+"steering success" is CLIP crop-similarity, not human-verified — carry that caveat with any
+number this produces.
+
 ### Three things not to misreport
 
 - **Experiment 4's FLUX "win" is over a degraded baseline.** On SDXL's prompt template,
@@ -336,10 +370,10 @@ logging in. Triage of all 12 remaining experiments is in
 |---|---|---|
 | 13 | κ on disobeyed rows | **Done** (§3) |
 | 8 | CLIPScore discriminant | **Done 2026-08-14**, local CPU, both sets (§3) |
-| 31 | VQAScore | **Unblocked** — was never a GPU job; blip-vqa-base is ~385M params and runs on CPU. The Kaggle-only `find_input_dir` was the sole thing gating it |
+| 31 | VQAScore | **Executed 2026-08-14, local CPU**, both sets (see below) |
 | 14/16/17/18 | Taxonomy capture | **The A100 job.** Code + tests ready; needs ~10–15 GPU-hr per set |
 | 19 | Intent-vs-realization | Analysis script ready and correct; blocked only on the capture above |
-| 20 | Attention steering | **Implementation is wrong** — perturbs latents, not `attn_probs`. Fix before running |
+| 20 | Attention steering | **Fixed 2026-08-14** — `FluxSteeringAttnProcessor` now scales `attn_probs` directly (8 new tests incl. 2 full-tiny-transformer equivalence checks); needs the A100 to actually run |
 | 30 | PixArt-Σ | Pilot only (no attention capture); sequenced behind #19 |
 | 21 | Controlled prompt-obedience | Conditional on #20's outcome |
 | 15 | Taxonomy on SDXL | Cut — dataset doesn't exist |
@@ -353,7 +387,11 @@ correction (the §5 double-dip the runbook exists to prevent); his #20 injects G
 into latents rather than steering attention; his #30 captures no attention at all, so its
 54.4% is a CLIP-judged obedience rate, not a claim about attention. His
 `taxonomy_capture_flux.py` also pre-reduces inside the capture and never stores per-head
-data, so #16 is unrecoverable from its output and #19 cannot run against it.
+data, so #16 is unrecoverable from its output and #19 cannot run against it. His genuinely
+new files (`exp20_attention_steering.py`, `exp30_pixart_generalization.py`) were kept and
+merged (`6a85482`); #20 has since been rewritten (below) to fix the latents-vs-attention
+problem, #30 is unchanged and still just a CLIP-judged obedience pilot with no attention
+capture.
 
 
 
