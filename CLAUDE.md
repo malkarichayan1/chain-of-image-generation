@@ -199,26 +199,31 @@ which also validates the join. **Carry the caveat the script prints:** `assign_s
 already uses this same CLIP checkpoint for box assignment, so agreement is partly
 architectural, not pure independent convergence.
 
-### VQAScore baseline (#31, executed 2026-08-14, local CPU, `artifacts_flux_hard`)
+### VQAScore baseline (#31, executed 2026-08-14, local CPU, both sets)
 
-`vqa_score_flux.py` (blip-vqa-base, ~385M params) was never a GPU job — see §6. Ran on
-`artifacts_flux_hard` (405 rows, consensus labels); `artifacts_flux` (easy set) queued next.
+`vqa_score_flux.py` (blip-vqa-base, ~385M params) was never a GPU job — see §6. The pattern
+holds cleanly on both sets:
 
-**VQAScore is statistically indistinguishable from attention head-to-head** (44.7% vs.
-42.8%, McNemar p = 0.26, n=405) — a SOTA judge-based metric does no better than the
-attention metric this paper is auditing.
+| Set | n | Attention acc | VQAScore acc | Head-to-head McNemar | VQAScore vs. prompt-obeyed baseline | VQAScore on misbound subset |
+|---|---|---|---|---|---|---|
+| `artifacts_flux` (chayan) | 297 | 84.6% | 82.4% | p = 0.238 (n.s.) | 82.4% vs. 94.1%, p = 3.3e-06 | 50.0% (8/16) |
+| `artifacts_flux_hard` (consensus) | 405 | 42.8% | 44.7% | p = 0.263 (n.s.) | 44.7% vs. 80.1%, p = 3.5e-19 | 41.9% (26/62) |
 
-**C2 replicates for VQAScore too.** It loses to the prompt-obeyed baseline just as badly as
-attention does: 44.7% vs. 80.1%, p = 3.5e-19. The "metrics lose to assuming the prompt was
-obeyed" finding is not attention-specific — it reproduces for an entirely different signal
-(a VQA judge model) on the same rows.
+**VQAScore is statistically indistinguishable from attention head-to-head on both sets** —
+a SOTA judge-based metric does no better than the attention metric this paper is auditing,
+on either the easy or the hard anchor set.
 
-**On the misbound subset (the paper's sharpest question, mirrors #12/C3):** VQAScore gets
-41.9% (26/62) — essentially the same as attention's own ~42–43% on this subset (CLAUDE.md
-§3). VQAScore does not do meaningfully better than attention on exactly the rows a
-faithfulness metric exists to catch.
+**C2 replicates for VQAScore too, on both sets.** It loses to the prompt-obeyed baseline
+just as badly as attention does (p = 3.3e-06 easy, p = 3.5e-19 hard). "Metrics lose to
+assuming the prompt was obeyed" is not attention-specific — it reproduces for an entirely
+different signal (a VQA judge model) on the same rows, both anchor sets.
 
-Command: `py -3 vqa_agreement_check.py --artifacts-dir artifacts_flux_hard --annotator consensus`
+**On the misbound subset (the paper's sharpest question, mirrors #12/C3):** VQAScore tracks
+attention's own ~42–43% on the hard set (41.9%) and is close on the easy set (50.0%, n=16 —
+small and noisy, same caveat C3 already carries). VQAScore does not do meaningfully better
+than attention on exactly the rows a faithfulness metric exists to catch.
+
+Command: `py -3 vqa_agreement_check.py --artifacts-dir <dir> --annotator <name>`
 
 ### Attention steering (#20, mechanism fixed 2026-08-14; not yet run for real)
 
