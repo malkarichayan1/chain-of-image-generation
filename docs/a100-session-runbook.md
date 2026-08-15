@@ -55,7 +55,7 @@ git clone <repo-url> && cd "Chain of Image Generation"
 git checkout hard-prompt-set-retest
 cd ssa/anchor_set
 pip install -q torch diffusers transformers accelerate sentencepiece protobuf
-py -3 -m pytest tests/ -q     # 391 tests, all green; ~15s, no GPU
+python3 -m pytest tests/ -q     # 391 tests, all green; ~15s, no GPU
 ```
 
 The test run is not ceremony — it confirms the checkout is the state the capture was
@@ -77,13 +77,13 @@ the memory budget below assumes A100-class headroom.
 if regeneration drifts, the attention describes a picture nobody labeled, silently.
 
 ```bash
-py -3 taxonomy_capture_flux.py --artifacts-dir artifacts_flux --limit 3
+python3 taxonomy_capture_flux.py --artifacts-dir artifacts_flux --limit 3
 ```
 
 Then read the two gate fields it prints per image:
 
 ```bash
-py -3 -c "
+python3 -c "
 import json; d=json.load(open('artifacts_flux/taxonomy_index.json'))
 for k,v in d.items():
     print(k, v['repro_mean_abs_pixel_diff'], v['pooled_owner_matches_manifest'])
@@ -102,7 +102,7 @@ GPU-hours.
 ## 3. The full run
 
 ```bash
-nohup py -3 taxonomy_capture_flux.py --artifacts-dir artifacts_flux \
+nohup python3 taxonomy_capture_flux.py --artifacts-dir artifacts_flux \
     > ~/capture_easy.log 2>&1 &
 tail -f ~/capture_easy.log        # prints a per-image ETA
 ```
@@ -110,7 +110,7 @@ tail -f ~/capture_easy.log        # prints a per-image ETA
 Then, if the window allows:
 
 ```bash
-nohup py -3 taxonomy_capture_flux.py --artifacts-dir artifacts_flux_hard \
+nohup python3 taxonomy_capture_flux.py --artifacts-dir artifacts_flux_hard \
     > ~/capture_hard.log 2>&1 &
 ```
 
@@ -158,7 +158,7 @@ Download both through the Jupyter file browser. **Do not run the analysis on the
 GPU time:
 
 ```bash
-py -3 exp9_taxonomy_analysis.py \
+python3 exp9_taxonomy_analysis.py \
     --easy-dir artifacts_flux --easy-annotator chayan \
     --hard-dir artifacts_flux_hard --hard-annotator consensus \
     --out artifacts_flux_hard/taxonomy_report.json
@@ -169,7 +169,7 @@ py -3 exp9_taxonomy_analysis.py \
 | Item | Where it actually belongs |
 |---|---|
 | #8 CLIPScore discriminant | **Already done, CPU, 2026-08-14.** ~10 min locally. |
-| #31 VQAScore | **CPU** — blip-vqa-base is ~385M params. `py -3 vqa_score_flux.py --artifacts-dir <dir>` |
+| #31 VQAScore | **CPU** — blip-vqa-base is ~385M params. `python3 vqa_score_flux.py --artifacts-dir <dir>` |
 | #19 analysis | CPU re-analysis of the capture (§5) |
 | #20 steering | Needs #19's verdict first, and its current implementation is wrong (perturbs latents, not `attn_probs`) |
 | #30 PixArt-Σ | Sequenced after #19; needs a new attention hook + annotation cycle |
