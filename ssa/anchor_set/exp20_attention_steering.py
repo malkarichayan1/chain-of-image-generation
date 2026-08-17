@@ -2,12 +2,25 @@
 """
 Experiment #20: Causal Grounding via Attention Steering (Attend-and-Excite style).
 
-Guided by #19's provisional cell (mid blocks 7-12, Q3 steps 12-19 of 25 -- see CLAUDE.md;
-CONFIRM against the real #19 verdict once the taxonomy capture lands, and update
-DEFAULT_STEER_LAYERS/DEFAULT_STEER_START/DEFAULT_STEER_END below if it selects a different
-cell -- these are placeholders, not yet the pre-registered #19 output):
-scales cross-ATTENTION (not latents) toward an attribute's tokens on an unintended subject's
-image rows, mid-generation, via flux_attention_capture.FluxSteeringAttnProcessor.
+Guided by #19's MEASURED output (taxonomy capture executed 2026-08-17 on an A100; report at
+artifacts_flux_hard/taxonomy_report.json): scales cross-ATTENTION (not latents) toward an
+attribute's tokens on an unintended subject's image rows, mid-generation, via
+flux_attention_capture.FluxSteeringAttnProcessor.
+
+WHERE THE STEERING WINDOW COMES FROM (replacing the earlier mid-blocks-7-12 placeholders):
+  - Layers: #14 found accuracy rises monotonically with depth (easy set 67.3% early_0_6 ->
+    83.8% mid_7_12 -> 85.4% late_13_18; hard set 34.7% -> 42.4% -> 44.4%), and 7 of the 10
+    sharpest cells #19 selected sit in block 18 alone (the others in 14, 16, 17). The late
+    band 13-18 is where attribute-specific attention actually concentrates.
+  - Steps: #17 found the four timestep windows statistically indistinguishable (easy
+    84.6/84.6/85.0/85.0, hard 44.1/44.1/44.8/45.1). There is NO measured basis for narrowing
+    to a sub-window, so the default steers the full trajectory rather than inventing a window
+    the data does not support.
+
+What #19's verdict does NOT license: it came back NEGATIVE (0/10 cells beat the prompt-only
+baseline; every cell lost by 35-39 points at Holm p ~ 1e-20 to 1e-23). These layers are where
+the signal is densest, NOT where a cell was found that reads the rendered image. #20 stays a
+causal-efficacy probe; it is not a rescue of the observational claim.
 
 Demonstrates:
 1. Steering attention mid-generation changes the rendered image (attention is causally
@@ -59,12 +72,14 @@ IMG_SIZE = 1024
 NUM_INFERENCE_STEPS = 25
 GRID_SIDE = 64   # FLUX's native attention grid at 1024x1024 (see taxonomy_capture_flux.py)
 
-# Provisional -- see module docstring. #19's actual selected cell, once the taxonomy capture
-# runs, may differ; these are placeholders carried over from the pre-registered design intent
-# (mid blocks, mid-to-late window), not yet a measured result.
-DEFAULT_STEER_LAYERS = frozenset(range(7, 13))   # blocks 7-12
-DEFAULT_STEER_START = 12
-DEFAULT_STEER_END = 19
+# Measured from #19's taxonomy report (2026-08-17) -- see module docstring for the numbers.
+# Layers: the late band, where #14's accuracy peaks and 7/10 of #19's sharpest cells live.
+# Steps: full inclusive trajectory (steering_active tests step_start <= step <= step_end, and
+# NUM_INFERENCE_STEPS=25 means steps 0..24), because #17 found no window distinguishable from
+# any other -- narrowing further would not be data-driven.
+DEFAULT_STEER_LAYERS = frozenset(range(13, 19))   # blocks 13-18 (late band)
+DEFAULT_STEER_START = 0
+DEFAULT_STEER_END = 24
 DEFAULT_STRENGTH = 4.0   # multiplicative boost on target columns before renormalizing
 
 

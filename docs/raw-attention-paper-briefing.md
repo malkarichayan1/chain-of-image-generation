@@ -676,8 +676,8 @@ power. Either way, the core argument — attention adds nothing over the prompt 
 | # | Claim | Evidence | Strength |
 |---|---|---|---|
 | C1 | Attention-based binding prediction beats chance on both architectures | Exp 1, both models, 3 annotators | **Strong** |
-| C2 | It nonetheless loses to a prompt-only baseline, universally | §5.1, §5.5: 10/10 tests (6 original + 4 hard-set), p < 0.05 | **Strong** |
-| C3 | On prompt-violating rows, attention beats chance only weakly | §5.3 (original, underpowered) + §5.5 (hard-set retest: pooled p≈0.03–0.05, 3/4 label sets) | **Weak-positive — properly powered for the first time, borderline significant** |
+| C2 | It nonetheless loses to a prompt-only baseline, universally | §5.1, §5.5: 10/10 tests (6 original + 4 hard-set), p < 0.05; §9.3 (#19, 2026-08-17): **0/10 sharpest cells in the 456-cell layer×head hierarchy beat it either**, every cell down 35–39 pts at Holm p ≈ 1e-20 to 1e-23, selection on a disjoint set | **Strong — and now robust to exhaustive search over the hierarchy** |
+| C3 | On prompt-violating rows, attention beats chance only weakly | §5.3 (original, underpowered) + §5.5 (hard-set retest: pooled p≈0.03–0.05, 3/4 label sets) + §9.3 (#19: best cell layer18_head9 misbound Holm p = 0.0537 — a miss, not a trend) | **Weak-positive — borderline significant, and NOT improved by cell selection** |
 | C4 | Randomization controls as usually run cannot separate "encodes binding" from "encodes anything" — and when the sharper control IS run, attention turns out to be genuinely attribute-specific on easy images | §5.4 (analytic) + §5.6 (executed: permuted accuracy below chance on FLUX, McNemar p≈1e-27–1e-29) | **Strong (analytic, now also empirical)** |
 | C5 | Attention quality is architecture-dependent (MMDiT ≫ UNet) but the conclusion is not | §3.1 vs §4; Exp 3 fails on SDXL, passes on FLUX | **Moderate** |
 | C6 | Replacing attention with noise reproduces chain-metric significance | Part C Step 6 | **Strong** |

@@ -10,16 +10,20 @@ the group's call: #15 cut, #21 gated on #20's outcome (not cut), #8 and #30 kept
 
 ## 1. Verdict table, in run order
 
+**Updated 2026-08-17.** Rows 1–4 are all done; the Kaggle framing throughout this doc is
+superseded — GPU work now runs on Thunder Compute (`tnr` CLI), where the public repo + git-tracked
+images mean there is **no dataset-upload step at all**.
+
 | Order | # | Experiment | Where it runs | Cost | Depends on |
 |---|---|---|---|---|---|
 | — | 13 | κ on disobeyed rows | local, done | none | — |
-| 1 | 8 | CLIPScore discriminant validity | **local CPU, no Kaggle** | ~10 min | nothing; script written |
-| 2 | 31 | VQAScore on disobeyed rows | Kaggle GPU | ~1 GPU-hr ×2 sets | Kaggle dataset upload |
-| 3 | 14,16,17,18 | Taxonomy capture (layer/head/window/distribution) | Kaggle GPU | ~10–15 GPU-hr | nothing; kernel written |
-| 4 | 19 | Intent-vs-realization on sharpest cells | local CPU | none | #3's output only — `exp9_taxonomy_analysis.py` is written and tested |
-| 5 | 20 | Attention steering (A&E) | Kaggle GPU | ~1–2 days eng + GPU | #19's best cell |
+| — | 8 | CLIPScore discriminant validity | **DONE 2026-08-14**, local CPU | ~10 min | — |
+| — | 31 | VQAScore on disobeyed rows | **DONE 2026-08-14, local CPU — never needed a GPU** (blip-vqa-base ≈385M params). Both sets. | ~20 min | — |
+| — | 14,16,17,18 | Taxonomy capture (layer/head/window/distribution) | **DONE 2026-08-17**, Thunder Compute 1×A100 | ~45 min, ~$2 (not 10–15 GPU-hr) | — |
+| — | 19 | Intent-vs-realization on sharpest cells | **DONE 2026-08-17 — NEGATIVE (bulletproof), 0/10** | local CPU | — |
+| **1** | 20 | Attention steering (A&E) | Thunder Compute GPU | ~1 GPU-hr, ~$1 | **unblocked** — window now set from #19 (late blocks 13–18, steps 0–24) |
 | conditional | 21 | Controlled prompt-obedience | — | — | **only if #20 is inconclusive** |
-| held | 30 | Second MMDiT (SD3 / PixArt-Σ) | — | ~3–5 days eng | sequenced after #19 (see §2c) |
+| held | 30 | Second MMDiT (SD3 / PixArt-Σ) | — | ~3–5 days eng | unblocked; **no rescoping needed** — #19 negative, so the existing framing holds (§2c) |
 | cut | 15 | Taxonomy on SDXL | — | — | dataset doesn't exist |
 
 **#8 moved to first place.** It was scoped as a Kaggle job in the original doc, but CLIP

@@ -52,14 +52,16 @@ it: repo state, what is solid, and what to do next.
 | # | Claim | Strength |
 |---|---|---|
 | C1 | Attention-based binding prediction beats chance on both architectures | **Strong** |
-| C2 | It nonetheless loses to a prompt-only baseline, universally (6/6 tests, p<0.05) | **Strong — the headline** |
-| C3 | On prompt-violating rows, attention is indistinguishable from chance | **Weak — underpowered** |
+| C2 | It nonetheless loses to a prompt-only baseline, universally — and **no cell in the 456-cell layer×head hierarchy beats it either** (#19, 0/10, Holm p ≈ 1e-20 to 1e-23) | **Strong — the headline, now search-robust** |
+| C3 | On prompt-violating rows, attention is indistinguishable from chance | **Weak — underpowered.** Unchanged by #19: best cell Holm p = 0.0537, a miss |
 | C4 | Randomization controls as usually run cannot separate "encodes binding" from "encodes anything" | **Strong (analytic)** |
 | C5 | Attention quality is architecture-dependent (MMDiT ≫ UNet); the conclusion is not | **Moderate** |
 | C6 | Replacing attention with noise reproduces chain-metric significance | **Strong** |
 | C7 | Extracting interpretable attention from MMDiT requires manual softmax recomputation | **Methods contribution** |
 
-C3 is the mechanism and the weakest link. §6 is how to fix it.
+C3 is the mechanism and the weakest link. §6 is how to fix it. **As of 2026-08-17, #19's
+exhaustive hierarchy search did not fix it** — see §3.1: the negative result got much stronger,
+C3 did not move.
 
 ---
 
@@ -181,6 +183,167 @@ metric's own pick lands on the biggest box at a rate indistinguishable from chan
 34.3% chance, p=0.52 — no anchor-set construct-validity confound either), and confidence margin
 doesn't track box-size dominance (Spearman r=-0.10, p=0.07). `predicted_owner` is not a
 box-geometry artifact on FLUX.
+
+### §3.1 The taxonomy capture and #19 (executed 2026-08-17, Thunder Compute 1×A100 80GB)
+
+`taxonomy_capture_flux.py` ran on **both** sets — 103 easy + 83 hard images, ~14.1 s/image,
+~45 min wall-clock, ~$0.80 total. (The runbook's ~10–15 GPU-hr/set estimate was calibrated for
+Kaggle T4/P100; an A100 80GB in bf16 with no offload is ~25× faster. Correct the estimate
+before anyone budgets off it again.) Then `exp9_taxonomy_analysis.py` locally, CPU.
+
+**Reproduction gate:** 8 of 186 images (4.3%) exceeded the 0.05 pixel-drift threshold and were
+dropped — 5 easy, 3 hard, leaving **98/103 and 80/83**. Median drift 0.0142 / 0.0157. Pooled
+`predicted_owner` reproduced on **182/186 (97.8%)**; 103/103 easy, 79/83 hard. Regeneration ran
+on torch 2.12.1+cu130 / diffusers 0.39.0, newer than the original generation — that version
+delta is the drift cause. **The 4.3% drop rate and its non-random-by-construction character
+travel with every number below.**
+
+**#19 — NEGATIVE (bulletproof).** 0/10 cells pass. Cells selected by in-box mass fraction on
+`artifacts_flux` only, tested on `artifacts_flux_hard` only, Holm-corrected across 10 (§5 of
+the runbook, disjoint by design):
+
+| Cell | cell_acc | prompt baseline | Holm p | misbound acc | chance | Holm p |
+|---|---|---|---|---|---|---|
+| layer18_head9 | 0.441 | **0.795** | 9.4e-20 | 0.328 | 0.185 | **0.0537** |
+| layer17_head7 | 0.434 | 0.795 | 1.2e-20 | 0.279 | 0.185 | 0.333 |
+| layer16_head19 | 0.431 | 0.795 | 1.7e-20 | 0.311 | 0.185 | 0.107 |
+| layer18_head0 | 0.431 | 0.795 | 1.2e-20 | 0.295 | 0.185 | 0.197 |
+| (6 more, all layer 18) | 0.407–0.428 | 0.795 | ≤8.0e-22 | 0.213–0.246 | 0.185 | 0.723 |
+
+**The binding constraint is the baseline, not statistical power.** Every cell loses to
+"assume the prompt was obeyed" by 35–39 points at Holm p ≈ 1e-20 to 1e-23. This upgrades C2
+from "pooled attention loses" to "no configuration of attention anywhere in the 456-cell
+layer×head hierarchy beats it, with selection on a disjoint set" — closing the "you
+aggregated it wrong" objection. Baseline 79.5% here vs. 80.1% published for consensus; the
+gap is the 3 dropped hard images, which also validates the join.
+
+**C3 is unchanged — still a non-rejection.** Best cell layer18_head9 reaches misbound Holm
+p = **0.0537**, which does **not** clear 0.05. Write it as a miss, not as "marginal" or
+"trending." Direction is consistent with pooled C3's p≈0.03–0.05; the honest read stays
+"underpowered, positive-leaning, not established." Misbound n=61.
+
+**#14 — depth matters, monotonically.** Easy 67.3% (early_0_6) → 83.8% (mid_7_12) → 85.4%
+(late_13_18); hard 34.7% → 42.4% → 44.4%. All Holm p < 1e-8 against chance (that's C1, which
+was already Strong). 7 of #19's 10 sharpest cells sit in block 18 alone.
+
+**#17 — the timestep window is irrelevant.** Easy 84.6/84.6/85.0/85.0, hard
+44.1/44.1/44.8/45.1 across the four windows. Flat. Worth a methods sentence: the original
+metric's "early window, first 50% of steps" design choice was arbitrary — and harmless.
+
+**#16 — individual heads are weak; the accuracy is in the pooling.** Per-head mean 42.9%
+easy / 24.5% hard against band-pooled 85% / 44%. 205/456 and 133/456 cells significant at
+FDR .05. Report the distribution, not the winner.
+
+Outputs: `artifacts_flux_hard/taxonomy_report.json`, `artifacts_*/taxonomy_index.json`,
+`artifacts_*/taxonomy_cells_p*.npz`, plus `ssa/anchor_set/{pip_freeze,versions}.txt` as the
+version record behind the drift caveat.
+
+### §3.2 Attention steering (#20) — pilot run 2026-08-17, n=2, NOT yet a reportable rate
+
+Ran on Thunder Compute A100 after §3.1. **Mechanism confirmed working; the CLIP-judged
+success rate is demonstrably unreliable and must not be quoted.** Deliberately stopped after
+the window sweep below — see "why this stopped where it did."
+
+Dose–response (mean `image_delta`, n=2, blocks 13–18, steps 0–24):
+
+| strength | mean delta | CLIP success |
+|---|---|---|
+| 4.0 | 0.0524 | 0% |
+| 10.0 | — | 0% |
+| 25.0 | 0.1013 | 50% (1/2) |
+
+Delta is monotonic in strength, so the intervention reaches the image. An earlier run at the
+old placeholder window (blocks 7–12, steps 12–19) gave delta 0.0029 — ~18× smaller than the
+same strength on the late band, though that comparison **confounds block band with step
+window** and is superseded by the matched sweep below.
+
+**The causal leverage is concentrated in the earliest denoising steps.** Matched 6-step
+windows, strength 25.0, blocks 13–18 held fixed, same 2 prompts — so step *count* is
+controlled and only step *position* varies:
+
+| window | steps steered | mean delta | share of full-trajectory | ownership transfer |
+|---|---|---|---|---|
+| **steps 0–5 (earliest)** | 6 | **0.1018** | **100%** | 0/2 |
+| steps 6–11 | 6 | *not captured* | — | — |
+| steps 12–17 | 6 | *not captured* | — | — |
+| steps 19–24 (latest) | 6 | 0.0027 | 2.7% | 0/2 |
+| steps 0–24 (full, reference) | 25 | 0.1013 | — | 0/2 |
+
+Steering only the first 6 of 25 steps reproduces the **entire** full-trajectory image
+movement (0.1018 vs 0.1013); the 19 additional steered steps add nothing measurable. Earliest
+vs. latest is a **38× gap with step count held constant**, so this is positional, not a
+steered-step-count artifact. In both 0–5 runs `new_owner` came back as the *original* owner
+(barista, chef) — maximum causal leverage, zero binding transfer.
+
+The two middle windows ran but are **lost**: `exp20_attention_steering.py` writes a fixed
+`steering_report.json` and fixed `p{id}_{un,}steered.png` filenames with no window in the
+path, so each loop iteration overwrote the last, and their stdout was not captured. Pass
+`--out-dir` per window if this is ever re-run. Only the endpoints are measured; the shape
+**between** them (cliff vs. gradient) is unknown and must not be asserted.
+
+**Determinism check, free:** re-running steps 0–5 into a separate `--out-dir` reproduced
+0.1259 / 0.0777 / mean 0.1018 to four decimals. Same machine, same session, same versions →
+bit-identical. This localizes §3.1's repro-gate drift to the torch/diffusers version delta
+rather than to seed instability in the generation path.
+
+**The 50% is an artifact. By eye it is 0/2.** Both steered images are clean (no degradation),
+but in both cases the *original owner keeps the attribute* and the recipient gets a weak,
+hue-shifted echo:
+
+- p1, "white hat" chef→farmer: chef **keeps the white toque unchanged**; farmer's brown hat
+  becomes a pale **straw** fedora. CLIP scored this `success=True` — assigning "white hat" to
+  the straw-hat man while a bright-white chef's toque sits in the same frame.
+- p0, "red apron" barista→cyclist: barista **keeps the red apron**; cyclist gains an
+  **orange** apron-shaped waist band. CLIP correctly scored `False`.
+
+Collateral drift in both: glasses vanish, shirts change, and p0's background shelves
+rearrange. So full-trajectory steering is **not surgical** — it perturbs global composition,
+almost certainly because early denoising steps set layout.
+
+**Methodological point worth stating in the paper — now measured, not asserted:** #17 found
+timestep windows indistinguishable for *reading* attention. That does not license treating
+them as interchangeable for *intervening*. Observational flatness ≠ causal flatness, and the
+matched-window sweep is the demonstration: reading attention gives the same answer in any
+window (84.6/84.6/85.0/85.0 easy, #17), while intervening gives a 38× spread across the same
+axis.
+
+**The CLIP success flag is unreliable but not stuck at zero.** It fired exactly once across
+every configuration run — the 50% at strength 25, full trajectory — and that firing was a
+**false positive** (it assigned "white hat" to the straw-hat farmer while a bright-white
+chef's toque sat in the same frame). Its one observed error runs toward over-reporting
+success, which makes the universal 0% the conservative direction and supports reading the
+zeros as real rather than as detector failure. This is the closest thing to a validity check
+the flag has; it is not a substitute for human labeling.
+
+**Provisional read, and it favors the thesis:** attention is **causally efficacious over
+composition and causally inert over binding**. Images move coherently and monotonically with
+strength, and the movement localizes to the layout-setting early steps — yet forcing an
+attribute's attention onto a subject never makes that subject own the attribute, at any
+window or strength tried. Attention is not the binding.
+
+There is also **no surgical window**. Full-trajectory steering perturbs global composition
+(glasses vanish, shirts change, p0's background shelves rearrange) because early steps set
+layout — and those same early steps are the only ones with causal leverage. Removing them to
+avoid the collateral drift removes the effect along with it.
+
+**Why this stopped where it did (2026-08-17, deliberate):** the headline is saturated — four
+window configurations × two strengths, 0/2 ownership transfer every time. The two missing
+middle windows would only refine the depth-in-time *curve*, a methods aside, not the finding.
+#20's binding weaknesses are n=2 and the CLIP-judged flag, and **no amount of further window
+sweeping touches either**. If #20 is ever strengthened, the lever is more prompts plus a human
+labeling pass, not more geometry.
+
+**Caveats — attach these at the number, not in a footnote:** n=2 throughout. The "0/2 by eye"
+is Claude's visual judgment, not annotator-grade, and needs a human pass before any draft.
+`new_owner` comes from the same Mask R-CNN + CLIP assignment pipeline that produces the
+unreliable `success` flag, so the two are not independent. `strength=25` was found by
+escalating on these same 2 prompts (calibration on the test set); a real run should calibrate
+on p0/p1 and report prompts 3–10. The depth curve is measured only at its endpoints.
+`exp20_attention_steering.py` still has **no test file**.
+
+Artifacts: steered/unsteered PNGs for the full-trajectory and 0–5 windows were pulled off the
+instance before shutdown (`steer_final.tgz`, 11 MB, local). The instance itself is gone —
+nothing here is reproducible without a fresh GPU.
 
 ### Discriminant validity vs. CLIPScore (#8, executed 2026-08-14, local CPU)
 
@@ -376,11 +539,11 @@ logging in. Triage of all 12 remaining experiments is in
 | 13 | κ on disobeyed rows | **Done** (§3) |
 | 8 | CLIPScore discriminant | **Done 2026-08-14**, local CPU, both sets (§3) |
 | 31 | VQAScore | **Executed 2026-08-14, local CPU**, both sets (see below) |
-| 14/16/17/18 | Taxonomy capture | **The A100 job.** Code + tests ready; needs ~10–15 GPU-hr per set |
-| 19 | Intent-vs-realization | Analysis script ready and correct; blocked only on the capture above |
-| 20 | Attention steering | **Fixed 2026-08-14** — `FluxSteeringAttnProcessor` now scales `attn_probs` directly (8 new tests incl. 2 full-tiny-transformer equivalence checks); needs the A100 to actually run |
+| 14/16/17/18 | Taxonomy capture | **Done 2026-08-17**, Thunder Compute 1×A100 80GB, BOTH sets (§3.1) |
+| 19 | Intent-vs-realization | **Done 2026-08-17 — NEGATIVE (bulletproof), 0/10 cells pass** (§3.1) |
+| 20 | Attention steering | **Pilot done 2026-08-17** on Thunder Compute A100, n=2 (§3.2). Mechanism works; 0/2 ownership transfer at every window and strength; causal leverage localizes to steps 0–5. **Not a reportable rate** — needs prompts 3–10 + human labeling, not more windows |
 | 30 | PixArt-Σ | Pilot only (no attention capture); sequenced behind #19 |
-| 21 | Controlled prompt-obedience | Conditional on #20's outcome |
+| 21 | Controlled prompt-obedience | #20's pilot outcome is now in (steering moves composition, never binding). Still needs a decision on whether #20 gets scaled first |
 | 15 | Taxonomy on SDXL | Cut — dataset doesn't exist |
 
 **Pranav's 2026-08-14 push (`01a3626`) is code-only, no result JSONs.** It independently
@@ -421,14 +584,12 @@ or attribute types that fight priors even harder, not more prompts at the same n
   (new): 357/409 unanimous, 48/409 majority, 4/409 no-consensus. Not yet run for the original
   `artifacts_flux/` (chayan+akhil+grace) — same script, `--artifacts-dir artifacts_flux
   --annotators chayan akhil grace`, would take minutes if wanted.
-- **Part C robustness battery on FLUX — still BLOCKED, not attempted.** This is the chain
-  track's `pi_level_experiment/` validation battery (Holm/leave-one-out/RNG-sweep machinery in
-  `rng_sweep.py`/`analyze_results.py`), and `pi_level_experiment/` has zero FLUX chain data or
-  FLUX references anywhere (checked 2026-08-07) — `generate_chains.py` has never been run on
-  FLUX. Despite the "no GPU" framing in the briefing, the re-analysis tooling being GPU-free
-  doesn't help when the underlying FLUX chains don't exist yet; generating them is a Kaggle GPU
-  round-trip (full Stage 1/2/3 chain pipeline), not a cheap re-analysis. Flagging rather than
-  silently skipping.
+- ~~Part C robustness battery on FLUX~~ **NOT NEEDED — dropped 2026-08-17 per Chayan.** The
+  "Part C on FLUX" item was carried over from an old branch's plan and is not something the
+  chain track actually requires; `pi_level_experiment/` does not need FLUX chain data. Earlier
+  entries in this file described it as "blocked" pending a FLUX chain-generation run — that
+  framing was wrong, not merely stale. The chain track's contribution to the paper is C6 (the
+  Part C Step 6 ablation, §4), which is already in hand on SD1.5 chains.
 - Backfill `model_scores_full` so Experiment 2 stops reporting "unavailable" on SDXL
   (`backfill_model_scores_full.py`); it already runs on FLUX. Untouched this pass.
 

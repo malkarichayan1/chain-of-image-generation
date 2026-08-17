@@ -1,5 +1,24 @@
 # A100 Session Runbook — taxonomy capture (#14/#16/#17/#18 → #19)
 
+> **STATUS: EXECUTED 2026-08-17. This plan is kept for the record; two of its premises were
+> wrong and are corrected here.**
+>
+> The capture ran on **Thunder Compute** (`tnr` CLI, 1×A100 80GB, $1.09/GPU-hr,
+> per-minute billing, persistent disk), not the metered algoverse JupyterHub this doc was
+> written for. Results in CLAUDE.md §3.1.
+>
+> **Correction 1 — the cost estimate was off by ~25×.** Actual: **~14.1 s/image**, so 103
+> easy + 83 hard images = **~45 min wall-clock, ~$2 total**, not "~10–15 GPU-hr per set."
+> The old figure was calibrated for Kaggle T4/P100. Do not budget off it.
+>
+> **Correction 2 — §1.2's persistent-storage workaround is unnecessary on Thunder Compute.**
+> `$HOME` survives there by default; only `tnr delete` destroys it (there is no `tnr stop`,
+> and there is **no platform-side spending cap** — a timer is the only ceiling).
+>
+> **What held up:** the §2 smoke-test gate was worth every second. On n=3 it showed 1 image
+> over the 0.05 drift threshold, which looked alarming; on the full 186 the real rate was
+> 8/186 (4.3%). Run the gate, but read it on n≥20 before panicking.
+
 The A100 is a **metered JupyterHub session**: the clock starts at login, not at first
 compute. Everything in §1 is designed so the ~30 GB model download overlaps with setup
 instead of being paid for serially, and so a bad capture is caught in minutes rather than
