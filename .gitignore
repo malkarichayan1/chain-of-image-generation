@@ -40,3 +40,6 @@ ssa/anchor_set/artifacts_dummy/
 ssa/anchor_set/**/*.log
 artifacts_flux_pilot/
 *.zip
+
+# Internal design docs / paper drafts -- not part of the public codebase
+docs/

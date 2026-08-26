@@ -57,7 +57,6 @@ chain-of-image-generation/
 │   └── tests/                      # Chain pipeline test suite (108 tests)
 │
 ├── pilot/                          # Initial Causal Relevance pilot experiments (Audit 1)
-└── docs/                           # Paper drafts, LaTeX sources, and BibTeX references
 ```
 
 ---

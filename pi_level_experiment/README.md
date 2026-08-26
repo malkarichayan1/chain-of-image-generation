@@ -1,7 +1,7 @@
 # PI-level combined experiment: does Delta-Mask + Attention fix what persistence-checking couldn't?
 
-Branch: `pi-level-idea`. This directory is the first joint artifact combining Annotator 1's
-one-shot attribute-binding metric (metric A, `ssa/coig_ssa_colab.ipynb`) and Annotator 4's
+Branch: `pi-level-idea`. This directory is the first joint artifact combining the
+one-shot attribute-binding metric (metric A, `ssa/coig_ssa_colab.ipynb`) and the
 Delta-Mask + Attention-IoU chain metric (metric B, `pilot/spatial_semantic_alignment.py`),
 per the combined-arc plan in `CLAUDE.md`.
 
