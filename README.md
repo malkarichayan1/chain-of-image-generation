@@ -2,12 +2,11 @@
 
 [![Tests](https://img.shields.io/badge/tests-507%20passed-brightgreen.svg)]()
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue.svg)]()
-[![Venue](https://img.shields.io/badge/NeurIPS%202026-VLM4RWD%20Workshop-orange.svg)]()
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)]()
 
 > **Core Thesis:** Automated faithfulness metrics for text-to-image (T2I) synthesis—including internal cross-attention spatial mass and VLM-based judges (VQAScore)—predominantly encode *prompt intent* rather than *visual realization*. Consequently, they achieve high aggregate accuracy on standard benchmarks solely because models usually obey their prompts, while providing no reliable diagnostic signal precisely on the prompt-disobeyed failure cases they are deployed to catch.
 
-This repository contains the official, verified codebase and evaluation artifacts for the paper **"Faithful by Assumption: How Text-to-Image Faithfulness Metrics Fail on Model Disobedience"**, submitted to the NeurIPS 2026 Workshop on Grounded and Faithful Vision-Language Models for Real-World Deployment (VLM4RWD).
+This repository contains the official codebase and evaluation artifacts for the paper **"Faithful by Assumption: How Text-to-Image Faithfulness Metrics Fail on Model Disobedience"**.
 
 ---
 
