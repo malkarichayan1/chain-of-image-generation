@@ -1,0 +1,128 @@
+% =========================================================================
+% Section: Method & Experimental Setup
+% Paper: Faithful by Assumption: How Text-to-Image Faithfulness Metrics Fail on Model Disobedience
+% Target Venue: NeurIPS 2026 Workshop on Grounded and Faithful Vision-Language Models for Real-World Deployment (VLM4RWD)
+% =========================================================================
+
+\section{Method}
+\label{sec:method}
+
+We audit whether standard faithfulness metrics for text-to-image (T2I) synthesis carry diagnostic signal about what was \emph{actually rendered} in an image versus merely reflecting what the prompt \emph{instructed}. In this section, we formally define our central diagnostic tool---the prompt-only baseline---and outline the evaluation protocols for three representative metric families: sequential Causal Relevance, cross-attention spatial binding, and VLM-based judges.
+
+\subsection{The Prompt-Only Baseline and Intent vs.\ Realization}
+\label{sec:method_baseline}
+
+Consider an image generated from a conditioning text prompt containing a set of $n$ candidate subject entities $\mathcal{S} = \{s_1, \dots, s_n\}$ and $m$ specified attribute phrases $\mathcal{A} = \{a_1, \dots, a_m\}$. For each attribute $a \in \mathcal{A}$, we distinguish three core quantities:
+\begin{enumerate}[leftmargin=*,itemsep=1pt,topsep=2pt]
+    \item \textbf{Intended Subject} $y_{\text{intended}}(a) \in \mathcal{S}$: The subject to which the prompt text assigns attribute $a$. This quantity is determined entirely by textual syntax and reads zero image pixels.
+    \item \textbf{Realized Outcome (Human Label)} $y_{\text{human}}(a) \in \mathcal{S} \cup \mathcal{E}$: The subject that visibly possesses attribute $a$ in the rendered image, as determined by human annotators (where $\mathcal{E} = \{\texttt{none}, \texttt{unclear}, \texttt{shared}, \texttt{absent}\}$ denotes sentinel cases).
+    \item \textbf{Predicted Owner} $\hat{y}_{\text{metric}}(a) \in \mathcal{S}$: The subject predicted to possess attribute $a$ by the metric under audit (e.g., via internal cross-attention mass or VLM likelihood).
+\end{enumerate}
+
+The accuracy of an audited metric is defined as the rate at which its prediction matches the realized visual outcome:
+\begin{equation}
+\text{Acc}(\text{metric}) = \frac{1}{|\mathcal{A}_{\text{valid}}|} \sum_{a \in \mathcal{A}_{\text{valid}}} \mathbb{I}\left[\hat{y}_{\text{metric}}(a) = y_{\text{human}}(a)\right],
+\end{equation}
+where $\mathcal{A}_{\text{valid}} = \{a \in \mathcal{A} \mid y_{\text{human}}(a) \in \mathcal{S}\}$ excludes missing-data sentinels.
+
+\paragraph{Definition of the Prompt-Only Baseline.} We define the prompt-only baseline $\hat{y}_{\text{prompt}}$ as the trivial decision rule that assumes the generative model perfectly obeyed the prompt without inspecting the output image or model activations:
+\begin{equation}
+\hat{y}_{\text{prompt}}(a) \triangleq y_{\text{intended}}(a).
+\end{equation}
+Its accuracy is precisely the empirical prompt-obedience rate $\rho$ of the underlying generator:
+\begin{equation}
+\text{Acc}(\text{prompt-only}) = \frac{1}{|\mathcal{A}_{\text{valid}}|} \sum_{a \in \mathcal{A}_{\text{valid}}} \mathbb{I}\left[y_{\text{intended}}(a) = y_{\text{human}}(a)\right] = \rho.
+\end{equation}
+
+\paragraph{Derivation of Metric Alignment and the Disobedience Test.} Partition $\mathcal{A}_{\text{valid}}$ into the subset of obeyed attributes $\mathcal{O} = \{a \mid y_{\text{intended}}(a) = y_{\text{human}}(a)\}$ (where $|\mathcal{O}|/|\mathcal{A}_{\text{valid}}| = \rho$) and the subset of disobeyed/misbound attributes $\mathcal{D} = \{a \mid y_{\text{intended}}(a) \neq y_{\text{human}}(a)\}$. If an internal or output-based metric predominantly encodes \emph{prompt intent} rather than \emph{visual realization}, its predictions will collapse to $\hat{y}_{\text{metric}}(a) \approx y_{\text{intended}}(a)$. Consequently:
+\begin{equation}
+\text{Acc}(\text{metric} \mid \mathcal{O}) \approx 1.0, \quad \text{Acc}(\text{metric} \mid \mathcal{D}) \approx 0.0,
+\end{equation}
+yielding an overall aggregate accuracy of $\text{Acc}(\text{metric}) \approx \rho \cdot 1.0 + (1 - \rho) \cdot 0.0 = \rho = \text{Acc}(\text{prompt-only})$. 
+
+Under high base model obedience ($\rho \ge 0.90$), a metric that tracks prompt intent will appear highly accurate in aggregate ($>90\%$), outperforming naive chance ($1/n$) and passing standard sanity checks. However, in real-world deployment, faithfulness metrics exist precisely to detect failures ($\mathcal{D}$). Thus, a metric carries genuine diagnostic utility if and only if it provides non-trivial discriminative power on the disobedience subset: $\text{Acc}(\text{metric} \mid \mathcal{D}) > 1/n$.
+
+\subsection{Audit 1: Causal Relevance in Sequential Generation (CoIG)}
+\label{sec:method_cr}
+We audit step-wise generation faithfulness using the Chain-of-Image-Generation (CoIG) framework~\citep{coig2024}. CoIG constructs multi-subject scenes sequentially, applying a mechanical ``compositional lock'' (inpainting masks and latent preservation) across intermediate steps. CoIG's Causal Relevance (CR) metric evaluates step-wise attribution via two binary checks from an automated judge: (i) $P(\text{appears\_at\_step})$, verifying if an attribute appears at insertion step $t$, and (ii) $P(\text{persists\_to\_final})$, verifying if it persists to the final canvas $T$.
+
+To test whether CR measures causal contribution or merely the mechanical compositional lock, we audit $100$ generation chains ($300$ prompts) from the CoIG Entity Collapse benchmark across three conditions holding generated images fixed:
+\begin{enumerate}[leftmargin=*,itemsep=1pt,topsep=1pt]
+    \item \textbf{Real}: Original sub-prompt attribution sequence.
+    \item \textbf{Shuffled}: Permuted sub-prompt step assignments (evaluating sensitivity to step attribution).
+    \item \textbf{Substituted}: Unrelated replacement attribute queries (evaluating coarse content sensitivity).
+\end{enumerate}
+
+\subsection{Audit 2: Cross-Attention Multi-Subject Binding}
+\label{sec:method_cross_attn}
+For one-shot diffusion and flow models, cross-attention between text tokens and spatial feature maps serves as the standard interpretability primitive for attribute binding~\citep{tang2022daam,chefer2023attendandexcite,hertz2022prompttoprompt}. 
+
+\paragraph{Spatial Attention Aggregation.} For an attribute phrase consisting of token indices $\mathcal{K}_a$, we hook cross-attention probability maps $A_{t,l,h} \in \mathbb{R}^{H \times W \times |\mathcal{K}_a|}$ across denoising timesteps $t$, layers $l \in \mathcal{L}$, and attention heads $h \in \mathcal{H}$. Following established conventions~\citep{chefer2023attendandexcite}, we aggregate attention over the early layout-determining denoising window $\mathcal{T}_{\text{early}} = [0, 0.5 T_{\text{total}}]$:
+\begin{equation}
+M_a(u, v) = \frac{1}{|\mathcal{T}_{\text{early}}| |\mathcal{L}| |\mathcal{H}| |\mathcal{K}_a|} \sum_{t \in \mathcal{T}_{\text{early}}} \sum_{l \in \mathcal{L}} \sum_{h \in \mathcal{H}} \sum_{k \in \mathcal{K}_a} A_{t,l,h}(u, v, k).
+\end{equation}
+
+\paragraph{Bounding Box Ownership Assignment.} We detect subject bounding boxes $B_s$ for each $s \in \mathcal{S}$ via Mask R-CNN with CLIP classification. The metric computes the spatial attention mass within each candidate subject box:
+\begin{equation}
+\text{Mass}(s, a) = \sum_{(u, v) \in B_s} M_a(u, v), \quad \hat{y}_{\text{attn}}(a) = \arg\max_{s \in \mathcal{S}} \text{Mass}(s, a).
+\end{equation}
+
+\subsection{Audit 3: VLM-Based Faithfulness Judge (VQAScore)}
+\label{sec:method_vqascore}
+To determine whether the failure to track realization is unique to internal attention or general to the available evaluation toolkit, we audit VQAScore~\citep{lin2024vqascore}, an automated VLM-based metric widely adopted in deployment and reinforcement learning from AI feedback. For each subject bounding box crop $\text{Crop}(B_s)$ and attribute $a$, we query a vision-language model with question $Q_a$ (\emph{``Is the person [wearing/holding] [attribute]?''}) and compute normalized likelihood:
+\begin{equation}
+\text{Score}(s, a) = \frac{P(\text{``yes''} \mid \text{Crop}(B_s), Q_a)}{P(\text{``yes''} \mid \text{Crop}(B_s), Q_a) + P(\text{``no''} \mid \text{Crop}(B_s), Q_a)}, \quad \hat{y}_{\text{vqa}}(a) = \arg\max_{s \in \mathcal{S}} \text{Score}(s, a).
+\end{equation}
+Evaluating VQAScore on the exact same human-labeled anchor sets enables direct, paired head-to-head statistical comparisons against cross-attention and the prompt-only baseline.
+
+\subsection{MMDiT Attention Capture Architecture}
+\label{sec:method_flux_capture}
+Capturing cross-attention in modern Multimodal Diffusion Transformers (MMDiT), such as FLUX.1-dev~\citep{flux2024}, presents a fundamental systems challenge: stock implementations dispatch directly to fused scaled-dot-product attention (SDPA) or FlashAttention C++ kernels, never materializing the attention probability matrix in memory. 
+
+To overcome this, we implement a custom attention processor that reconstructs the full attention path across all 19 double transformer blocks (\texttt{FluxTransformerBlock}). For each block, our processor explicitly executes Query, Key, and Value linear projections for image and text streams, applies RMSNorm variants (\texttt{norm\_q}, \texttt{norm\_k}, \texttt{norm\_added\_q}, \texttt{norm\_added\_k}), aligns sequence dimensions (text indices $0 \dots T-1$, image indices $T \dots T+4095$), and applies Rotary Position Embeddings (RoPE). We compute explicit softmax probabilities:
+\begin{equation}
+\text{AttnProbs} = \text{softmax}\left(\frac{Q K^T}{\sqrt{d}}\right),
+\end{equation}
+slicing the matrix to image rows $\times$ target T5 text token columns. Sliced maps are head-averaged and streamed to CPU storage before matrix multiplication with Value states resumes. Hooked generation preserves native model outputs within strict numerical precision ($\max |\Delta| < 2 \times 10^{-7}$). The 38 single transformer blocks concatenate modalities prior to self-attention without a separable text-image cross-attention interface and are formally designated out of scope.
+
+\subsection{Adversarial Hard-Set Design}
+\label{sec:method_hard_set}
+Standard multi-subject benchmarks exhibit high prompt obedience ($\rho \approx 95\%$), leaving few misbound instances to evaluate metric behavior on disobedience. To stress-test metric behavior, we authored an adversarial hard set of 100 prompts ($n \in \{4, 5, 6\}$) spanning three compositional stress axes:
+\begin{enumerate}[leftmargin=*,itemsep=1pt,topsep=1pt]
+    \item \textbf{Same-Type Attribute Confusions}: Prompts featuring identical attribute categories with fine-grained color/style variations (e.g., \emph{``a barista in a red apron and a baker in a green apron''}).
+    \item \textbf{Attribute-Subject Prior Fights}: Anti-stereotypical pairings that fight diffusion semantic priors (e.g., \emph{``a chef in a cycling helmet and a cyclist in a chef's hat''}).
+    \item \textbf{Near-Duplicate Subjects}: Visually and semantically adjacent subject classes within the same frame (e.g., \emph{chef + baker}, \emph{nurse + doctor}, \emph{barista + waiter}, \emph{cyclist + biker}).
+\end{enumerate}
+This design reduced FLUX prompt obedience from $95\%$ to $77$--$80\%$, expanding the pool of misbound evaluation instances by $4$--$6\times$ ($60$--$73$ misbound rows per annotator; $62$ on consensus).
+
+% =========================================================================
+\section{Experimental Setup}
+\label{sec:setup}
+
+\subsection{Generative Models and Anchor Datasets}
+\label{sec:setup_models}
+We evaluate two distinct generative paradigm families:
+\begin{itemize}[leftmargin=*,itemsep=1pt,topsep=2pt]
+    \item \textbf{SDXL}~\citep{podell2023sdxl}: A 2.6B parameter UNet architecture operating with cross-attention layers across downsampling/upsampling blocks. The anchor set comprises 137 attempted generations yielding 105 detected scenes ($n \in \{2, 3, 4\}$) and 306 attribute judgments.
+    \item \textbf{FLUX.1-dev}~\citep{flux2024}: A 12B parameter rectified flow MMDiT architecture. We evaluate two benchmark splits: (i) \textbf{FLUX Easy Set} (105 attempted, 103 detected, 301 attribute judgments, $n \in \{2, 3, 4\}$ with chance floors $50.0\%, 33.3\%, 25.0\%$), and (ii) \textbf{FLUX Hard Set} (100 attempted, 83 detected, 409 attribute judgments, $n \in \{4, 5, 6\}$ with chance floors $25.0\%, 20.0\%, 16.7\%$).
+\end{itemize}
+
+\subsection{Human Annotation and Quality Control}
+\label{sec:setup_annotation}
+Ground truth was established through independent triple-annotation by human raters under a pre-registered protocol. Annotators inspected high-resolution rendered images and labeled the visual owner of each prompt attribute. To avoid forcing invalid categorical assignments, annotators could assign four sentinel labels: \texttt{none} (attribute unrendered), \texttt{unclear} (ambiguous ownership), \texttt{absent} (intended subject unrendered), and \texttt{shared} (attribute leakage across multiple subjects). Strict scoring evaluates valid subject assignments ($\mathcal{S}$).
+
+A two-stage audit filtered count-broken renderings ($96/306$ images filtered on SDXL due to UNet subject-synthesis failures; $0/301$ filtered on FLUX). Inter-rater agreement reached Cohen's $\kappa = 0.682$ on SDXL ($0.914$--$0.924$ on count-clean images), $\kappa = 0.954$--$0.958$ on FLUX Easy, and $\kappa = 0.889$--$0.912$ on FLUX Hard. For the hard set, a majority-vote consensus label set resolved $357/409$ ($87.3\%$) rows unanimously, $48/409$ ($11.7\%$) by $2$-of-$3$ majority, and excluded $4/409$ ($1.0\%$) non-consensus rows.
+
+\subsection{Statistical Protocols and Multi-Hypothesis Controls}
+\label{sec:setup_stats}
+\paragraph{Paired Metric Comparisons.} All head-to-head comparisons between paired predictors on identical scored rows (e.g., attention vs.\ prompt baseline, attention vs.\ VQAScore) are evaluated using two-sided exact McNemar tests on discordant pairs ($p < 0.05$).
+
+\paragraph{Hierarchy Taxonomy Search.} To evaluate whether specific sub-components of attention retain faithfulness, we characterized FLUX cross-attention across 19 double blocks $\times$ 24 heads ($456$ layer-head cells) across 4 denoising quartiles. To prevent false discovery, all cell comparisons are corrected using the Holm-Bonferroni step-down procedure. The top-10 sharpest cells were selected by in-box mass on the easy set and evaluated disjointly on the unseen hard set.
+
+\paragraph{Disobedience Subset Testing.} For evaluations restricted to the misbound subset ($\mathcal{D}$), per-stratum tests are computed via exact binomial tests against $1/n$ chance. To pool statistical power across heterogeneous strata ($n=4, 5, 6$), we report an exact Poisson-binomial test over each row's individual chance probability, explicitly designated as exploratory.
+
+\paragraph{Falsification Controls.} We implement two structural falsification baselines: (i) a \emph{within-item token permutation test} ($n \ge 3$) that deranges attribute attention maps within the same image to test attribute-specificity against generic visual salience, and (ii) a \emph{bounding-box area heuristic} (largest box baseline) to rule out object-geometry artifacts.
+
+\subsection{Reproducibility and Compute Budget}
+\label{sec:setup_reproducibility}
+All sampling runs used pinned random seeds, fixed prompt specifications, and public model checkpoints (\texttt{stabilityai/stable-diffusion-xl-base-1.0} and \texttt{black-forest-labs/FLUX.1-dev}). The full evaluation harness, bounding box annotations, and analysis suite run on standard CPU in $<30$ seconds. Image generation and attention capture were performed on single NVIDIA A100 (80GB) and T4 GPUs.
