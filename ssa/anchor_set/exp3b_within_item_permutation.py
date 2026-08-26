@@ -26,7 +26,7 @@ Run as a many-seed sweep (one derangement draw is a lucky/unlucky-draw risk, sam
 Experiment 3) plus one paired McNemar (real vs. permuted correctness) at a fixed seed.
 
 Run from inside ssa/anchor_set/:
-    py -3 exp3b_within_item_permutation.py --artifacts-dir artifacts_flux --annotator chayan
+    py -3 exp3b_within_item_permutation.py --artifacts-dir artifacts_flux --annotator annotator1
     py -3 exp3b_within_item_permutation.py --artifacts-dir artifacts_flux_hard --annotator consensus
 """
 from __future__ import annotations

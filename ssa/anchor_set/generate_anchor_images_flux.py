@@ -631,7 +631,7 @@ def generate_and_score(spec: dict, models: Models) -> dict:
     # generation pass, as an earlier design sketch considered) -- reuses the same seed so
     # the image is unaffected, but keeps the existing, already-working seed-retry detection
     # loop above completely untouched rather than risk modifying it. Doubles per-prompt
-    # generation cost; already flagged for Pranav before the full run.
+    # generation cost; already flagged for Annotator 4 before the full run.
     #
     # hook_pipeline() through unhook_pipeline() is wrapped in try/finally: if generation or
     # scoring raises partway through (OOM, transient CUDA error -- the second pass is the

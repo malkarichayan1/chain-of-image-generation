@@ -1,8 +1,14 @@
 """
 Tests for vqa_agreement_check.py: joins BLIP-VQA per-subject-crop scores (computed on
-Kaggle GPU by vqa_score_sdxl.py) with the same human labels metric A's own attention
-predictions are already scored against, so the two can be compared head-to-head on
-identical rows. Pure logic only -- no model calls.
+Kaggle GPU by vqa_score_sdxl.py / vqa_score_flux.py) with the same human labels metric A's
+own attention predictions are already scored against, so the two can be compared head-to-head
+on identical rows -- plus the two comparisons that matter for the paper: VQAScore vs. the
+prompt-obeyed baseline, and VQAScore's accuracy on the misbound subset. Pure logic only -- no
+model calls.
+
+`attribute_question` itself is tested in test_anchor_common.py (its canonical home); this file
+only guards that both self-contained Kaggle kernels' inline duplicates stay byte-identical to
+it -- same drift-guard pattern as test_anchor_common.py's own ANCHOR_PROMPTS check.
 """
 import ast
 import sys
@@ -12,46 +18,43 @@ import pandas as pd
 import pytest
 
 from vqa_agreement_check import (
-    ATTRIBUTE_PHRASES, attribute_question, paired_mcnemar, vqa_agreement_rows,
-    vqa_predicted_owner,
+    paired_mcnemar, vqa_agreement_rows, vqa_misbound_subset_report, vqa_predicted_owner,
+    vqa_vs_prompt_baseline_report,
 )
 
 PKG = Path(__file__).resolve().parents[1]
+ANCHOR_COMMON_PATH = PKG / "anchor_common.py"
+_DUPLICATED_NAMES = ("_HELD_NOUNS", "_NO_ARTICLE_WORN_NOUNS", "attribute_question")
 
 
-def test_attribute_phrases_match_vqa_score_sdxl_kernels_own_copy():
-    """vqa_score_sdxl.py (self-contained Kaggle kernel) duplicates ATTRIBUTE_PHRASES --
-    same drift-guard pattern as test_anchor_common.py's ANCHOR_PROMPTS check."""
-    src = (PKG / "vqa_score_sdxl.py").read_text(encoding="utf-8")
-    seg = None
+# --------------------------------------------------------------------------- drift guard
+
+def _extract_top_level_source(path: Path, name: str) -> str:
+    """Extracts a top-level function's or assignment's full source text by name, via AST --
+    for verbatim comparison against anchor_common.py's canonical copy."""
+    src = path.read_text(encoding="utf-8")
     for node in ast.parse(src).body:
-        if isinstance(node, ast.AnnAssign) and getattr(node.target, "id", None) == "ATTRIBUTE_PHRASES":
-            seg = ast.get_source_segment(src, node.value)
-    assert seg is not None, "ATTRIBUTE_PHRASES assignment not found in vqa_score_sdxl.py"
-    embedded = ast.literal_eval(seg)
-    assert embedded == ATTRIBUTE_PHRASES
+        if isinstance(node, ast.FunctionDef) and node.name == name:
+            return ast.get_source_segment(src, node)
+        if isinstance(node, (ast.Assign, ast.AnnAssign)):
+            targets = node.targets if isinstance(node, ast.Assign) else [node.target]
+            if any(getattr(t, "id", None) == name for t in targets):
+                return ast.get_source_segment(src, node)
+    raise AssertionError(f"{name!r} not found as a top-level definition in {path}")
 
 
-def test_attribute_question_uses_wearing_for_clothing_attributes():
-    assert attribute_question("red apron") == "Is the person wearing a red apron?"
-    assert attribute_question("blue gloves") == "Is the person wearing blue gloves?"
+@pytest.mark.parametrize("kernel_file", ["vqa_score_sdxl.py", "vqa_score_flux.py"])
+@pytest.mark.parametrize("name", _DUPLICATED_NAMES)
+def test_kaggle_kernel_attribute_logic_matches_anchor_common(kernel_file, name):
+    """Both self-contained Kaggle kernels duplicate anchor_common's attribute-question
+    logic inline (same convention as ANCHOR_PROMPTS) -- this must stay byte-identical or
+    the two runs' VQA questions would silently diverge."""
+    canonical = _extract_top_level_source(ANCHOR_COMMON_PATH, name)
+    embedded = _extract_top_level_source(PKG / kernel_file, name)
+    assert embedded == canonical
 
 
-def test_attribute_question_uses_holding_for_held_objects():
-    assert attribute_question("shovel") == "Is the person holding a shovel?"
-    assert attribute_question("book") == "Is the person holding a book?"
-
-
-def test_attribute_question_covers_every_controlled_vocabulary_attribute():
-    for attribute in ATTRIBUTE_PHRASES:
-        q = attribute_question(attribute)
-        assert q.startswith("Is the person ") and q.endswith("?")
-
-
-def test_attribute_question_raises_on_unknown_attribute():
-    with pytest.raises(KeyError):
-        attribute_question("a top hat")
-
+# --------------------------------------------------------------------------- vqa_predicted_owner
 
 def test_vqa_predicted_owner_picks_highest_p_yes():
     assert vqa_predicted_owner({"barista": 0.2, "cyclist": 0.9}) == "cyclist"
@@ -61,6 +64,8 @@ def test_vqa_predicted_owner_raises_on_empty_scores():
     with pytest.raises(ValueError):
         vqa_predicted_owner({})
 
+
+# --------------------------------------------------------------------------- vqa_agreement_rows
 
 def _manifest(images):
     return {"images": images}
@@ -108,6 +113,8 @@ def test_vqa_agreement_rows_skips_undetected_images():
     assert vqa_agreement_rows(manifest, labels, vqa_scores) == []
 
 
+# --------------------------------------------------------------------------- paired_mcnemar
+
 def test_paired_mcnemar_significant_when_a_beats_b_on_discordant_pairs():
     df = pd.DataFrame({
         "scored": [True] * 10,
@@ -128,3 +135,71 @@ def test_paired_mcnemar_excludes_unscored_rows():
     })
     report = paired_mcnemar(df, "a_correct", "b_correct")
     assert report["n"] == 1
+
+
+# --------------------------------------------------------------------------- vqa_vs_prompt_baseline_report
+
+def test_vqa_vs_prompt_baseline_report_counts_discordant_pairs():
+    rows = [
+        # VQA correct, baseline wrong
+        dict(n=2, scored=True, correct=True, human_label="barista", intended_subject="cyclist"),
+        # VQA wrong, baseline correct
+        dict(n=2, scored=True, correct=False, human_label="cyclist", intended_subject="cyclist"),
+        # both correct -- not discordant
+        dict(n=2, scored=True, correct=True, human_label="barista", intended_subject="barista"),
+    ]
+    o = vqa_vs_prompt_baseline_report(rows)["overall"]
+    assert o["n_scored"] == 3
+    assert o["b"] == 1  # VQA-only correct
+    assert o["c"] == 1  # baseline-only correct
+    assert o["vqa_acc"] == pytest.approx(2 / 3)
+    assert o["base_acc"] == pytest.approx(2 / 3)
+
+
+def test_vqa_vs_prompt_baseline_report_excludes_unscored_rows():
+    rows = [dict(n=2, scored=False, correct=True, human_label="none", intended_subject="cyclist")]
+    o = vqa_vs_prompt_baseline_report(rows)["overall"]
+    assert o["n_scored"] == 0
+    assert o["vqa_acc"] is None
+    assert o["p_value"] is None
+
+
+def test_vqa_vs_prompt_baseline_report_splits_by_stratum():
+    rows = [
+        dict(n=2, scored=True, correct=True, human_label="a", intended_subject="a"),
+        dict(n=3, scored=True, correct=False, human_label="b", intended_subject="c"),
+    ]
+    report = vqa_vs_prompt_baseline_report(rows)
+    assert set(report["by_stratum"]) == {2, 3}
+    assert report["by_stratum"][2]["n_scored"] == 1
+    assert report["by_stratum"][3]["n_scored"] == 1
+
+
+# --------------------------------------------------------------------------- vqa_misbound_subset_report
+
+def test_vqa_misbound_subset_report_restricts_to_disobeyed_rows():
+    rows = [
+        # model obeyed the prompt -- excluded from the misbound subset
+        dict(n=2, scored=True, correct=True, human_label="barista", intended_subject="barista"),
+        # model disobeyed; VQA got the rendered outcome right
+        dict(n=2, scored=True, correct=True, human_label="cyclist", intended_subject="barista"),
+        # model disobeyed; VQA got it wrong
+        dict(n=2, scored=True, correct=False, human_label="chef", intended_subject="barista"),
+    ]
+    o = vqa_misbound_subset_report(rows)["overall"]
+    assert o["n_misbound"] == 2
+    assert o["n_correct"] == 1
+    assert o["accuracy"] == pytest.approx(0.5)
+
+
+def test_vqa_misbound_subset_report_excludes_unscored_rows():
+    rows = [dict(n=2, scored=False, correct=False, human_label="none", intended_subject="barista")]
+    o = vqa_misbound_subset_report(rows)["overall"]
+    assert o["n_misbound"] == 0
+    assert o["accuracy"] is None
+
+
+def test_vqa_misbound_subset_report_reports_chance_per_stratum():
+    rows = [dict(n=4, scored=True, correct=True, human_label="b", intended_subject="a")]
+    report = vqa_misbound_subset_report(rows)
+    assert report["by_stratum"][4]["chance"] == pytest.approx(0.25)

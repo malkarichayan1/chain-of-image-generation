@@ -34,7 +34,7 @@ from segment_cache import load_cached_map
 
 DEFAULT_SEED = 42
 # Frozen by calibrate_threshold.py on 2026-07-23 against the first real Stage 1/2 run
-# (Kaggle kernel chayanmalkari/coig-pi-level-generate-chains v1, 19/27 chains detected).
+# (Kaggle kernel anonymous/coig-pi-level-generate-chains v1, 19/27 chains detected).
 # Sweep: np.arange(0.05, 0.96, 0.05) (calibrate_threshold.DEFAULT_SWEEP). Criterion:
 # maximize real_nonzero_rate subject to substituted_nonzero_rate == 0 exactly. Fit only on
 # the calibration set (CALIBRATION_PROMPT_IDS below, n_real=21 rows) -- prompts 0/1/2/5/7

@@ -5,21 +5,24 @@ Compares metric A's attention-based `predicted_owner` against a VQAScore-style b
 SAME human-labeled anchor-set rows -- the comparison CLAUDE.md flags as never done:
 "attention agrees with humans X%, VQAScore Y%, on identical images."
 
-vqa_score_sdxl.py (Kaggle GPU kernel, not this file) crops each detected image to every
-subject's box (recompute_boxes.py's boxes.json) and asks BLIP-VQA-base
-"Is the person {phrase}?" per (subject crop, attribute), writing vqa_scores.json:
-{prompt_id (str): {attribute: {subject: p_yes}}}. This module is pure CPU logic that
-reads that file -- no model calls -- and mirrors anchor_common.build_agreement_rows'
-row shape so results can be joined/compared directly, plus a paired McNemar test for the
-head-to-head question.
+vqa_score_sdxl.py / vqa_score_flux.py (Kaggle GPU kernels, not this file) crop each
+detected image to every subject's box (recompute_boxes.py's boxes.json) and ask
+BLIP-VQA-base `anchor_common.attribute_question`'s question per (subject crop, attribute),
+writing vqa_scores.json: {prompt_id (str): {attribute: {subject: p_yes}}}. This module is
+pure CPU logic that reads that file -- no model calls -- and mirrors
+anchor_common.build_agreement_rows' row shape so results can be joined/compared directly,
+plus a paired McNemar test for the head-to-head question, a prompt-baseline comparison
+(mirrors exp6_prompt_baseline.py), and a misbound-subset accuracy check (mirrors
+exp7_misbound_subset.py) -- the two comparisons that actually matter for the paper: does
+VQAScore also lose to "assume the prompt was obeyed," and does it do any better than
+attention specifically on the rows where the model disobeyed?
 
-ATTRIBUTE_PHRASES is a verbatim copy of the (subject, attribute) phrasing already
-authored in prompt_specs.json (the "wearing X" / "holding X" wording each prompt uses) --
-duplicated into vqa_score_sdxl.py's self-contained Kaggle kernel too, same "keep in sync"
-convention as ANCHOR_PROMPTS across the two generation scripts.
+`attribute_question` is imported from anchor_common (this file, unlike the Kaggle
+kernels, can import local modules) -- both Kaggle kernels duplicate its logic inline,
+same "keep in sync" convention as ANCHOR_PROMPTS across the generation scripts.
 
 Local CPU only (pandas/scipy). Run from inside ssa/anchor_set/:
-    py -3 vqa_agreement_check.py --artifacts-dir artifacts_sdxl --annotator chayan
+    py -3 vqa_agreement_check.py --artifacts-dir artifacts_sdxl --annotator annotator1
 """
 from __future__ import annotations
 
@@ -31,22 +34,10 @@ from typing import Dict, List
 import pandas as pd
 from scipy import stats
 
-from anchor_common import NON_SUBJECT_LABELS, label_key, load_labels, summarize_agreement
-
-ATTRIBUTE_PHRASES: Dict[str, str] = {
-    "red apron": "wearing a red apron",
-    "white hat": "wearing a white hat",
-    "shovel": "holding a shovel",
-    "blue gloves": "wearing blue gloves",
-    "dark sunglasses": "wearing dark sunglasses",
-    "book": "holding a book",
-    "yellow helmet": "wearing a yellow helmet",
-    "pan": "holding a pan",
-}
-
-
-def attribute_question(attribute: str) -> str:
-    return f"Is the person {ATTRIBUTE_PHRASES[attribute]}?"
+from anchor_common import (
+    NON_SUBJECT_LABELS, attribute_question, binomial_test_vs_chance, label_key, load_labels,
+    summarize_agreement,
+)
 
 
 def vqa_predicted_owner(p_yes_by_subject: Dict[str, float]) -> str:
@@ -102,13 +93,71 @@ def paired_mcnemar(df: pd.DataFrame, correct_a: str, correct_b: str) -> dict:
                 n_discordant=n_discordant, p_value=p)
 
 
+def vqa_vs_prompt_baseline_report(rows: List[dict]) -> dict:
+    """Same question as exp6_prompt_baseline.py's baseline_accuracy_report, asked of
+    VQAScore's rows instead of attention's: does VQAScore also lose to "assume the model
+    rendered what the prompt asked for"? `rows` is vqa_agreement_rows()'s output."""
+    def _stratum(subset: List[dict]) -> dict:
+        scored = [r for r in subset if r["scored"]]
+        n_scored = len(scored)
+        vqa_correct = base_correct = 0
+        b = c = 0  # b: VQA correct, baseline wrong. c: VQA wrong, baseline correct.
+        for r in scored:
+            vqa_hit = r["correct"]
+            base_hit = (r["human_label"] == r["intended_subject"])
+            if vqa_hit:
+                vqa_correct += 1
+            if base_hit:
+                base_correct += 1
+            if vqa_hit and not base_hit:
+                b += 1
+            if not vqa_hit and base_hit:
+                c += 1
+        n_discordant = b + c
+        p = (stats.binomtest(min(b, c), n_discordant, 0.5, alternative="two-sided").pvalue
+             if n_discordant else None)
+        return dict(
+            n_scored=n_scored,
+            vqa_acc=vqa_correct / n_scored if n_scored else None,
+            base_acc=base_correct / n_scored if n_scored else None,
+            b=b, c=c, p_value=p,
+        )
+
+    by_stratum = {n: _stratum([r for r in rows if r["n"] == n])
+                  for n in sorted({r["n"] for r in rows})}
+    return dict(overall=_stratum(rows), by_stratum=by_stratum)
+
+
+def vqa_misbound_subset_report(rows: List[dict]) -> dict:
+    """Same question as exp7_misbound_subset.py's misbound_analysis_report, asked of
+    VQAScore's rows instead of attention's: restricted to rows where the model disobeyed
+    the prompt (human_label != intended_subject), does VQAScore predict the RENDERED
+    outcome above chance? This is the sharpest comparison for the paper -- the SOTA
+    judge-based line, tested on exactly the rows a faithfulness metric exists to detect."""
+    def _stratum(subset: List[dict]) -> dict:
+        misbound = [r for r in subset
+                    if r["scored"] and r["human_label"] != r["intended_subject"]]
+        n_misbound = len(misbound)
+        n_correct = sum(1 for r in misbound if r["correct"])
+        ns = {r["n"] for r in subset}
+        chance = (1.0 / next(iter(ns))) if len(ns) == 1 else None
+        acc = (n_correct / n_misbound) if n_misbound else None
+        p_val = binomial_test_vs_chance(n_correct, n_misbound, chance) if chance is not None else None
+        return dict(n_misbound=n_misbound, n_correct=n_correct, accuracy=acc,
+                    chance=chance, p_value=p_val)
+
+    by_stratum = {n: _stratum([r for r in rows if r["n"] == n])
+                  for n in sorted({r["n"] for r in rows})}
+    return dict(overall=_stratum(rows), by_stratum=by_stratum)
+
+
 if __name__ == "__main__":
     from anchor_common import build_agreement_rows
 
     ap = argparse.ArgumentParser(
         description="Compare metric A's attention predictions against VQAScore")
     ap.add_argument("--artifacts-dir", default="artifacts_sdxl")
-    ap.add_argument("--annotator", default="chayan")
+    ap.add_argument("--annotator", default="annotator1")
     args = ap.parse_args()
     artifacts_dir = Path(args.artifacts_dir)
 
@@ -141,3 +190,25 @@ if __name__ == "__main__":
     mcnemar = paired_mcnemar(joined, "attn_correct", "vqa_correct")
     print(f"  McNemar: attention-only correct={mcnemar['a_only_correct']}, "
           f"VQAScore-only correct={mcnemar['b_only_correct']}, p={mcnemar['p_value']}")
+
+    print("\n=== VQAScore vs. prompt-obeyed baseline (mirrors exp6_prompt_baseline.py) ===")
+    baseline = vqa_vs_prompt_baseline_report(vqa_rows)
+    for n, s in sorted(baseline["by_stratum"].items()):
+        print(f"  n={n}: n_scored={s['n_scored']} vqa_acc={s['vqa_acc']} "
+              f"base_acc={s['base_acc']} vqa>base={s['b']} base>vqa={s['c']} "
+              f"p={s['p_value']}")
+    o = baseline["overall"]
+    print(f"  overall: n_scored={o['n_scored']} vqa_acc={o['vqa_acc']} "
+          f"base_acc={o['base_acc']} vqa>base={o['b']} base>vqa={o['c']} p={o['p_value']}")
+
+    print("\n=== VQAScore on the misbound subset (mirrors exp7_misbound_subset.py) ===")
+    misbound = vqa_misbound_subset_report(vqa_rows)
+    for n, s in sorted(misbound["by_stratum"].items()):
+        print(f"  n={n}: n_misbound={s['n_misbound']} n_correct={s['n_correct']} "
+              f"accuracy={s['accuracy']} chance={s['chance']} p={s['p_value']}")
+    o = misbound["overall"]
+    print(f"  overall: n_misbound={o['n_misbound']} n_correct={o['n_correct']} "
+          f"accuracy={o['accuracy']}")
+    print("\n  This is the paper's sharpest question: does the SOTA judge-based line do "
+          "any better than attention on exactly the rows a faithfulness metric exists "
+          "to detect?")

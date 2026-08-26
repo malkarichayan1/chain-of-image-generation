@@ -8,10 +8,10 @@ manifest's pinned seeds on every overlapping `prompt_id`) — see `CLAUDE.md`'s 
 entry for the full verification writeup and what was merged to produce this data
 (`worktree-flux-attention-hook`, commit `c54cadc`).
 
-Run against all three annotators independently (chayan/akhil/grace) rather than picking one,
+Run against all three annotators independently (annotator1/annotator3/annotator2) rather than picking one,
 since inter-rater kappa on this label set turned out to be high (0.95+, see Exp 5/agreement
 note below) — the three runs agree closely, which is itself part of the evidence this data
-is trustworthy. Raw output: `five_experiments_{chayan,akhil,grace}.{json,md}`,
+is trustworthy. Raw output: `five_experiments_{annotator1,annotator3,annotator2}.{json,md}`,
 `agreement_chayan.csv`.
 
 ## Experiment 1 — accuracy per subject count vs. 1/n chance
@@ -20,9 +20,9 @@ Does the FLUX attention-based `predicted_owner` prediction beat chance at each s
 
 | annotator | n=2 acc | n=3 acc | n=4 acc | overall | overall n_scored |
 |---|---|---|---|---|---|
-| chayan | 97.5% (78/80) | 92.9% (65/70) | 71.5% (88/123) | 84.6% | 273 |
-| akhil  | 97.5% (77/79) | 94.3% (66/70) | 72.5% (87/120) | 85.5% | 269 |
-| grace  | 97.4% (76/78) | 95.6% (65/68) | 73.1% (87/119) | 86.0% | 265 |
+| annotator1 | 97.5% (78/80) | 92.9% (65/70) | 71.5% (88/123) | 84.6% | 273 |
+| annotator3  | 97.5% (77/79) | 94.3% (66/70) | 72.5% (87/120) | 85.5% | 269 |
+| annotator2  | 97.4% (76/78) | 95.6% (65/68) | 73.1% (87/119) | 86.0% | 265 |
 
 Chance is 50% / 33.3% / 25.0% at n=2/3/4. Every stratum, every annotator: binomial
 p<0.0001. This is the least interesting of the five results on its own — FLUX's *labeled*
@@ -37,9 +37,9 @@ versus using the full 25-step trajectory?
 
 | annotator | n=2 (early/full) | n=3 (early/full) | n=4 (early/full) | McNemar p |
 |---|---|---|---|---|
-| chayan | 0.975 / 0.975 | 0.929 / 0.929 | 0.715 / 0.707 | 1.0 |
-| akhil  | 0.975 / 0.975 | 0.943 / 0.943 | 0.725 / 0.717 | 1.0 |
-| grace  | 0.974 / 0.974 | 0.956 / 0.956 | 0.731 / 0.723 | 1.0 |
+| annotator1 | 0.975 / 0.975 | 0.929 / 0.929 | 0.715 / 0.707 | 1.0 |
+| annotator3  | 0.975 / 0.975 | 0.943 / 0.943 | 0.725 / 0.717 | 1.0 |
+| annotator2  | 0.974 / 0.974 | 0.956 / 0.956 | 0.731 / 0.723 | 1.0 |
 
 Effectively no difference — at most 1 discordant prediction out of 265–273 rows in every
 run. FLUX's subject-attribute binding decision looks like it's already settled within the
@@ -58,9 +58,9 @@ land at chance and be indistinguishable from real.
 
 | annotator | stratum | median scrambled acc | chance | real acc | McNemar p (real vs. scrambled, seed=42) |
 |---|---|---|---|---|---|
-| chayan | n=2/3/4 | 0.500 / 0.329 / 0.252 | 0.500 / 0.333 / 0.250 | 0.975 / 0.929 / 0.715 | **1.77e-33** |
-| akhil  | n=2/3/4 | 0.494 / 0.329 / 0.250 | 0.500 / 0.333 / 0.250 | 0.975 / 0.943 / 0.725 | **1.77e-33** |
-| grace  | n=2/3/4 | 0.500 / 0.324 / 0.252 | 0.500 / 0.333 / 0.250 | 0.974 / 0.956 / 0.731 | **2.22e-29** |
+| annotator1 | n=2/3/4 | 0.500 / 0.329 / 0.252 | 0.500 / 0.333 / 0.250 | 0.975 / 0.929 / 0.715 | **1.77e-33** |
+| annotator3  | n=2/3/4 | 0.494 / 0.329 / 0.250 | 0.500 / 0.333 / 0.250 | 0.975 / 0.943 / 0.725 | **1.77e-33** |
+| annotator2  | n=2/3/4 | 0.500 / 0.324 / 0.252 | 0.500 / 0.333 / 0.250 | 0.974 / 0.956 / 0.731 | **2.22e-29** |
 
 (200 scramble seeds per run.) Scrambled accuracy sits essentially exactly on the chance
 line in every stratum — the falsification test is clean, not just "significant but still
@@ -77,9 +77,9 @@ prompt" baseline (bug-fixed this session for FLUX's sub-phrase attribute strings
 
 | annotator | metric acc | baseline acc | McNemar p | metric-only wins | baseline-only wins |
 |---|---|---|---|---|---|
-| chayan | 84.6% | 77.7% | 0.0271 | 43 | 24 |
-| akhil  | 85.5% | 77.7% | 0.0139 | 44 | 23 |
-| grace  | 86.0% | 78.9% | 0.0271 | 43 | 24 |
+| annotator1 | 84.6% | 77.7% | 0.0271 | 43 | 24 |
+| annotator3  | 85.5% | 77.7% | 0.0139 | 44 | 23 |
+| annotator2  | 86.0% | 78.9% | 0.0271 | 43 | 24 |
 
 Significant overall for all three annotators. Per-stratum, as the design doc predicted, n=2
 is close to a wash (metric 97.4-97.5% vs. baseline 88.5-88.8% — baseline is already strong
@@ -92,9 +92,9 @@ it adds real signal on top, most visibly at n=3.
 
 | annotator | rows excluded as count-broken | all-rows overall acc | count-clean overall acc |
 |---|---|---|---|
-| chayan | 0 / 297 | 84.6% | 84.6% (identical) |
-| akhil  | 0 / 297 | 85.5% | 85.5% (identical) |
-| grace  | 0 / 297 | 86.0% | 86.0% (identical) |
+| annotator1 | 0 / 297 | 84.6% | 84.6% (identical) |
+| annotator3  | 0 / 297 | 85.5% | 85.5% (identical) |
+| annotator2  | 0 / 297 | 86.0% | 86.0% (identical) |
 
 No count-broken images in this dataset for any annotator, so this experiment is a null
 result by construction — included for completeness/consistency with the SDXL battery, where
@@ -108,8 +108,8 @@ prompt's intended subject count far more reliably than SDXL's did on the growth 
 
 | pair | raw agreement | Cohen's kappa |
 |---|---|---|
-| chayan vs. akhil | 289/301 = 96.0% | 0.954 |
-| chayan vs. grace | 290/301 = 96.3% | 0.958 |
+| annotator1 vs. annotator3 | 289/301 = 96.0% | 0.954 |
+| annotator1 vs. annotator2 | 290/301 = 96.3% | 0.958 |
 
 Both comfortably clear the κ≥0.7 target that the SDXL anchor set (κ=0.682) missed. The three
 annotator-specific 5-experiment runs above agree closely with each other, which is exactly

@@ -2,7 +2,7 @@
 """
 VQAScore-style baseline for metric A's anchor set. Self-contained Kaggle GPU kernel:
 reads the already-generated SDXL images + boxes from the attached dataset
-(chayanmalkari/coig-metric-a-anchor-set-sdxl-images), NOT regenerating them (diffusion
+(anonymous/coig-metric-a-anchor-set-sdxl-images), NOT regenerating them (diffusion
 output is not guaranteed bit-reproducible across Kaggle sessions, unlike Mask R-CNN
 detection on an already-fixed image -- see recompute_boxes.py's docstring for that
 distinction).
@@ -18,10 +18,10 @@ P(yes) follows VQAScore's own normalization (Lin et al. 2024): softmax(yes) /
 softmax(yes) alone -- so a model that's simply uncertain about everything doesn't read as
 uniformly low-confidence "no" evidence.
 
-ATTRIBUTE_PHRASES is a verbatim duplicate of vqa_agreement_check.py's dict (this is a
-single-file Kaggle kernel, same "keep in sync" convention ANCHOR_PROMPTS already uses
-across the two generation scripts; tests/test_vqa_agreement_check.py's drift guard
-checks the two stay identical).
+`attribute_question` (and the two frozensets it reads) is a verbatim duplicate of
+anchor_common.py's canonical copy (this is a single-file Kaggle kernel, same "keep in
+sync" convention ANCHOR_PROMPTS already uses across the two generation scripts;
+tests/test_vqa_agreement_check.py's drift guard checks the two stay byte-identical).
 
 Output: vqa_scores.json, {prompt_id (str): {attribute: {subject: p_yes}}}, saved
 incrementally after each image so a Kaggle timeout doesn't lose completed work.
@@ -61,20 +61,25 @@ def find_input_dir() -> Path:
     raise FileNotFoundError(
         f"no manifest.json found anywhere under /kaggle/input; contents: {available}")
 
-ATTRIBUTE_PHRASES: Dict[str, str] = {
-    "red apron": "wearing a red apron",
-    "white hat": "wearing a white hat",
-    "shovel": "holding a shovel",
-    "blue gloves": "wearing blue gloves",
-    "dark sunglasses": "wearing dark sunglasses",
-    "book": "holding a book",
-    "yellow helmet": "wearing a yellow helmet",
-    "pan": "holding a pan",
-}
+_HELD_NOUNS = frozenset({"book", "shovel", "pan"})
+
+_NO_ARTICLE_WORN_NOUNS = frozenset({"gloves", "sunglasses", "glasses"})
 
 
 def attribute_question(attribute: str) -> str:
-    return f"Is the person {ATTRIBUTE_PHRASES[attribute]}?"
+    """A yes/no VQA question for one attribute string, e.g. "Is the person wearing a red
+    apron?" or "Is the person holding a book?" -- the question `vqa_score_sdxl.py` /
+    `vqa_score_flux.py` ask per (subject crop, attribute), whose P(yes) is VQAScore's
+    binding signal (Lin et al. 2024). Classifies by the attribute's LAST word only, so any
+    new color/descriptor combination (e.g. a hard-prompt-set "blue helmet") is covered
+    automatically without a per-attribute lookup table -- verified to reproduce every
+    entry of the anchor sets' original hand-written ATTRIBUTE_PHRASES dict exactly."""
+    last_word = attribute.rsplit(" ", 1)[-1].lower()
+    if last_word in _HELD_NOUNS:
+        return f"Is the person holding a {attribute}?"
+    if last_word in _NO_ARTICLE_WORN_NOUNS:
+        return f"Is the person wearing {attribute}?"
+    return f"Is the person wearing a {attribute}?"
 
 
 def load_model():

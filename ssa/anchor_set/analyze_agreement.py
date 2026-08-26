@@ -11,7 +11,7 @@ open sub-chance n=2/n=3 binding question: it shows, per subject count, whether a
 tracks human judgment above chance.
 
 Local CPU only (pandas + stdlib). Run from inside ssa/anchor_set/:
-    py -3 analyze_agreement.py --annotator chayan
+    py -3 analyze_agreement.py --annotator annotator1
 """
 from __future__ import annotations
 
@@ -160,7 +160,7 @@ def main() -> None:
                          "Omit for the strict, already-published measurement only.")
     ap.add_argument("--compare-annotator", default=None,
                     help="second annotator id to compute Cohen's kappa against, e.g. "
-                         "'--annotator chayan --compare-annotator ane'")
+                         "'--annotator annotator1 --compare-annotator ane'")
     args = ap.parse_args()
     global ARTIFACTS_DIR, MANIFEST_PATH
     ARTIFACTS_DIR = Path(args.artifacts_dir)

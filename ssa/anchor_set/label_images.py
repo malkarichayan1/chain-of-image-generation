@@ -10,7 +10,7 @@ meaningful. Every answer is written to labels_<annotator>.json immediately, so y
 and resume; already-answered (prompt_id, attribute) pairs are skipped.
 
 Local CPU only (PIL + stdlib). Run from inside ssa/anchor_set/:
-    py -3 label_images.py --annotator chayan
+    py -3 label_images.py --annotator annotator1
 """
 from __future__ import annotations
 
@@ -32,7 +32,7 @@ ARTIFACTS_DIR = Path("artifacts")
 MANIFEST_PATH = ARTIFACTS_DIR / "manifest.json"
 SHUFFLE_SEED = 20260723  # fixed so the labeling order is reproducible across resume sessions
 
-# 2026-07-30 labeling guidelines (FLUX round: chayan/grace/akhil, full double coverage).
+# 2026-07-30 labeling guidelines (FLUX round: annotator1/annotator2/annotator3, full double coverage).
 # Printed once at the start of every run() call -- including a resume with nothing
 # pending -- so it's the first thing an annotator sees whenever they launch the tool, not
 # just something they were told once in a message. Wording matches the official guideline
@@ -269,7 +269,7 @@ def run(annotator: str, input_fn=input, relabel: frozenset = frozenset()) -> Dic
 def main() -> None:
     ap = argparse.ArgumentParser(description="Blind human labeling for the metric-A anchor set")
     ap.add_argument("--annotator", required=True,
-                    help="short id for this annotator, e.g. 'chayan' -> labels_chayan.json")
+                    help="short id for this annotator, e.g. 'annotator1' -> labels_chayan.json")
     ap.add_argument("--artifacts-dir", default="artifacts",
                     help="directory holding manifest.json / labels files, e.g. "
                          "'artifacts_sdxl' for the SDXL run, so it never touches the SD1.5 "

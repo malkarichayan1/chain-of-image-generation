@@ -1,7 +1,7 @@
 # PI-level combined experiment: does Delta-Mask + Attention fix what persistence-checking couldn't?
 
-Branch: `pi-level-idea`. This directory is the first joint artifact combining Chayan's
-one-shot attribute-binding metric (metric A, `ssa/coig_ssa_colab.ipynb`) and Pranav's
+Branch: `pi-level-idea`. This directory is the first joint artifact combining the
+one-shot attribute-binding metric (metric A, `ssa/coig_ssa_colab.ipynb`) and the
 Delta-Mask + Attention-IoU chain metric (metric B, `pilot/spatial_semantic_alignment.py`),
 per the combined-arc plan in `CLAUDE.md`.
 
@@ -70,7 +70,7 @@ isn't just "delta mask is nonzero" but actually reflects attention content.
   `torchvision==0.20.1` (cu121, dual T4/P100 support) and `diffusers>=0.31` when running
   on Kaggle (`KAGGLE_KERNEL_RUN_TYPE` env var), matching this project's existing Kaggle-GPU
   playbook.
-- `kernel-metadata.json` -- Kaggle kernel config (`chayanmalkari/coig-pi-level-chain-experiment`,
+- `kernel-metadata.json` -- Kaggle kernel config (`anonymous/coig-pi-level-chain-experiment`,
   GPU + internet enabled).
 - `analyze_results.py` -- run locally after pulling `chain_experiment_results.csv` back
   from Kaggle. Prints per-condition summary stats and effect sizes, and states the

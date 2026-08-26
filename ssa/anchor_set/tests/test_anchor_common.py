@@ -452,3 +452,36 @@ def test_locate_attribute_phrase_matches_words_forward_in_order_not_independentl
     idx, span = ac.locate_attribute_phrase(prompt, "yellow helmet")
     assert span == "yellow bike helmet"
     assert prompt[idx:idx + len(span)] == span
+
+
+# --------------------------------------------------------------------------- attribute_question
+
+def test_attribute_question_reproduces_every_original_hand_written_phrase():
+    """The rule-based classifier must reproduce every entry of the anchor sets' original
+    hand-written ATTRIBUTE_PHRASES dict (vqa_score_sdxl.py / vqa_agreement_check.py) exactly
+    -- these 8 are what real labeled rows have already been validated against."""
+    expected = {
+        "red apron": "Is the person wearing a red apron?",
+        "white hat": "Is the person wearing a white hat?",
+        "shovel": "Is the person holding a shovel?",
+        "blue gloves": "Is the person wearing blue gloves?",
+        "dark sunglasses": "Is the person wearing dark sunglasses?",
+        "book": "Is the person holding a book?",
+        "yellow helmet": "Is the person wearing a yellow helmet?",
+        "pan": "Is the person holding a pan?",
+    }
+    for attribute, question in expected.items():
+        assert ac.attribute_question(attribute) == question
+
+
+def test_attribute_question_generalizes_to_new_color_combinations():
+    """New color/attribute combinations never hand-listed anywhere (the FLUX-hard set's
+    vocabulary) must classify correctly by noun alone."""
+    assert ac.attribute_question("blue helmet") == "Is the person wearing a blue helmet?"
+    assert ac.attribute_question("black hat") == "Is the person wearing a black hat?"
+    assert ac.attribute_question("yellow apron") == "Is the person wearing a yellow apron?"
+    assert ac.attribute_question("red gloves") == "Is the person wearing red gloves?"
+
+
+def test_attribute_question_is_case_insensitive_on_the_noun():
+    assert ac.attribute_question("Red Apron") == "Is the person wearing a Red Apron?"

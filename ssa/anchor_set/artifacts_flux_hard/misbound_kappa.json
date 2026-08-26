@@ -1,0 +1,216 @@
+{
+  "annotators": [
+    "annotator3",
+    "annotator2",
+    "annotator4"
+  ],
+  "artifacts_dir": "artifacts_flux_hard",
+  "disobeyed": {
+    "akhil_vs_grace": {
+      "categories": [
+        "baker",
+        "barista",
+        "chef",
+        "cook",
+        "cyclist",
+        "farmer",
+        "none",
+        "nurse",
+        "pilot",
+        "shared",
+        "teacher",
+        "unclear"
+      ],
+      "kappa": 0.8864468864468865,
+      "n": 62,
+      "p_expected": 0.1477627471383975,
+      "p_observed": 0.9032258064516129
+    },
+    "akhil_vs_pranav": {
+      "categories": [
+        "baker",
+        "barista",
+        "chef",
+        "cook",
+        "cyclist",
+        "farmer",
+        "none",
+        "nurse",
+        "pilot",
+        "shared",
+        "teacher"
+      ],
+      "kappa": 0.9049371358478994,
+      "n": 62,
+      "p_expected": 0.15166493236212278,
+      "p_observed": 0.9193548387096774
+    },
+    "grace_vs_pranav": {
+      "categories": [
+        "baker",
+        "barista",
+        "chef",
+        "cook",
+        "cyclist",
+        "farmer",
+        "none",
+        "nurse",
+        "pilot",
+        "shared",
+        "teacher",
+        "unclear"
+      ],
+      "kappa": 0.8665026145801292,
+      "n": 62,
+      "p_expected": 0.15426638917793964,
+      "p_observed": 0.8870967741935484
+    }
+  },
+  "n_disobeyed_keys": 62,
+  "obeyed": {
+    "akhil_vs_grace": {
+      "categories": [
+        "baker",
+        "barista",
+        "biker",
+        "chef",
+        "cyclist",
+        "doctor",
+        "farmer",
+        "none",
+        "nurse",
+        "pilot",
+        "professor",
+        "shared",
+        "teacher",
+        "unclear",
+        "waiter"
+      ],
+      "kappa": 0.914775840244847,
+      "n": 347,
+      "p_expected": 0.12081322824705794,
+      "p_observed": 0.9250720461095101
+    },
+    "akhil_vs_pranav": {
+      "categories": [
+        "baker",
+        "barista",
+        "biker",
+        "chef",
+        "cyclist",
+        "doctor",
+        "farmer",
+        "none",
+        "nurse",
+        "pilot",
+        "professor",
+        "shared",
+        "teacher",
+        "unclear",
+        "waiter"
+      ],
+      "kappa": 0.898073661369946,
+      "n": 347,
+      "p_expected": 0.12351236203273841,
+      "p_observed": 0.9106628242074928
+    },
+    "grace_vs_pranav": {
+      "categories": [
+        "baker",
+        "barista",
+        "biker",
+        "chef",
+        "cyclist",
+        "doctor",
+        "farmer",
+        "none",
+        "nurse",
+        "pilot",
+        "professor",
+        "shared",
+        "teacher",
+        "unclear",
+        "waiter"
+      ],
+      "kappa": 0.8916168968226175,
+      "n": 347,
+      "p_expected": 0.1225489788969263,
+      "p_observed": 0.9048991354466859
+    }
+  },
+  "overall": {
+    "akhil_vs_grace": {
+      "categories": [
+        "baker",
+        "barista",
+        "biker",
+        "chef",
+        "cook",
+        "cyclist",
+        "doctor",
+        "farmer",
+        "none",
+        "nurse",
+        "pilot",
+        "professor",
+        "shared",
+        "teacher",
+        "unclear",
+        "waiter"
+      ],
+      "kappa": 0.9116785661263547,
+      "n": 409,
+      "p_expected": 0.11414924587968747,
+      "p_observed": 0.921760391198044
+    },
+    "akhil_vs_pranav": {
+      "categories": [
+        "baker",
+        "barista",
+        "biker",
+        "chef",
+        "cook",
+        "cyclist",
+        "doctor",
+        "farmer",
+        "none",
+        "nurse",
+        "pilot",
+        "professor",
+        "shared",
+        "teacher",
+        "unclear",
+        "waiter"
+      ],
+      "kappa": 0.9002905145968348,
+      "n": 409,
+      "p_expected": 0.11723985389853002,
+      "p_observed": 0.9119804400977995
+    },
+    "grace_vs_pranav": {
+      "categories": [
+        "baker",
+        "barista",
+        "biker",
+        "chef",
+        "cook",
+        "cyclist",
+        "doctor",
+        "farmer",
+        "none",
+        "nurse",
+        "pilot",
+        "professor",
+        "shared",
+        "teacher",
+        "unclear",
+        "waiter"
+      ],
+      "kappa": 0.8894318174138129,
+      "n": 409,
+      "p_expected": 0.1154823321237917,
+      "p_observed": 0.902200488997555
+    }
+  },
+  "selection": "consensus"
+}

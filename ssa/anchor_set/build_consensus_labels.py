@@ -20,7 +20,7 @@ annotator has finished the full pass.
 
 Run from inside ssa/anchor_set/:
     py -3 build_consensus_labels.py --artifacts-dir artifacts_flux_hard \
-        --annotators akhil grace pranav
+        --annotators annotator3 annotator2 annotator4
 """
 from __future__ import annotations
 
@@ -76,7 +76,7 @@ def main() -> None:
         description="Build a majority-vote consensus label/count set across annotators")
     ap.add_argument("--artifacts-dir", required=True)
     ap.add_argument("--annotators", nargs="+", required=True,
-                    help="annotator ids to vote across, e.g. --annotators akhil grace pranav")
+                    help="annotator ids to vote across, e.g. --annotators annotator3 annotator2 annotator4")
     ap.add_argument("--out-annotator", default="consensus",
                     help="writes labels_<out-annotator>.json / counts_<out-annotator>.json")
     args = ap.parse_args()
