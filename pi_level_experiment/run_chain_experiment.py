@@ -10,7 +10,7 @@ separate metrics to fix this:
   Metric A (ssa/coig_ssa_colab.ipynb) -- validated that SD1.5's cross-attention tracks
   correct attribute-to-subject binding in one-shot generation (OWL-ViT ground truth).
 
-  Metric B (pilot/spatial_semantic_alignment.py, this project's Pranav) -- a Delta-Mask +
+  Metric B (pilot/spatial_semantic_alignment.py, this project's Annotator 4) -- a Delta-Mask +
   attention-IoU design that is immune to the lock confound *by construction*: if an
   attribute was already locked in before the step being scored, Delta = Current AND NOT
   Previous is empty, forcing the score to 0 regardless of attention. Verified only against
@@ -503,7 +503,7 @@ def token_indices(tokenizer, prompt: str, phrase: str) -> List[int]:
     """Positions of `phrase` within the padded 77-token CLIP sequence. Copied from
     metric A's notebook -- handles multi-word phrases like 'red apron' by matching the
     phrase's own encoded sub-sequence against the full prompt's tokens, rather than
-    Pranav's single-token find_token_index (which only matches one exact token)."""
+    Annotator 4's single-token find_token_index (which only matches one exact token)."""
     ids = tokenizer(prompt, padding="max_length", max_length=77, truncation=True).input_ids
     target = tokenizer(phrase, add_special_tokens=False).input_ids
     if not target:

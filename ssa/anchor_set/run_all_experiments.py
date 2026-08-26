@@ -23,7 +23,7 @@ COMMANDS = [
     ("Experiment #31: VQAScore Agreement Check", "python vqa_agreement_check.py --artifacts-dir artifacts_flux_hard --annotator consensus"),
     ("Taxonomy Capture: Easy Set (artifacts_flux)", "python taxonomy_capture_flux.py --artifacts-dir artifacts_flux"),
     ("Taxonomy Capture: Hard Set (artifacts_flux_hard)", "python taxonomy_capture_flux.py --artifacts-dir artifacts_flux_hard"),
-    ("Experiment #19: Final Taxonomy Analysis & Verdict", "python exp9_taxonomy_analysis.py --easy-dir artifacts_flux --easy-annotator chayan --hard-dir artifacts_flux_hard --hard-annotator consensus --out artifacts_flux_hard/taxonomy_report.json"),
+    ("Experiment #19: Final Taxonomy Analysis & Verdict", "python exp9_taxonomy_analysis.py --easy-dir artifacts_flux --easy-annotator annotator1 --hard-dir artifacts_flux_hard --hard-annotator consensus --out artifacts_flux_hard/taxonomy_report.json"),
 ]
 
 def main():

@@ -2,7 +2,7 @@
 """
 VQAScore-style baseline for metric A's anchor set. Self-contained Kaggle GPU kernel:
 reads the already-generated SDXL images + boxes from the attached dataset
-(chayanmalkari/coig-metric-a-anchor-set-sdxl-images), NOT regenerating them (diffusion
+(anonymous/coig-metric-a-anchor-set-sdxl-images), NOT regenerating them (diffusion
 output is not guaranteed bit-reproducible across Kaggle sessions, unlike Mask R-CNN
 detection on an already-fixed image -- see recompute_boxes.py's docstring for that
 distinction).

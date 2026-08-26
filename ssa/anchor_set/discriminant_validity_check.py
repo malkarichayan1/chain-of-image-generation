@@ -23,8 +23,8 @@ Four checks, cheapest/most direct first:
 
 Local CPU only (pandas/numpy/scipy against the manifest + boxes.json + labels already on
 disk). Run from inside ssa/anchor_set/:
-    py -3 discriminant_validity_check.py --artifacts-dir artifacts --annotator chayan
-    py -3 discriminant_validity_check.py --artifacts-dir artifacts_sdxl --annotator chayan
+    py -3 discriminant_validity_check.py --artifacts-dir artifacts --annotator annotator1
+    py -3 discriminant_validity_check.py --artifacts-dir artifacts_sdxl --annotator annotator1
 """
 from __future__ import annotations
 
@@ -149,7 +149,7 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser(
         description="Discriminant validity: is predicted_owner tracking box geometry?")
     ap.add_argument("--artifacts-dir", default="artifacts")
-    ap.add_argument("--annotator", default="chayan")
+    ap.add_argument("--annotator", default="annotator1")
     args = ap.parse_args()
     artifacts_dir = Path(args.artifacts_dir)
 

@@ -1,6 +1,6 @@
 # Faithful by Assumption: How Text-to-Image Faithfulness Metrics Fail on Model Disobedience
 
-[![Tests](https://img.shields.io/badge/tests-382%20passed-brightgreen.svg)]()
+[![Tests](https://img.shields.io/badge/tests-507%20passed-brightgreen.svg)]()
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue.svg)]()
 [![Venue](https://img.shields.io/badge/NeurIPS%202026-VLM4RWD%20Workshop-orange.svg)]()
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)]()
@@ -45,9 +45,10 @@ chain-of-image-generation/
 │   ├── exp3b_within_item_permutation.py  # Within-item token derangement falsification
 │   ├── exp6_prompt_baseline.py     # Prompt-only baseline vs. cross-attention
 │   ├── exp7_misbound_subset.py     # Disobeyed subset audit (Section 6.6)
+│   ├── exp8_misbound_kappa.py      # Misbound subset inter-annotator agreement
 │   ├── exp9_taxonomy_analysis.py   # 456-cell attention taxonomy sweep (Section 6.4)
 │   ├── vqa_agreement_check.py      # VQAScore VLM judge evaluation (Section 6.5)
-│   └── tests/                      # Unit and integration test suite (274 tests)
+│   └── tests/                      # Unit and integration test suite (399 tests)
 │
 ├── pi_level_experiment/            # Track B: Sequential Chain Audit (CoIG Track)
 │   ├── run_chain_experiment.py     # Sequential generation orchestrator
@@ -70,15 +71,15 @@ All evaluation scripts execute locally on standard CPU hardware in $<30$ seconds
 Ensure Python 3.10+ is installed:
 
 ```bash
-pip install torch diffusers pytest pandas scipy numpy
+pip install torch diffusers pytest pandas scipy numpy Pillow
 ```
 
-### Running the Test Suite (382 Tests)
+### Running the Test Suite (507 Tests)
 
 To verify numerical correctness, metric computations, and annotation consistency:
 
 ```bash
-# 1. Single-Image Audit test suite (274 tests)
+# 1. Single-Image Audit test suite (399 tests)
 cd ssa/anchor_set
 pytest tests/ -q
 
@@ -86,6 +87,7 @@ pytest tests/ -q
 cd ../../pi_level_experiment
 python -m pytest tests/ -q
 ```
+*(Note: GPU-specific inference tests require PyTorch with CUDA support and are automatically skipped in CPU-only test runs).*
 
 ---
 
@@ -102,7 +104,7 @@ Evaluates whether cross-attention outperforms a zero-compute prompt baseline acr
 
 ```bash
 # FLUX Easy Set
-python exp6_prompt_baseline.py --artifacts-dir artifacts_flux --annotator chayan
+python exp6_prompt_baseline.py --artifacts-dir artifacts_flux --annotator annotator1
 
 # FLUX Adversarial Hard Set
 python exp6_prompt_baseline.py --artifacts-dir artifacts_flux_hard --annotator consensus
@@ -120,7 +122,7 @@ Sweeps FLUX MMDiT blocks and heads, ranking the sharpest cells on Easy data and 
 
 ```bash
 python exp9_taxonomy_analysis.py \
-  --easy-dir artifacts_flux --easy-annotator chayan \
+  --easy-dir artifacts_flux --easy-annotator annotator1 \
   --hard-dir artifacts_flux_hard --hard-annotator consensus
 ```
 
@@ -129,7 +131,7 @@ Evaluates VQAScore on the same grounded bounding-box benchmark:
 
 ```bash
 # FLUX Easy Set
-python vqa_agreement_check.py --artifacts-dir artifacts_flux --annotator chayan
+python vqa_agreement_check.py --artifacts-dir artifacts_flux --annotator annotator1
 
 # FLUX Adversarial Hard Set
 python vqa_agreement_check.py --artifacts-dir artifacts_flux_hard --annotator consensus

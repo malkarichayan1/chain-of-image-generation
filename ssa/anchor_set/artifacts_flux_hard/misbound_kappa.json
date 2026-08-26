@@ -1,8 +1,8 @@
 {
   "annotators": [
-    "akhil",
-    "grace",
-    "pranav"
+    "annotator3",
+    "annotator2",
+    "annotator4"
   ],
   "artifacts_dir": "artifacts_flux_hard",
   "disobeyed": {

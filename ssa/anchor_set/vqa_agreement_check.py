@@ -22,7 +22,7 @@ kernels, can import local modules) -- both Kaggle kernels duplicate its logic in
 same "keep in sync" convention as ANCHOR_PROMPTS across the generation scripts.
 
 Local CPU only (pandas/scipy). Run from inside ssa/anchor_set/:
-    py -3 vqa_agreement_check.py --artifacts-dir artifacts_sdxl --annotator chayan
+    py -3 vqa_agreement_check.py --artifacts-dir artifacts_sdxl --annotator annotator1
 """
 from __future__ import annotations
 
@@ -157,7 +157,7 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser(
         description="Compare metric A's attention predictions against VQAScore")
     ap.add_argument("--artifacts-dir", default="artifacts_sdxl")
-    ap.add_argument("--annotator", default="chayan")
+    ap.add_argument("--annotator", default="annotator1")
     args = ap.parse_args()
     artifacts_dir = Path(args.artifacts_dir)
 

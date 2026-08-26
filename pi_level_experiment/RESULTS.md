@@ -517,7 +517,7 @@ exact weakness v4 disclosed -- not a clean sweep, and not claimed as one.
 # v4 run (2026-07-22, Kaggle GPU, kernel `coig-pi-level-chain-experiment` v4) -- superseded above, kept for history
 
 Raw data: `results/chain_experiment_results.csv` / `.json`. Full run log available via
-`kaggle kernels output chayanmalkari/coig-pi-level-chain-experiment` (kernel version 4).
+`kaggle kernels output anonymous/coig-pi-level-chain-experiment` (kernel version 4).
 
 ## Headline result
 

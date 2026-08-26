@@ -39,7 +39,7 @@ tested, reusable primitive since no prior implementation exists anywhere in this
 
 Run from inside ssa/anchor_set/, after downloading BOTH Kaggle taxonomy captures:
     py -3 exp9_taxonomy_analysis.py \
-        --easy-dir artifacts_flux --easy-annotator chayan \
+        --easy-dir artifacts_flux --easy-annotator annotator1 \
         --hard-dir artifacts_flux_hard --hard-annotator consensus \
         --out artifacts_flux_hard/taxonomy_report.json
 """
@@ -102,7 +102,11 @@ def load_all_cells(artifacts_dir: Path, repro_threshold: float = DEFAULT_REPRO_T
     Raises ValueError on the first shape mismatch across images (layer count, head count,
     layer order, or step count) -- captures must share one model config, or every
     downstream reduction silently mixes incompatible axes."""
-    index = json.loads((artifacts_dir / "taxonomy_index.json").read_text())
+    index_path = artifacts_dir / "taxonomy_index.json"
+    if not index_path.exists():
+        raise FileNotFoundError(
+            f"Missing {index_path}. Run taxonomy_capture_flux.py --artifacts-dir {artifacts_dir} to generate it.")
+    index = json.loads(index_path.read_text())
     cells: List[ImageCells] = []
     dropped: List[int] = []
     reference: Optional[Tuple[int, int, int, Tuple[str, ...]]] = None
@@ -121,6 +125,9 @@ def load_all_cells(artifacts_dir: Path, repro_threshold: float = DEFAULT_REPRO_T
                 f"prompt_id {ic.prompt_id} has capture shape (layers,steps,heads,order)="
                 f"{shape_key}, expected {reference} -- captures must share one model config")
         cells.append(ic)
+    if not cells and not dropped:
+        raise ValueError(
+            f"No image entries found in {index_path}. Run taxonomy_capture_flux.py --artifacts-dir {artifacts_dir} to generate capture files.")
     return cells, dropped
 
 
@@ -128,8 +135,16 @@ def load_ground_truth(artifacts_dir: Path, annotator: str) -> Dict[Tuple[int, st
     """{(prompt_id, attribute): human_label}. intended_subject is not needed here -- it is
     already carried on each cell_rows() row via the manifest join inside that function, to
     keep this a single source of truth for label loading (anchor_common.load_labels)."""
-    labels = load_labels(artifacts_dir / f"labels_{annotator}.json")
-    manifest = json.loads((artifacts_dir / "manifest.json").read_text())
+    labels_path = artifacts_dir / f"labels_{annotator}.json"
+    if not labels_path.exists():
+        raise FileNotFoundError(
+            f"Missing {labels_path}. Ensure annotations exist for annotator '{annotator}'.")
+    labels = load_labels(labels_path)
+    manifest_path = artifacts_dir / "manifest.json"
+    if not manifest_path.exists():
+        raise FileNotFoundError(
+            f"Missing {manifest_path}. Ensure dataset manifest exists in {artifacts_dir}.")
+    manifest = json.loads(manifest_path.read_text())
     out: Dict[Tuple[int, str], str] = {}
     for img in manifest["images"]:
         if not img.get("detected"):
@@ -513,7 +528,7 @@ def sharpest_cell_report(easy_images, easy_gt, easy_intended, hard_images, hard_
 def run_full_battery(datasets: Dict[str, Tuple[Path, str]],
                      repro_threshold: float = DEFAULT_REPRO_THRESHOLD,
                      exp19_k: int = EXP19_TOP_K) -> dict:
-    """`datasets`: {"easy": (artifacts_flux, "chayan"), "hard": (artifacts_flux_hard,
+    """`datasets`: {"easy": (artifacts_flux, "annotator1"), "hard": (artifacts_flux_hard,
     "consensus")}. #14/#16/#17/#18 run once per named dataset; #19 requires both "easy"
     and "hard" to be present with at least one image each."""
     loaded: Dict[str, dict] = {}
@@ -555,7 +570,7 @@ def main() -> None:
     ap = argparse.ArgumentParser(
         description="Taxonomy analysis: experiments #14, #16, #17, #18, #19")
     ap.add_argument("--easy-dir", default="artifacts_flux")
-    ap.add_argument("--easy-annotator", default="chayan")
+    ap.add_argument("--easy-annotator", default="annotator1")
     ap.add_argument("--hard-dir", default="artifacts_flux_hard")
     ap.add_argument("--hard-annotator", default="consensus")
     ap.add_argument("--repro-threshold", type=float, default=DEFAULT_REPRO_THRESHOLD)

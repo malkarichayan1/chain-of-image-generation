@@ -93,21 +93,21 @@ def test_kappa_or_none_perfect_agreement_two_categories():
 
 
 def test_pairwise_report_covers_every_pair_once():
-    labels = {"akhil": {"k": "a"}, "grace": {"k": "a"}, "pranav": {"k": "a"}}
+    labels = {"annotator3": {"k": "a"}, "annotator2": {"k": "a"}, "annotator4": {"k": "a"}}
 
     assert sorted(pairwise_report(labels)) == [
-        "akhil_vs_grace", "akhil_vs_pranav", "grace_vs_pranav"
+        "annotator2_vs_annotator3", "annotator2_vs_annotator4", "annotator3_vs_annotator4"
     ]
 
 
 def test_pairwise_report_restriction_changes_the_denominator():
     labels = {
-        "akhil": {"k1": "barista", "k2": "cyclist"},
-        "grace": {"k1": "barista", "k2": "cyclist"},
+        "annotator3": {"k1": "barista", "k2": "cyclist"},
+        "annotator2": {"k1": "barista", "k2": "cyclist"},
     }
 
-    assert pairwise_report(labels)["akhil_vs_grace"]["n"] == 2
-    assert pairwise_report(labels, {"k1"})["akhil_vs_grace"]["n"] == 1
+    assert pairwise_report(labels)["annotator2_vs_annotator3"]["n"] == 2
+    assert pairwise_report(labels, {"k1"})["annotator2_vs_annotator3"]["n"] == 1
 
 
 def test_selection_consensus_uses_consensus_labels_not_individual_annotators():
@@ -116,8 +116,8 @@ def test_selection_consensus_uses_consensus_labels_not_individual_annotators():
     downward (see module docstring)."""
     intended = intended_subject_by_key(_manifest())
     labels_by_annotator = {
-        "akhil": {"1::red apron": "cyclist"},   # lone outlier -- says disobeyed
-        "grace": {"1::red apron": "barista"},
+        "annotator3": {"1::red apron": "cyclist"},   # lone outlier -- says disobeyed
+        "annotator2": {"1::red apron": "barista"},
     }
     consensus = {"1::red apron": "barista"}     # majority says obeyed
 
@@ -129,8 +129,8 @@ def test_selection_consensus_uses_consensus_labels_not_individual_annotators():
 def test_selection_either_is_the_broader_asymmetric_alternative():
     intended = intended_subject_by_key(_manifest())
     labels_by_annotator = {
-        "akhil": {"1::red apron": "cyclist"},
-        "grace": {"1::red apron": "barista"},
+        "annotator3": {"1::red apron": "cyclist"},
+        "annotator2": {"1::red apron": "barista"},
     }
 
     keys = selection_keys("either", intended, labels_by_annotator, consensus=None)

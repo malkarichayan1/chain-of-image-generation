@@ -10,7 +10,7 @@ Branch `hard-prompt-set-retest` (consolidated onto `main` 2026-08-06 — see `CL
 
 We set out to build a faithfulness metric that reads a diffusion model's own cross-attention to
 decide which subject an attribute is bound to ("is the red apron on the barista or the cyclist?").
-Across two model families, four human annotators (Chayan, Akhil, Grace, Pranav), and roughly 1,080
+Across two model families, four human annotators (Annotator 1, Annotator 3, Annotator 2, Annotator 4), and roughly 1,080
 human-labeled attribute judgments across four anchor sets, the metric works in the narrow sense
 that it beats random guessing — and fails in the sense that matters.
 
@@ -162,10 +162,10 @@ Three datasets, built in sequence:
 
 | Set | Model | Images | Raw judgments | Annotators | Inter-rater κ |
 |---|---|---|---|---|---|
-| `artifacts/` | SD1.5 | ~23 | ~68 | Chayan | — |
-| `artifacts_sdxl/` | SDXL | 105 detected (137 attempted) | 306 | Chayan, Akhil, Grace | **0.682** (0.914–0.924 count-clean) |
-| `artifacts_flux/` | FLUX.1-dev | 103 detected (105 attempted) | 301 | Chayan, Akhil, Grace | **0.954 / 0.958** |
-| `artifacts_flux_hard/` | FLUX.1-dev, harder prompts | 83 detected (100 attempted) | 409 | Akhil, Grace, Pranav | **0.889–0.912** |
+| `artifacts/` | SD1.5 | ~23 | ~68 | Annotator 1 | — |
+| `artifacts_sdxl/` | SDXL | 105 detected (137 attempted) | 306 | Annotator 1, Annotator 3, Annotator 2 | **0.682** (0.914–0.924 count-clean) |
+| `artifacts_flux/` | FLUX.1-dev | 103 detected (105 attempted) | 301 | Annotator 1, Annotator 3, Annotator 2 | **0.954 / 0.958** |
+| `artifacts_flux_hard/` | FLUX.1-dev, harder prompts | 83 detected (100 attempted) | 409 | Annotator 3, Annotator 2, Annotator 4 | **0.889–0.912** |
 
 Prompts in the first three sets are templated across three strata by subject count: n = 2, 3, 4
 (chance = 50%, 33.3%, 25%). The FLUX-hard set (§5.5, added 2026-08-07) uses n = 4, 5, 6 (chance =
@@ -211,7 +211,7 @@ own `predicted_owner`:
 
 | Set | n | Agreement (attn vs. CLIP) | Attention acc | CLIPScore acc | McNemar |
 |---|---|---|---|---|---|
-| `artifacts_flux` (chayan) | 297 | 74.4% | **84.6%** | 67.4% | p = 4.3e-10 |
+| `artifacts_flux` (annotator1) | 297 | 74.4% | **84.6%** | 67.4% | p = 4.3e-10 |
 | `artifacts_flux_hard` (consensus) | 405 | 55.1% | **42.8%** | 37.0% | p = 0.044 |
 
 Attention disagrees with a pure CLIP-alignment prediction on 26–45% of rows and beats it
@@ -224,16 +224,16 @@ through a shared upstream step, not pure independent convergence.
 
 | Annotator | n | Exp 1 accuracy | Exp 3 real-vs-scrambled McNemar | Exp 4 vs nearest-noun baseline |
 |---|---|---|---|---|
-| chayan | 35 | 45.7% | p = 0.774 | 45.7% vs **74.3%** (baseline wins, p = 0.031) |
-| akhil | 55 | 40.0% | p = 0.701 | 40.0% vs **61.8%** (baseline wins, p = 0.023) |
-| grace | 63 | 54.0% | p = 0.004 | 54.0% vs **76.2%** (baseline wins, p = 0.013) |
+| annotator1 | 35 | 45.7% | p = 0.774 | 45.7% vs **74.3%** (baseline wins, p = 0.031) |
+| annotator3 | 55 | 40.0% | p = 0.701 | 40.0% vs **61.8%** (baseline wins, p = 0.023) |
+| annotator2 | 63 | 54.0% | p = 0.004 | 54.0% vs **76.2%** (baseline wins, p = 0.013) |
 
 Two things stand out. First, **Experiment 3 fails on SDXL for two of three annotators** — real
 attention does not beat scrambled attention. By the memo's own pre-registered decision rule, that is
 the condition under which "the core claim fails." Second, **the positional baseline already beat the
 metric on SDXL**, significantly, for all three annotators.
 
-*(Minor provenance note: `docs/anchor-set-growth-round-results.md` records akhil's n = 4 stratum as
+*(Minor provenance note: `docs/anchor-set-growth-round-results.md` records annotator3's n = 4 stratum as
 23 rows / 17.4%; current code gives 21 / 19.0%, a drift from the `anchor_common.py` sync in the FLUX
 merge. Nothing else changed. Use the numbers in this document, which are all from one code state.)*
 
@@ -245,7 +245,7 @@ different mechanism. If attention interpretability is architecture-dependent, th
 The practical one: SDXL's ground truth was shaky (κ = 0.682, below our 0.7 target; 96/306 rows
 count-broken, a 13% effective yield). We needed a cleaner dataset.
 
-### 3.3 The FLUX attention capture (Pranav, `flux_attention_capture.py`)
+### 3.3 The FLUX attention capture (Annotator 4, `flux_attention_capture.py`)
 
 This is a real methods contribution and should be a section of the paper, not a footnote.
 
@@ -288,9 +288,9 @@ Run for all three annotators. These are the numbers that looked, initially, like
 
 | Annotator | n=2 | n=3 | n=4 | Overall | n scored |
 |---|---|---|---|---|---|
-| chayan | 97.5% | 92.9% | 71.5% | 84.6% | 273 |
-| akhil | 97.5% | 94.3% | 72.5% | 85.5% | 269 |
-| grace | 97.4% | 95.6% | 73.1% | 86.0% | 265 |
+| annotator1 | 97.5% | 92.9% | 71.5% | 84.6% | 273 |
+| annotator3 | 97.5% | 94.3% | 72.5% | 85.5% | 269 |
+| annotator2 | 97.4% | 95.6% | 73.1% | 86.0% | 265 |
 
 Every stratum, every annotator, binomial p < 0.0001 against 50/33.3/25%.
 
@@ -300,7 +300,7 @@ within the first half of denoising — consistent with the Prompt-to-Prompt / At
 account of early steps deciding layout.
 
 **Experiment 3 — attention randomization.** Real beats cross-item-scrambled overwhelmingly:
-McNemar p = 1.77e-33 (chayan, akhil), 2.22e-29 (grace). Median scrambled accuracy sits at
+McNemar p = 1.77e-33 (annotator1, annotator3), 2.22e-29 (annotator2). Median scrambled accuracy sits at
 0.500 / 0.329 / 0.252 against chance of 0.500 / 0.333 / 0.250 — the control lands exactly where it
 should.
 
@@ -324,12 +324,12 @@ attention, no computation.
 
 | Model | Annotator | n | Attention | Nearest-noun | **Prompt-obeyed** | McNemar (attn vs prompt-obeyed) |
 |---|---|---|---|---|---|---|
-| SDXL | chayan | 35 | 45.7% | 74.3% | **74.3%** | p = 0.031 |
-| SDXL | akhil | 55 | 40.0% | 61.8% | **61.8%** | p = 0.023 |
-| SDXL | grace | 63 | 54.0% | 76.2% | **76.2%** | p = 0.013 |
-| FLUX | chayan | 273 | 84.6% | 77.7% | **94.1%** | p = 1.29e-05 |
-| FLUX | akhil | 269 | 85.5% | 77.7% | **94.4%** | p = 6.96e-05 |
-| FLUX | grace | 265 | 86.0% | 78.9% | **95.8%** | p = 1.29e-05 |
+| SDXL | annotator1 | 35 | 45.7% | 74.3% | **74.3%** | p = 0.031 |
+| SDXL | annotator3 | 55 | 40.0% | 61.8% | **61.8%** | p = 0.023 |
+| SDXL | annotator2 | 63 | 54.0% | 76.2% | **76.2%** | p = 0.013 |
+| FLUX | annotator1 | 273 | 84.6% | 77.7% | **94.1%** | p = 1.29e-05 |
+| FLUX | annotator3 | 269 | 85.5% | 77.7% | **94.4%** | p = 6.96e-05 |
+| FLUX | annotator2 | 265 | 86.0% | 78.9% | **95.8%** | p = 1.29e-05 |
 
 Six comparisons, six significant losses for attention. On SDXL it loses by 20–29 points; on FLUX by
 about 10.
@@ -367,23 +367,23 @@ outcome.
 
 | Model | Annotator | Mis-bound rows | Attention predicts rendered | Chance | p (one-sided) |
 |---|---|---|---|---|---|
-| SDXL | chayan | 9 | 44.4% | 30.6% | 0.283 |
-| SDXL | akhil | 21 | 28.6% | 32.5% | 0.726 |
-| SDXL | grace | 15 | 46.7% | 34.4% | 0.231 |
-| FLUX | chayan | 16 | 31.2% | 26.0% | 0.408 |
-| FLUX | akhil | 15 | 40.0% | 25.6% | 0.161 |
-| FLUX | grace | 11 | 45.5% | 25.0% | 0.115 |
+| SDXL | annotator1 | 9 | 44.4% | 30.6% | 0.283 |
+| SDXL | annotator3 | 21 | 28.6% | 32.5% | 0.726 |
+| SDXL | annotator2 | 15 | 46.7% | 34.4% | 0.231 |
+| FLUX | annotator1 | 16 | 31.2% | 26.0% | 0.408 |
+| FLUX | annotator3 | 15 | 40.0% | 25.6% | 0.161 |
+| FLUX | annotator2 | 11 | 45.5% | 25.0% | 0.115 |
 
 Pooled across both models, per annotator:
 
 | Annotator | n | Hit rate | 95% CI | Chance | p |
 |---|---|---|---|---|---|
-| chayan | 25 | 36.0% | 18.0 – 57.5% | 27.7% | 0.235 |
-| akhil | 36 | 33.3% | 18.6 – 51.0% | 29.6% | 0.372 |
-| grace | 26 | 46.2% | 26.6 – 66.6% | 30.4% | 0.067 |
+| annotator1 | 25 | 36.0% | 18.0 – 57.5% | 27.7% | 0.235 |
+| annotator3 | 36 | 33.3% | 18.6 – 51.0% | 29.6% | 0.372 |
+| annotator2 | 26 | 46.2% | 26.6 – 66.6% | 30.4% | 0.067 |
 
 **Read this honestly.** These are non-rejections, not proven nulls. The confidence intervals are
-enormous — grace's interval spans 26.6% to 66.6%. We cannot currently distinguish "attention is at
+enormous — annotator2's interval spans 26.6% to 66.6%. We cannot currently distinguish "attention is at
 chance on disobeyed rows" from "attention retains a modest signal we lack the power to detect." What
 we *can* say is that six independent tests all failed to find the effect, and the point estimates
 cluster near chance rather than near the 85% headline accuracy.
@@ -420,8 +420,8 @@ rows) to properly power the §5.3 test. `build_hard_prompts.py` generated 100 pr
 (IDs 300–399) designed to fight the model harder — confusable same-type attributes (two aprons,
 two helmets, two hats, two gloves, each pair a different color), attribute–subject prior fights (a
 *chef* in a *cycling helmet*), and near-duplicate subjects (chef + baker, nurse + doctor, barista +
-waiter, cyclist + biker). 83/100 images detected the right subject count; akhil, grace, and pranav
-each labeled all 409 rows (chayan's pass, 4 rows, is excluded throughout — too incomplete to use).
+waiter, cyclist + biker). 83/100 images detected the right subject count; annotator3, annotator2, and annotator4
+each labeled all 409 rows (annotator1's pass, 4 rows, is excluded throughout — too incomplete to use).
 Inter-rater κ = 0.889–0.912 — still excellent agreement, a shade below the original set's
 0.954/0.958, consistent with these images genuinely being harder to read. A majority-vote
 consensus label set (`build_consensus_labels.py`, new) resolved 357/409 rows unanimously, 48/409 by
@@ -444,9 +444,9 @@ engineering worked directionally; it did not fully close the power gap.
 
 | Annotator | n (scored) | Attention | Prompt-obeyed | McNemar |
 |---|---|---|---|---|
-| akhil | 316 | 42.7% | **80.1%** | p ≈ 1.3e-23 |
-| grace | 308 | 41.9% | **80.2%** | p ≈ 5.5e-24 |
-| pranav | 319 | 42.3% | **77.1%** | p ≈ 7.3e-21 |
+| annotator3 | 316 | 42.7% | **80.1%** | p ≈ 1.3e-23 |
+| annotator2 | 308 | 41.9% | **80.2%** | p ≈ 5.5e-24 |
+| annotator4 | 319 | 42.3% | **77.1%** | p ≈ 7.3e-21 |
 | consensus | 311 | 42.8% | **80.1%** | p ≈ 4.1e-23 |
 
 The gap is if anything wider than on the original set (§5.1: ~10 points on FLUX; here, ~37–38
@@ -460,9 +460,9 @@ rest of the battery) gives:
 
 | Annotator | n (misbound) | Correct | Accuracy | Mean chance | Pooled p (one-sided) |
 |---|---|---|---|---|---|
-| akhil | 63 | 18 | 28.6% | 18.5% | **0.034** |
-| grace | 61 | 17 | 27.9% | 18.7% | 0.052 |
-| pranav | 73 | 21 | 28.8% | 18.9% | **0.027** |
+| annotator3 | 63 | 18 | 28.6% | 18.5% | **0.034** |
+| annotator2 | 61 | 17 | 27.9% | 18.7% | 0.052 |
+| annotator4 | 73 | 21 | 28.8% | 18.9% | **0.027** |
 | consensus | 62 | 18 | 29.0% | 18.5% | **0.029** |
 
 C3 moves from "wide-CI non-rejection" (§5.3's original six tests, all p > 0.1) to "weak positive,
@@ -513,7 +513,7 @@ crops as VQAScore's own binding prediction, directly comparable to `predicted_ow
 
 | Set | n | Attention acc | VQAScore acc | Head-to-head McNemar | VQAScore vs. prompt-obeyed baseline | VQAScore on misbound subset |
 |---|---|---|---|---|---|---|
-| `artifacts_flux` (chayan) | 297 | 84.6% | 82.4% | p = 0.238 (n.s.) | 82.4% vs. 94.1%, p = 3.3e-06 | 50.0% (8/16) |
+| `artifacts_flux` (annotator1) | 297 | 84.6% | 82.4% | p = 0.238 (n.s.) | 82.4% vs. 94.1%, p = 3.3e-06 | 50.0% (8/16) |
 | `artifacts_flux_hard` (consensus) | 405 | 42.8% | 44.7% | p = 0.263 (n.s.) | 44.7% vs. 80.1%, p = 3.5e-19 | 41.9% (26/62) |
 
 Three things this adds, none of them small:
@@ -736,8 +736,8 @@ this document traced to that.
 `build_hard_prompts.py` built exactly the prompt set specified: higher subject counts (n = 4–6),
 attribute–subject pairings that fight object priors (a *chef* in a *cycling helmet*), confusable
 attributes within a prompt (two different-colored aprons, not an apron and a helmet), and
-near-duplicate subjects (chef + baker, nurse + doctor, barista + waiter, cyclist + biker). akhil,
-grace, and pranav triple-labeled all 409 rows. Full results: §5.5.
+near-duplicate subjects (chef + baker, nurse + doctor, barista + waiter, cyclist + biker). annotator3,
+annotator2, and annotator4 triple-labeled all 409 rows. Full results: §5.5.
 
 **It worked, partially.** Misbound rows went from 11–16 to 60–73 per annotator (62 on consensus) —
 a 4–6× increase — and C3's significance moved from "non-rejection, p > 0.1 on all six original
@@ -766,7 +766,7 @@ prompts at the current n = 4–6 difficulty — see §5.5's closing paragraph.
   silently dropped (§6).
 - ~~**Majority-vote / consensus ground truth**~~ **DONE for FLUX-hard** — `build_consensus_labels.py`
   (new): 357/409 unanimous, 48/409 majority, 4/409 no-consensus (§5.5). Not yet run for the
-  original `artifacts_flux/` (chayan + akhil + grace) — same script, minutes of work if wanted.
+  original `artifacts_flux/` (annotator1 + annotator3 + annotator2) — same script, minutes of work if wanted.
 
 ### 9.3 Status update, 2026-08-14 — an A100 session is now in hand
 
@@ -816,39 +816,39 @@ All commands from `ssa/anchor_set/`. Requires `numpy`, `scipy`, `pandas` (no GPU
 
 ```bash
 # Five-experiment battery
-python3 run_five_experiments.py --artifacts-dir artifacts_flux --annotator chayan
+python3 run_five_experiments.py --artifacts-dir artifacts_flux --annotator annotator1
 python3 run_five_experiments.py --artifacts-dir artifacts_flux_hard --annotator consensus
 
 # Central-table experiments (§5.1, §5.3) -- now committed scripts, not inline analysis
-python3 exp6_prompt_baseline.py --artifacts-dir artifacts_flux --annotator chayan
-python3 exp7_misbound_subset.py --artifacts-dir artifacts_flux --annotator chayan
+python3 exp6_prompt_baseline.py --artifacts-dir artifacts_flux --annotator annotator1
+python3 exp7_misbound_subset.py --artifacts-dir artifacts_flux --annotator annotator1
 
 # Hard-prompt-set consensus labels (§5.5)
-python3 build_consensus_labels.py --artifacts-dir artifacts_flux_hard --annotators akhil grace pranav
+python3 build_consensus_labels.py --artifacts-dir artifacts_flux_hard --annotators annotator3 annotator2 annotator4
 
 # Within-item token-permutation control (§5.6)
-python3 exp3b_within_item_permutation.py --artifacts-dir artifacts_flux --annotator chayan
+python3 exp3b_within_item_permutation.py --artifacts-dir artifacts_flux --annotator annotator1
 
 # Discriminant validity on FLUX (§3.1 update) -- boxes.json must exist first
 python3 recompute_boxes.py --artifacts-dir artifacts_flux
-python3 discriminant_validity_check.py --artifacts-dir artifacts_flux --annotator chayan
+python3 discriminant_validity_check.py --artifacts-dir artifacts_flux --annotator annotator1
 
 # CLIPScore discriminant validity (§3.1 update, second boring explanation) -- CPU, ~10 min
-python3 exp10_clipscore_discriminant.py --artifacts-dir artifacts_flux --annotator chayan
+python3 exp10_clipscore_discriminant.py --artifacts-dir artifacts_flux --annotator annotator1
 
 # VQAScore baseline (§5.7, C9) -- CPU, blip-vqa-base (~385M params), no GPU needed
 python3 vqa_score_flux.py --artifacts-dir artifacts_flux
-python3 vqa_agreement_check.py --artifacts-dir artifacts_flux --annotator chayan
+python3 vqa_agreement_check.py --artifacts-dir artifacts_flux --annotator annotator1
 
 # Taxonomy capture (#14/#16/#17/#18 -> #19, §9.3) -- GPU (A100), see docs/a100-session-runbook.md
 python3 taxonomy_capture_flux.py --artifacts-dir artifacts_flux --limit 3   # smoke test first
 python3 taxonomy_capture_flux.py --artifacts-dir artifacts_flux
-python3 exp9_taxonomy_analysis.py --easy-dir artifacts_flux --easy-annotator chayan \
+python3 exp9_taxonomy_analysis.py --easy-dir artifacts_flux --easy-annotator annotator1 \
     --hard-dir artifacts_flux_hard --hard-annotator consensus
 
 # Agreement + inter-rater kappa
 python3 analyze_agreement.py --artifacts-dir artifacts_flux \
-        --annotator chayan --compare-annotator grace
+        --annotator annotator1 --compare-annotator annotator2
 
 # Test suite (274 tests)
 python3 -m pytest tests/ -q

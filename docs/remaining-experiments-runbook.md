@@ -1,7 +1,7 @@
 # Remaining Experiments — Triage and Runbook
 
 Triage of the 12 "To run" rows in *CPGA Research Doc Template Summer 2026*, plus exact
-steps. Written so Pranav can start without further design decisions.
+steps. Written so Annotator 4 can start without further design decisions.
 
 Status as of 2026-08-12. Branch: `hard-prompt-set-retest`. Decisions below are final per
 the group's call: #15 cut, #21 gated on #20's outcome (not cut), #8 and #30 kept.
@@ -30,7 +30,7 @@ images mean there is **no dataset-upload step at all**.
 (`openai/clip-vit-base-patch32`) already runs on CPU elsewhere in this repo —
 `recompute_boxes.py`'s own docstring calls it "CPU-tractable at ~35 images total" for a
 heavier Mask R-CNN + CLIP combo than #8 needs. It has **zero GPU queue time**, so there's no
-reason to wait: Pranav can run it today, in parallel with the Kaggle jobs starting.
+reason to wait: Annotator 4 can run it today, in parallel with the Kaggle jobs starting.
 
 ---
 
@@ -78,10 +78,10 @@ sequenced last, after #19 so it isn't done twice.
 ```bash
 cd ssa/anchor_set
 py -3 exp8_misbound_kappa.py --artifacts-dir artifacts_flux_hard \
-    --annotators akhil grace pranav --out artifacts_flux_hard/misbound_kappa.json
+    --annotators annotator3 annotator2 annotator4 --out artifacts_flux_hard/misbound_kappa.json
 ```
 
-| Subset | akhil–grace | akhil–pranav | grace–pranav |
+| Subset | annotator3–annotator2 | annotator3–annotator4 | annotator2–annotator4 |
 |---|---|---|---|
 | Overall (n=409) | 0.912 | 0.900 | 0.889 |
 | **Disobeyed only (n=62)** | **0.886** | **0.905** | **0.867** |
@@ -91,7 +91,7 @@ subset does not collapse: **C3's ground truth holds.**
 
 ---
 
-## 4. Pranav's steps
+## 4. Annotator 4's steps
 
 ### Step 0 — one-time setup (~10 min)
 
@@ -113,7 +113,7 @@ labels.
 
 ```bash
 py -3 exp10_clipscore_discriminant.py --artifacts-dir artifacts_flux_hard --annotator consensus
-py -3 exp10_clipscore_discriminant.py --artifacts-dir artifacts_flux --annotator chayan
+py -3 exp10_clipscore_discriminant.py --artifacts-dir artifacts_flux --annotator annotator1
 ```
 
 First run downloads CLIP weights (~600 MB) and takes a few minutes on CPU; scores are
@@ -179,7 +179,7 @@ selection rule. Pure CPU, no GPU needed — only waits on Step 3's Kaggle output
 
 ```bash
 py -3 exp9_taxonomy_analysis.py \
-    --easy-dir artifacts_flux --easy-annotator chayan \
+    --easy-dir artifacts_flux --easy-annotator annotator1 \
     --hard-dir artifacts_flux_hard --hard-annotator consensus \
     --out artifacts_flux_hard/taxonomy_report.json
 ```

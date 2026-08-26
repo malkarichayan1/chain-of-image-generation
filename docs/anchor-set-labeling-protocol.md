@@ -1,6 +1,6 @@
 # Metric-A Anchor Set — Labeling Protocol (2026-07-25 growth round)
 
-Who: 2 annotators, **Grace and Akhil**, each independently labeling the **full** growth
+Who: 2 annotators, **Annotator 2 and Annotator 3**, each independently labeling the **full** growth
 batch (full double coverage, not a partial-overlap sample — see §5). Model: **SDXL only**
 (`stabilityai/stable-diffusion-xl-base-1.0`) — the SD1.5 anchor set (`artifacts/`) is frozen
 historical data and is never relabeled or merged into this round; see CLAUDE.md.
@@ -105,7 +105,7 @@ cannot and should not try to disentangle.
 
 ## 5. Two annotators, full double coverage
 
-Grace and Akhil **each independently label 100% of the growth batch** — not a partial
+Annotator 2 and Annotator 3 **each independently label 100% of the growth batch** — not a partial
 overlap sample. Both run the identical tool, identical rules, blind (neither sees the
 other's answers or the metric's prediction) until both are done.
 
@@ -118,22 +118,22 @@ other's answers or the metric's prediction) until both are done.
   set(labels_b))`) — so it works correctly on partial progress mid-labeling and
   automatically converges to full-set kappa once both finish. Neither annotator is blocked
   waiting on the other.
-- **Target: Cohen's kappa >= 0.7.** Run `analyze_agreement.py --annotator grace
-  --compare-annotator akhil` (or vice versa — symmetric) once both are far enough along to
+- **Target: Cohen's kappa >= 0.7.** Run `analyze_agreement.py --annotator annotator2
+  --compare-annotator annotator3` (or vice versa — symmetric) once both are far enough along to
   be useful; rerun anytime for a running readout as labeling progresses.
 - If kappa falls short at completion, the disagreement rows (not the whole set) get a
   documented adjudication pass — decided if and when it's actually needed.
 - **Open question, not blocking labeling:** which annotator's file becomes the "reference"
   human label set for `analyze_agreement.py --annotator <X>`'s metric-vs-human accuracy
-  table (§7 of the memo's decision gate) — Grace's, Akhil's, or an adjudicated merge of
+  table (§7 of the memo's decision gate) — Annotator 2's, Annotator 3's, or an adjudicated merge of
   both? Punt this until both files exist; it doesn't affect how either annotator labels.
 
 ## 6. Deliverables (per the original task brief)
 
 1. **A labels file per annotator**: `labels_grace.json` + `counts_grace.json`, and
    `labels_akhil.json` + `counts_akhil.json` (per-attribute / per-image count-clean).
-2. **An inter-rater agreement number**: Cohen's kappa between Grace and Akhil, printed by
-   `analyze_agreement.py --annotator grace --compare-annotator akhil`.
+2. **An inter-rater agreement number**: Cohen's kappa between Annotator 2 and Annotator 3, printed by
+   `analyze_agreement.py --annotator annotator2 --compare-annotator annotator3`.
 3. **This document**: the labeling protocol and edge-case handling.
 
 ## 7. Model choice consistency

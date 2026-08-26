@@ -4,7 +4,7 @@ build_hard_prompts.py
 Generates manifest_hard.json — the harder FLUX.1-dev prompt set designed to
 force attribute-binding failures at ~50% rate.
 
-Design goals (per Chayan + briefing doc §9.1):
+Design goals (per Annotator 1 + briefing doc §9.1):
   - Higher subject counts (n = 4, 5, 6)
   - Confusable same-type attributes (two red/blue aprons in one image)
   - Attribute–subject prior fights (a chef wearing a cycling helmet)

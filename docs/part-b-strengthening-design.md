@@ -1,6 +1,6 @@
 # Design: Strengthening the Part B Money Result
 
-Date: 2026-07-23. Branch: `pi-level-idea`. Author: Chayan (with Claude).
+Date: 2026-07-23. Branch: `pi-level-idea`. Author: Annotator 1 (with Claude).
 
 Companion to `docs/pilot-design.md` (Track 1) and `pi_level_experiment/RESULTS.md` (the v4 run
 this design is built to strengthen).
@@ -207,7 +207,7 @@ Stage 1 gets thinner coverage by design (`base_prompt_for`, `token_indices`, man
 its model calls stay untested.
 
 Any Phase A/C change is ported back to `pilot/spatial_semantic_alignment.py` and re-verified
-against its Scenario 1–10 suite, per CLAUDE.md's note that Pranav's file is canonical and this
+against its Scenario 1–10 suite, per CLAUDE.md's note that Annotator 4's file is canonical and this
 branch's fixes must flow back before merge.
 
 ## Risks

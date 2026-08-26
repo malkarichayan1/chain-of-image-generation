@@ -14,8 +14,8 @@ data.
 
 SELECTION BIAS, and why the subset is defined by the CONSENSUS label:
     Defining "disobeyed" using one member of the pair being tested (e.g. selecting rows
-    where akhil said something other than intended_subject, then computing kappa(akhil,
-    grace)) conditions the subset on one rater's value. That mechanically depresses kappa:
+    where annotator3 said something other than intended_subject, then computing kappa(annotator3,
+    annotator2)) conditions the subset on one rater's value. That mechanically depresses kappa:
     it over-samples rows where that rater is an outlier, including their own label noise.
     Selecting on the consensus label instead is symmetric with respect to any pair -- it
     treats both members identically.
@@ -42,7 +42,7 @@ lines are directly comparable to it.
 
 Local CPU only. Run from inside ssa/anchor_set/:
     py -3 exp8_misbound_kappa.py --artifacts-dir artifacts_flux_hard \
-        --annotators akhil grace pranav
+        --annotators annotator3 annotator2 annotator4
 """
 from __future__ import annotations
 
@@ -142,7 +142,7 @@ def main() -> None:
     ap = argparse.ArgumentParser(
         description="Cohen's kappa restricted to disobeyed rows (experiment #13)")
     ap.add_argument("--artifacts-dir", default="artifacts_flux_hard")
-    ap.add_argument("--annotators", nargs="+", default=["akhil", "grace", "pranav"])
+    ap.add_argument("--annotators", nargs="+", default=["annotator3", "annotator2", "annotator4"])
     ap.add_argument("--consensus-name", default="consensus",
                     help="annotator name of the consensus label file (labels_<name>.json)")
     ap.add_argument("--selection", choices=["consensus", "either"], default="consensus")

@@ -1,6 +1,6 @@
 # Design: Validating the Money Result (Part C)
 
-Date: 2026-07-23. Branch: `pi-level-idea`. Author: Chayan (with Claude).
+Date: 2026-07-23. Branch: `pi-level-idea`. Author: Annotator 1 (with Claude).
 
 Companion to `docs/part-b-strengthening-design.md` (Steps 1-4, which produced the growth-run
 result in `pi_level_experiment/RESULTS.md`'s top section: real beats every control under the

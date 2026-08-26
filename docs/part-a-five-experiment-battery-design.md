@@ -1,9 +1,9 @@
 # Design: Part A Five-Experiment Battery
 
-Date: 2026-07-27. Branch: `sdxl`. Author: Chayan (with Claude).
+Date: 2026-07-27. Branch: `sdxl`. Author: Annotator 1 (with Claude).
 
 Scaffolded ahead of Workstream 2 (the labeling-protocol growth run, `docs/anchor-set-labeling-protocol.md`)
-finishing, so all five experiments below can run in a single pass the moment Grace/Akhil's
+finishing, so all five experiments below can run in a single pass the moment Annotator 2/Annotator 3's
 validated labels land on the expanded SDXL anchor set. **Nothing in this document is run against
 real data yet.** Every script ships against `artifacts_dummy/` (synthetic, `make_dummy_artifacts.py`)
 until pointed at `artifacts_sdxl/` with `--artifacts-dir`.
@@ -206,12 +206,12 @@ a reader sees the shift, not just one already-filtered number.
 one — a reader needs to see whether restricting to count-clean *changes* the accuracy number
 materially or just shrinks n. (Real data note, not a decision rule: as of 2026-07-25's growth run,
 count-broken is disproportionately an n=4 problem — 8/23 n=4 rows scored count-clean vs. 23/23
-scored unfiltered per the current Akhil counts — restricting to count-clean at n=4 will have real
+scored unfiltered per the current Annotator 3 counts — restricting to count-clean at n=4 will have real
 statistical-power consequences worth stating, not just computing.)
 
 **Acceptance:** on real data (when run against `artifacts_sdxl/`), reproduces the row counts already
 verified by hand: 105 detected images / 306 raw judgments, count-clean-only strict-scored subtotals
-of 18/14/8 at n=2/3/4 (Akhil's counts) vs. 18/16/23 unfiltered.
+of 18/14/8 at n=2/3/4 (Annotator 3's counts) vs. 18/16/23 unfiltered.
 
 ## Orchestrator
 

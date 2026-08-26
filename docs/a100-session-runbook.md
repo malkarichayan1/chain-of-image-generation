@@ -178,7 +178,7 @@ GPU time:
 
 ```bash
 python3 exp9_taxonomy_analysis.py \
-    --easy-dir artifacts_flux --easy-annotator chayan \
+    --easy-dir artifacts_flux --easy-annotator annotator1 \
     --hard-dir artifacts_flux_hard --hard-annotator consensus \
     --out artifacts_flux_hard/taxonomy_report.json
 ```

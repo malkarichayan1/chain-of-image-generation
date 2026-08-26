@@ -2,26 +2,26 @@
 
 > **Provenance warning — do not cite the per-experiment numbers below.** This document was
 > written against an earlier `anchor_common.py`. The `anchor_common.py` sync in the FLUX merge
-> shifted row counts: akhil's n=4 stratum is recorded here as 23 rows / 17.4%, where current code
+> shifted row counts: annotator3's n=4 stratum is recorded here as 23 rows / 17.4%, where current code
 > gives 21 / 19.0%. The κ figures and the protocol narrative still stand; the battery numbers do
 > not. Canonical, single-code-state outputs are
 > `ssa/anchor_set/artifacts_sdxl/five_experiments_<annotator>.{json,md}`, and the paper's tables
 > are in [`raw-attention-paper-briefing.md`](raw-attention-paper-briefing.md).
 >
 > One figure below is also stale in scope: the "87% of disagreements (33/38)" breakdown was
-> computed on Grace's partial 161 judgments, not the full 306. It has not been recomputed.
+> computed on Annotator 2's partial 161 judgments, not the full 306. It has not been recomputed.
 
 Companion to `docs/anchor-set-labeling-protocol.md`. Produced by:
 ```
-py -3 analyze_agreement.py --annotator akhil --artifacts-dir artifacts_sdxl --compare-annotator grace
+py -3 analyze_agreement.py --annotator annotator3 --artifacts-dir artifacts_sdxl --compare-annotator annotator2
 ```
 Raw stdout saved verbatim below (summary); row-level detail is in `artifacts_sdxl/agreement_akhil.csv`.
-Both Akhil and Grace have reached 100% coverage (306/306 labels, 105/105 counts each), achieving full double coverage for the growth round as required by the protocol.
+Both Annotator 3 and Annotator 2 have reached 100% coverage (306/306 labels, 105/105 counts each), achieving full double coverage for the growth round as required by the protocol.
 
 ## Inter-rater reliability (the Workstream 2 deliverable)
 
 ```
-Inter-rater reliability: akhil vs grace
+Inter-rater reliability: annotator3 vs annotator2
   overlapping judgments : 306
   raw agreement         : 235/306 = 76.8%
   chance agreement      : 27.1%
@@ -39,7 +39,7 @@ soft spot, not core binding judgment.
 Count-clean κ (same annotators, per-image judgment, n=92 overlapping): **0.914** — comfortably
 above target.
 
-## Metric-vs-human accuracy (Akhil as reference, strict scoring)
+## Metric-vs-human accuracy (Annotator 3 as reference, strict scoring)
 
 ```
  stratum | labeled | scored | correct | accuracy |  chance |  margin
@@ -52,7 +52,7 @@ above target.
 ```
 
 96 of 306 rows excluded as **count-broken** (image didn't render the exact requested subject
-count — Akhil's own per-image judgment), on top of the usual none/unclear/shared exclusions.
+count — Annotator 3's own per-image judgment), on top of the usual none/unclear/shared exclusions.
 Effective n = 40/306 = **13%** pass rate, well below the ~150-effective floor the protocol sized
 the ~300-raw growth batch for (and well below the original 23-image set's ~51% strict pass rate).
 This growth batch's generations are shakier than the original set — worth a closer look before
@@ -62,17 +62,17 @@ treating the accuracy numbers above as a clean replication, independent of the k
 
 | Deliverable | Status |
 |---|---|
-| Labels file per annotator | done — copied into `artifacts_sdxl/{labels,counts}_{akhil,grace}.json` |
+| Labels file per annotator | done — copied into `artifacts_sdxl/{labels,counts}_{annotator3,annotator2}.json` |
 | Inter-rater agreement number | computed and committed here — 0.682, full data, short of 0.7 |
 | Protocol doc | done — `docs/anchor-set-labeling-protocol.md` |
-| Full double coverage (both annotators) | done — Akhil 100%, Grace 100% |
+| Full double coverage (both annotators) | done — Annotator 3 100%, Annotator 2 100% |
 | Effective-n floor (~150) for binding accuracy | not met — 40 achieved, driven mostly by count-broken rate |
 
-**Done.** Grace has finished her pass and full double coverage is achieved. The low effective-n from count-broken images is a separate, real finding worth investigating: is the growth batch's prompt/seed pool systematically harder to render than the original 23 prompts, or is this a one-off from the backfill's retry seeds?
+**Done.** Annotator 2 has finished her pass and full double coverage is achieved. The low effective-n from count-broken images is a separate, real finding worth investigating: is the growth batch's prompt/seed pool systematically harder to render than the original 23 prompts, or is this a one-off from the backfill's retry seeds?
 
 
 
-## Workstream 3 Experiment Results (Chayan)
+## Workstream 3 Experiment Results (Annotator 1)
 
 ## Experiment 1 -- accuracy per subject count
 
@@ -129,7 +129,7 @@ COUNT-CLEAN ONLY (count-broken images excluded)
 (0 row(s) excluded as count-broken -- rendering failure, not binding failure.)
 ```
 
-## Workstream 3 Experiment Results (Akhil)
+## Workstream 3 Experiment Results (Annotator 3)
 
 ## Experiment 1 -- accuracy per subject count
 
@@ -186,7 +186,7 @@ COUNT-CLEAN ONLY (count-broken images excluded)
 (96 row(s) excluded as count-broken -- rendering failure, not binding failure.)
 ```
 
-## Workstream 3 Experiment Results (Grace)
+## Workstream 3 Experiment Results (Annotator 2)
 
 ## Experiment 1 -- accuracy per subject count
 
