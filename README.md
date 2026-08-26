@@ -7,7 +7,7 @@
 
 > **Core Thesis:** Automated faithfulness metrics for text-to-image (T2I) synthesis—including internal cross-attention spatial mass and VLM-based judges (VQAScore)—predominantly encode *prompt intent* rather than *visual realization*. Consequently, they achieve high aggregate accuracy on standard benchmarks solely because models usually obey their prompts, while providing no reliable diagnostic signal precisely on the prompt-disobeyed failure cases they are deployed to catch.
 
-This repository contains the official, verified codebase and data for the paper **"Faithful by Assumption: How Text-to-Image Faithfulness Metrics Fail on Model Disobedience"**, submitted to the NeurIPS 2026 Workshop on Grounded and Faithful Vision-Language Models for Real-World Deployment (VLM4RWD).
+This repository contains the official, verified codebase and evaluation artifacts for the paper **"Faithful by Assumption: How Text-to-Image Faithfulness Metrics Fail on Model Disobedience"**, submitted to the NeurIPS 2026 Workshop on Grounded and Faithful Vision-Language Models for Real-World Deployment (VLM4RWD).
 
 ---
 
@@ -32,7 +32,7 @@ This repository contains the official, verified codebase and data for the paper 
 
 ## 2. Repository Structure
 
-The repository is organized into two primary empirical tracks:
+The repository is structured into two core empirical tracks matching the paper:
 
 ```
 chain-of-image-generation/
@@ -52,10 +52,10 @@ chain-of-image-generation/
 ├── pi_level_experiment/            # Track B: Sequential Chain Audit (CoIG Track)
 │   ├── run_chain_experiment.py     # Sequential generation orchestrator
 │   ├── score_chains.py             # Delta-mask & attention IoU scoring
-│   ├── RESULTS.md                  # Comprehensive empirical report on chain dynamics
+│   ├── RESULTS.md                  # Empirical writeup for chain dynamics & CLIPSeg ablation
 │   └── tests/                      # Chain pipeline test suite (108 tests)
 │
-├── pilot/                          # Initial Causal Relevance & Spatial-Semantic experiments
+├── pilot/                          # Initial Causal Relevance pilot experiments (Audit 1)
 └── docs/                           # Paper drafts, LaTeX sources, and BibTeX references
 ```
 
@@ -89,7 +89,7 @@ python -m pytest tests/ -q
 
 ---
 
-### Reproducing Core Experiments
+### Reproducing Core Paper Results
 
 Navigate to the `ssa/anchor_set/` directory:
 
@@ -144,16 +144,4 @@ python exp3b_within_item_permutation.py --artifacts-dir artifacts_flux_hard --an
 
 ---
 
-## 4. Citation
-
-```bibtex
-@inproceedings{faithfulness2026assumption,
-  title     = {Faithful by Assumption: How Text-to-Image Faithfulness Metrics Fail on Model Disobedience},
-  author    = {Anonymous Authors},
-  booktitle = {NeurIPS 2026 Workshop on Grounded and Faithful Vision-Language Models for Real-World Deployment (VLM4RWD)},
-  year      = {2026}
-}
-```
-
----
 *This repository is anonymized for double-blind peer review.*
