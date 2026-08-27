@@ -269,7 +269,7 @@ def run(annotator: str, input_fn=input, relabel: frozenset = frozenset()) -> Dic
 def main() -> None:
     ap = argparse.ArgumentParser(description="Blind human labeling for the metric-A anchor set")
     ap.add_argument("--annotator", required=True,
-                    help="short id for this annotator, e.g. 'annotator1' -> labels_chayan.json")
+                    help="short id for this annotator, e.g. 'annotator1' -> labels_annotator1.json")
     ap.add_argument("--artifacts-dir", default="artifacts",
                     help="directory holding manifest.json / labels files, e.g. "
                          "'artifacts_sdxl' for the SDXL run, so it never touches the SD1.5 "

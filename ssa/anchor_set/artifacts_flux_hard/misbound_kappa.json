@@ -6,7 +6,7 @@
   ],
   "artifacts_dir": "artifacts_flux_hard",
   "disobeyed": {
-    "akhil_vs_grace": {
+    "annotator3_vs_annotator2": {
       "categories": [
         "baker",
         "barista",
@@ -26,7 +26,7 @@
       "p_expected": 0.1477627471383975,
       "p_observed": 0.9032258064516129
     },
-    "akhil_vs_pranav": {
+    "annotator3_vs_annotator4": {
       "categories": [
         "baker",
         "barista",
@@ -45,7 +45,7 @@
       "p_expected": 0.15166493236212278,
       "p_observed": 0.9193548387096774
     },
-    "grace_vs_pranav": {
+    "annotator2_vs_annotator4": {
       "categories": [
         "baker",
         "barista",
@@ -68,7 +68,7 @@
   },
   "n_disobeyed_keys": 62,
   "obeyed": {
-    "akhil_vs_grace": {
+    "annotator3_vs_annotator2": {
       "categories": [
         "baker",
         "barista",
@@ -91,7 +91,7 @@
       "p_expected": 0.12081322824705794,
       "p_observed": 0.9250720461095101
     },
-    "akhil_vs_pranav": {
+    "annotator3_vs_annotator4": {
       "categories": [
         "baker",
         "barista",
@@ -114,7 +114,7 @@
       "p_expected": 0.12351236203273841,
       "p_observed": 0.9106628242074928
     },
-    "grace_vs_pranav": {
+    "annotator2_vs_annotator4": {
       "categories": [
         "baker",
         "barista",
@@ -139,7 +139,7 @@
     }
   },
   "overall": {
-    "akhil_vs_grace": {
+    "annotator3_vs_annotator2": {
       "categories": [
         "baker",
         "barista",
@@ -163,7 +163,7 @@
       "p_expected": 0.11414924587968747,
       "p_observed": 0.921760391198044
     },
-    "akhil_vs_pranav": {
+    "annotator3_vs_annotator4": {
       "categories": [
         "baker",
         "barista",
@@ -187,7 +187,7 @@
       "p_expected": 0.11723985389853002,
       "p_observed": 0.9119804400977995
     },
-    "grace_vs_pranav": {
+    "annotator2_vs_annotator4": {
       "categories": [
         "baker",
         "barista",

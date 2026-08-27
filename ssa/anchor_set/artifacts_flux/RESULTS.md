@@ -12,7 +12,7 @@ Run against all three annotators independently (annotator1/annotator3/annotator2
 since inter-rater kappa on this label set turned out to be high (0.95+, see Exp 5/agreement
 note below) — the three runs agree closely, which is itself part of the evidence this data
 is trustworthy. Raw output: `five_experiments_{annotator1,annotator3,annotator2}.{json,md}`,
-`agreement_chayan.csv`.
+`agreement_annotator1.csv`.
 
 ## Experiment 1 — accuracy per subject count vs. 1/n chance
 
