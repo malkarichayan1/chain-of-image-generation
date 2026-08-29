@@ -1,4 +1,4 @@
-# Faithful by Assumption: How Text-to-Image Faithfulness Metrics Fail on Model Disobedience
+# Faithfulness Metrics Track Intent, Not Realization: An Audit of Three Metric Families for Text-to-Image Generation
 
 [![Tests](https://img.shields.io/badge/tests-507%20passed-brightgreen.svg)]()
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue.svg)]()
@@ -6,7 +6,7 @@
 
 > **Core Thesis:** Automated faithfulness metrics for text-to-image (T2I) synthesis—including internal cross-attention spatial mass and VLM-based judges (VQAScore)—predominantly encode *prompt intent* rather than *visual realization*. Consequently, they achieve high aggregate accuracy on standard benchmarks solely because models usually obey their prompts, while providing no reliable diagnostic signal precisely on the prompt-disobeyed failure cases they are deployed to catch.
 
-This repository contains the official codebase and evaluation artifacts for the paper **"Faithful by Assumption: How Text-to-Image Faithfulness Metrics Fail on Model Disobedience"**.
+This repository contains the official codebase and evaluation artifacts for the paper **"Faithfulness Metrics Track Intent, Not Realization: An Audit of Three Metric Families for Text-to-Image Generation"**.
 
 ---
 
