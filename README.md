@@ -1,4 +1,4 @@
-# chain-of-image-generation
+# Text-to-Image Faithfulness Metrics Track Intent, Not Realization
 
 ## Repository Structure
 
