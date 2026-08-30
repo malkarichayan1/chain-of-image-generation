@@ -29,9 +29,9 @@ individual `--flag` values passed on the command line take priority over it.
 ## Running the Test Suite
 
 ```bash
-cd ssa/anchor_set && pytest tests/ -q                 # 344 passed, 2 skipped
-cd ../../experiments && python -m pytest tests/ -q    # 97 passed, 1 skipped
-cd ../pilot && python -m pytest tests/ -q              # 4 passed
+cd ssa/anchor_set && pytest tests/ -q
+cd ../../experiments && python -m pytest tests/ -q
+cd ../pilot && python -m pytest tests/ -q
 ```
 
 GPU-specific tests are automatically skipped without CUDA.
