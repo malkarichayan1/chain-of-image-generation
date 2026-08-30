@@ -1,0 +1,55 @@
+prompt_id,n,attribute,intended_subject,predicted_owner,human_label,scored,correct
+0,2,red apron,barista,barista,unclear,False,False
+0,2,yellow helmet,cyclist,barista,cyclist,True,False
+1,2,white hat,chef,chef,unclear,False,False
+1,2,shovel,farmer,chef,unclear,False,False
+2,2,blue gloves,nurse,nurse,nurse,True,True
+2,2,dark sunglasses,pilot,pilot,unclear,False,False
+3,2,book,teacher,cyclist,cyclist,True,True
+3,2,yellow helmet,cyclist,teacher,cyclist,True,False
+4,2,blue gloves,nurse,farmer,unclear,False,False
+4,2,shovel,farmer,nurse,farmer,True,False
+5,2,dark sunglasses,pilot,barista,unclear,False,False
+5,2,red apron,barista,pilot,unclear,False,False
+6,3,red apron,barista,barista,none,False,False
+6,3,yellow helmet,cyclist,barista,none,False,False
+6,3,white hat,chef,barista,unclear,False,False
+7,3,pan,chef,farmer,chef,True,False
+7,3,shovel,farmer,farmer,farmer,True,True
+7,3,blue gloves,nurse,chef,none,False,False
+8,3,dark sunglasses,pilot,pilot,unclear,False,False
+8,3,book,teacher,pilot,teacher,True,False
+8,3,red apron,barista,barista,barista,True,True
+9,3,blue gloves,nurse,cyclist,nurse,True,False
+9,3,yellow helmet,cyclist,cyclist,unclear,False,False
+9,3,shovel,farmer,nurse,unclear,False,False
+10,3,book,teacher,teacher,teacher,True,True
+10,3,dark sunglasses,pilot,chef,none,False,False
+10,3,white hat,chef,pilot,chef,True,False
+11,3,red apron,barista,nurse,none,False,False
+11,3,blue gloves,nurse,nurse,none,False,False
+11,3,yellow helmet,cyclist,cyclist,none,False,False
+12,4,red apron,barista,barista,none,False,False
+12,4,yellow helmet,cyclist,barista,none,False,False
+12,4,white hat,chef,cyclist,none,False,False
+12,4,shovel,farmer,chef,unclear,False,False
+13,4,blue gloves,nurse,pilot,none,False,False
+13,4,dark sunglasses,pilot,chef,unclear,False,False
+13,4,book,teacher,chef,pilot,True,False
+13,4,pan,chef,chef,nurse,True,False
+14,4,shovel,farmer,farmer,farmer,True,True
+14,4,red apron,barista,nurse,none,False,False
+14,4,yellow helmet,cyclist,nurse,none,False,False
+14,4,blue gloves,nurse,nurse,none,False,False
+15,4,white hat,chef,cyclist,teacher,True,False
+15,4,book,teacher,cyclist,teacher,True,False
+15,4,dark sunglasses,pilot,chef,unclear,False,False
+15,4,yellow helmet,cyclist,teacher,none,False,False
+16,4,red apron,barista,barista,unclear,False,False
+16,4,blue gloves,nurse,nurse,farmer,True,False
+16,4,shovel,farmer,farmer,barista,True,False
+16,4,dark sunglasses,pilot,nurse,unclear,False,False
+17,4,yellow helmet,cyclist,cyclist,cyclist,True,True
+17,4,pan,chef,nurse,none,False,False
+17,4,book,teacher,nurse,teacher,True,False
+17,4,blue gloves,nurse,nurse,none,False,False

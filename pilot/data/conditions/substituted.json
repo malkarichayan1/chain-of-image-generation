@@ -1,0 +1,82 @@
+[
+  {
+    "item_index": 13,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Pharmacist with tattoos on ankle?",
+    "claimed_step": 1,
+    "source": "substituted_from_item_52",
+    "final_step": 6
+  },
+  {
+    "item_index": 19,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Firefighter with tattoos on ankle?",
+    "claimed_step": 1,
+    "source": "substituted_from_item_82",
+    "final_step": 6
+  },
+  {
+    "item_index": 52,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Bank Teller wearing nose piercings?",
+    "claimed_step": 1,
+    "source": "substituted_from_item_160",
+    "final_step": 6
+  },
+  {
+    "item_index": 62,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Postal Worker wearing sunglasses?",
+    "claimed_step": 1,
+    "source": "substituted_from_item_142",
+    "final_step": 6
+  },
+  {
+    "item_index": 68,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Casino Dealer wearing glasses?",
+    "claimed_step": 3,
+    "source": "substituted_from_item_129",
+    "final_step": 6
+  },
+  {
+    "item_index": 82,
+    "question_col": "question_attr_1",
+    "question_text": "Is there an Airline Pilot with tattoos on ankle?",
+    "claimed_step": 1,
+    "source": "substituted_from_item_19",
+    "final_step": 6
+  },
+  {
+    "item_index": 129,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Construction Worker wearing latex gloves?",
+    "claimed_step": 1,
+    "source": "substituted_from_item_62",
+    "final_step": 6
+  },
+  {
+    "item_index": 142,
+    "question_col": "question_attr_1",
+    "question_text": "Is there a Construction Worker with a mustache?",
+    "claimed_step": 1,
+    "source": "substituted_from_item_62",
+    "final_step": 6
+  },
+  {
+    "item_index": 160,
+    "question_col": "question_attr_4",
+    "question_text": "Is there a Lifeguard with straight hair?",
+    "claimed_step": 1,
+    "source": "substituted_from_item_68",
+    "final_step": 6
+  },
+  {
+    "item_index": 247,
+    "question_col": "question_attr_3",
+    "question_text": "Is there a Pharmacist with tattoos on ankle?",
+    "claimed_step": 1,
+    "source": "substituted_from_item_52",
+    "final_step": 6
+  }
+]

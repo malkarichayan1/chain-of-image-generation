@@ -1,0 +1,196 @@
+{
+  "experiment_1": {
+    "overall": {
+      "n_labeled": 68,
+      "n_scored": 35,
+      "n_correct": 16,
+      "n_excluded": 33,
+      "accuracy": 0.45714285714285713,
+      "chance": null,
+      "margin_over_chance": null,
+      "p_value": null
+    },
+    "by_stratum": {
+      "2": {
+        "n_labeled": 16,
+        "n_scored": 9,
+        "n_correct": 5,
+        "n_excluded": 7,
+        "accuracy": 0.5555555555555556,
+        "chance": 0.5,
+        "margin_over_chance": 0.05555555555555558,
+        "p_value": 0.5
+      },
+      "3": {
+        "n_labeled": 24,
+        "n_scored": 13,
+        "n_correct": 5,
+        "n_excluded": 11,
+        "accuracy": 0.38461538461538464,
+        "chance": 0.3333333333333333,
+        "margin_over_chance": 0.05128205128205132,
+        "p_value": 0.4479612976793286
+      },
+      "4": {
+        "n_labeled": 28,
+        "n_scored": 13,
+        "n_correct": 6,
+        "n_excluded": 15,
+        "accuracy": 0.46153846153846156,
+        "chance": 0.25,
+        "margin_over_chance": 0.21153846153846156,
+        "p_value": 0.08021259307861328
+      }
+    }
+  },
+  "experiment_2": {
+    "available": false,
+    "message": "Experiment 2 -- UNAVAILABLE: this manifest has no model_scores_full/predicted_owner_full on every detected attribute. Rerun generate_anchor_images_sdxl.py (with the additive model_scores_full patch) against the seeds already pinned in this manifest before this experiment can run."
+  },
+  "experiment_3": {
+    "sweep": {
+      "2": {
+        "n_seeds": 200,
+        "median_accuracy": 0.5555555555555556,
+        "chance": 0.5,
+        "frac_not_significantly_different_from_chance": 0.96
+      },
+      "3": {
+        "n_seeds": 200,
+        "median_accuracy": 0.3076923076923077,
+        "chance": 0.3333333333333333,
+        "frac_not_significantly_different_from_chance": 0.96
+      },
+      "4": {
+        "n_seeds": 200,
+        "median_accuracy": 0.23076923076923078,
+        "chance": 0.25,
+        "frac_not_significantly_different_from_chance": 0.95
+      }
+    },
+    "mcnemar": {
+      "n": 35,
+      "real_only_correct": 7,
+      "scrambled_only_correct": 5,
+      "n_discordant": 12,
+      "p_value": 0.7744140625
+    }
+  },
+  "experiment_4": {
+    "headline": {
+      "n": 35,
+      "metric_accuracy": 0.45714285714285713,
+      "baseline_accuracy": 0.7428571428571429
+    },
+    "mcnemar": {
+      "n": 35,
+      "metric_only_correct": 4,
+      "baseline_only_correct": 14,
+      "n_discordant": 18,
+      "p_value": 0.0308837890625
+    },
+    "by_stratum": {
+      "2": {
+        "n": 9,
+        "metric_accuracy": 0.5555555555555556,
+        "baseline_accuracy": 0.8888888888888888,
+        "chance": 0.5
+      },
+      "3": {
+        "n": 13,
+        "metric_accuracy": 0.38461538461538464,
+        "baseline_accuracy": 0.7692307692307693,
+        "chance": 0.3333333333333333
+      },
+      "4": {
+        "n": 13,
+        "metric_accuracy": 0.46153846153846156,
+        "baseline_accuracy": 0.6153846153846154,
+        "chance": 0.25
+      }
+    }
+  },
+  "experiment_5": {
+    "all": {
+      "overall": {
+        "n_labeled": 68,
+        "n_scored": 35,
+        "n_correct": 16,
+        "n_excluded": 33,
+        "accuracy": 0.45714285714285713,
+        "chance": null,
+        "margin_over_chance": null
+      },
+      "by_stratum": {
+        "2": {
+          "n_labeled": 16,
+          "n_scored": 9,
+          "n_correct": 5,
+          "n_excluded": 7,
+          "accuracy": 0.5555555555555556,
+          "chance": 0.5,
+          "margin_over_chance": 0.05555555555555558
+        },
+        "3": {
+          "n_labeled": 24,
+          "n_scored": 13,
+          "n_correct": 5,
+          "n_excluded": 11,
+          "accuracy": 0.38461538461538464,
+          "chance": 0.3333333333333333,
+          "margin_over_chance": 0.05128205128205132
+        },
+        "4": {
+          "n_labeled": 28,
+          "n_scored": 13,
+          "n_correct": 6,
+          "n_excluded": 15,
+          "accuracy": 0.46153846153846156,
+          "chance": 0.25,
+          "margin_over_chance": 0.21153846153846156
+        }
+      }
+    },
+    "count_clean": {
+      "overall": {
+        "n_labeled": 68,
+        "n_scored": 35,
+        "n_correct": 16,
+        "n_excluded": 33,
+        "accuracy": 0.45714285714285713,
+        "chance": null,
+        "margin_over_chance": null
+      },
+      "by_stratum": {
+        "2": {
+          "n_labeled": 16,
+          "n_scored": 9,
+          "n_correct": 5,
+          "n_excluded": 7,
+          "accuracy": 0.5555555555555556,
+          "chance": 0.5,
+          "margin_over_chance": 0.05555555555555558
+        },
+        "3": {
+          "n_labeled": 24,
+          "n_scored": 13,
+          "n_correct": 5,
+          "n_excluded": 11,
+          "accuracy": 0.38461538461538464,
+          "chance": 0.3333333333333333,
+          "margin_over_chance": 0.05128205128205132
+        },
+        "4": {
+          "n_labeled": 28,
+          "n_scored": 13,
+          "n_correct": 6,
+          "n_excluded": 15,
+          "accuracy": 0.46153846153846156,
+          "chance": 0.25,
+          "margin_over_chance": 0.21153846153846156
+        }
+      }
+    },
+    "n_excluded_as_count_broken": 0
+  }
+}

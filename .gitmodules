@@ -1,0 +1,3 @@
+[submodule "coig"]
+	path = coig
+	url = https://github.com/anonymous/coig.git

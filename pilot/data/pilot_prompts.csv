@@ -1,0 +1,631 @@
+item_index,prompt,filled_prompt,subject,attributes,interactions,question_count,question_attr_1,question_attr_2,question_attr_3,question_attr_4,question_interaction_1,question_interaction_2,error
+13,Four Housekeeping Staff. Housekeeping Staff A has tote bag in hand. Housekeeping Staff B has mustache. Housekeeping Staff C has water bottle in hand. Housekeeping Staff D wears headphones. Housekeeping Staff A and Housekeeping Staff B are whispering a secret into the other's ear with each other. Housekeeping Staff C and Housekeeping Staff D are looking at the same phone or tablet screen with each other.,"You are creating image generation prompts and questions for a dataset.
+
+Given the sample data below, you need to generate:
+
+A SHORT image generation prompt
+
+Seven questions about the image
+
+SAMPLE DATA: Subject: Housekeeping Staff Attribute 1: Bags: tote bag Attribute 2: Facial Hair: mustache Attribute 3: Food/Drink: water bottle Attribute 4: Technology: headphones Interaction 1: Whispering a secret into the other's ear Interaction 2: Looking at the same phone or tablet screen
+
+INSTRUCTIONS:
+
+Create a SHORT image generation prompt following this format:
+
+Four [SUBJECT]s. [SUBJECT] A [verb] [ATTRIBUTE_1]. [SUBJECT] B [verb] [ATTRIBUTE_2]. [SUBJECT] C [verb] [ATTRIBUTE_3]. [SUBJECT] D [verb] [ATTRIBUTE_4]. [SUBJECT] A and [SUBJECT] B are [INTERACTION_1] with each other. [SUBJECT] C and [SUBJECT] D are [INTERACTION_2] with each other.
+
+Use appropriate verbs (is/has/wears) based on the attribute type
+
+For emotions: use ""is"" (e.g., ""is crying"")
+
+For physical items/bags: use ""has [item] in hand""
+
+For hair: use ""has [color/style] hair""
+
+For eyewear/gloves/jewelry: use ""wears""
+
+For tattoos: use ""has tattoos on [location]""
+
+Keep it SHORT and DIRECT
+
+Create SEVEN questions:
+
+question_count: ""Are there four [SUBJECT]s?""
+
+question_attr_1 through question_attr_4: ""Is there a [SUBJECT] [attribute description]?""
+
+question_interaction_1: ""Is the [SUBJECT] [with attribute 1] [INTERACTION_1] with the [SUBJECT] [with attribute 2]?""
+
+question_interaction_2: ""Is the [SUBJECT] [with attribute 3] [INTERACTION_2] with the [SUBJECT] [with attribute 4]?""
+
+EXAMPLES:
+
+Example 1: Subject: Police Officer Attribute 1: Eyewear: sunglasses Attribute 2: Hair Color: blonde Attribute 3: Technology: laptop Attribute 4: Negative: crying
+
+Interaction 1: Shaking hands Interaction 2: Having conversations
+
+OUTPUT: Prompt: Four Police Officers. Police Officer A wears sunglasses. Police Officer B has blonde hair. Police Officer C has laptop in hand. Police Officer D is crying. Police Officer A and Police Officer B are shaking hands with each other. Police Officer C and Police Officer D are having conversations with each other.
+
+question_count: Are there four Police Officers? question_attr_1: Is there a Police Officer wearing sunglasses? question_attr_2: Is there a Police Officer with blonde hair? question_attr_3: Is there a Police Officer with laptop in hand? question_attr_4: Is there a Police Officer is crying? question_interaction_1: Is the Police Officer wearing sunglasses shaking hands with the Police Officer with blonde hair? question_interaction_2: Is the Police Officer with laptop in hand having conversations with the Police Officer is crying?
+
+Example 2: Subject: Nurse Attribute 1: Bags: purse Attribute 2: Hair Style: curly Attribute 3: Tattoos: arm Attribute 4: Jewelry: necklace
+
+Interaction 1: Whispering a secret into the other's ear Interaction 2: Waving to each other
+
+OUTPUT: Prompt: Four Nurses. Nurse A has purse in hand. Nurse B has curly hair. Nurse C has tattoos on arm. Nurse D wears necklace. Nurse A and Nurse B are whispering a secret into the other's ear with each other. Nurse C and Nurse D are waving to each other.
+
+question_count: Are there four Nurses? question_attr_1: Is there a Nurse with purse in hand? question_attr_2: Is there a Nurse with curly hair? question_attr_3: Is there a Nurse with tattoos on arm? question_attr_4: Is there a Nurse wearing necklace? question_interaction_1: Is the Nurse with purse in hand whispering a secret into the other's ear with the Nurse with curly hair? question_interaction_2: Is the Nurse with tattoos on arm waving to each other with the Nurse wearing necklace?
+
+Now generate the output for the given sample data above. Return ONLY in this format:
+
+Prompt: [your prompt here]
+
+question_count: [question here] question_attr_1: [question here] question_attr_2: [question here] question_attr_3: [question here] question_attr_4: [question here] question_interaction_1: [question here] question_interaction_2: [question here]",Housekeeping Staff,"[('Bags', 'tote bag'), ('Facial Hair', 'mustache'), ('Food/Drink', 'water bottle'), ('Technology', 'headphones')]","[""Whispering a secret into the other's ear"", 'Looking at the same phone or tablet screen']",Are there four Housekeeping Staff?,Is there a Housekeeping Staff with tote bag in hand?,Is there a Housekeeping Staff with mustache?,Is there a Housekeeping Staff with water bottle in hand?,Is there a Housekeeping Staff wearing headphones?,Is the Housekeeping Staff with tote bag in hand whispering a secret into the other's ear with the Housekeeping Staff with mustache?,Is the Housekeeping Staff with water bottle in hand looking at the same phone or tablet screen with the Housekeeping Staff wearing headphones?,
+19,Four Airline Pilots. Airline Pilot A has tattoos on ankle. Airline Pilot B has coffee cup in hand. Airline Pilot C has bun hair. Airline Pilot D has tablet in hand. Airline Pilot A and Airline Pilot B are pointing an accusatory finger at each other. Airline Pilot C and Airline Pilot D are crossing their arms and glaring while the other tries to talk.,"You are creating image generation prompts and questions for a dataset.
+
+Given the sample data below, you need to generate:
+
+A SHORT image generation prompt
+
+Seven questions about the image
+
+SAMPLE DATA: Subject: Airline Pilot Attribute 1: Tattoos: ankle Attribute 2: Food/Drink: Coffee cup Attribute 3: Hair Style: bun Attribute 4: Technology: tablet Interaction 1: One person pointing an accusatory finger at the other Interaction 2: One person crossing their arms and glaring while the other tries to talk
+
+INSTRUCTIONS:
+
+Create a SHORT image generation prompt following this format:
+
+Four [SUBJECT]s. [SUBJECT] A [verb] [ATTRIBUTE_1]. [SUBJECT] B [verb] [ATTRIBUTE_2]. [SUBJECT] C [verb] [ATTRIBUTE_3]. [SUBJECT] D [verb] [ATTRIBUTE_4]. [SUBJECT] A and [SUBJECT] B are [INTERACTION_1] with each other. [SUBJECT] C and [SUBJECT] D are [INTERACTION_2] with each other.
+
+Use appropriate verbs (is/has/wears) based on the attribute type
+
+For emotions: use ""is"" (e.g., ""is crying"")
+
+For physical items/bags: use ""has [item] in hand""
+
+For hair: use ""has [color/style] hair""
+
+For eyewear/gloves/jewelry: use ""wears""
+
+For tattoos: use ""has tattoos on [location]""
+
+Keep it SHORT and DIRECT
+
+Create SEVEN questions:
+
+question_count: ""Are there four [SUBJECT]s?""
+
+question_attr_1 through question_attr_4: ""Is there a [SUBJECT] [attribute description]?""
+
+question_interaction_1: ""Is the [SUBJECT] [with attribute 1] [INTERACTION_1] with the [SUBJECT] [with attribute 2]?""
+
+question_interaction_2: ""Is the [SUBJECT] [with attribute 3] [INTERACTION_2] with the [SUBJECT] [with attribute 4]?""
+
+EXAMPLES:
+
+Example 1: Subject: Police Officer Attribute 1: Eyewear: sunglasses Attribute 2: Hair Color: blonde Attribute 3: Technology: laptop Attribute 4: Negative: crying
+
+Interaction 1: Shaking hands Interaction 2: Having conversations
+
+OUTPUT: Prompt: Four Police Officers. Police Officer A wears sunglasses. Police Officer B has blonde hair. Police Officer C has laptop in hand. Police Officer D is crying. Police Officer A and Police Officer B are shaking hands with each other. Police Officer C and Police Officer D are having conversations with each other.
+
+question_count: Are there four Police Officers? question_attr_1: Is there a Police Officer wearing sunglasses? question_attr_2: Is there a Police Officer with blonde hair? question_attr_3: Is there a Police Officer with laptop in hand? question_attr_4: Is there a Police Officer is crying? question_interaction_1: Is the Police Officer wearing sunglasses shaking hands with the Police Officer with blonde hair? question_interaction_2: Is the Police Officer with laptop in hand having conversations with the Police Officer is crying?
+
+Example 2: Subject: Nurse Attribute 1: Bags: purse Attribute 2: Hair Style: curly Attribute 3: Tattoos: arm Attribute 4: Jewelry: necklace
+
+Interaction 1: Whispering a secret into the other's ear Interaction 2: Waving to each other
+
+OUTPUT: Prompt: Four Nurses. Nurse A has purse in hand. Nurse B has curly hair. Nurse C has tattoos on arm. Nurse D wears necklace. Nurse A and Nurse B are whispering a secret into the other's ear with each other. Nurse C and Nurse D are waving to each other.
+
+question_count: Are there four Nurses? question_attr_1: Is there a Nurse with purse in hand? question_attr_2: Is there a Nurse with curly hair? question_attr_3: Is there a Nurse with tattoos on arm? question_attr_4: Is there a Nurse wearing necklace? question_interaction_1: Is the Nurse with purse in hand whispering a secret into the other's ear with the Nurse with curly hair? question_interaction_2: Is the Nurse with tattoos on arm waving to each other with the Nurse wearing necklace?
+
+Now generate the output for the given sample data above. Return ONLY in this format:
+
+Prompt: [your prompt here]
+
+question_count: [question here] question_attr_1: [question here] question_attr_2: [question here] question_attr_3: [question here] question_attr_4: [question here] question_interaction_1: [question here] question_interaction_2: [question here]",Airline Pilot,"[('Tattoos', 'ankle'), ('Food/Drink', 'Coffee cup'), ('Hair Style', 'bun'), ('Technology', 'tablet')]","['One person pointing an accusatory finger at the other', 'One person crossing their arms and glaring while the other tries to talk']",Are there four Airline Pilots?,Is there an Airline Pilot with tattoos on ankle?,Is there an Airline Pilot with coffee cup in hand?,Is there an Airline Pilot with bun hair?,Is there an Airline Pilot with tablet in hand?,Is the Airline Pilot with tattoos on ankle pointing an accusatory finger at the Airline Pilot with coffee cup in hand?,Is the Airline Pilot with bun hair crossing their arms and glaring while the Airline Pilot with tablet in hand tries to talk?,
+52,Four Pharmacists. Pharmacist A has green eyes. Pharmacist B wears earrings. Pharmacist C has tattoos on ankle. Pharmacist D has laptop in hand. Pharmacist A and Pharmacist B are giving a fist bump to each other. Pharmacist C and Pharmacist D are exchanging business cards with each other.,"You are creating image generation prompts and questions for a dataset.
+
+Given the sample data below, you need to generate:
+
+A SHORT image generation prompt
+
+Seven questions about the image
+
+SAMPLE DATA: Subject: Pharmacist Attribute 1: Eyes: green Attribute 2: Jewelry: earrings Attribute 3: Tattoos: ankle Attribute 4: Technology: laptop Interaction 1: A fist bump Interaction 2: Exchanging business cards
+
+INSTRUCTIONS:
+
+Create a SHORT image generation prompt following this format:
+
+Four [SUBJECT]s. [SUBJECT] A [verb] [ATTRIBUTE_1]. [SUBJECT] B [verb] [ATTRIBUTE_2]. [SUBJECT] C [verb] [ATTRIBUTE_3]. [SUBJECT] D [verb] [ATTRIBUTE_4]. [SUBJECT] A and [SUBJECT] B are [INTERACTION_1] with each other. [SUBJECT] C and [SUBJECT] D are [INTERACTION_2] with each other.
+
+Use appropriate verbs (is/has/wears) based on the attribute type
+
+For emotions: use ""is"" (e.g., ""is crying"")
+
+For physical items/bags: use ""has [item] in hand""
+
+For hair: use ""has [color/style] hair""
+
+For eyewear/gloves/jewelry: use ""wears""
+
+For tattoos: use ""has tattoos on [location]""
+
+Keep it SHORT and DIRECT
+
+Create SEVEN questions:
+
+question_count: ""Are there four [SUBJECT]s?""
+
+question_attr_1 through question_attr_4: ""Is there a [SUBJECT] [attribute description]?""
+
+question_interaction_1: ""Is the [SUBJECT] [with attribute 1] [INTERACTION_1] with the [SUBJECT] [with attribute 2]?""
+
+question_interaction_2: ""Is the [SUBJECT] [with attribute 3] [INTERACTION_2] with the [SUBJECT] [with attribute 4]?""
+
+EXAMPLES:
+
+Example 1: Subject: Police Officer Attribute 1: Eyewear: sunglasses Attribute 2: Hair Color: blonde Attribute 3: Technology: laptop Attribute 4: Negative: crying
+
+Interaction 1: Shaking hands Interaction 2: Having conversations
+
+OUTPUT: Prompt: Four Police Officers. Police Officer A wears sunglasses. Police Officer B has blonde hair. Police Officer C has laptop in hand. Police Officer D is crying. Police Officer A and Police Officer B are shaking hands with each other. Police Officer C and Police Officer D are having conversations with each other.
+
+question_count: Are there four Police Officers? question_attr_1: Is there a Police Officer wearing sunglasses? question_attr_2: Is there a Police Officer with blonde hair? question_attr_3: Is there a Police Officer with laptop in hand? question_attr_4: Is there a Police Officer is crying? question_interaction_1: Is the Police Officer wearing sunglasses shaking hands with the Police Officer with blonde hair? question_interaction_2: Is the Police Officer with laptop in hand having conversations with the Police Officer is crying?
+
+Example 2: Subject: Nurse Attribute 1: Bags: purse Attribute 2: Hair Style: curly Attribute 3: Tattoos: arm Attribute 4: Jewelry: necklace
+
+Interaction 1: Whispering a secret into the other's ear Interaction 2: Waving to each other
+
+OUTPUT: Prompt: Four Nurses. Nurse A has purse in hand. Nurse B has curly hair. Nurse C has tattoos on arm. Nurse D wears necklace. Nurse A and Nurse B are whispering a secret into the other's ear with each other. Nurse C and Nurse D are waving to each other.
+
+question_count: Are there four Nurses? question_attr_1: Is there a Nurse with purse in hand? question_attr_2: Is there a Nurse with curly hair? question_attr_3: Is there a Nurse with tattoos on arm? question_attr_4: Is there a Nurse wearing necklace? question_interaction_1: Is the Nurse with purse in hand whispering a secret into the other's ear with the Nurse with curly hair? question_interaction_2: Is the Nurse with tattoos on arm waving to each other with the Nurse wearing necklace?
+
+Now generate the output for the given sample data above. Return ONLY in this format:
+
+Prompt: [your prompt here]
+
+question_count: [question here] question_attr_1: [question here] question_attr_2: [question here] question_attr_3: [question here] question_attr_4: [question here] question_interaction_1: [question here] question_interaction_2: [question here]",Pharmacist,"[('Eyes', 'green'), ('Jewelry', 'earrings'), ('Tattoos', 'ankle'), ('Technology', 'laptop')]","['A fist bump', 'Exchanging business cards']",Are there four Pharmacists?,Is there a Pharmacist with green eyes?,Is there a Pharmacist wearing earrings?,Is there a Pharmacist with tattoos on ankle?,Is there a Pharmacist with laptop in hand?,Is the Pharmacist with green eyes giving a fist bump with the Pharmacist wearing earrings?,Is the Pharmacist with tattoos on ankle exchanging business cards with the Pharmacist with laptop in hand?,
+62,Four Construction Workers. Construction Worker A has a mustache. Construction Worker B is confused. Construction Worker C wears latex gloves. Construction Worker D has a suitcase in hand. Construction Worker A and Construction Worker B are one person crossing their arms and glaring while the other tries to talk with each other. Construction Worker C and Construction Worker D are shaking hands with each other.,"You are creating image generation prompts and questions for a dataset.
+
+Given the sample data below, you need to generate:
+
+A SHORT image generation prompt
+
+Seven questions about the image
+
+SAMPLE DATA: Subject: Construction Worker (often includes high-visibility safety gear) Attribute 1: Facial Hair: mustache Attribute 2: Negative: confused Attribute 3: Gloves: latex gloves. Attribute 4: Bags: suitcase Interaction 1: One person crossing their arms and glaring while the other tries to talk Interaction 2: Shaking hands
+
+INSTRUCTIONS:
+
+Create a SHORT image generation prompt following this format:
+
+Four [SUBJECT]s. [SUBJECT] A [verb] [ATTRIBUTE_1]. [SUBJECT] B [verb] [ATTRIBUTE_2]. [SUBJECT] C [verb] [ATTRIBUTE_3]. [SUBJECT] D [verb] [ATTRIBUTE_4]. [SUBJECT] A and [SUBJECT] B are [INTERACTION_1] with each other. [SUBJECT] C and [SUBJECT] D are [INTERACTION_2] with each other.
+
+Use appropriate verbs (is/has/wears) based on the attribute type
+
+For emotions: use ""is"" (e.g., ""is crying"")
+
+For physical items/bags: use ""has [item] in hand""
+
+For hair: use ""has [color/style] hair""
+
+For eyewear/gloves/jewelry: use ""wears""
+
+For tattoos: use ""has tattoos on [location]""
+
+Keep it SHORT and DIRECT
+
+Create SEVEN questions:
+
+question_count: ""Are there four [SUBJECT]s?""
+
+question_attr_1 through question_attr_4: ""Is there a [SUBJECT] [attribute description]?""
+
+question_interaction_1: ""Is the [SUBJECT] [with attribute 1] [INTERACTION_1] with the [SUBJECT] [with attribute 2]?""
+
+question_interaction_2: ""Is the [SUBJECT] [with attribute 3] [INTERACTION_2] with the [SUBJECT] [with attribute 4]?""
+
+EXAMPLES:
+
+Example 1: Subject: Police Officer Attribute 1: Eyewear: sunglasses Attribute 2: Hair Color: blonde Attribute 3: Technology: laptop Attribute 4: Negative: crying
+
+Interaction 1: Shaking hands Interaction 2: Having conversations
+
+OUTPUT: Prompt: Four Police Officers. Police Officer A wears sunglasses. Police Officer B has blonde hair. Police Officer C has laptop in hand. Police Officer D is crying. Police Officer A and Police Officer B are shaking hands with each other. Police Officer C and Police Officer D are having conversations with each other.
+
+question_count: Are there four Police Officers? question_attr_1: Is there a Police Officer wearing sunglasses? question_attr_2: Is there a Police Officer with blonde hair? question_attr_3: Is there a Police Officer with laptop in hand? question_attr_4: Is there a Police Officer is crying? question_interaction_1: Is the Police Officer wearing sunglasses shaking hands with the Police Officer with blonde hair? question_interaction_2: Is the Police Officer with laptop in hand having conversations with the Police Officer is crying?
+
+Example 2: Subject: Nurse Attribute 1: Bags: purse Attribute 2: Hair Style: curly Attribute 3: Tattoos: arm Attribute 4: Jewelry: necklace
+
+Interaction 1: Whispering a secret into the other's ear Interaction 2: Waving to each other
+
+OUTPUT: Prompt: Four Nurses. Nurse A has purse in hand. Nurse B has curly hair. Nurse C has tattoos on arm. Nurse D wears necklace. Nurse A and Nurse B are whispering a secret into the other's ear with each other. Nurse C and Nurse D are waving to each other.
+
+question_count: Are there four Nurses? question_attr_1: Is there a Nurse with purse in hand? question_attr_2: Is there a Nurse with curly hair? question_attr_3: Is there a Nurse with tattoos on arm? question_attr_4: Is there a Nurse wearing necklace? question_interaction_1: Is the Nurse with purse in hand whispering a secret into the other's ear with the Nurse with curly hair? question_interaction_2: Is the Nurse with tattoos on arm waving to each other with the Nurse wearing necklace?
+
+Now generate the output for the given sample data above. Return ONLY in this format:
+
+Prompt: [your prompt here]
+
+question_count: [question here] question_attr_1: [question here] question_attr_2: [question here] question_attr_3: [question here] question_attr_4: [question here] question_interaction_1: [question here] question_interaction_2: [question here]",Construction Worker (often includes high-visibility safety gear),"[('Facial Hair', 'mustache'), ('Negative', 'confused'), ('Gloves', 'latex gloves.'), ('Bags', 'suitcase')]","['One person crossing their arms and glaring while the other tries to talk', 'Shaking hands']",Are there four Construction Workers?,Is there a Construction Worker with a mustache?,Is there a Construction Worker is confused?,Is there a Construction Worker wearing latex gloves?,Is there a Construction Worker with a suitcase in hand?,Is the Construction Worker with a mustache one person crossing their arms and glaring while the other tries to talk with the Construction Worker is confused?,Is the Construction Worker wearing latex gloves shaking hands with the Construction Worker with a suitcase in hand?,
+68,Four Lifeguards. Lifeguard A has coffee cup in hand. Lifeguard B has red hair. Lifeguard C has tattoos on arm. Lifeguard D has straight hair. Lifeguard A and Lifeguard B are whispering a secret into the other's ear with each other. Lifeguard C and Lifeguard D are one person crossing their arms and glaring while the other tries to talk with each other.,"You are creating image generation prompts and questions for a dataset.
+
+Given the sample data below, you need to generate:
+
+A SHORT image generation prompt
+
+Seven questions about the image
+
+SAMPLE DATA: Subject: Lifeguard Attribute 1: Food/Drink: Coffee cup Attribute 2: Hair Color: red Attribute 3: Tattoos: arm Attribute 4: Hair Style: straight Interaction 1: Whispering a secret into the other's ear Interaction 2: One person crossing their arms and glaring while the other tries to talk
+
+INSTRUCTIONS:
+
+Create a SHORT image generation prompt following this format:
+
+Four [SUBJECT]s. [SUBJECT] A [verb] [ATTRIBUTE_1]. [SUBJECT] B [verb] [ATTRIBUTE_2]. [SUBJECT] C [verb] [ATTRIBUTE_3]. [SUBJECT] D [verb] [ATTRIBUTE_4]. [SUBJECT] A and [SUBJECT] B are [INTERACTION_1] with each other. [SUBJECT] C and [SUBJECT] D are [INTERACTION_2] with each other.
+
+Use appropriate verbs (is/has/wears) based on the attribute type
+
+For emotions: use ""is"" (e.g., ""is crying"")
+
+For physical items/bags: use ""has [item] in hand""
+
+For hair: use ""has [color/style] hair""
+
+For eyewear/gloves/jewelry: use ""wears""
+
+For tattoos: use ""has tattoos on [location]""
+
+Keep it SHORT and DIRECT
+
+Create SEVEN questions:
+
+question_count: ""Are there four [SUBJECT]s?""
+
+question_attr_1 through question_attr_4: ""Is there a [SUBJECT] [attribute description]?""
+
+question_interaction_1: ""Is the [SUBJECT] [with attribute 1] [INTERACTION_1] with the [SUBJECT] [with attribute 2]?""
+
+question_interaction_2: ""Is the [SUBJECT] [with attribute 3] [INTERACTION_2] with the [SUBJECT] [with attribute 4]?""
+
+EXAMPLES:
+
+Example 1: Subject: Police Officer Attribute 1: Eyewear: sunglasses Attribute 2: Hair Color: blonde Attribute 3: Technology: laptop Attribute 4: Negative: crying
+
+Interaction 1: Shaking hands Interaction 2: Having conversations
+
+OUTPUT: Prompt: Four Police Officers. Police Officer A wears sunglasses. Police Officer B has blonde hair. Police Officer C has laptop in hand. Police Officer D is crying. Police Officer A and Police Officer B are shaking hands with each other. Police Officer C and Police Officer D are having conversations with each other.
+
+question_count: Are there four Police Officers? question_attr_1: Is there a Police Officer wearing sunglasses? question_attr_2: Is there a Police Officer with blonde hair? question_attr_3: Is there a Police Officer with laptop in hand? question_attr_4: Is there a Police Officer is crying? question_interaction_1: Is the Police Officer wearing sunglasses shaking hands with the Police Officer with blonde hair? question_interaction_2: Is the Police Officer with laptop in hand having conversations with the Police Officer is crying?
+
+Example 2: Subject: Nurse Attribute 1: Bags: purse Attribute 2: Hair Style: curly Attribute 3: Tattoos: arm Attribute 4: Jewelry: necklace
+
+Interaction 1: Whispering a secret into the other's ear Interaction 2: Waving to each other
+
+OUTPUT: Prompt: Four Nurses. Nurse A has purse in hand. Nurse B has curly hair. Nurse C has tattoos on arm. Nurse D wears necklace. Nurse A and Nurse B are whispering a secret into the other's ear with each other. Nurse C and Nurse D are waving to each other.
+
+question_count: Are there four Nurses? question_attr_1: Is there a Nurse with purse in hand? question_attr_2: Is there a Nurse with curly hair? question_attr_3: Is there a Nurse with tattoos on arm? question_attr_4: Is there a Nurse wearing necklace? question_interaction_1: Is the Nurse with purse in hand whispering a secret into the other's ear with the Nurse with curly hair? question_interaction_2: Is the Nurse with tattoos on arm waving to each other with the Nurse wearing necklace?
+
+Now generate the output for the given sample data above. Return ONLY in this format:
+
+Prompt: [your prompt here]
+
+question_count: [question here] question_attr_1: [question here] question_attr_2: [question here] question_attr_3: [question here] question_attr_4: [question here] question_interaction_1: [question here] question_interaction_2: [question here]",Lifeguard,"[('Food/Drink', 'Coffee cup'), ('Hair Color', 'red'), ('Tattoos', 'arm'), ('Hair Style', 'straight')]","[""Whispering a secret into the other's ear"", 'One person crossing their arms and glaring while the other tries to talk']",Are there four Lifeguards?,Is there a Lifeguard with coffee cup in hand?,Is there a Lifeguard with red hair?,Is there a Lifeguard with tattoos on arm?,Is there a Lifeguard with straight hair?,Is the Lifeguard with coffee cup in hand whispering a secret into the other's ear with the Lifeguard with red hair?,Is the Lifeguard with tattoos on arm one person crossing their arms and glaring while the other tries to talk with the Lifeguard with straight hair?,
+82,Four Firefighters. Firefighter A has tattoos on ankle. Firefighter B wears earrings. Firefighter C has a lip piercing. Firefighter D wears latex gloves. Firefighter A and Firefighter B are shaking hands with each other. Firefighter C and Firefighter D are taking a pulse with each other.,"You are creating image generation prompts and questions for a dataset.
+
+Given the sample data below, you need to generate:
+
+A SHORT image generation prompt
+
+Seven questions about the image
+
+SAMPLE DATA: Subject: Firefighter Attribute 1: Tattoos: ankle Attribute 2: Jewelry: earrings Attribute 3: Piercings: lip Attribute 4: Gloves: latex gloves. Interaction 1: Shaking hands Interaction 2: Taking a Pulse
+
+INSTRUCTIONS:
+
+Create a SHORT image generation prompt following this format:
+
+Four [SUBJECT]s. [SUBJECT] A [verb] [ATTRIBUTE_1]. [SUBJECT] B [verb] [ATTRIBUTE_2]. [SUBJECT] C [verb] [ATTRIBUTE_3]. [SUBJECT] D [verb] [ATTRIBUTE_4]. [SUBJECT] A and [SUBJECT] B are [INTERACTION_1] with each other. [SUBJECT] C and [SUBJECT] D are [INTERACTION_2] with each other.
+
+Use appropriate verbs (is/has/wears) based on the attribute type
+
+For emotions: use ""is"" (e.g., ""is crying"")
+
+For physical items/bags: use ""has [item] in hand""
+
+For hair: use ""has [color/style] hair""
+
+For eyewear/gloves/jewelry: use ""wears""
+
+For tattoos: use ""has tattoos on [location]""
+
+Keep it SHORT and DIRECT
+
+Create SEVEN questions:
+
+question_count: ""Are there four [SUBJECT]s?""
+
+question_attr_1 through question_attr_4: ""Is there a [SUBJECT] [attribute description]?""
+
+question_interaction_1: ""Is the [SUBJECT] [with attribute 1] [INTERACTION_1] with the [SUBJECT] [with attribute 2]?""
+
+question_interaction_2: ""Is the [SUBJECT] [with attribute 3] [INTERACTION_2] with the [SUBJECT] [with attribute 4]?""
+
+EXAMPLES:
+
+Example 1: Subject: Police Officer Attribute 1: Eyewear: sunglasses Attribute 2: Hair Color: blonde Attribute 3: Technology: laptop Attribute 4: Negative: crying
+
+Interaction 1: Shaking hands Interaction 2: Having conversations
+
+OUTPUT: Prompt: Four Police Officers. Police Officer A wears sunglasses. Police Officer B has blonde hair. Police Officer C has laptop in hand. Police Officer D is crying. Police Officer A and Police Officer B are shaking hands with each other. Police Officer C and Police Officer D are having conversations with each other.
+
+question_count: Are there four Police Officers? question_attr_1: Is there a Police Officer wearing sunglasses? question_attr_2: Is there a Police Officer with blonde hair? question_attr_3: Is there a Police Officer with laptop in hand? question_attr_4: Is there a Police Officer is crying? question_interaction_1: Is the Police Officer wearing sunglasses shaking hands with the Police Officer with blonde hair? question_interaction_2: Is the Police Officer with laptop in hand having conversations with the Police Officer is crying?
+
+Example 2: Subject: Nurse Attribute 1: Bags: purse Attribute 2: Hair Style: curly Attribute 3: Tattoos: arm Attribute 4: Jewelry: necklace
+
+Interaction 1: Whispering a secret into the other's ear Interaction 2: Waving to each other
+
+OUTPUT: Prompt: Four Nurses. Nurse A has purse in hand. Nurse B has curly hair. Nurse C has tattoos on arm. Nurse D wears necklace. Nurse A and Nurse B are whispering a secret into the other's ear with each other. Nurse C and Nurse D are waving to each other.
+
+question_count: Are there four Nurses? question_attr_1: Is there a Nurse with purse in hand? question_attr_2: Is there a Nurse with curly hair? question_attr_3: Is there a Nurse with tattoos on arm? question_attr_4: Is there a Nurse wearing necklace? question_interaction_1: Is the Nurse with purse in hand whispering a secret into the other's ear with the Nurse with curly hair? question_interaction_2: Is the Nurse with tattoos on arm waving to each other with the Nurse wearing necklace?
+
+Now generate the output for the given sample data above. Return ONLY in this format:
+
+Prompt: [your prompt here]
+
+question_count: [question here] question_attr_1: [question here] question_attr_2: [question here] question_attr_3: [question here] question_attr_4: [question here] question_interaction_1: [question here] question_interaction_2: [question here]",Firefighter,"[('Tattoos', 'ankle'), ('Jewelry', 'earrings'), ('Piercings', 'lip'), ('Gloves', 'latex gloves.')]","['Shaking hands', 'Taking a Pulse']",Are there four Firefighters?,Is there a Firefighter with tattoos on ankle?,Is there a Firefighter wearing earrings?,Is there a Firefighter with a lip piercing?,Is there a Firefighter wearing latex gloves?,Is the Firefighter with tattoos on ankle shaking hands with the Firefighter wearing earrings?,Is the Firefighter with a lip piercing taking a pulse with the Firefighter wearing latex gloves?,
+129,Four Casino Dealers. Casino Dealer A has sideburns. Casino Dealer B is worried. Casino Dealer C has Smartphone in hand. Casino Dealer D wears glasses. Casino Dealer A and Casino Dealer B are fist bumping with each other. Casino Dealer C and Casino Dealer D are exchanging business cards with each other.,"You are creating image generation prompts and questions for a dataset.
+
+Given the sample data below, you need to generate:
+
+A SHORT image generation prompt
+
+Seven questions about the image
+
+SAMPLE DATA: Subject: Casino Dealer Attribute 1: Facial Hair: sideburns Attribute 2: Negative: worried Attribute 3: Technology: Smartphone Attribute 4: Eyewear: glasses Interaction 1: A fist bump Interaction 2: Exchanging business cards
+
+INSTRUCTIONS:
+
+Create a SHORT image generation prompt following this format:
+
+Four [SUBJECT]s. [SUBJECT] A [verb] [ATTRIBUTE_1]. [SUBJECT] B [verb] [ATTRIBUTE_2]. [SUBJECT] C [verb] [ATTRIBUTE_3]. [SUBJECT] D [verb] [ATTRIBUTE_4]. [SUBJECT] A and [SUBJECT] B are [INTERACTION_1] with each other. [SUBJECT] C and [SUBJECT] D are [INTERACTION_2] with each other.
+
+Use appropriate verbs (is/has/wears) based on the attribute type
+
+For emotions: use ""is"" (e.g., ""is crying"")
+
+For physical items/bags: use ""has [item] in hand""
+
+For hair: use ""has [color/style] hair""
+
+For eyewear/gloves/jewelry: use ""wears""
+
+For tattoos: use ""has tattoos on [location]""
+
+Keep it SHORT and DIRECT
+
+Create SEVEN questions:
+
+question_count: ""Are there four [SUBJECT]s?""
+
+question_attr_1 through question_attr_4: ""Is there a [SUBJECT] [attribute description]?""
+
+question_interaction_1: ""Is the [SUBJECT] [with attribute 1] [INTERACTION_1] with the [SUBJECT] [with attribute 2]?""
+
+question_interaction_2: ""Is the [SUBJECT] [with attribute 3] [INTERACTION_2] with the [SUBJECT] [with attribute 4]?""
+
+EXAMPLES:
+
+Example 1: Subject: Police Officer Attribute 1: Eyewear: sunglasses Attribute 2: Hair Color: blonde Attribute 3: Technology: laptop Attribute 4: Negative: crying
+
+Interaction 1: Shaking hands Interaction 2: Having conversations
+
+OUTPUT: Prompt: Four Police Officers. Police Officer A wears sunglasses. Police Officer B has blonde hair. Police Officer C has laptop in hand. Police Officer D is crying. Police Officer A and Police Officer B are shaking hands with each other. Police Officer C and Police Officer D are having conversations with each other.
+
+question_count: Are there four Police Officers? question_attr_1: Is there a Police Officer wearing sunglasses? question_attr_2: Is there a Police Officer with blonde hair? question_attr_3: Is there a Police Officer with laptop in hand? question_attr_4: Is there a Police Officer is crying? question_interaction_1: Is the Police Officer wearing sunglasses shaking hands with the Police Officer with blonde hair? question_interaction_2: Is the Police Officer with laptop in hand having conversations with the Police Officer is crying?
+
+Example 2: Subject: Nurse Attribute 1: Bags: purse Attribute 2: Hair Style: curly Attribute 3: Tattoos: arm Attribute 4: Jewelry: necklace
+
+Interaction 1: Whispering a secret into the other's ear Interaction 2: Waving to each other
+
+OUTPUT: Prompt: Four Nurses. Nurse A has purse in hand. Nurse B has curly hair. Nurse C has tattoos on arm. Nurse D wears necklace. Nurse A and Nurse B are whispering a secret into the other's ear with each other. Nurse C and Nurse D are waving to each other.
+
+question_count: Are there four Nurses? question_attr_1: Is there a Nurse with purse in hand? question_attr_2: Is there a Nurse with curly hair? question_attr_3: Is there a Nurse with tattoos on arm? question_attr_4: Is there a Nurse wearing necklace? question_interaction_1: Is the Nurse with purse in hand whispering a secret into the other's ear with the Nurse with curly hair? question_interaction_2: Is the Nurse with tattoos on arm waving to each other with the Nurse wearing necklace?
+
+Now generate the output for the given sample data above. Return ONLY in this format:
+
+Prompt: [your prompt here]
+
+question_count: [question here] question_attr_1: [question here] question_attr_2: [question here] question_attr_3: [question here] question_attr_4: [question here] question_interaction_1: [question here] question_interaction_2: [question here]",Casino Dealer,"[('Facial Hair', 'sideburns'), ('Negative', 'worried'), ('Technology', 'Smartphone'), ('Eyewear', 'glasses')]","['A fist bump', 'Exchanging business cards']",Are there four Casino Dealers?,Is there a Casino Dealer with sideburns?,Is there a Casino Dealer is worried?,Is there a Casino Dealer with Smartphone in hand?,Is there a Casino Dealer wearing glasses?,Is the Casino Dealer with sideburns fist bumping with the Casino Dealer is worried?,Is the Casino Dealer with Smartphone in hand exchanging business cards with the Casino Dealer wearing glasses?,
+142,Four Postal Workers. Postal Worker A wears sunglasses. Postal Worker B is joyful. Postal Worker C has an eyebrow piercing. Postal Worker D is worried. Postal Worker A and Postal Worker B are pointing an accusatory finger at the other with each other. Postal Worker C and Postal Worker D are shouting while the other looks away with each other.,"You are creating image generation prompts and questions for a dataset.
+
+Given the sample data below, you need to generate:
+
+A SHORT image generation prompt
+
+Seven questions about the image
+
+SAMPLE DATA: Subject: Postal Worker Attribute 1: Eyewear: sunglasses Attribute 2: Positive: joyful Attribute 3: Piercings: eyebrow Attribute 4: Negative: worried Interaction 1: One person pointing an accusatory finger at the other Interaction 2: One person shouting while the other looks away
+
+INSTRUCTIONS:
+
+Create a SHORT image generation prompt following this format:
+
+Four [SUBJECT]s. [SUBJECT] A [verb] [ATTRIBUTE_1]. [SUBJECT] B [verb] [ATTRIBUTE_2]. [SUBJECT] C [verb] [ATTRIBUTE_3]. [SUBJECT] D [verb] [ATTRIBUTE_4]. [SUBJECT] A and [SUBJECT] B are [INTERACTION_1] with each other. [SUBJECT] C and [SUBJECT] D are [INTERACTION_2] with each other.
+
+Use appropriate verbs (is/has/wears) based on the attribute type
+
+For emotions: use ""is"" (e.g., ""is crying"")
+
+For physical items/bags: use ""has [item] in hand""
+
+For hair: use ""has [color/style] hair""
+
+For eyewear/gloves/jewelry: use ""wears""
+
+For tattoos: use ""has tattoos on [location]""
+
+Keep it SHORT and DIRECT
+
+Create SEVEN questions:
+
+question_count: ""Are there four [SUBJECT]s?""
+
+question_attr_1 through question_attr_4: ""Is there a [SUBJECT] [attribute description]?""
+
+question_interaction_1: ""Is the [SUBJECT] [with attribute 1] [INTERACTION_1] with the [SUBJECT] [with attribute 2]?""
+
+question_interaction_2: ""Is the [SUBJECT] [with attribute 3] [INTERACTION_2] with the [SUBJECT] [with attribute 4]?""
+
+EXAMPLES:
+
+Example 1: Subject: Police Officer Attribute 1: Eyewear: sunglasses Attribute 2: Hair Color: blonde Attribute 3: Technology: laptop Attribute 4: Negative: crying
+
+Interaction 1: Shaking hands Interaction 2: Having conversations
+
+OUTPUT: Prompt: Four Police Officers. Police Officer A wears sunglasses. Police Officer B has blonde hair. Police Officer C has laptop in hand. Police Officer D is crying. Police Officer A and Police Officer B are shaking hands with each other. Police Officer C and Police Officer D are having conversations with each other.
+
+question_count: Are there four Police Officers? question_attr_1: Is there a Police Officer wearing sunglasses? question_attr_2: Is there a Police Officer with blonde hair? question_attr_3: Is there a Police Officer with laptop in hand? question_attr_4: Is there a Police Officer is crying? question_interaction_1: Is the Police Officer wearing sunglasses shaking hands with the Police Officer with blonde hair? question_interaction_2: Is the Police Officer with laptop in hand having conversations with the Police Officer is crying?
+
+Example 2: Subject: Nurse Attribute 1: Bags: purse Attribute 2: Hair Style: curly Attribute 3: Tattoos: arm Attribute 4: Jewelry: necklace
+
+Interaction 1: Whispering a secret into the other's ear Interaction 2: Waving to each other
+
+OUTPUT: Prompt: Four Nurses. Nurse A has purse in hand. Nurse B has curly hair. Nurse C has tattoos on arm. Nurse D wears necklace. Nurse A and Nurse B are whispering a secret into the other's ear with each other. Nurse C and Nurse D are waving to each other.
+
+question_count: Are there four Nurses? question_attr_1: Is there a Nurse with purse in hand? question_attr_2: Is there a Nurse with curly hair? question_attr_3: Is there a Nurse with tattoos on arm? question_attr_4: Is there a Nurse wearing necklace? question_interaction_1: Is the Nurse with purse in hand whispering a secret into the other's ear with the Nurse with curly hair? question_interaction_2: Is the Nurse with tattoos on arm waving to each other with the Nurse wearing necklace?
+
+Now generate the output for the given sample data above. Return ONLY in this format:
+
+Prompt: [your prompt here]
+
+question_count: [question here] question_attr_1: [question here] question_attr_2: [question here] question_attr_3: [question here] question_attr_4: [question here] question_interaction_1: [question here] question_interaction_2: [question here]",Postal Worker,"[('Eyewear', 'sunglasses'), ('Positive', 'joyful'), ('Piercings', 'eyebrow'), ('Negative', 'worried')]","['One person pointing an accusatory finger at the other', 'One person shouting while the other looks away']",Are there four Postal Workers?,Is there a Postal Worker wearing sunglasses?,Is there a Postal Worker is joyful?,Is there a Postal Worker with an eyebrow piercing?,Is there a Postal Worker is worried?,Is the Postal Worker wearing sunglasses pointing an accusatory finger at the other with the Postal Worker is joyful?,Is the Postal Worker with an eyebrow piercing shouting while the other looks away with the Postal Worker is worried?,
+160,Four Bank Tellers. Bank Teller A has tattoos on neck. Bank Teller B has fades hair. Bank Teller C is thoughtful. Bank Teller D wears nose piercings. Bank Teller A and Bank Teller B are pouring the other a cup of tea or coffee with each other. Bank Teller C and Bank Teller D are one person shouting while the other looks away with each other.,"You are creating image generation prompts and questions for a dataset.
+
+Given the sample data below, you need to generate:
+
+A SHORT image generation prompt
+
+Seven questions about the image
+
+SAMPLE DATA: Subject: Bank Teller Attribute 1: Tattoos: neck Attribute 2: Hair Style: fades Attribute 3: Neutral/Other: thoughtful Attribute 4: Piercings: nose Interaction 1: Pouring the other a cup of tea or coffee Interaction 2: One person shouting while the other looks away
+
+INSTRUCTIONS:
+
+Create a SHORT image generation prompt following this format:
+
+Four [SUBJECT]s. [SUBJECT] A [verb] [ATTRIBUTE_1]. [SUBJECT] B [verb] [ATTRIBUTE_2]. [SUBJECT] C [verb] [ATTRIBUTE_3]. [SUBJECT] D [verb] [ATTRIBUTE_4]. [SUBJECT] A and [SUBJECT] B are [INTERACTION_1] with each other. [SUBJECT] C and [SUBJECT] D are [INTERACTION_2] with each other.
+
+Use appropriate verbs (is/has/wears) based on the attribute type
+
+For emotions: use ""is"" (e.g., ""is crying"")
+
+For physical items/bags: use ""has [item] in hand""
+
+For hair: use ""has [color/style] hair""
+
+For eyewear/gloves/jewelry: use ""wears""
+
+For tattoos: use ""has tattoos on [location]""
+
+Keep it SHORT and DIRECT
+
+Create SEVEN questions:
+
+question_count: ""Are there four [SUBJECT]s?""
+
+question_attr_1 through question_attr_4: ""Is there a [SUBJECT] [attribute description]?""
+
+question_interaction_1: ""Is the [SUBJECT] [with attribute 1] [INTERACTION_1] with the [SUBJECT] [with attribute 2]?""
+
+question_interaction_2: ""Is the [SUBJECT] [with attribute 3] [INTERACTION_2] with the [SUBJECT] [with attribute 4]?""
+
+EXAMPLES:
+
+Example 1: Subject: Police Officer Attribute 1: Eyewear: sunglasses Attribute 2: Hair Color: blonde Attribute 3: Technology: laptop Attribute 4: Negative: crying
+
+Interaction 1: Shaking hands Interaction 2: Having conversations
+
+OUTPUT: Prompt: Four Police Officers. Police Officer A wears sunglasses. Police Officer B has blonde hair. Police Officer C has laptop in hand. Police Officer D is crying. Police Officer A and Police Officer B are shaking hands with each other. Police Officer C and Police Officer D are having conversations with each other.
+
+question_count: Are there four Police Officers? question_attr_1: Is there a Police Officer wearing sunglasses? question_attr_2: Is there a Police Officer with blonde hair? question_attr_3: Is there a Police Officer with laptop in hand? question_attr_4: Is there a Police Officer is crying? question_interaction_1: Is the Police Officer wearing sunglasses shaking hands with the Police Officer with blonde hair? question_interaction_2: Is the Police Officer with laptop in hand having conversations with the Police Officer is crying?
+
+Example 2: Subject: Nurse Attribute 1: Bags: purse Attribute 2: Hair Style: curly Attribute 3: Tattoos: arm Attribute 4: Jewelry: necklace
+
+Interaction 1: Whispering a secret into the other's ear Interaction 2: Waving to each other
+
+OUTPUT: Prompt: Four Nurses. Nurse A has purse in hand. Nurse B has curly hair. Nurse C has tattoos on arm. Nurse D wears necklace. Nurse A and Nurse B are whispering a secret into the other's ear with each other. Nurse C and Nurse D are waving to each other.
+
+question_count: Are there four Nurses? question_attr_1: Is there a Nurse with purse in hand? question_attr_2: Is there a Nurse with curly hair? question_attr_3: Is there a Nurse with tattoos on arm? question_attr_4: Is there a Nurse wearing necklace? question_interaction_1: Is the Nurse with purse in hand whispering a secret into the other's ear with the Nurse with curly hair? question_interaction_2: Is the Nurse with tattoos on arm waving to each other with the Nurse wearing necklace?
+
+Now generate the output for the given sample data above. Return ONLY in this format:
+
+Prompt: [your prompt here]
+
+question_count: [question here] question_attr_1: [question here] question_attr_2: [question here] question_attr_3: [question here] question_attr_4: [question here] question_interaction_1: [question here] question_interaction_2: [question here]",Bank Teller,"[('Tattoos', 'neck'), ('Hair Style', 'fades'), ('Neutral/Other', 'thoughtful'), ('Piercings', 'nose')]","['Pouring the other a cup of tea or coffee', 'One person shouting while the other looks away']",Are there four Bank Tellers?,Is there a Bank Teller with tattoos on neck?,Is there a Bank Teller with fades hair?,Is there a Bank Teller is thoughtful?,Is there a Bank Teller wearing nose piercings?,Is the Bank Teller with tattoos on neck pouring the other a cup of tea or coffee with the Bank Teller with fades hair?,Is the Bank Teller is thoughtful one person shouting while the other looks away with the Bank Teller wearing nose piercings?,
+247,Four Bouncers. Bouncer A is joyful. Bouncer B has blue eyes. Bouncer C wears sunglasses. Bouncer D has camera in hand. Bouncer A and Bouncer B are having a fist bump with each other. Bouncer C and Bouncer D are waving to each other.,"You are creating image generation prompts and questions for a dataset.
+
+Given the sample data below, you need to generate:
+
+A SHORT image generation prompt
+
+Seven questions about the image
+
+SAMPLE DATA: Subject: Bouncer Attribute 1: Positive: joyful Attribute 2: Eyes: Blue Attribute 3: Eyewear: sunglasses Attribute 4: Technology: camera. Interaction 1: A fist bump Interaction 2: Waving to each other
+
+INSTRUCTIONS:
+
+Create a SHORT image generation prompt following this format:
+
+Four [SUBJECT]s. [SUBJECT] A [verb] [ATTRIBUTE_1]. [SUBJECT] B [verb] [ATTRIBUTE_2]. [SUBJECT] C [verb] [ATTRIBUTE_3]. [SUBJECT] D [verb] [ATTRIBUTE_4]. [SUBJECT] A and [SUBJECT] B are [INTERACTION_1] with each other. [SUBJECT] C and [SUBJECT] D are [INTERACTION_2] with each other.
+
+Use appropriate verbs (is/has/wears) based on the attribute type
+
+For emotions: use ""is"" (e.g., ""is crying"")
+
+For physical items/bags: use ""has [item] in hand""
+
+For hair: use ""has [color/style] hair""
+
+For eyewear/gloves/jewelry: use ""wears""
+
+For tattoos: use ""has tattoos on [location]""
+
+Keep it SHORT and DIRECT
+
+Create SEVEN questions:
+
+question_count: ""Are there four [SUBJECT]s?""
+
+question_attr_1 through question_attr_4: ""Is there a [SUBJECT] [attribute description]?""
+
+question_interaction_1: ""Is the [SUBJECT] [with attribute 1] [INTERACTION_1] with the [SUBJECT] [with attribute 2]?""
+
+question_interaction_2: ""Is the [SUBJECT] [with attribute 3] [INTERACTION_2] with the [SUBJECT] [with attribute 4]?""
+
+EXAMPLES:
+
+Example 1: Subject: Police Officer Attribute 1: Eyewear: sunglasses Attribute 2: Hair Color: blonde Attribute 3: Technology: laptop Attribute 4: Negative: crying
+
+Interaction 1: Shaking hands Interaction 2: Having conversations
+
+OUTPUT: Prompt: Four Police Officers. Police Officer A wears sunglasses. Police Officer B has blonde hair. Police Officer C has laptop in hand. Police Officer D is crying. Police Officer A and Police Officer B are shaking hands with each other. Police Officer C and Police Officer D are having conversations with each other.
+
+question_count: Are there four Police Officers? question_attr_1: Is there a Police Officer wearing sunglasses? question_attr_2: Is there a Police Officer with blonde hair? question_attr_3: Is there a Police Officer with laptop in hand? question_attr_4: Is there a Police Officer is crying? question_interaction_1: Is the Police Officer wearing sunglasses shaking hands with the Police Officer with blonde hair? question_interaction_2: Is the Police Officer with laptop in hand having conversations with the Police Officer is crying?
+
+Example 2: Subject: Nurse Attribute 1: Bags: purse Attribute 2: Hair Style: curly Attribute 3: Tattoos: arm Attribute 4: Jewelry: necklace
+
+Interaction 1: Whispering a secret into the other's ear Interaction 2: Waving to each other
+
+OUTPUT: Prompt: Four Nurses. Nurse A has purse in hand. Nurse B has curly hair. Nurse C has tattoos on arm. Nurse D wears necklace. Nurse A and Nurse B are whispering a secret into the other's ear with each other. Nurse C and Nurse D are waving to each other.
+
+question_count: Are there four Nurses? question_attr_1: Is there a Nurse with purse in hand? question_attr_2: Is there a Nurse with curly hair? question_attr_3: Is there a Nurse with tattoos on arm? question_attr_4: Is there a Nurse wearing necklace? question_interaction_1: Is the Nurse with purse in hand whispering a secret into the other's ear with the Nurse with curly hair? question_interaction_2: Is the Nurse with tattoos on arm waving to each other with the Nurse wearing necklace?
+
+Now generate the output for the given sample data above. Return ONLY in this format:
+
+Prompt: [your prompt here]
+
+question_count: [question here] question_attr_1: [question here] question_attr_2: [question here] question_attr_3: [question here] question_attr_4: [question here] question_interaction_1: [question here] question_interaction_2: [question here]",Bouncer,"[('Positive', 'joyful'), ('Eyes', 'Blue'), ('Eyewear', 'sunglasses'), ('Technology', 'camera.')]","['A fist bump', 'Waving to each other']",Are there four Bouncers?,Is there a Bouncer is joyful?,Is there a Bouncer has blue eyes?,Is there a Bouncer wearing sunglasses?,Is there a Bouncer with camera in hand?,Is the Bouncer is joyful having a fist bump with the Bouncer has blue eyes?,Is the Bouncer wearing sunglasses waving to each other with the Bouncer with camera in hand?,

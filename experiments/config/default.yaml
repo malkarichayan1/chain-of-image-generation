@@ -1,0 +1,31 @@
+# Default config for the experiments/ (Track 2: Sequential Chain Audit) pipeline.
+# Values here match the pipeline's original hardcoded defaults exactly.
+
+paths:
+  artifacts_dir: artifacts
+  manifest_path: artifacts/manifest.json
+  segmentation_cache_dir: artifacts/segmentation_cache
+  results_csv: artifacts/chain_experiment_results.csv
+  pilot_conditions_dir: ../pilot/data/conditions
+  pilot_sbs_eval_csv: ../pilot/data/evaluation_sbs_results.csv
+  pilot_causal_relevance_csv: ../pilot/data/causal_relevance_results.csv
+
+models:
+  clipseg_model: CIDAS/clipseg-rd64-refined
+  owlvit_model: google/owlvit-base-patch32
+
+scoring:
+  threshold: 0.85
+  threshold_pct: 0.20
+  seed: 42
+  calibration_prompt_ids: [3, 4, 6, 8]
+  held_out_prompt_ids: [0, 1, 2, 5, 7]
+  calibration_sweep_start: 0.05
+  calibration_sweep_stop: 0.96
+  calibration_sweep_step: 0.05
+
+analysis:
+  alpha: 0.05
+  topk_sweep: [0.05, 0.10, 0.20, 0.30, 0.40]
+  rng_sweep_n_seeds: 200
+  rng_sweep_robustness_threshold: 0.95

@@ -1,0 +1,40 @@
+# Default config for ssa/anchor_set (Track A: Single-Image Audit & MMDiT Attention).
+# Values here match the pipeline's original hardcoded defaults exactly.
+
+paths:
+  artifacts_dir: artifacts
+
+models:
+  clip_model: openai/clip-vit-base-patch32
+  clipseg_model: CIDAS/clipseg-rd64-refined
+  blip_vqa_model: Salesforce/blip-vqa-base
+  owlvit_model: google/owlvit-base-patch32
+  sdxl_model: stabilityai/stable-diffusion-xl-base-1.0
+  flux_model: black-forest-labs/FLUX.1-dev
+  sd15_candidates: [stable-diffusion-v1-5/stable-diffusion-v1-5, sd-legacy/stable-diffusion-v1-5]
+
+seeds:
+  candidate_seeds: [42, 7, 1234, 2024]
+  mcnemar_seed: 42
+  sweep_n_seeds: 200
+  dummy_seed: 0
+  label_shuffle_seed: 20260723
+
+generation:
+  num_inference_steps_sd: 30
+  num_inference_steps_flux: 25
+  early_window_fraction: 0.5
+  img_size_sd: 512
+  img_size_xl: 1024
+  detection_score_thresh: 0.7
+
+significance:
+  alpha: 0.05
+  repro_threshold: 0.05
+  kappa_hold_min: 0.6
+  kappa_caveat_min: 0.4
+  score_tolerance: 0.001
+
+taxonomy:
+  expected_n_steps: 25
+  exp19_top_k: 10

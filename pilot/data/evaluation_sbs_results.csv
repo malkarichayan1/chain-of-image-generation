@@ -1,0 +1,421 @@
+item_index,step_num,question_type,question,image_path,answer,answer_binary
+13,1,question_attr_1,Is there a Housekeeping Staff with tote bag in hand?,..\create_images\multi_step_out\13\step_01.png,yes,1
+13,1,question_attr_2,Is there a Housekeeping Staff with mustache?,..\create_images\multi_step_out\13\step_01.png,no,0
+13,1,question_attr_3,Is there a Housekeeping Staff with water bottle in hand?,..\create_images\multi_step_out\13\step_01.png,yes,1
+13,1,question_attr_4,Is there a Housekeeping Staff wearing headphones?,..\create_images\multi_step_out\13\step_01.png,yes,1
+13,1,question_count,Are there four Housekeeping Staff?,..\create_images\multi_step_out\13\step_01.png,yes,1
+13,1,question_interaction_1,Is the Housekeeping Staff with tote bag in hand whispering a secret into the other's ear with the Housekeeping Staff with mustache?,..\create_images\multi_step_out\13\step_01.png,no,0
+13,1,question_interaction_2,Is the Housekeeping Staff with water bottle in hand looking at the same phone or tablet screen with the Housekeeping Staff wearing headphones?,..\create_images\multi_step_out\13\step_01.png,yes,1
+13,2,question_attr_1,Is there a Housekeeping Staff with tote bag in hand?,..\create_images\multi_step_out\13\step_02.png,yes,1
+13,2,question_attr_2,Is there a Housekeeping Staff with mustache?,..\create_images\multi_step_out\13\step_02.png,yes,1
+13,2,question_attr_3,Is there a Housekeeping Staff with water bottle in hand?,..\create_images\multi_step_out\13\step_02.png,yes,1
+13,2,question_attr_4,Is there a Housekeeping Staff wearing headphones?,..\create_images\multi_step_out\13\step_02.png,no,0
+13,2,question_count,Are there four Housekeeping Staff?,..\create_images\multi_step_out\13\step_02.png,no,0
+13,2,question_interaction_1,Is the Housekeeping Staff with tote bag in hand whispering a secret into the other's ear with the Housekeeping Staff with mustache?,..\create_images\multi_step_out\13\step_02.png,yes,1
+13,2,question_interaction_2,Is the Housekeeping Staff with water bottle in hand looking at the same phone or tablet screen with the Housekeeping Staff wearing headphones?,..\create_images\multi_step_out\13\step_02.png,no,0
+13,3,question_attr_1,Is there a Housekeeping Staff with tote bag in hand?,..\create_images\multi_step_out\13\step_03.png,yes,1
+13,3,question_attr_2,Is there a Housekeeping Staff with mustache?,..\create_images\multi_step_out\13\step_03.png,yes,1
+13,3,question_attr_3,Is there a Housekeeping Staff with water bottle in hand?,..\create_images\multi_step_out\13\step_03.png,yes,1
+13,3,question_attr_4,Is there a Housekeeping Staff wearing headphones?,..\create_images\multi_step_out\13\step_03.png,yes,1
+13,3,question_count,Are there four Housekeeping Staff?,..\create_images\multi_step_out\13\step_03.png,yes,1
+13,3,question_interaction_1,Is the Housekeeping Staff with tote bag in hand whispering a secret into the other's ear with the Housekeeping Staff with mustache?,..\create_images\multi_step_out\13\step_03.png,yes,1
+13,3,question_interaction_2,Is the Housekeeping Staff with water bottle in hand looking at the same phone or tablet screen with the Housekeeping Staff wearing headphones?,..\create_images\multi_step_out\13\step_03.png,yes,1
+13,4,question_attr_1,Is there a Housekeeping Staff with tote bag in hand?,..\create_images\multi_step_out\13\step_04.png,yes,1
+13,4,question_attr_2,Is there a Housekeeping Staff with mustache?,..\create_images\multi_step_out\13\step_04.png,yes,1
+13,4,question_attr_3,Is there a Housekeeping Staff with water bottle in hand?,..\create_images\multi_step_out\13\step_04.png,yes,1
+13,4,question_attr_4,Is there a Housekeeping Staff wearing headphones?,..\create_images\multi_step_out\13\step_04.png,yes,1
+13,4,question_count,Are there four Housekeeping Staff?,..\create_images\multi_step_out\13\step_04.png,yes,1
+13,4,question_interaction_1,Is the Housekeeping Staff with tote bag in hand whispering a secret into the other's ear with the Housekeeping Staff with mustache?,..\create_images\multi_step_out\13\step_04.png,yes,1
+13,4,question_interaction_2,Is the Housekeeping Staff with water bottle in hand looking at the same phone or tablet screen with the Housekeeping Staff wearing headphones?,..\create_images\multi_step_out\13\step_04.png,yes,1
+13,5,question_attr_1,Is there a Housekeeping Staff with tote bag in hand?,..\create_images\multi_step_out\13\step_05.png,yes,1
+13,5,question_attr_2,Is there a Housekeeping Staff with mustache?,..\create_images\multi_step_out\13\step_05.png,yes,1
+13,5,question_attr_3,Is there a Housekeeping Staff with water bottle in hand?,..\create_images\multi_step_out\13\step_05.png,yes,1
+13,5,question_attr_4,Is there a Housekeeping Staff wearing headphones?,..\create_images\multi_step_out\13\step_05.png,yes,1
+13,5,question_count,Are there four Housekeeping Staff?,..\create_images\multi_step_out\13\step_05.png,yes,1
+13,5,question_interaction_1,Is the Housekeeping Staff with tote bag in hand whispering a secret into the other's ear with the Housekeeping Staff with mustache?,..\create_images\multi_step_out\13\step_05.png,yes,1
+13,5,question_interaction_2,Is the Housekeeping Staff with water bottle in hand looking at the same phone or tablet screen with the Housekeeping Staff wearing headphones?,..\create_images\multi_step_out\13\step_05.png,yes,1
+13,6,question_attr_1,Is there a Housekeeping Staff with tote bag in hand?,..\create_images\multi_step_out\13\step_06.png,yes,1
+13,6,question_attr_2,Is there a Housekeeping Staff with mustache?,..\create_images\multi_step_out\13\step_06.png,yes,1
+13,6,question_attr_3,Is there a Housekeeping Staff with water bottle in hand?,..\create_images\multi_step_out\13\step_06.png,yes,1
+13,6,question_attr_4,Is there a Housekeeping Staff wearing headphones?,..\create_images\multi_step_out\13\step_06.png,yes,1
+13,6,question_count,Are there four Housekeeping Staff?,..\create_images\multi_step_out\13\step_06.png,yes,1
+13,6,question_interaction_1,Is the Housekeeping Staff with tote bag in hand whispering a secret into the other's ear with the Housekeeping Staff with mustache?,..\create_images\multi_step_out\13\step_06.png,yes,1
+13,6,question_interaction_2,Is the Housekeeping Staff with water bottle in hand looking at the same phone or tablet screen with the Housekeeping Staff wearing headphones?,..\create_images\multi_step_out\13\step_06.png,yes,1
+19,1,question_attr_1,Is there an Airline Pilot with tattoos on ankle?,..\create_images\multi_step_out\19\step_01.png,no,0
+19,1,question_attr_2,Is there an Airline Pilot with coffee cup in hand?,..\create_images\multi_step_out\19\step_01.png,yes,1
+19,1,question_attr_3,Is there an Airline Pilot with bun hair?,..\create_images\multi_step_out\19\step_01.png,yes,1
+19,1,question_attr_4,Is there an Airline Pilot with tablet in hand?,..\create_images\multi_step_out\19\step_01.png,yes,1
+19,1,question_count,Are there four Airline Pilots?,..\create_images\multi_step_out\19\step_01.png,no,0
+19,1,question_interaction_1,Is the Airline Pilot with tattoos on ankle pointing an accusatory finger at the Airline Pilot with coffee cup in hand?,..\create_images\multi_step_out\19\step_01.png,yes,1
+19,1,question_interaction_2,Is the Airline Pilot with bun hair crossing their arms and glaring while the Airline Pilot with tablet in hand tries to talk?,..\create_images\multi_step_out\19\step_01.png,yes,1
+19,2,question_attr_1,Is there an Airline Pilot with tattoos on ankle?,..\create_images\multi_step_out\19\step_02.png,yes,1
+19,2,question_attr_2,Is there an Airline Pilot with coffee cup in hand?,..\create_images\multi_step_out\19\step_02.png,yes,1
+19,2,question_attr_3,Is there an Airline Pilot with bun hair?,..\create_images\multi_step_out\19\step_02.png,yes,1
+19,2,question_attr_4,Is there an Airline Pilot with tablet in hand?,..\create_images\multi_step_out\19\step_02.png,no,0
+19,2,question_count,Are there four Airline Pilots?,..\create_images\multi_step_out\19\step_02.png,no,0
+19,2,question_interaction_1,Is the Airline Pilot with tattoos on ankle pointing an accusatory finger at the Airline Pilot with coffee cup in hand?,..\create_images\multi_step_out\19\step_02.png,yes,1
+19,2,question_interaction_2,Is the Airline Pilot with bun hair crossing their arms and glaring while the Airline Pilot with tablet in hand tries to talk?,..\create_images\multi_step_out\19\step_02.png,yes,1
+19,3,question_attr_1,Is there an Airline Pilot with tattoos on ankle?,..\create_images\multi_step_out\19\step_03.png,yes,1
+19,3,question_attr_2,Is there an Airline Pilot with coffee cup in hand?,..\create_images\multi_step_out\19\step_03.png,yes,1
+19,3,question_attr_3,Is there an Airline Pilot with bun hair?,..\create_images\multi_step_out\19\step_03.png,yes,1
+19,3,question_attr_4,Is there an Airline Pilot with tablet in hand?,..\create_images\multi_step_out\19\step_03.png,yes,1
+19,3,question_count,Are there four Airline Pilots?,..\create_images\multi_step_out\19\step_03.png,yes,1
+19,3,question_interaction_1,Is the Airline Pilot with tattoos on ankle pointing an accusatory finger at the Airline Pilot with coffee cup in hand?,..\create_images\multi_step_out\19\step_03.png,yes,1
+19,3,question_interaction_2,Is the Airline Pilot with bun hair crossing their arms and glaring while the Airline Pilot with tablet in hand tries to talk?,..\create_images\multi_step_out\19\step_03.png,yes,1
+19,4,question_attr_1,Is there an Airline Pilot with tattoos on ankle?,..\create_images\multi_step_out\19\step_04.png,yes,1
+19,4,question_attr_2,Is there an Airline Pilot with coffee cup in hand?,..\create_images\multi_step_out\19\step_04.png,yes,1
+19,4,question_attr_3,Is there an Airline Pilot with bun hair?,..\create_images\multi_step_out\19\step_04.png,yes,1
+19,4,question_attr_4,Is there an Airline Pilot with tablet in hand?,..\create_images\multi_step_out\19\step_04.png,yes,1
+19,4,question_count,Are there four Airline Pilots?,..\create_images\multi_step_out\19\step_04.png,yes,1
+19,4,question_interaction_1,Is the Airline Pilot with tattoos on ankle pointing an accusatory finger at the Airline Pilot with coffee cup in hand?,..\create_images\multi_step_out\19\step_04.png,yes,1
+19,4,question_interaction_2,Is the Airline Pilot with bun hair crossing their arms and glaring while the Airline Pilot with tablet in hand tries to talk?,..\create_images\multi_step_out\19\step_04.png,yes,1
+19,5,question_attr_1,Is there an Airline Pilot with tattoos on ankle?,..\create_images\multi_step_out\19\step_05.png,yes,1
+19,5,question_attr_2,Is there an Airline Pilot with coffee cup in hand?,..\create_images\multi_step_out\19\step_05.png,yes,1
+19,5,question_attr_3,Is there an Airline Pilot with bun hair?,..\create_images\multi_step_out\19\step_05.png,yes,1
+19,5,question_attr_4,Is there an Airline Pilot with tablet in hand?,..\create_images\multi_step_out\19\step_05.png,yes,1
+19,5,question_count,Are there four Airline Pilots?,..\create_images\multi_step_out\19\step_05.png,yes,1
+19,5,question_interaction_1,Is the Airline Pilot with tattoos on ankle pointing an accusatory finger at the Airline Pilot with coffee cup in hand?,..\create_images\multi_step_out\19\step_05.png,yes,1
+19,5,question_interaction_2,Is the Airline Pilot with bun hair crossing their arms and glaring while the Airline Pilot with tablet in hand tries to talk?,..\create_images\multi_step_out\19\step_05.png,yes,1
+19,6,question_attr_1,Is there an Airline Pilot with tattoos on ankle?,..\create_images\multi_step_out\19\step_06.png,no,0
+19,6,question_attr_2,Is there an Airline Pilot with coffee cup in hand?,..\create_images\multi_step_out\19\step_06.png,yes,1
+19,6,question_attr_3,Is there an Airline Pilot with bun hair?,..\create_images\multi_step_out\19\step_06.png,yes,1
+19,6,question_attr_4,Is there an Airline Pilot with tablet in hand?,..\create_images\multi_step_out\19\step_06.png,yes,1
+19,6,question_count,Are there four Airline Pilots?,..\create_images\multi_step_out\19\step_06.png,yes,1
+19,6,question_interaction_1,Is the Airline Pilot with tattoos on ankle pointing an accusatory finger at the Airline Pilot with coffee cup in hand?,..\create_images\multi_step_out\19\step_06.png,no,0
+19,6,question_interaction_2,Is the Airline Pilot with bun hair crossing their arms and glaring while the Airline Pilot with tablet in hand tries to talk?,..\create_images\multi_step_out\19\step_06.png,yes,1
+52,1,question_attr_1,Is there a Pharmacist with green eyes?,..\create_images\multi_step_out\52\step_01.png,no,0
+52,1,question_attr_2,Is there a Pharmacist wearing earrings?,..\create_images\multi_step_out\52\step_01.png,yes,1
+52,1,question_attr_3,Is there a Pharmacist with tattoos on ankle?,..\create_images\multi_step_out\52\step_01.png,yes,1
+52,1,question_attr_4,Is there a Pharmacist with laptop in hand?,..\create_images\multi_step_out\52\step_01.png,yes,1
+52,1,question_count,Are there four Pharmacists?,..\create_images\multi_step_out\52\step_01.png,yes,1
+52,1,question_interaction_1,Is the Pharmacist with green eyes giving a fist bump with the Pharmacist wearing earrings?,..\create_images\multi_step_out\52\step_01.png,no,0
+52,1,question_interaction_2,Is the Pharmacist with tattoos on ankle exchanging business cards with the Pharmacist with laptop in hand?,..\create_images\multi_step_out\52\step_01.png,yes,1
+52,2,question_attr_1,Is there a Pharmacist with green eyes?,..\create_images\multi_step_out\52\step_02.png,no,0
+52,2,question_attr_2,Is there a Pharmacist wearing earrings?,..\create_images\multi_step_out\52\step_02.png,yes,1
+52,2,question_attr_3,Is there a Pharmacist with tattoos on ankle?,..\create_images\multi_step_out\52\step_02.png,yes,1
+52,2,question_attr_4,Is there a Pharmacist with laptop in hand?,..\create_images\multi_step_out\52\step_02.png,yes,1
+52,2,question_count,Are there four Pharmacists?,..\create_images\multi_step_out\52\step_02.png,no,0
+52,2,question_interaction_1,Is the Pharmacist with green eyes giving a fist bump with the Pharmacist wearing earrings?,..\create_images\multi_step_out\52\step_02.png,no,0
+52,2,question_interaction_2,Is the Pharmacist with tattoos on ankle exchanging business cards with the Pharmacist with laptop in hand?,..\create_images\multi_step_out\52\step_02.png,yes,1
+52,3,question_attr_1,Is there a Pharmacist with green eyes?,..\create_images\multi_step_out\52\step_03.png,no,0
+52,3,question_attr_2,Is there a Pharmacist wearing earrings?,..\create_images\multi_step_out\52\step_03.png,yes,1
+52,3,question_attr_3,Is there a Pharmacist with tattoos on ankle?,..\create_images\multi_step_out\52\step_03.png,yes,1
+52,3,question_attr_4,Is there a Pharmacist with laptop in hand?,..\create_images\multi_step_out\52\step_03.png,yes,1
+52,3,question_count,Are there four Pharmacists?,..\create_images\multi_step_out\52\step_03.png,yes,1
+52,3,question_interaction_1,Is the Pharmacist with green eyes giving a fist bump with the Pharmacist wearing earrings?,..\create_images\multi_step_out\52\step_03.png,no,0
+52,3,question_interaction_2,Is the Pharmacist with tattoos on ankle exchanging business cards with the Pharmacist with laptop in hand?,..\create_images\multi_step_out\52\step_03.png,yes,1
+52,4,question_attr_1,Is there a Pharmacist with green eyes?,..\create_images\multi_step_out\52\step_04.png,no,0
+52,4,question_attr_2,Is there a Pharmacist wearing earrings?,..\create_images\multi_step_out\52\step_04.png,yes,1
+52,4,question_attr_3,Is there a Pharmacist with tattoos on ankle?,..\create_images\multi_step_out\52\step_04.png,yes,1
+52,4,question_attr_4,Is there a Pharmacist with laptop in hand?,..\create_images\multi_step_out\52\step_04.png,yes,1
+52,4,question_count,Are there four Pharmacists?,..\create_images\multi_step_out\52\step_04.png,yes,1
+52,4,question_interaction_1,Is the Pharmacist with green eyes giving a fist bump with the Pharmacist wearing earrings?,..\create_images\multi_step_out\52\step_04.png,no,0
+52,4,question_interaction_2,Is the Pharmacist with tattoos on ankle exchanging business cards with the Pharmacist with laptop in hand?,..\create_images\multi_step_out\52\step_04.png,yes,1
+52,5,question_attr_1,Is there a Pharmacist with green eyes?,..\create_images\multi_step_out\52\step_05.png,no,0
+52,5,question_attr_2,Is there a Pharmacist wearing earrings?,..\create_images\multi_step_out\52\step_05.png,yes,1
+52,5,question_attr_3,Is there a Pharmacist with tattoos on ankle?,..\create_images\multi_step_out\52\step_05.png,yes,1
+52,5,question_attr_4,Is there a Pharmacist with laptop in hand?,..\create_images\multi_step_out\52\step_05.png,yes,1
+52,5,question_count,Are there four Pharmacists?,..\create_images\multi_step_out\52\step_05.png,yes,1
+52,5,question_interaction_1,Is the Pharmacist with green eyes giving a fist bump with the Pharmacist wearing earrings?,..\create_images\multi_step_out\52\step_05.png,no,0
+52,5,question_interaction_2,Is the Pharmacist with tattoos on ankle exchanging business cards with the Pharmacist with laptop in hand?,..\create_images\multi_step_out\52\step_05.png,yes,1
+52,6,question_attr_1,Is there a Pharmacist with green eyes?,..\create_images\multi_step_out\52\step_06.png,no,0
+52,6,question_attr_2,Is there a Pharmacist wearing earrings?,..\create_images\multi_step_out\52\step_06.png,yes,1
+52,6,question_attr_3,Is there a Pharmacist with tattoos on ankle?,..\create_images\multi_step_out\52\step_06.png,yes,1
+52,6,question_attr_4,Is there a Pharmacist with laptop in hand?,..\create_images\multi_step_out\52\step_06.png,yes,1
+52,6,question_count,Are there four Pharmacists?,..\create_images\multi_step_out\52\step_06.png,yes,1
+52,6,question_interaction_1,Is the Pharmacist with green eyes giving a fist bump with the Pharmacist wearing earrings?,..\create_images\multi_step_out\52\step_06.png,no,0
+52,6,question_interaction_2,Is the Pharmacist with tattoos on ankle exchanging business cards with the Pharmacist with laptop in hand?,..\create_images\multi_step_out\52\step_06.png,yes,1
+62,1,question_attr_1,Is there a Construction Worker with a mustache?,..\create_images\multi_step_out\62\step_01.png,yes,1
+62,1,question_attr_2,Is there a Construction Worker is confused?,..\create_images\multi_step_out\62\step_01.png,no,0
+62,1,question_attr_3,Is there a Construction Worker wearing latex gloves?,..\create_images\multi_step_out\62\step_01.png,no,0
+62,1,question_attr_4,Is there a Construction Worker with a suitcase in hand?,..\create_images\multi_step_out\62\step_01.png,yes,1
+62,1,question_count,Are there four Construction Workers?,..\create_images\multi_step_out\62\step_01.png,yes,1
+62,1,question_interaction_1,Is the Construction Worker with a mustache one person crossing their arms and glaring while the other tries to talk with the Construction Worker is confused?,..\create_images\multi_step_out\62\step_01.png,no,0
+62,1,question_interaction_2,Is the Construction Worker wearing latex gloves shaking hands with the Construction Worker with a suitcase in hand?,..\create_images\multi_step_out\62\step_01.png,no,0
+62,2,question_attr_1,Is there a Construction Worker with a mustache?,..\create_images\multi_step_out\62\step_02.png,yes,1
+62,2,question_attr_2,Is there a Construction Worker is confused?,..\create_images\multi_step_out\62\step_02.png,no,0
+62,2,question_attr_3,Is there a Construction Worker wearing latex gloves?,..\create_images\multi_step_out\62\step_02.png,no,0
+62,2,question_attr_4,Is there a Construction Worker with a suitcase in hand?,..\create_images\multi_step_out\62\step_02.png,yes,1
+62,2,question_count,Are there four Construction Workers?,..\create_images\multi_step_out\62\step_02.png,yes,1
+62,2,question_interaction_1,Is the Construction Worker with a mustache one person crossing their arms and glaring while the other tries to talk with the Construction Worker is confused?,..\create_images\multi_step_out\62\step_02.png,no,0
+62,2,question_interaction_2,Is the Construction Worker wearing latex gloves shaking hands with the Construction Worker with a suitcase in hand?,..\create_images\multi_step_out\62\step_02.png,no,0
+62,3,question_attr_1,Is there a Construction Worker with a mustache?,..\create_images\multi_step_out\62\step_03.png,yes,1
+62,3,question_attr_2,Is there a Construction Worker is confused?,..\create_images\multi_step_out\62\step_03.png,no,0
+62,3,question_attr_3,Is there a Construction Worker wearing latex gloves?,..\create_images\multi_step_out\62\step_03.png,yes,1
+62,3,question_attr_4,Is there a Construction Worker with a suitcase in hand?,..\create_images\multi_step_out\62\step_03.png,yes,1
+62,3,question_count,Are there four Construction Workers?,..\create_images\multi_step_out\62\step_03.png,yes,1
+62,3,question_interaction_1,Is the Construction Worker with a mustache one person crossing their arms and glaring while the other tries to talk with the Construction Worker is confused?,..\create_images\multi_step_out\62\step_03.png,no,0
+62,3,question_interaction_2,Is the Construction Worker wearing latex gloves shaking hands with the Construction Worker with a suitcase in hand?,..\create_images\multi_step_out\62\step_03.png,yes,1
+62,4,question_attr_1,Is there a Construction Worker with a mustache?,..\create_images\multi_step_out\62\step_04.png,yes,1
+62,4,question_attr_2,Is there a Construction Worker is confused?,..\create_images\multi_step_out\62\step_04.png,no,0
+62,4,question_attr_3,Is there a Construction Worker wearing latex gloves?,..\create_images\multi_step_out\62\step_04.png,yes,1
+62,4,question_attr_4,Is there a Construction Worker with a suitcase in hand?,..\create_images\multi_step_out\62\step_04.png,yes,1
+62,4,question_count,Are there four Construction Workers?,..\create_images\multi_step_out\62\step_04.png,yes,1
+62,4,question_interaction_1,Is the Construction Worker with a mustache one person crossing their arms and glaring while the other tries to talk with the Construction Worker is confused?,..\create_images\multi_step_out\62\step_04.png,no,0
+62,4,question_interaction_2,Is the Construction Worker wearing latex gloves shaking hands with the Construction Worker with a suitcase in hand?,..\create_images\multi_step_out\62\step_04.png,yes,1
+62,5,question_attr_1,Is there a Construction Worker with a mustache?,..\create_images\multi_step_out\62\step_05.png,yes,1
+62,5,question_attr_2,Is there a Construction Worker is confused?,..\create_images\multi_step_out\62\step_05.png,no,0
+62,5,question_attr_3,Is there a Construction Worker wearing latex gloves?,..\create_images\multi_step_out\62\step_05.png,yes,1
+62,5,question_attr_4,Is there a Construction Worker with a suitcase in hand?,..\create_images\multi_step_out\62\step_05.png,yes,1
+62,5,question_count,Are there four Construction Workers?,..\create_images\multi_step_out\62\step_05.png,yes,1
+62,5,question_interaction_1,Is the Construction Worker with a mustache one person crossing their arms and glaring while the other tries to talk with the Construction Worker is confused?,..\create_images\multi_step_out\62\step_05.png,no,0
+62,5,question_interaction_2,Is the Construction Worker wearing latex gloves shaking hands with the Construction Worker with a suitcase in hand?,..\create_images\multi_step_out\62\step_05.png,yes,1
+62,6,question_attr_1,Is there a Construction Worker with a mustache?,..\create_images\multi_step_out\62\step_06.png,yes,1
+62,6,question_attr_2,Is there a Construction Worker is confused?,..\create_images\multi_step_out\62\step_06.png,no,0
+62,6,question_attr_3,Is there a Construction Worker wearing latex gloves?,..\create_images\multi_step_out\62\step_06.png,yes,1
+62,6,question_attr_4,Is there a Construction Worker with a suitcase in hand?,..\create_images\multi_step_out\62\step_06.png,yes,1
+62,6,question_count,Are there four Construction Workers?,..\create_images\multi_step_out\62\step_06.png,yes,1
+62,6,question_interaction_1,Is the Construction Worker with a mustache one person crossing their arms and glaring while the other tries to talk with the Construction Worker is confused?,..\create_images\multi_step_out\62\step_06.png,yes,1
+62,6,question_interaction_2,Is the Construction Worker wearing latex gloves shaking hands with the Construction Worker with a suitcase in hand?,..\create_images\multi_step_out\62\step_06.png,yes,1
+68,1,question_attr_1,Is there a Lifeguard with coffee cup in hand?,..\create_images\multi_step_out\68\step_01.png,yes,1
+68,1,question_attr_2,Is there a Lifeguard with red hair?,..\create_images\multi_step_out\68\step_01.png,no,0
+68,1,question_attr_3,Is there a Lifeguard with tattoos on arm?,..\create_images\multi_step_out\68\step_01.png,no,0
+68,1,question_attr_4,Is there a Lifeguard with straight hair?,..\create_images\multi_step_out\68\step_01.png,no,0
+68,1,question_count,Are there four Lifeguards?,..\create_images\multi_step_out\68\step_01.png,yes,1
+68,1,question_interaction_1,Is the Lifeguard with coffee cup in hand whispering a secret into the other's ear with the Lifeguard with red hair?,..\create_images\multi_step_out\68\step_01.png,no,0
+68,1,question_interaction_2,Is the Lifeguard with tattoos on arm one person crossing their arms and glaring while the other tries to talk with the Lifeguard with straight hair?,..\create_images\multi_step_out\68\step_01.png,no,0
+68,2,question_attr_1,Is there a Lifeguard with coffee cup in hand?,..\create_images\multi_step_out\68\step_02.png,yes,1
+68,2,question_attr_2,Is there a Lifeguard with red hair?,..\create_images\multi_step_out\68\step_02.png,yes,1
+68,2,question_attr_3,Is there a Lifeguard with tattoos on arm?,..\create_images\multi_step_out\68\step_02.png,no,0
+68,2,question_attr_4,Is there a Lifeguard with straight hair?,..\create_images\multi_step_out\68\step_02.png,no,0
+68,2,question_count,Are there four Lifeguards?,..\create_images\multi_step_out\68\step_02.png,no,0
+68,2,question_interaction_1,Is the Lifeguard with coffee cup in hand whispering a secret into the other's ear with the Lifeguard with red hair?,..\create_images\multi_step_out\68\step_02.png,yes,1
+68,2,question_interaction_2,Is the Lifeguard with tattoos on arm one person crossing their arms and glaring while the other tries to talk with the Lifeguard with straight hair?,..\create_images\multi_step_out\68\step_02.png,no,0
+68,3,question_attr_1,Is there a Lifeguard with coffee cup in hand?,..\create_images\multi_step_out\68\step_03.png,yes,1
+68,3,question_attr_2,Is there a Lifeguard with red hair?,..\create_images\multi_step_out\68\step_03.png,yes,1
+68,3,question_attr_3,Is there a Lifeguard with tattoos on arm?,..\create_images\multi_step_out\68\step_03.png,yes,1
+68,3,question_attr_4,Is there a Lifeguard with straight hair?,..\create_images\multi_step_out\68\step_03.png,yes,1
+68,3,question_count,Are there four Lifeguards?,..\create_images\multi_step_out\68\step_03.png,yes,1
+68,3,question_interaction_1,Is the Lifeguard with coffee cup in hand whispering a secret into the other's ear with the Lifeguard with red hair?,..\create_images\multi_step_out\68\step_03.png,yes,1
+68,3,question_interaction_2,Is the Lifeguard with tattoos on arm one person crossing their arms and glaring while the other tries to talk with the Lifeguard with straight hair?,..\create_images\multi_step_out\68\step_03.png,yes,1
+68,4,question_attr_1,Is there a Lifeguard with coffee cup in hand?,..\create_images\multi_step_out\68\step_04.png,yes,1
+68,4,question_attr_2,Is there a Lifeguard with red hair?,..\create_images\multi_step_out\68\step_04.png,yes,1
+68,4,question_attr_3,Is there a Lifeguard with tattoos on arm?,..\create_images\multi_step_out\68\step_04.png,yes,1
+68,4,question_attr_4,Is there a Lifeguard with straight hair?,..\create_images\multi_step_out\68\step_04.png,yes,1
+68,4,question_count,Are there four Lifeguards?,..\create_images\multi_step_out\68\step_04.png,yes,1
+68,4,question_interaction_1,Is the Lifeguard with coffee cup in hand whispering a secret into the other's ear with the Lifeguard with red hair?,..\create_images\multi_step_out\68\step_04.png,yes,1
+68,4,question_interaction_2,Is the Lifeguard with tattoos on arm one person crossing their arms and glaring while the other tries to talk with the Lifeguard with straight hair?,..\create_images\multi_step_out\68\step_04.png,yes,1
+68,5,question_attr_1,Is there a Lifeguard with coffee cup in hand?,..\create_images\multi_step_out\68\step_05.png,yes,1
+68,5,question_attr_2,Is there a Lifeguard with red hair?,..\create_images\multi_step_out\68\step_05.png,yes,1
+68,5,question_attr_3,Is there a Lifeguard with tattoos on arm?,..\create_images\multi_step_out\68\step_05.png,yes,1
+68,5,question_attr_4,Is there a Lifeguard with straight hair?,..\create_images\multi_step_out\68\step_05.png,yes,1
+68,5,question_count,Are there four Lifeguards?,..\create_images\multi_step_out\68\step_05.png,yes,1
+68,5,question_interaction_1,Is the Lifeguard with coffee cup in hand whispering a secret into the other's ear with the Lifeguard with red hair?,..\create_images\multi_step_out\68\step_05.png,yes,1
+68,5,question_interaction_2,Is the Lifeguard with tattoos on arm one person crossing their arms and glaring while the other tries to talk with the Lifeguard with straight hair?,..\create_images\multi_step_out\68\step_05.png,yes,1
+68,6,question_attr_1,Is there a Lifeguard with coffee cup in hand?,..\create_images\multi_step_out\68\step_06.png,yes,1
+68,6,question_attr_2,Is there a Lifeguard with red hair?,..\create_images\multi_step_out\68\step_06.png,yes,1
+68,6,question_attr_3,Is there a Lifeguard with tattoos on arm?,..\create_images\multi_step_out\68\step_06.png,yes,1
+68,6,question_attr_4,Is there a Lifeguard with straight hair?,..\create_images\multi_step_out\68\step_06.png,yes,1
+68,6,question_count,Are there four Lifeguards?,..\create_images\multi_step_out\68\step_06.png,yes,1
+68,6,question_interaction_1,Is the Lifeguard with coffee cup in hand whispering a secret into the other's ear with the Lifeguard with red hair?,..\create_images\multi_step_out\68\step_06.png,yes,1
+68,6,question_interaction_2,Is the Lifeguard with tattoos on arm one person crossing their arms and glaring while the other tries to talk with the Lifeguard with straight hair?,..\create_images\multi_step_out\68\step_06.png,yes,1
+82,1,question_attr_1,Is there a Firefighter with tattoos on ankle?,..\create_images\multi_step_out\82\step_01.png,yes,1
+82,1,question_attr_2,Is there a Firefighter wearing earrings?,..\create_images\multi_step_out\82\step_01.png,yes,1
+82,1,question_attr_3,Is there a Firefighter with a lip piercing?,..\create_images\multi_step_out\82\step_01.png,yes,1
+82,1,question_attr_4,Is there a Firefighter wearing latex gloves?,..\create_images\multi_step_out\82\step_01.png,no,0
+82,1,question_count,Are there four Firefighters?,..\create_images\multi_step_out\82\step_01.png,no,0
+82,1,question_interaction_1,Is the Firefighter with tattoos on ankle shaking hands with the Firefighter wearing earrings?,..\create_images\multi_step_out\82\step_01.png,yes,1
+82,1,question_interaction_2,Is the Firefighter with a lip piercing taking a pulse with the Firefighter wearing latex gloves?,..\create_images\multi_step_out\82\step_01.png,no,0
+82,2,question_attr_1,Is there a Firefighter with tattoos on ankle?,..\create_images\multi_step_out\82\step_02.png,yes,1
+82,2,question_attr_2,Is there a Firefighter wearing earrings?,..\create_images\multi_step_out\82\step_02.png,yes,1
+82,2,question_attr_3,Is there a Firefighter with a lip piercing?,..\create_images\multi_step_out\82\step_02.png,no,0
+82,2,question_attr_4,Is there a Firefighter wearing latex gloves?,..\create_images\multi_step_out\82\step_02.png,no,0
+82,2,question_count,Are there four Firefighters?,..\create_images\multi_step_out\82\step_02.png,no,0
+82,2,question_interaction_1,Is the Firefighter with tattoos on ankle shaking hands with the Firefighter wearing earrings?,..\create_images\multi_step_out\82\step_02.png,no,0
+82,2,question_interaction_2,Is the Firefighter with a lip piercing taking a pulse with the Firefighter wearing latex gloves?,..\create_images\multi_step_out\82\step_02.png,no,0
+82,3,question_attr_1,Is there a Firefighter with tattoos on ankle?,..\create_images\multi_step_out\82\step_03.png,yes,1
+82,3,question_attr_2,Is there a Firefighter wearing earrings?,..\create_images\multi_step_out\82\step_03.png,yes,1
+82,3,question_attr_3,Is there a Firefighter with a lip piercing?,..\create_images\multi_step_out\82\step_03.png,no,0
+82,3,question_attr_4,Is there a Firefighter wearing latex gloves?,..\create_images\multi_step_out\82\step_03.png,yes,1
+82,3,question_count,Are there four Firefighters?,..\create_images\multi_step_out\82\step_03.png,yes,1
+82,3,question_interaction_1,Is the Firefighter with tattoos on ankle shaking hands with the Firefighter wearing earrings?,..\create_images\multi_step_out\82\step_03.png,yes,1
+82,3,question_interaction_2,Is the Firefighter with a lip piercing taking a pulse with the Firefighter wearing latex gloves?,..\create_images\multi_step_out\82\step_03.png,no,0
+82,4,question_attr_1,Is there a Firefighter with tattoos on ankle?,..\create_images\multi_step_out\82\step_04.png,yes,1
+82,4,question_attr_2,Is there a Firefighter wearing earrings?,..\create_images\multi_step_out\82\step_04.png,yes,1
+82,4,question_attr_3,Is there a Firefighter with a lip piercing?,..\create_images\multi_step_out\82\step_04.png,no,0
+82,4,question_attr_4,Is there a Firefighter wearing latex gloves?,..\create_images\multi_step_out\82\step_04.png,yes,1
+82,4,question_count,Are there four Firefighters?,..\create_images\multi_step_out\82\step_04.png,yes,1
+82,4,question_interaction_1,Is the Firefighter with tattoos on ankle shaking hands with the Firefighter wearing earrings?,..\create_images\multi_step_out\82\step_04.png,no,0
+82,4,question_interaction_2,Is the Firefighter with a lip piercing taking a pulse with the Firefighter wearing latex gloves?,..\create_images\multi_step_out\82\step_04.png,no,0
+82,5,question_attr_1,Is there a Firefighter with tattoos on ankle?,..\create_images\multi_step_out\82\step_05.png,yes,1
+82,5,question_attr_2,Is there a Firefighter wearing earrings?,..\create_images\multi_step_out\82\step_05.png,yes,1
+82,5,question_attr_3,Is there a Firefighter with a lip piercing?,..\create_images\multi_step_out\82\step_05.png,no,0
+82,5,question_attr_4,Is there a Firefighter wearing latex gloves?,..\create_images\multi_step_out\82\step_05.png,yes,1
+82,5,question_count,Are there four Firefighters?,..\create_images\multi_step_out\82\step_05.png,yes,1
+82,5,question_interaction_1,Is the Firefighter with tattoos on ankle shaking hands with the Firefighter wearing earrings?,..\create_images\multi_step_out\82\step_05.png,yes,1
+82,5,question_interaction_2,Is the Firefighter with a lip piercing taking a pulse with the Firefighter wearing latex gloves?,..\create_images\multi_step_out\82\step_05.png,no,0
+82,6,question_attr_1,Is there a Firefighter with tattoos on ankle?,..\create_images\multi_step_out\82\step_06.png,yes,1
+82,6,question_attr_2,Is there a Firefighter wearing earrings?,..\create_images\multi_step_out\82\step_06.png,yes,1
+82,6,question_attr_3,Is there a Firefighter with a lip piercing?,..\create_images\multi_step_out\82\step_06.png,no,0
+82,6,question_attr_4,Is there a Firefighter wearing latex gloves?,..\create_images\multi_step_out\82\step_06.png,yes,1
+82,6,question_count,Are there four Firefighters?,..\create_images\multi_step_out\82\step_06.png,yes,1
+82,6,question_interaction_1,Is the Firefighter with tattoos on ankle shaking hands with the Firefighter wearing earrings?,..\create_images\multi_step_out\82\step_06.png,yes,1
+82,6,question_interaction_2,Is the Firefighter with a lip piercing taking a pulse with the Firefighter wearing latex gloves?,..\create_images\multi_step_out\82\step_06.png,no,0
+129,1,question_attr_1,Is there a Casino Dealer with sideburns?,..\create_images\multi_step_out\129\step_01.png,yes,1
+129,1,question_attr_2,Is there a Casino Dealer is worried?,..\create_images\multi_step_out\129\step_01.png,no,0
+129,1,question_attr_3,Is there a Casino Dealer with Smartphone in hand?,..\create_images\multi_step_out\129\step_01.png,no,0
+129,1,question_attr_4,Is there a Casino Dealer wearing glasses?,..\create_images\multi_step_out\129\step_01.png,yes,1
+129,1,question_count,Are there four Casino Dealers?,..\create_images\multi_step_out\129\step_01.png,yes,1
+129,1,question_interaction_1,Is the Casino Dealer with sideburns fist bumping with the Casino Dealer is worried?,..\create_images\multi_step_out\129\step_01.png,yes,1
+129,1,question_interaction_2,Is the Casino Dealer with Smartphone in hand exchanging business cards with the Casino Dealer wearing glasses?,..\create_images\multi_step_out\129\step_01.png,no,0
+129,2,question_attr_1,Is there a Casino Dealer with sideburns?,..\create_images\multi_step_out\129\step_02.png,yes,1
+129,2,question_attr_2,Is there a Casino Dealer is worried?,..\create_images\multi_step_out\129\step_02.png,no,0
+129,2,question_attr_3,Is there a Casino Dealer with Smartphone in hand?,..\create_images\multi_step_out\129\step_02.png,no,0
+129,2,question_attr_4,Is there a Casino Dealer wearing glasses?,..\create_images\multi_step_out\129\step_02.png,no,0
+129,2,question_count,Are there four Casino Dealers?,..\create_images\multi_step_out\129\step_02.png,no,0
+129,2,question_interaction_1,Is the Casino Dealer with sideburns fist bumping with the Casino Dealer is worried?,..\create_images\multi_step_out\129\step_02.png,no,0
+129,2,question_interaction_2,Is the Casino Dealer with Smartphone in hand exchanging business cards with the Casino Dealer wearing glasses?,..\create_images\multi_step_out\129\step_02.png,no,0
+129,3,question_attr_1,Is there a Casino Dealer with sideburns?,..\create_images\multi_step_out\129\step_03.png,yes,1
+129,3,question_attr_2,Is there a Casino Dealer is worried?,..\create_images\multi_step_out\129\step_03.png,no,0
+129,3,question_attr_3,Is there a Casino Dealer with Smartphone in hand?,..\create_images\multi_step_out\129\step_03.png,yes,1
+129,3,question_attr_4,Is there a Casino Dealer wearing glasses?,..\create_images\multi_step_out\129\step_03.png,yes,1
+129,3,question_count,Are there four Casino Dealers?,..\create_images\multi_step_out\129\step_03.png,yes,1
+129,3,question_interaction_1,Is the Casino Dealer with sideburns fist bumping with the Casino Dealer is worried?,..\create_images\multi_step_out\129\step_03.png,no,0
+129,3,question_interaction_2,Is the Casino Dealer with Smartphone in hand exchanging business cards with the Casino Dealer wearing glasses?,..\create_images\multi_step_out\129\step_03.png,yes,1
+129,4,question_attr_1,Is there a Casino Dealer with sideburns?,..\create_images\multi_step_out\129\step_04.png,yes,1
+129,4,question_attr_2,Is there a Casino Dealer is worried?,..\create_images\multi_step_out\129\step_04.png,no,0
+129,4,question_attr_3,Is there a Casino Dealer with Smartphone in hand?,..\create_images\multi_step_out\129\step_04.png,no,0
+129,4,question_attr_4,Is there a Casino Dealer wearing glasses?,..\create_images\multi_step_out\129\step_04.png,yes,1
+129,4,question_count,Are there four Casino Dealers?,..\create_images\multi_step_out\129\step_04.png,yes,1
+129,4,question_interaction_1,Is the Casino Dealer with sideburns fist bumping with the Casino Dealer is worried?,..\create_images\multi_step_out\129\step_04.png,no,0
+129,4,question_interaction_2,Is the Casino Dealer with Smartphone in hand exchanging business cards with the Casino Dealer wearing glasses?,..\create_images\multi_step_out\129\step_04.png,no,0
+129,5,question_attr_1,Is there a Casino Dealer with sideburns?,..\create_images\multi_step_out\129\step_05.png,yes,1
+129,5,question_attr_2,Is there a Casino Dealer is worried?,..\create_images\multi_step_out\129\step_05.png,no,0
+129,5,question_attr_3,Is there a Casino Dealer with Smartphone in hand?,..\create_images\multi_step_out\129\step_05.png,yes,1
+129,5,question_attr_4,Is there a Casino Dealer wearing glasses?,..\create_images\multi_step_out\129\step_05.png,yes,1
+129,5,question_count,Are there four Casino Dealers?,..\create_images\multi_step_out\129\step_05.png,yes,1
+129,5,question_interaction_1,Is the Casino Dealer with sideburns fist bumping with the Casino Dealer is worried?,..\create_images\multi_step_out\129\step_05.png,no,0
+129,5,question_interaction_2,Is the Casino Dealer with Smartphone in hand exchanging business cards with the Casino Dealer wearing glasses?,..\create_images\multi_step_out\129\step_05.png,yes,1
+129,6,question_attr_1,Is there a Casino Dealer with sideburns?,..\create_images\multi_step_out\129\step_06.png,yes,1
+129,6,question_attr_2,Is there a Casino Dealer is worried?,..\create_images\multi_step_out\129\step_06.png,no,0
+129,6,question_attr_3,Is there a Casino Dealer with Smartphone in hand?,..\create_images\multi_step_out\129\step_06.png,no,0
+129,6,question_attr_4,Is there a Casino Dealer wearing glasses?,..\create_images\multi_step_out\129\step_06.png,yes,1
+129,6,question_count,Are there four Casino Dealers?,..\create_images\multi_step_out\129\step_06.png,yes,1
+129,6,question_interaction_1,Is the Casino Dealer with sideburns fist bumping with the Casino Dealer is worried?,..\create_images\multi_step_out\129\step_06.png,no,0
+129,6,question_interaction_2,Is the Casino Dealer with Smartphone in hand exchanging business cards with the Casino Dealer wearing glasses?,..\create_images\multi_step_out\129\step_06.png,yes,1
+142,1,question_attr_1,Is there a Postal Worker wearing sunglasses?,..\create_images\multi_step_out\142\step_01.png,yes,1
+142,1,question_attr_2,Is there a Postal Worker is joyful?,..\create_images\multi_step_out\142\step_01.png,no,0
+142,1,question_attr_3,Is there a Postal Worker with an eyebrow piercing?,..\create_images\multi_step_out\142\step_01.png,yes,1
+142,1,question_attr_4,Is there a Postal Worker is worried?,..\create_images\multi_step_out\142\step_01.png,no,0
+142,1,question_count,Are there four Postal Workers?,..\create_images\multi_step_out\142\step_01.png,no,0
+142,1,question_interaction_1,Is the Postal Worker wearing sunglasses pointing an accusatory finger at the other with the Postal Worker is joyful?,..\create_images\multi_step_out\142\step_01.png,yes,1
+142,1,question_interaction_2,Is the Postal Worker with an eyebrow piercing shouting while the other looks away with the Postal Worker is worried?,..\create_images\multi_step_out\142\step_01.png,yes,1
+142,2,question_attr_1,Is there a Postal Worker wearing sunglasses?,..\create_images\multi_step_out\142\step_02.png,yes,1
+142,2,question_attr_2,Is there a Postal Worker is joyful?,..\create_images\multi_step_out\142\step_02.png,yes,1
+142,2,question_attr_3,Is there a Postal Worker with an eyebrow piercing?,..\create_images\multi_step_out\142\step_02.png,no,0
+142,2,question_attr_4,Is there a Postal Worker is worried?,..\create_images\multi_step_out\142\step_02.png,no,0
+142,2,question_count,Are there four Postal Workers?,..\create_images\multi_step_out\142\step_02.png,no,0
+142,2,question_interaction_1,Is the Postal Worker wearing sunglasses pointing an accusatory finger at the other with the Postal Worker is joyful?,..\create_images\multi_step_out\142\step_02.png,yes,1
+142,2,question_interaction_2,Is the Postal Worker with an eyebrow piercing shouting while the other looks away with the Postal Worker is worried?,..\create_images\multi_step_out\142\step_02.png,no,0
+142,3,question_attr_1,Is there a Postal Worker wearing sunglasses?,..\create_images\multi_step_out\142\step_03.png,yes,1
+142,3,question_attr_2,Is there a Postal Worker is joyful?,..\create_images\multi_step_out\142\step_03.png,yes,1
+142,3,question_attr_3,Is there a Postal Worker with an eyebrow piercing?,..\create_images\multi_step_out\142\step_03.png,yes,1
+142,3,question_attr_4,Is there a Postal Worker is worried?,..\create_images\multi_step_out\142\step_03.png,no,0
+142,3,question_count,Are there four Postal Workers?,..\create_images\multi_step_out\142\step_03.png,yes,1
+142,3,question_interaction_1,Is the Postal Worker wearing sunglasses pointing an accusatory finger at the other with the Postal Worker is joyful?,..\create_images\multi_step_out\142\step_03.png,yes,1
+142,3,question_interaction_2,Is the Postal Worker with an eyebrow piercing shouting while the other looks away with the Postal Worker is worried?,..\create_images\multi_step_out\142\step_03.png,yes,1
+142,4,question_attr_1,Is there a Postal Worker wearing sunglasses?,..\create_images\multi_step_out\142\step_04.png,yes,1
+142,4,question_attr_2,Is there a Postal Worker is joyful?,..\create_images\multi_step_out\142\step_04.png,yes,1
+142,4,question_attr_3,Is there a Postal Worker with an eyebrow piercing?,..\create_images\multi_step_out\142\step_04.png,yes,1
+142,4,question_attr_4,Is there a Postal Worker is worried?,..\create_images\multi_step_out\142\step_04.png,yes,1
+142,4,question_count,Are there four Postal Workers?,..\create_images\multi_step_out\142\step_04.png,yes,1
+142,4,question_interaction_1,Is the Postal Worker wearing sunglasses pointing an accusatory finger at the other with the Postal Worker is joyful?,..\create_images\multi_step_out\142\step_04.png,yes,1
+142,4,question_interaction_2,Is the Postal Worker with an eyebrow piercing shouting while the other looks away with the Postal Worker is worried?,..\create_images\multi_step_out\142\step_04.png,yes,1
+142,5,question_attr_1,Is there a Postal Worker wearing sunglasses?,..\create_images\multi_step_out\142\step_05.png,yes,1
+142,5,question_attr_2,Is there a Postal Worker is joyful?,..\create_images\multi_step_out\142\step_05.png,yes,1
+142,5,question_attr_3,Is there a Postal Worker with an eyebrow piercing?,..\create_images\multi_step_out\142\step_05.png,no,0
+142,5,question_attr_4,Is there a Postal Worker is worried?,..\create_images\multi_step_out\142\step_05.png,no,0
+142,5,question_count,Are there four Postal Workers?,..\create_images\multi_step_out\142\step_05.png,yes,1
+142,5,question_interaction_1,Is the Postal Worker wearing sunglasses pointing an accusatory finger at the other with the Postal Worker is joyful?,..\create_images\multi_step_out\142\step_05.png,yes,1
+142,5,question_interaction_2,Is the Postal Worker with an eyebrow piercing shouting while the other looks away with the Postal Worker is worried?,..\create_images\multi_step_out\142\step_05.png,no,0
+142,6,question_attr_1,Is there a Postal Worker wearing sunglasses?,..\create_images\multi_step_out\142\step_06.png,no,0
+142,6,question_attr_2,Is there a Postal Worker is joyful?,..\create_images\multi_step_out\142\step_06.png,yes,1
+142,6,question_attr_3,Is there a Postal Worker with an eyebrow piercing?,..\create_images\multi_step_out\142\step_06.png,no,0
+142,6,question_attr_4,Is there a Postal Worker is worried?,..\create_images\multi_step_out\142\step_06.png,yes,1
+142,6,question_count,Are there four Postal Workers?,..\create_images\multi_step_out\142\step_06.png,yes,1
+142,6,question_interaction_1,Is the Postal Worker wearing sunglasses pointing an accusatory finger at the other with the Postal Worker is joyful?,..\create_images\multi_step_out\142\step_06.png,no,0
+142,6,question_interaction_2,Is the Postal Worker with an eyebrow piercing shouting while the other looks away with the Postal Worker is worried?,..\create_images\multi_step_out\142\step_06.png,no,0
+160,1,question_attr_1,Is there a Bank Teller with tattoos on neck?,..\create_images\multi_step_out\160\step_01.png,yes,1
+160,1,question_attr_2,Is there a Bank Teller with fades hair?,..\create_images\multi_step_out\160\step_01.png,yes,1
+160,1,question_attr_3,Is there a Bank Teller is thoughtful?,..\create_images\multi_step_out\160\step_01.png,no,0
+160,1,question_attr_4,Is there a Bank Teller wearing nose piercings?,..\create_images\multi_step_out\160\step_01.png,yes,1
+160,1,question_count,Are there four Bank Tellers?,..\create_images\multi_step_out\160\step_01.png,yes,1
+160,1,question_interaction_1,Is the Bank Teller with tattoos on neck pouring the other a cup of tea or coffee with the Bank Teller with fades hair?,..\create_images\multi_step_out\160\step_01.png,yes,1
+160,1,question_interaction_2,Is the Bank Teller is thoughtful one person shouting while the other looks away with the Bank Teller wearing nose piercings?,..\create_images\multi_step_out\160\step_01.png,no,0
+160,2,question_attr_1,Is there a Bank Teller with tattoos on neck?,..\create_images\multi_step_out\160\step_02.png,yes,1
+160,2,question_attr_2,Is there a Bank Teller with fades hair?,..\create_images\multi_step_out\160\step_02.png,yes,1
+160,2,question_attr_3,Is there a Bank Teller is thoughtful?,..\create_images\multi_step_out\160\step_02.png,no,0
+160,2,question_attr_4,Is there a Bank Teller wearing nose piercings?,..\create_images\multi_step_out\160\step_02.png,no,0
+160,2,question_count,Are there four Bank Tellers?,..\create_images\multi_step_out\160\step_02.png,no,0
+160,2,question_interaction_1,Is the Bank Teller with tattoos on neck pouring the other a cup of tea or coffee with the Bank Teller with fades hair?,..\create_images\multi_step_out\160\step_02.png,yes,1
+160,2,question_interaction_2,Is the Bank Teller is thoughtful one person shouting while the other looks away with the Bank Teller wearing nose piercings?,..\create_images\multi_step_out\160\step_02.png,no,0
+160,3,question_attr_1,Is there a Bank Teller with tattoos on neck?,..\create_images\multi_step_out\160\step_03.png,yes,1
+160,3,question_attr_2,Is there a Bank Teller with fades hair?,..\create_images\multi_step_out\160\step_03.png,yes,1
+160,3,question_attr_3,Is there a Bank Teller is thoughtful?,..\create_images\multi_step_out\160\step_03.png,no,0
+160,3,question_attr_4,Is there a Bank Teller wearing nose piercings?,..\create_images\multi_step_out\160\step_03.png,yes,1
+160,3,question_count,Are there four Bank Tellers?,..\create_images\multi_step_out\160\step_03.png,yes,1
+160,3,question_interaction_1,Is the Bank Teller with tattoos on neck pouring the other a cup of tea or coffee with the Bank Teller with fades hair?,..\create_images\multi_step_out\160\step_03.png,yes,1
+160,3,question_interaction_2,Is the Bank Teller is thoughtful one person shouting while the other looks away with the Bank Teller wearing nose piercings?,..\create_images\multi_step_out\160\step_03.png,no,0
+160,4,question_attr_1,Is there a Bank Teller with tattoos on neck?,..\create_images\multi_step_out\160\step_04.png,yes,1
+160,4,question_attr_2,Is there a Bank Teller with fades hair?,..\create_images\multi_step_out\160\step_04.png,no,0
+160,4,question_attr_3,Is there a Bank Teller is thoughtful?,..\create_images\multi_step_out\160\step_04.png,no,0
+160,4,question_attr_4,Is there a Bank Teller wearing nose piercings?,..\create_images\multi_step_out\160\step_04.png,yes,1
+160,4,question_count,Are there four Bank Tellers?,..\create_images\multi_step_out\160\step_04.png,yes,1
+160,4,question_interaction_1,Is the Bank Teller with tattoos on neck pouring the other a cup of tea or coffee with the Bank Teller with fades hair?,..\create_images\multi_step_out\160\step_04.png,yes,1
+160,4,question_interaction_2,Is the Bank Teller is thoughtful one person shouting while the other looks away with the Bank Teller wearing nose piercings?,..\create_images\multi_step_out\160\step_04.png,no,0
+160,5,question_attr_1,Is there a Bank Teller with tattoos on neck?,..\create_images\multi_step_out\160\step_05.png,yes,1
+160,5,question_attr_2,Is there a Bank Teller with fades hair?,..\create_images\multi_step_out\160\step_05.png,no,0
+160,5,question_attr_3,Is there a Bank Teller is thoughtful?,..\create_images\multi_step_out\160\step_05.png,no,0
+160,5,question_attr_4,Is there a Bank Teller wearing nose piercings?,..\create_images\multi_step_out\160\step_05.png,yes,1
+160,5,question_count,Are there four Bank Tellers?,..\create_images\multi_step_out\160\step_05.png,yes,1
+160,5,question_interaction_1,Is the Bank Teller with tattoos on neck pouring the other a cup of tea or coffee with the Bank Teller with fades hair?,..\create_images\multi_step_out\160\step_05.png,yes,1
+160,5,question_interaction_2,Is the Bank Teller is thoughtful one person shouting while the other looks away with the Bank Teller wearing nose piercings?,..\create_images\multi_step_out\160\step_05.png,no,0
+160,6,question_attr_1,Is there a Bank Teller with tattoos on neck?,..\create_images\multi_step_out\160\step_06.png,yes,1
+160,6,question_attr_2,Is there a Bank Teller with fades hair?,..\create_images\multi_step_out\160\step_06.png,yes,1
+160,6,question_attr_3,Is there a Bank Teller is thoughtful?,..\create_images\multi_step_out\160\step_06.png,no,0
+160,6,question_attr_4,Is there a Bank Teller wearing nose piercings?,..\create_images\multi_step_out\160\step_06.png,no,0
+160,6,question_count,Are there four Bank Tellers?,..\create_images\multi_step_out\160\step_06.png,yes,1
+160,6,question_interaction_1,Is the Bank Teller with tattoos on neck pouring the other a cup of tea or coffee with the Bank Teller with fades hair?,..\create_images\multi_step_out\160\step_06.png,yes,1
+160,6,question_interaction_2,Is the Bank Teller is thoughtful one person shouting while the other looks away with the Bank Teller wearing nose piercings?,..\create_images\multi_step_out\160\step_06.png,no,0
+247,1,question_attr_1,Is there a Bouncer is joyful?,..\create_images\multi_step_out\247\step_01.png,yes,1
+247,1,question_attr_2,Is there a Bouncer has blue eyes?,..\create_images\multi_step_out\247\step_01.png,no,0
+247,1,question_attr_3,Is there a Bouncer wearing sunglasses?,..\create_images\multi_step_out\247\step_01.png,yes,1
+247,1,question_attr_4,Is there a Bouncer with camera in hand?,..\create_images\multi_step_out\247\step_01.png,yes,1
+247,1,question_count,Are there four Bouncers?,..\create_images\multi_step_out\247\step_01.png,yes,1
+247,1,question_interaction_1,Is the Bouncer is joyful having a fist bump with the Bouncer has blue eyes?,..\create_images\multi_step_out\247\step_01.png,no,0
+247,1,question_interaction_2,Is the Bouncer wearing sunglasses waving to each other with the Bouncer with camera in hand?,..\create_images\multi_step_out\247\step_01.png,yes,1
+247,2,question_attr_1,Is there a Bouncer is joyful?,..\create_images\multi_step_out\247\step_02.png,yes,1
+247,2,question_attr_2,Is there a Bouncer has blue eyes?,..\create_images\multi_step_out\247\step_02.png,yes,1
+247,2,question_attr_3,Is there a Bouncer wearing sunglasses?,..\create_images\multi_step_out\247\step_02.png,yes,1
+247,2,question_attr_4,Is there a Bouncer with camera in hand?,..\create_images\multi_step_out\247\step_02.png,yes,1
+247,2,question_count,Are there four Bouncers?,..\create_images\multi_step_out\247\step_02.png,yes,1
+247,2,question_interaction_1,Is the Bouncer is joyful having a fist bump with the Bouncer has blue eyes?,..\create_images\multi_step_out\247\step_02.png,no,0
+247,2,question_interaction_2,Is the Bouncer wearing sunglasses waving to each other with the Bouncer with camera in hand?,..\create_images\multi_step_out\247\step_02.png,yes,1
+247,3,question_attr_1,Is there a Bouncer is joyful?,..\create_images\multi_step_out\247\step_03.png,yes,1
+247,3,question_attr_2,Is there a Bouncer has blue eyes?,..\create_images\multi_step_out\247\step_03.png,no,0
+247,3,question_attr_3,Is there a Bouncer wearing sunglasses?,..\create_images\multi_step_out\247\step_03.png,yes,1
+247,3,question_attr_4,Is there a Bouncer with camera in hand?,..\create_images\multi_step_out\247\step_03.png,yes,1
+247,3,question_count,Are there four Bouncers?,..\create_images\multi_step_out\247\step_03.png,yes,1
+247,3,question_interaction_1,Is the Bouncer is joyful having a fist bump with the Bouncer has blue eyes?,..\create_images\multi_step_out\247\step_03.png,no,0
+247,3,question_interaction_2,Is the Bouncer wearing sunglasses waving to each other with the Bouncer with camera in hand?,..\create_images\multi_step_out\247\step_03.png,yes,1
+247,4,question_attr_1,Is there a Bouncer is joyful?,..\create_images\multi_step_out\247\step_04.png,yes,1
+247,4,question_attr_2,Is there a Bouncer has blue eyes?,..\create_images\multi_step_out\247\step_04.png,no,0
+247,4,question_attr_3,Is there a Bouncer wearing sunglasses?,..\create_images\multi_step_out\247\step_04.png,yes,1
+247,4,question_attr_4,Is there a Bouncer with camera in hand?,..\create_images\multi_step_out\247\step_04.png,yes,1
+247,4,question_count,Are there four Bouncers?,..\create_images\multi_step_out\247\step_04.png,yes,1
+247,4,question_interaction_1,Is the Bouncer is joyful having a fist bump with the Bouncer has blue eyes?,..\create_images\multi_step_out\247\step_04.png,no,0
+247,4,question_interaction_2,Is the Bouncer wearing sunglasses waving to each other with the Bouncer with camera in hand?,..\create_images\multi_step_out\247\step_04.png,yes,1
+247,5,question_attr_1,Is there a Bouncer is joyful?,..\create_images\multi_step_out\247\step_05.png,yes,1
+247,5,question_attr_2,Is there a Bouncer has blue eyes?,..\create_images\multi_step_out\247\step_05.png,yes,1
+247,5,question_attr_3,Is there a Bouncer wearing sunglasses?,..\create_images\multi_step_out\247\step_05.png,yes,1
+247,5,question_attr_4,Is there a Bouncer with camera in hand?,..\create_images\multi_step_out\247\step_05.png,yes,1
+247,5,question_count,Are there four Bouncers?,..\create_images\multi_step_out\247\step_05.png,yes,1
+247,5,question_interaction_1,Is the Bouncer is joyful having a fist bump with the Bouncer has blue eyes?,..\create_images\multi_step_out\247\step_05.png,no,0
+247,5,question_interaction_2,Is the Bouncer wearing sunglasses waving to each other with the Bouncer with camera in hand?,..\create_images\multi_step_out\247\step_05.png,yes,1
+247,6,question_attr_1,Is there a Bouncer is joyful?,..\create_images\multi_step_out\247\step_06.png,yes,1
+247,6,question_attr_2,Is there a Bouncer has blue eyes?,..\create_images\multi_step_out\247\step_06.png,yes,1
+247,6,question_attr_3,Is there a Bouncer wearing sunglasses?,..\create_images\multi_step_out\247\step_06.png,yes,1
+247,6,question_attr_4,Is there a Bouncer with camera in hand?,..\create_images\multi_step_out\247\step_06.png,yes,1
+247,6,question_count,Are there four Bouncers?,..\create_images\multi_step_out\247\step_06.png,yes,1
+247,6,question_interaction_1,Is the Bouncer is joyful having a fist bump with the Bouncer has blue eyes?,..\create_images\multi_step_out\247\step_06.png,yes,1
+247,6,question_interaction_2,Is the Bouncer wearing sunglasses waving to each other with the Bouncer with camera in hand?,..\create_images\multi_step_out\247\step_06.png,yes,1

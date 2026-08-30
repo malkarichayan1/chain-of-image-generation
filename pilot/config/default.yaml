@@ -1,0 +1,26 @@
+# Default config for the pilot (Track 0: Causal Relevance) pipeline.
+# Values here match the pipeline's original hardcoded defaults exactly.
+
+paths:
+  sbs_eval_csv: data/evaluation_sbs_results.csv
+  item_indexes: data/pilot_item_indexes.txt
+  conditions_dir: data/conditions
+  pilot_prompts_csv: data/pilot_prompts.csv
+  causal_relevance_results_csv: data/causal_relevance_results.csv
+
+selection:
+  n: 10
+  seed: 42
+
+decision:
+  shuffled_persist_min: 0.5
+  substituted_persist_max: 0.3
+  real_substituted_gap_min: 0.5
+
+judge:
+  model: gemini-2.5-flash
+  temperature: 0.0
+  max_retries: 6
+  openrouter_model: google/gemini-2.5-flash
+  openrouter_max_retries: 3
+  openrouter_timeout: 120.0

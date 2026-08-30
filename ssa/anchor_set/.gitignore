@@ -1,0 +1,5 @@
+artifacts/images/
+artifacts/*.png
+artifacts_sdxl/images/
+.pytest_cache/
+__pycache__/

@@ -1,0 +1,12 @@
+torch
+torchvision
+diffusers>=0.31
+transformers
+numpy
+pandas
+scipy
+Pillow
+pytest
+python-dotenv
+google-genai
+pyyaml

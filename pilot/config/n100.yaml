@@ -1,0 +1,26 @@
+# N=100 scale-up variant of the pilot pipeline (same pipeline, larger sample).
+# Usage: pass --config config/n100.yaml to any pilot script.
+
+paths:
+  sbs_eval_csv: data/evaluation_sbs_results_100.csv
+  item_indexes: data/pilot_item_indexes_100.txt
+  conditions_dir: data/conditions_100
+  pilot_prompts_csv: data/pilot_prompts_100.csv
+  causal_relevance_results_csv: data/causal_relevance_results_100.csv
+
+selection:
+  n: 100
+  seed: 42
+
+decision:
+  shuffled_persist_min: 0.5
+  substituted_persist_max: 0.3
+  real_substituted_gap_min: 0.5
+
+judge:
+  model: gemini-2.5-flash
+  temperature: 0.0
+  max_retries: 6
+  openrouter_model: google/gemini-2.5-flash
+  openrouter_max_retries: 3
+  openrouter_timeout: 120.0

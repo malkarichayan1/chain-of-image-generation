@@ -1,0 +1,580 @@
+#!/usr/bin/env python
+"""
+Pure, torch-free logic shared by the anchor-set's local stages (label_images.py,
+analyze_agreement.py) and exercised by the tests. Imports only numpy + stdlib, so it runs
+on this machine where torch/diffusers are NOT installed.
+
+generate_anchor_images.py (the GPU/Kaggle single-file kernel) inline-duplicates
+`predicted_owner_from_attention` / `build_manifest_entry` rather than importing this module,
+because a Kaggle script kernel is one file -- the same "keep in sync" duplication pattern
+generate_chains.py already uses for its attention capture. The copies here are the tested
+ones; keep the two in sync.
+
+Ground-truth framing: a prompt's *intended* subject->attribute pairing is NOT ground truth.
+SD1.5 mis-binds, and that is the phenomenon under test. The human label on the rendered
+pixels is ground truth; `predicted_owner` is the metric's guess; agreement between them is
+the result the memo's decision gate reads.
+"""
+from __future__ import annotations
+
+import json
+import re
+from pathlib import Path
+from typing import Dict, List, Optional, Sequence, Tuple
+
+import numpy as np
+from scipy import stats
+
+# Sentinels a human may record instead of a subject name.
+LABEL_NONE = "none"        # the attribute never visibly rendered on anyone
+LABEL_UNCLEAR = "unclear"  # rendered but the annotator cannot assign ownership
+LABEL_SHARED = "shared"    # rendered on MORE THAN ONE subject (attribute leakage)
+LABEL_ABSENT = "absent"    # the intended SUBJECT was never rendered (count-broken) -- a
+                            # rendering-failure fact, distinct from `none` (the subject
+                            # exists, but this attribute never showed up on anyone).
+NON_SUBJECT_LABELS = frozenset({LABEL_NONE, LABEL_UNCLEAR, LABEL_SHARED, LABEL_ABSENT})
+
+# `shared` is deliberately split out of `unclear`. Both are "not one subject", but they are
+# different facts: `unclear` is missing data (the annotator could not tell), while `shared`
+# is a binding OUTCOME (the model bound the attribute to several subjects at once) that the
+# metric can be asked to predict. Strict scoring excludes all four -- preserving every
+# already-published accuracy number -- while shared-aware scoring (see `margin_threshold`
+# in build_agreement_rows) readmits only `shared` as an extra predictable class. `absent`
+# joins `none`/`unclear` here (not `shared`): like them it is missing data about BINDING,
+# not a binding outcome a metric could ever be scored against.
+MISSING_DATA_LABELS = frozenset({LABEL_NONE, LABEL_UNCLEAR, LABEL_ABSENT})
+
+
+# ---------------------------------------------------------------------------
+# Prompt-spec loading / validation
+# ---------------------------------------------------------------------------
+
+def load_specs(path: Path) -> List[dict]:
+    """Read prompt_specs.json and return its `prompts` list (ignores the `_comment` key)."""
+    data = json.loads(Path(path).read_text())
+    return list(data["prompts"])
+
+
+def validate_specs(specs: Sequence[dict]) -> None:
+    """Raise ValueError on any malformed spec. Enforced invariants: stratification
+    (>=1 prompt at each of n=2/3/4), unique ids, n matches pair count, and distinct
+    subjects + distinct attributes within a prompt (a repeated subject would make the
+    binding question ill-posed; a repeated attribute would make ownership ambiguous)."""
+    ids = [s["id"] for s in specs]
+    if len(ids) != len(set(ids)):
+        raise ValueError(f"duplicate prompt ids: {ids}")
+    strata = {s["n"] for s in specs}
+    for required in (2, 3, 4):
+        if required not in strata:
+            raise ValueError(f"no prompt at stratum n={required}")
+    for s in specs:
+        pairs = s["pairs"]
+        if s["n"] != len(pairs):
+            raise ValueError(f"prompt {s['id']}: n={s['n']} but {len(pairs)} pairs")
+        subjects = [p[0] for p in pairs]
+        attributes = [p[1] for p in pairs]
+        if len(set(subjects)) != len(subjects):
+            raise ValueError(f"prompt {s['id']}: repeated subject in {subjects}")
+        if len(set(attributes)) != len(attributes):
+            raise ValueError(f"prompt {s['id']}: repeated attribute in {attributes}")
+        for _subject, attribute in pairs:
+            if attribute not in s["prompt"]:
+                raise ValueError(
+                    f"prompt {s['id']}: attribute {attribute!r} not a substring of prompt "
+                    f"(token lookup on Kaggle would fail): {s['prompt']!r}")
+
+
+# ---------------------------------------------------------------------------
+# Prompt layout parsing (for label_images.py's on-screen clarity, not scoring)
+# ---------------------------------------------------------------------------
+
+# Every anchor prompt places its n subjects with one of these fixed positional phrases, in
+# left-to-right generation order (see prompt_specs.json / build_growth_specs.py). Longer
+# phrases first defensively, though it's not load-bearing: "on the far left" can never be
+# mistaken for "on the left" mid-match, since the character right after "on the " differs
+# ('f' vs 'l') at the very first point the two alternatives diverge.
+_POSITION_MARKERS = (
+    "on the far left", "on the center-left", "on the center-right", "on the far right",
+    "on the left", "in the middle", "on the right",
+)
+_POSITION_PATTERN = re.compile("(" + "|".join(_POSITION_MARKERS) + ")")
+
+
+def parse_prompt_layout(prompt: str, subjects: Sequence[str]
+                         ) -> Optional[List[Tuple[str, Optional[str]]]]:
+    """Split `prompt` on its positional markers and pair each resulting segment with the
+    corresponding entry in `subjects`, in prompt order. Returns None -- never a guessed
+    position -- when the marker count doesn't equal len(subjects) (a malformed or
+    hand-edited prompt); callers must fall back to plain, position-free display rather than
+    risk showing a wrong position.
+
+    Each returned tuple is (position, gloss). `position` is the marker with its "on the "/
+    "in the " prefix stripped (e.g. "far left", "middle"). `gloss` is the subject's own
+    prompt segment, but ONLY when the subject name does not literally appear in it --
+    otherwise None, since there's nothing to clarify. This is what surfaces FLUX's "cyclist"
+    being phrased as "a man wearing a cycling jersey": the manifest's subjects list says
+    `cyclist`, but that word never appears in the prompt itself, so an annotator matching
+    subject names against prompt text would never find it without this gloss."""
+    parts = _POSITION_PATTERN.split(prompt)
+    # re.split with one capturing group interleaves: [preamble, marker, segment, marker, ...]
+    markers = parts[1::2]
+    segments = parts[2::2]
+    if len(markers) != len(subjects) or len(segments) != len(subjects):
+        return None
+    layout: List[Tuple[str, Optional[str]]] = []
+    for subject, marker, segment in zip(subjects, markers, segments):
+        segment = segment.strip(" ,.")
+        position = marker.replace("on the ", "").replace("in the ", "")
+        gloss = None if subject.lower() in segment.lower() else segment
+        layout.append((position, gloss))
+    return layout
+
+
+_TRAILING_PREPOSITION = re.compile(r"\s+(in|with|wearing|holding)\s+(a|an)?\s*$",
+                                    re.IGNORECASE)
+
+
+def redact_attribute_clause(gloss: str, attribute: str) -> str:
+    """Trim a subject's naming gloss (from parse_prompt_layout) so it stops before the
+    clause that names `attribute`, keeping only the subject-IDENTITY portion. Guards
+    against a real leak: cyclist's gloss is "a man wearing a cycling jersey in a yellow
+    bike helmet" -- shown unredacted next to a menu option while asking "which subject has
+    the yellow helmet?", it spells out the answer. Only clarifies naming, never spoils
+    binding.
+
+    Finds the earliest position any content word of `attribute` appears in `gloss`
+    (case-insensitive), cuts there, then strips a dangling trailing preposition left over
+    from the cut (e.g. "...cycling jersey in a" -> "...cycling jersey"). Returns `gloss`
+    unchanged if `attribute` shares no words with it (nothing to redact -- e.g. asking
+    about the barista's "red apron" must not touch cyclist's gloss at all), or if
+    redaction would strip the gloss down to nothing (better an unredacted gloss than a
+    blank one)."""
+    words = re.findall(r"[a-zA-Z]+", attribute.lower())
+    positions = [p for p in (gloss.lower().find(w) for w in words) if p != -1]
+    if not positions:
+        return gloss
+    trimmed = _TRAILING_PREPOSITION.sub("", gloss[:min(positions)]).rstrip(" ,")
+    return trimmed if trimmed else gloss
+
+
+# ---------------------------------------------------------------------------
+# VQA-question phrasing (DUPLICATED inline in vqa_score_sdxl.py / vqa_score_flux.py --
+# those are self-contained Kaggle kernels, same "keep in sync" convention as ANCHOR_PROMPTS)
+# ---------------------------------------------------------------------------
+
+# Bare-noun attributes that are HELD rather than worn ("holding a book", not "wearing a
+# book"). Matched against the attribute string's LAST word, so any color/descriptor prefix
+# ("red apron" vs "book") never affects the held/worn classification.
+_HELD_NOUNS = frozenset({"book", "shovel", "pan"})
+
+# Plural-form worn attributes that take no article ("wearing dark sunglasses", not "wearing
+# a dark sunglasses"). Everything else worn is singular and gets "a" ("wearing a red apron").
+_NO_ARTICLE_WORN_NOUNS = frozenset({"gloves", "sunglasses", "glasses"})
+
+
+def attribute_question(attribute: str) -> str:
+    """A yes/no VQA question for one attribute string, e.g. "Is the person wearing a red
+    apron?" or "Is the person holding a book?" -- the question `vqa_score_sdxl.py` /
+    `vqa_score_flux.py` ask per (subject crop, attribute), whose P(yes) is VQAScore's
+    binding signal (Lin et al. 2024). Classifies by the attribute's LAST word only, so any
+    new color/descriptor combination (e.g. a hard-prompt-set "blue helmet") is covered
+    automatically without a per-attribute lookup table -- verified to reproduce every
+    entry of the anchor sets' original hand-written ATTRIBUTE_PHRASES dict exactly."""
+    last_word = attribute.rsplit(" ", 1)[-1].lower()
+    if last_word in _HELD_NOUNS:
+        return f"Is the person holding a {attribute}?"
+    if last_word in _NO_ARTICLE_WORN_NOUNS:
+        return f"Is the person wearing {attribute}?"
+    return f"Is the person wearing a {attribute}?"
+
+
+# ---------------------------------------------------------------------------
+# Prediction from attention (DUPLICATED inline in generate_anchor_images.py)
+# ---------------------------------------------------------------------------
+
+def mean_mass_in_box(attn_map: np.ndarray, box: Sequence[float]) -> float:
+    """Mean attention value inside an [x0, y0, x1, y1] pixel box. Returns 0.0 for a box
+    that is empty or entirely off the map, so it can never spuriously win the argmax."""
+    h, w = attn_map.shape[:2]
+    x0, y0, x1, y1 = (int(round(v)) for v in box)
+    x0, y0 = max(0, x0), max(0, y0)
+    x1, y1 = min(w, x1), min(h, y1)
+    if x1 <= x0 or y1 <= y0:
+        return 0.0
+    return float(attn_map[y0:y1, x0:x1].mean())
+
+
+def locate_attribute_phrase(prompt: str, attribute: str) -> Tuple[int, str]:
+    """Where `attribute` actually occurs in `prompt`, and what substring to treat as "the
+    phrase" for downstream token lookup. Tries an exact substring match first (unchanged
+    behavior for every attribute that already matches verbatim), but anchored to word
+    boundaries (`\\b`) so a single-word `attribute` like "red" can never match inside a
+    larger word like "shredded". Falls back to the SHORTEST left-to-right span that contains
+    every content word of `attribute`, each matched as a whole word (also `\\b`-anchored) --
+    handles manifest attribute strings that are a strict sub-phrase of a longer descriptive
+    phrase in the actual prompt (e.g. attribute="yellow helmet", prompt="...yellow bike
+    helmet...").  Taking the shortest span, rather than the first occurrence of each word, is
+    what keeps two subjects sharing a word (e.g. both "wearing something red") from producing
+    a span that stretches across the unrelated clause in between -- see the regression tests
+    for the concrete case this fixes. Raises ValueError if any content word is missing
+    anywhere in the prompt, if `attribute` has no content words at all, or if the words that
+    ARE present never appear in a valid left-to-right order.
+
+    Known limitation, currently dormant (verified against every real prompt in
+    prompt_specs.json / artifacts_flux/manifest.json / artifacts_sdxl/*.json -- zero
+    occurrences): the shortest-span fallback is scoped to the whole prompt, not to any one
+    subject's clause. If two different subjects' clauses both happen to contain all of
+    `attribute`'s content words (e.g. two subjects near each other each mentioning "red" and
+    "apron" in different combinations), this can silently pick a span from the wrong
+    subject's clause -- this function has no clause-boundary information to disambiguate
+    with. A caller working with less-controlled prompt text that wants a stronger guarantee
+    should pre-scope `prompt` to the relevant subject's clause before calling."""
+    words = re.findall(r"[a-zA-Z]+", attribute.lower())
+    if not words:
+        raise ValueError(f"attribute {attribute!r} has no content words to match")
+
+    exact = re.search(r"\b" + re.escape(attribute) + r"\b", prompt)
+    if exact:
+        return exact.start(), attribute
+
+    prompt_lower = prompt.lower()
+    occurrences: List[List[Tuple[int, int]]] = []
+    for word in words:
+        matches = [(m.start(), m.end())
+                   for m in re.finditer(r"\b" + re.escape(word) + r"\b", prompt_lower)]
+        if not matches:
+            raise ValueError(
+                f"attribute {attribute!r} word {word!r} not found in prompt {prompt!r}")
+        occurrences.append(matches)
+
+    best_span: Optional[Tuple[int, int]] = None
+    for start0, end0 in occurrences[0]:
+        cursor = end0
+        valid = True
+        for matches in occurrences[1:]:
+            next_match = next((m for m in matches if m[0] >= cursor), None)
+            if next_match is None:
+                valid = False
+                break
+            cursor = next_match[1]
+        if not valid:
+            continue
+        if best_span is None or (cursor - start0) < (best_span[1] - best_span[0]):
+            best_span = (start0, cursor)
+
+    if best_span is None:
+        raise ValueError(
+            f"attribute {attribute!r} words all appear in prompt {prompt!r} but never in a "
+            f"valid left-to-right order")
+    start, end = best_span
+    return start, prompt[start:end]
+
+
+def subject_char_positions(prompt: str, subjects: Sequence[str]) -> Optional[List[int]]:
+    """Character offset of where each subject in `subjects` (in prompt order) actually sits
+    in `prompt`, via the same positional-marker split `parse_prompt_layout` uses -- a
+    fallback for subjects whose category name never appears literally in the prompt text
+    (e.g. FLUX's "cyclist", phrased as "a man wearing a cycling jersey..."), where a literal
+    substring search has nothing to anchor on. Returns the position right after each
+    subject's marker (start of that subject's descriptive segment). Returns None, matching
+    parse_prompt_layout's contract, when the marker count doesn't equal len(subjects) --
+    callers must fall back further rather than guess.
+
+    Placed alongside `locate_attribute_phrase` rather than in the "prompt layout parsing"
+    section above (`parse_prompt_layout`/`redact_attribute_clause`, which exist purely for
+    label_images.py's on-screen display) because this function's only real caller,
+    `nearest_subject_baseline` in exp4_positional_baseline.py, feeds directly into
+    Experiment 4's scored baseline accuracy / McNemar test -- it IS scoring, not display."""
+    matches = list(_POSITION_PATTERN.finditer(prompt))
+    if len(matches) != len(subjects):
+        return None
+    return [m.end() for m in matches]
+
+
+def predicted_owner_from_attention(
+    attn_map: np.ndarray, subject_boxes: Dict[str, Sequence[float]]
+) -> Tuple[str, Dict[str, float]]:
+    """The metric's binding call for one attribute: the subject whose detected box holds
+    the most of that attribute's (early-window) cross-attention mass. Returns
+    (predicted_owner, {subject: mass}). Ties break deterministically by the boxes' dict
+    order (insertion order), so a rerun on identical inputs is reproducible."""
+    if not subject_boxes:
+        raise ValueError("subject_boxes is empty; nothing to attribute the attention to")
+    scores = {s: mean_mass_in_box(attn_map, b) for s, b in subject_boxes.items()}
+    owner = max(scores, key=lambda s: scores[s])
+    return owner, scores
+
+
+# ---------------------------------------------------------------------------
+# Confidence margin -> the metric's own "shared" (leakage) call
+# ---------------------------------------------------------------------------
+
+def margin_from_scores(model_scores: Dict[str, float]) -> float:
+    """How decisively the top subject beat the runner-up: (top1 - top2) / top1, in [0, 1].
+
+    A bare argmax always names somebody, even when two subjects hold near-identical
+    attention mass -- which is exactly the leakage case a human marks `shared`. This is the
+    scalar that lets the metric abstain instead. Computed from the `model_scores` already
+    stored in every manifest attribute entry, so re-thresholding costs no GPU time.
+
+    Degenerate cases: a lone subject has no competitor, so it scores 1.0 (nothing to be
+    ambiguous against); an all-zero map has no evidence for anyone, so it scores 0.0
+    (maximally ambiguous, NOT maximally confident -- getting this backwards would turn
+    empty attention into a confident prediction)."""
+    if not model_scores:
+        raise ValueError("model_scores is empty; no prediction to measure confidence for")
+    ranked = sorted(model_scores.values(), reverse=True)
+    if len(ranked) == 1:
+        return 1.0
+    top1, top2 = ranked[0], ranked[1]
+    if top1 <= 0.0:
+        return 0.0
+    return float((top1 - top2) / top1)
+
+
+def predicted_label_with_shared(model_scores: Dict[str, float],
+                                margin_threshold: float) -> str:
+    """The metric's binding call when it is allowed to say `shared`: the argmax subject when
+    its margin clears `margin_threshold`, else LABEL_SHARED. The boundary is inclusive on the
+    confident side (margin >= threshold names a subject) so threshold=0.0 reproduces plain
+    argmax behavior exactly."""
+    if margin_from_scores(model_scores) >= margin_threshold:
+        return max(model_scores, key=lambda s: model_scores[s])
+    return LABEL_SHARED
+
+
+# ---------------------------------------------------------------------------
+# Manifest entry assembly (DUPLICATED inline in generate_anchor_images.py)
+# ---------------------------------------------------------------------------
+
+def build_attribute_entry(attribute: str, intended_subject: str, predicted_owner: str,
+                          model_scores: Dict[str, float]) -> dict:
+    return dict(attribute=attribute, intended_subject=intended_subject,
+                predicted_owner=predicted_owner, model_scores=model_scores)
+
+
+def build_manifest_entry(prompt_id: int, n: int, prompt: str, subjects: List[str], seed: int,
+                         detected: bool, num_people_detected: int, image_path: str,
+                         attributes: List[dict]) -> dict:
+    """Pure dict assembly, no model calls -- the tested seam of Stage 1. `attributes` is a
+    list of build_attribute_entry() dicts (empty when detection failed)."""
+    return dict(prompt_id=prompt_id, n=n, prompt=prompt, subjects=subjects, seed=seed,
+                detected=detected, num_people_detected=num_people_detected,
+                image_path=image_path, attributes=attributes)
+
+
+# ---------------------------------------------------------------------------
+# Labeling helpers
+# ---------------------------------------------------------------------------
+
+def label_key(prompt_id: int, attribute: str) -> str:
+    """Stable join key for a single (image, attribute) judgment. A second annotator's
+    file uses the same keys, so files align row-for-row without rework."""
+    return f"{prompt_id}::{attribute}"
+
+
+def load_labels(path: Path) -> Dict[str, str]:
+    if Path(path).exists():
+        return dict(json.loads(Path(path).read_text()))
+    return {}
+
+
+def save_labels(path: Path, labels: Dict[str, str]) -> None:
+    Path(path).write_text(json.dumps(labels, indent=2, sort_keys=True))
+
+
+def resolve_image_path(artifacts_dir: Path, stored_path: str) -> Path:
+    """manifest.json's image_path strings are baked in at generation time relative to the
+    GPU script's OWN artifacts folder..."""
+    rel = Path(stored_path)
+    # Strip the top-level directory if it starts with "artifacts"
+    if rel.parts and rel.parts[0].startswith("artifacts"):
+        rel = Path(*rel.parts[1:])
+    return (Path(artifacts_dir) / rel).resolve()
+
+
+def pending_label_targets(manifest: dict, labels: Dict[str, str],
+                          relabel: frozenset = frozenset()) -> List[Tuple[dict, dict]]:
+    """(image_entry, attribute_entry) pairs still needing a human label -- only detected
+    images, only attributes not already keyed in `labels`. Order follows the manifest.
+
+    `relabel` re-queues rows whose EXISTING label is in that set, which is how an already
+    finished pass gets revisited without discarding it: passing {LABEL_UNCLEAR} re-asks only
+    the ambiguous rows (e.g. to split the ones that were really `shared`) and leaves every
+    settled subject judgment alone. Empty by default, so an ordinary resume is unchanged."""
+    out: List[Tuple[dict, dict]] = []
+    for img in manifest["images"]:
+        if not img.get("detected"):
+            continue
+        for attr in img["attributes"]:
+            key = label_key(img["prompt_id"], attr["attribute"])
+            if key not in labels or labels[key] in relabel:
+                out.append((img, attr))
+    return out
+
+
+# ---------------------------------------------------------------------------
+# Agreement analysis
+# ---------------------------------------------------------------------------
+
+# ---------------------------------------------------------------------------
+# Count-clean / count-broken -- per-IMAGE (not per-attribute) check
+# ---------------------------------------------------------------------------
+
+# Detection passing (Mask R-CNN finds exactly n people) is a WEAK proxy for "the prompt
+# rendered correctly" -- it only checks headcount, not whether those n people are visually
+# distinct individuals. SDXL's own "two identical chefs" failure mode (see
+# generate_anchor_images_sdxl.py's module docstring) passes headcount while conflating two
+# different subjects into one interchangeable-looking person, which makes the binding
+# question for that image ill-posed regardless of how good the metric is. This is logged as
+# an explicit human judgment, separate from the per-attribute subject/none/unclear/shared
+# labels, because it's a fact about the IMAGE, not about any one attribute.
+COUNT_CLEAN = "clean"    # all intended subjects rendered as visually distinct people
+COUNT_BROKEN = "broken"  # two+ subjects are duplicates/interchangeable/not distinguishable
+
+
+def count_key(prompt_id: int) -> str:
+    """Stable key for one image's count-clean judgment. Deliberately just str(prompt_id)
+    (no attribute component, unlike label_key) -- this is a per-image fact, and reuses the
+    same load_labels/save_labels persistence since both are flat {str: str} dicts."""
+    return str(prompt_id)
+
+
+def pending_count_targets(manifest: dict, counts: Dict[str, str]) -> List[dict]:
+    """Detected image entries with no count-clean judgment yet, in manifest order."""
+    return [img for img in manifest["images"]
+            if img.get("detected") and count_key(img["prompt_id"]) not in counts]
+
+
+def chance_baseline(n: int, include_shared: bool = False) -> float:
+    """Random-guess accuracy at subject count n. Strict scoring picks among the n subjects
+    (1/n); shared-aware scoring picks among n subjects plus `shared` (1/(n+1))."""
+    return 1.0 / (n + 1) if include_shared else 1.0 / n
+
+
+def binomial_test_vs_chance(n_correct: int, n_scored: int, chance: float) -> Optional[float]:
+    """One-sided (alternative="greater") exact binomial p-value for "accuracy exceeds
+    chance" at a given scored count. Returns None when n_scored is 0 -- there is no test to
+    run, not a p-value of 1.0 or 0.0. Shared by exp1_accuracy_by_n.py (per-stratum
+    significance) and exp3_attention_scramble.py (scrambled-vs-chance falsification), both of
+    which need the same primitive rather than duplicating it."""
+    if n_scored == 0:
+        return None
+    return float(stats.binomtest(n_correct, n_scored, chance, alternative="greater").pvalue)
+
+
+def build_agreement_rows(manifest: dict, labels: Dict[str, str],
+                         margin_threshold: float = None,
+                         counts: Dict[str, str] = None) -> List[dict]:
+    """One row per (detected chain, attribute) that has a human label.
+
+    Strict columns (always present, semantics frozen so published numbers cannot move):
+    `human_label` may be a subject or one of none/unclear/shared; `scored` is True only when
+    the human named a single subject (the accuracy denominator); `correct` compares
+    `predicted_owner` (bare argmax) to that subject.
+
+    `counts` (optional, default None): a count-clean/count-broken judgment dict keyed by
+    count_key(prompt_id) (see pending_count_targets). When given, every row from a
+    count-broken image is forced `scored=False` regardless of its human attribute label --
+    count-broken conflates rendering failure with binding failure, so it can't answer a pure
+    binding question (see COUNT_CLEAN/COUNT_BROKEN docstring). Omitting `counts` (or passing
+    {}) reproduces every already-published number exactly -- no row is excluded for count
+    reasons unless a counts dict says so.
+
+    Shared-aware columns (only when `margin_threshold` is given): `margin`,
+    `predicted_label` (a subject, or `shared` when the metric's top-two attention margin
+    falls short), `scored_shared` (human named a subject OR said `shared`), and
+    `correct_shared`. `none`/`unclear` stay excluded in both modes -- they are missing data,
+    not outcomes."""
+    counts = counts or {}
+    rows: List[dict] = []
+    for img in manifest["images"]:
+        if not img.get("detected"):
+            continue
+        count_broken = counts.get(count_key(img["prompt_id"])) == COUNT_BROKEN
+        for attr in img["attributes"]:
+            key = label_key(img["prompt_id"], attr["attribute"])
+            if key not in labels:
+                continue
+            human = labels[key]
+            scored = human not in NON_SUBJECT_LABELS and not count_broken
+            row = dict(
+                prompt_id=img["prompt_id"], n=img["n"], attribute=attr["attribute"],
+                intended_subject=attr["intended_subject"], predicted_owner=attr["predicted_owner"],
+                human_label=human, count_broken=count_broken, scored=scored,
+                correct=(scored and attr["predicted_owner"] == human),
+            )
+            if margin_threshold is not None:
+                predicted_label = predicted_label_with_shared(
+                    attr["model_scores"], margin_threshold)
+                scored_shared = human not in MISSING_DATA_LABELS
+                row.update(
+                    margin=margin_from_scores(attr["model_scores"]),
+                    predicted_label=predicted_label,
+                    scored_shared=scored_shared,
+                    correct_shared=(scored_shared and predicted_label == human),
+                )
+            rows.append(row)
+    return rows
+
+
+def cohens_kappa(labels_a: Dict[str, str], labels_b: Dict[str, str]) -> dict:
+    """Inter-rater reliability between two annotators' label files, over the keys they BOTH
+    labeled (so a second annotator who stops partway is not penalised for unlabeled rows).
+
+    Returns {n, p_observed, p_expected, kappa, categories}. `kappa` is None when p_expected
+    is 1.0 -- both raters used a single identical category, which makes (po-pe)/(1-pe) a 0/0
+    and would otherwise surface as a NaN or a ZeroDivisionError."""
+    shared_keys = sorted(set(labels_a) & set(labels_b))
+    if not shared_keys:
+        raise ValueError("no overlapping label keys; nothing to compare between annotators")
+
+    pairs = [(labels_a[k], labels_b[k]) for k in shared_keys]
+    n = len(pairs)
+    p_observed = sum(1 for x, y in pairs if x == y) / n
+
+    categories = sorted({c for pair in pairs for c in pair})
+    p_expected = sum(
+        (sum(1 for x, _ in pairs if x == c) / n) * (sum(1 for _, y in pairs if y == c) / n)
+        for c in categories
+    )
+    kappa = None if p_expected >= 1.0 else (p_observed - p_expected) / (1.0 - p_expected)
+    return dict(n=n, p_observed=p_observed, p_expected=p_expected, kappa=kappa,
+                categories=categories)
+
+
+def summarize_agreement(rows: Sequence[dict], mode: str = "strict") -> dict:
+    """Overall + per-stratum agreement vs chance, plus coverage (how many labeled rows were
+    excluded). Strata with zero scored rows report accuracy=None.
+
+    `mode="strict"` (default) reads the frozen `scored`/`correct` columns against a 1/n
+    baseline -- this is what every published anchor-set number used. `mode="shared"` reads
+    `scored_shared`/`correct_shared` against 1/(n+1), which requires rows built with a
+    `margin_threshold`."""
+    if mode not in ("strict", "shared"):
+        raise ValueError(f"unknown mode {mode!r}; expected 'strict' or 'shared'")
+    include_shared = mode == "shared"
+    if include_shared and rows and "scored_shared" not in rows[0]:
+        raise ValueError(
+            "mode='shared' needs rows built with build_agreement_rows(..., margin_threshold=...); "
+            "these rows have no shared-aware columns")
+    scored_col, correct_col = (
+        ("scored_shared", "correct_shared") if include_shared else ("scored", "correct"))
+
+    def _stratum(subset: Sequence[dict]) -> dict:
+        scored = [r for r in subset if r[scored_col]]
+        n_scored = len(scored)
+        n_correct = sum(1 for r in scored if r[correct_col])
+        ns = {r["n"] for r in subset}
+        chance = chance_baseline(next(iter(ns)), include_shared) if len(ns) == 1 else None
+        acc = (n_correct / n_scored) if n_scored else None
+        return dict(
+            n_labeled=len(subset), n_scored=n_scored, n_correct=n_correct,
+            n_excluded=len(subset) - n_scored,
+            accuracy=acc, chance=chance,
+            margin_over_chance=(acc - chance) if (acc is not None and chance is not None) else None,
+        )
+
+    by_stratum = {n: _stratum([r for r in rows if r["n"] == n])
+                  for n in sorted({r["n"] for r in rows})}
+    return dict(overall=_stratum(rows), by_stratum=by_stratum)

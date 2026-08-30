@@ -1,0 +1,853 @@
+{
+  "candidate_seeds": [
+    42,
+    7,
+    1234,
+    2024
+  ],
+  "img_size": 512,
+  "num_inference_steps": 30,
+  "early_window_fraction": 0.5,
+  "images": [
+    {
+      "prompt_id": 0,
+      "n": 2,
+      "prompt": "a photo of a barista wearing a red apron and a cyclist wearing a yellow helmet",
+      "subjects": [
+        "barista",
+        "cyclist"
+      ],
+      "seed": 42,
+      "detected": true,
+      "num_people_detected": 2,
+      "image_path": "artifacts/images/p0.png",
+      "attributes": [
+        {
+          "attribute": "red apron",
+          "intended_subject": "barista",
+          "predicted_owner": "barista",
+          "model_scores": {
+            "barista": 0.0061388034373521805,
+            "cyclist": 0.00604673707857728
+          }
+        },
+        {
+          "attribute": "yellow helmet",
+          "intended_subject": "cyclist",
+          "predicted_owner": "barista",
+          "model_scores": {
+            "barista": 0.005029197782278061,
+            "cyclist": 0.0047952099703252316
+          }
+        }
+      ]
+    },
+    {
+      "prompt_id": 1,
+      "n": 2,
+      "prompt": "a photo of a chef wearing a white hat and a farmer holding a shovel",
+      "subjects": [
+        "chef",
+        "farmer"
+      ],
+      "seed": 42,
+      "detected": true,
+      "num_people_detected": 2,
+      "image_path": "artifacts/images/p1.png",
+      "attributes": [
+        {
+          "attribute": "white hat",
+          "intended_subject": "chef",
+          "predicted_owner": "chef",
+          "model_scores": {
+            "chef": 0.00720362551510334,
+            "farmer": 0.006930433213710785
+          }
+        },
+        {
+          "attribute": "shovel",
+          "intended_subject": "farmer",
+          "predicted_owner": "chef",
+          "model_scores": {
+            "chef": 0.005342992953956127,
+            "farmer": 0.005280057433992624
+          }
+        }
+      ]
+    },
+    {
+      "prompt_id": 2,
+      "n": 2,
+      "prompt": "a photo of a nurse wearing blue gloves and a pilot wearing dark sunglasses",
+      "subjects": [
+        "nurse",
+        "pilot"
+      ],
+      "seed": 42,
+      "detected": true,
+      "num_people_detected": 2,
+      "image_path": "artifacts/images/p2.png",
+      "attributes": [
+        {
+          "attribute": "blue gloves",
+          "intended_subject": "nurse",
+          "predicted_owner": "nurse",
+          "model_scores": {
+            "nurse": 0.00875391811132431,
+            "pilot": 0.008691597729921341
+          }
+        },
+        {
+          "attribute": "dark sunglasses",
+          "intended_subject": "pilot",
+          "predicted_owner": "pilot",
+          "model_scores": {
+            "nurse": 0.005876040086150169,
+            "pilot": 0.005924250930547714
+          }
+        }
+      ]
+    },
+    {
+      "prompt_id": 3,
+      "n": 2,
+      "prompt": "a photo of a teacher holding a book and a cyclist wearing a yellow helmet",
+      "subjects": [
+        "teacher",
+        "cyclist"
+      ],
+      "seed": 42,
+      "detected": true,
+      "num_people_detected": 2,
+      "image_path": "artifacts/images/p3.png",
+      "attributes": [
+        {
+          "attribute": "book",
+          "intended_subject": "teacher",
+          "predicted_owner": "cyclist",
+          "model_scores": {
+            "teacher": 0.006388393230736256,
+            "cyclist": 0.006661302410066128
+          }
+        },
+        {
+          "attribute": "yellow helmet",
+          "intended_subject": "cyclist",
+          "predicted_owner": "teacher",
+          "model_scores": {
+            "teacher": 0.0055571566335856915,
+            "cyclist": 0.005366883706301451
+          }
+        }
+      ]
+    },
+    {
+      "prompt_id": 4,
+      "n": 2,
+      "prompt": "a photo of a nurse wearing blue gloves and a farmer holding a shovel",
+      "subjects": [
+        "nurse",
+        "farmer"
+      ],
+      "seed": 42,
+      "detected": true,
+      "num_people_detected": 2,
+      "image_path": "artifacts/images/p4.png",
+      "attributes": [
+        {
+          "attribute": "blue gloves",
+          "intended_subject": "nurse",
+          "predicted_owner": "farmer",
+          "model_scores": {
+            "nurse": 0.010257557965815067,
+            "farmer": 0.010273415595293045
+          }
+        },
+        {
+          "attribute": "shovel",
+          "intended_subject": "farmer",
+          "predicted_owner": "nurse",
+          "model_scores": {
+            "nurse": 0.006200063973665237,
+            "farmer": 0.006077663507312536
+          }
+        }
+      ]
+    },
+    {
+      "prompt_id": 5,
+      "n": 2,
+      "prompt": "a photo of a pilot wearing dark sunglasses and a barista wearing a red apron",
+      "subjects": [
+        "pilot",
+        "barista"
+      ],
+      "seed": 42,
+      "detected": true,
+      "num_people_detected": 2,
+      "image_path": "artifacts/images/p5.png",
+      "attributes": [
+        {
+          "attribute": "dark sunglasses",
+          "intended_subject": "pilot",
+          "predicted_owner": "barista",
+          "model_scores": {
+            "pilot": 0.008421756327152252,
+            "barista": 0.008484716527163982
+          }
+        },
+        {
+          "attribute": "red apron",
+          "intended_subject": "barista",
+          "predicted_owner": "pilot",
+          "model_scores": {
+            "pilot": 0.004937651101499796,
+            "barista": 0.004748113919049501
+          }
+        }
+      ]
+    },
+    {
+      "prompt_id": 6,
+      "n": 3,
+      "prompt": "a photo of a barista wearing a red apron, a cyclist wearing a yellow helmet, and a chef wearing a white hat",
+      "subjects": [
+        "barista",
+        "cyclist",
+        "chef"
+      ],
+      "seed": 1234,
+      "detected": true,
+      "num_people_detected": 3,
+      "image_path": "artifacts/images/p6.png",
+      "attributes": [
+        {
+          "attribute": "red apron",
+          "intended_subject": "barista",
+          "predicted_owner": "barista",
+          "model_scores": {
+            "barista": 0.0056783584877848625,
+            "cyclist": 0.005579663906246424,
+            "chef": 0.005583769641816616
+          }
+        },
+        {
+          "attribute": "yellow helmet",
+          "intended_subject": "cyclist",
+          "predicted_owner": "barista",
+          "model_scores": {
+            "barista": 0.004352569114416838,
+            "cyclist": 0.004225222393870354,
+            "chef": 0.0042337216436862946
+          }
+        },
+        {
+          "attribute": "white hat",
+          "intended_subject": "chef",
+          "predicted_owner": "barista",
+          "model_scores": {
+            "barista": 0.0033521847799420357,
+            "cyclist": 0.0032935747876763344,
+            "chef": 0.0032027619890868664
+          }
+        }
+      ]
+    },
+    {
+      "prompt_id": 7,
+      "n": 3,
+      "prompt": "a photo of a chef holding a pan, a farmer holding a shovel, and a nurse wearing blue gloves",
+      "subjects": [
+        "chef",
+        "farmer",
+        "nurse"
+      ],
+      "seed": 42,
+      "detected": true,
+      "num_people_detected": 3,
+      "image_path": "artifacts/images/p7.png",
+      "attributes": [
+        {
+          "attribute": "pan",
+          "intended_subject": "chef",
+          "predicted_owner": "farmer",
+          "model_scores": {
+            "chef": 0.004547142889350653,
+            "farmer": 0.004655919037759304,
+            "nurse": 0.004574944265186787
+          }
+        },
+        {
+          "attribute": "shovel",
+          "intended_subject": "farmer",
+          "predicted_owner": "farmer",
+          "model_scores": {
+            "chef": 0.0028671654872596264,
+            "farmer": 0.002874098252505064,
+            "nurse": 0.0027725459076464176
+          }
+        },
+        {
+          "attribute": "blue gloves",
+          "intended_subject": "nurse",
+          "predicted_owner": "chef",
+          "model_scores": {
+            "chef": 0.004174639005213976,
+            "farmer": 0.004131131339818239,
+            "nurse": 0.004035856109112501
+          }
+        }
+      ]
+    },
+    {
+      "prompt_id": 8,
+      "n": 3,
+      "prompt": "a photo of a pilot wearing dark sunglasses, a teacher holding a book, and a barista wearing a red apron",
+      "subjects": [
+        "pilot",
+        "teacher",
+        "barista"
+      ],
+      "seed": 42,
+      "detected": true,
+      "num_people_detected": 3,
+      "image_path": "artifacts/images/p8.png",
+      "attributes": [
+        {
+          "attribute": "dark sunglasses",
+          "intended_subject": "pilot",
+          "predicted_owner": "pilot",
+          "model_scores": {
+            "pilot": 0.008266983553767204,
+            "teacher": 0.008095480501651764,
+            "barista": 0.008075358346104622
+          }
+        },
+        {
+          "attribute": "book",
+          "intended_subject": "teacher",
+          "predicted_owner": "pilot",
+          "model_scores": {
+            "pilot": 0.0031322797294706106,
+            "teacher": 0.0029075625352561474,
+            "barista": 0.0029322283808141947
+          }
+        },
+        {
+          "attribute": "red apron",
+          "intended_subject": "barista",
+          "predicted_owner": "barista",
+          "model_scores": {
+            "pilot": 0.004183810669928789,
+            "teacher": 0.004197511821985245,
+            "barista": 0.00526078836992383
+          }
+        }
+      ]
+    },
+    {
+      "prompt_id": 9,
+      "n": 3,
+      "prompt": "a photo of a nurse wearing blue gloves, a cyclist wearing a yellow helmet, and a farmer holding a shovel",
+      "subjects": [
+        "nurse",
+        "cyclist",
+        "farmer"
+      ],
+      "seed": 42,
+      "detected": true,
+      "num_people_detected": 3,
+      "image_path": "artifacts/images/p9.png",
+      "attributes": [
+        {
+          "attribute": "blue gloves",
+          "intended_subject": "nurse",
+          "predicted_owner": "cyclist",
+          "model_scores": {
+            "nurse": 0.008158729411661625,
+            "cyclist": 0.008383451029658318,
+            "farmer": 0.008196511305868626
+          }
+        },
+        {
+          "attribute": "yellow helmet",
+          "intended_subject": "cyclist",
+          "predicted_owner": "cyclist",
+          "model_scores": {
+            "nurse": 0.005026801954954863,
+            "cyclist": 0.005155602470040321,
+            "farmer": 0.005099797155708075
+          }
+        },
+        {
+          "attribute": "shovel",
+          "intended_subject": "farmer",
+          "predicted_owner": "nurse",
+          "model_scores": {
+            "nurse": 0.00492421630769968,
+            "cyclist": 0.004923505242913961,
+            "farmer": 0.004656231962144375
+          }
+        }
+      ]
+    },
+    {
+      "prompt_id": 10,
+      "n": 3,
+      "prompt": "a photo of a teacher holding a book, a pilot wearing dark sunglasses, and a chef wearing a white hat",
+      "subjects": [
+        "teacher",
+        "pilot",
+        "chef"
+      ],
+      "seed": 1234,
+      "detected": true,
+      "num_people_detected": 3,
+      "image_path": "artifacts/images/p10.png",
+      "attributes": [
+        {
+          "attribute": "book",
+          "intended_subject": "teacher",
+          "predicted_owner": "teacher",
+          "model_scores": {
+            "teacher": 0.00684001948684454,
+            "pilot": 0.006669268477708101,
+            "chef": 0.006687529385089874
+          }
+        },
+        {
+          "attribute": "dark sunglasses",
+          "intended_subject": "pilot",
+          "predicted_owner": "chef",
+          "model_scores": {
+            "teacher": 0.00528037641197443,
+            "pilot": 0.005237161181867123,
+            "chef": 0.005366371478885412
+          }
+        },
+        {
+          "attribute": "white hat",
+          "intended_subject": "chef",
+          "predicted_owner": "pilot",
+          "model_scores": {
+            "teacher": 0.003448588540777564,
+            "pilot": 0.003480231389403343,
+            "chef": 0.0034293567296117544
+          }
+        }
+      ]
+    },
+    {
+      "prompt_id": 11,
+      "n": 3,
+      "prompt": "a photo of a barista wearing a red apron, a nurse wearing blue gloves, and a cyclist wearing a yellow helmet",
+      "subjects": [
+        "barista",
+        "nurse",
+        "cyclist"
+      ],
+      "seed": 1234,
+      "detected": true,
+      "num_people_detected": 3,
+      "image_path": "artifacts/images/p11.png",
+      "attributes": [
+        {
+          "attribute": "red apron",
+          "intended_subject": "barista",
+          "predicted_owner": "nurse",
+          "model_scores": {
+            "barista": 0.005420193076133728,
+            "nurse": 0.005549649707973003,
+            "cyclist": 0.005448723677545786
+          }
+        },
+        {
+          "attribute": "blue gloves",
+          "intended_subject": "nurse",
+          "predicted_owner": "nurse",
+          "model_scores": {
+            "barista": 0.004822317510843277,
+            "nurse": 0.005091329570859671,
+            "cyclist": 0.0050436086021363735
+          }
+        },
+        {
+          "attribute": "yellow helmet",
+          "intended_subject": "cyclist",
+          "predicted_owner": "cyclist",
+          "model_scores": {
+            "barista": 0.004590684548020363,
+            "nurse": 0.004741585813462734,
+            "cyclist": 0.004789510276168585
+          }
+        }
+      ]
+    },
+    {
+      "prompt_id": 12,
+      "n": 4,
+      "prompt": "a photo of a barista wearing a red apron, a cyclist wearing a yellow helmet, a chef wearing a white hat, and a farmer holding a shovel",
+      "subjects": [
+        "barista",
+        "cyclist",
+        "chef",
+        "farmer"
+      ],
+      "seed": 42,
+      "detected": true,
+      "num_people_detected": 4,
+      "image_path": "artifacts/images/p12.png",
+      "attributes": [
+        {
+          "attribute": "red apron",
+          "intended_subject": "barista",
+          "predicted_owner": "barista",
+          "model_scores": {
+            "barista": 0.00600793119519949,
+            "cyclist": 0.005997009109705687,
+            "chef": 0.005684385076165199,
+            "farmer": 0.005692328792065382
+          }
+        },
+        {
+          "attribute": "yellow helmet",
+          "intended_subject": "cyclist",
+          "predicted_owner": "barista",
+          "model_scores": {
+            "barista": 0.004341933410614729,
+            "cyclist": 0.004293615464121103,
+            "chef": 0.004128911532461643,
+            "farmer": 0.004145299084484577
+          }
+        },
+        {
+          "attribute": "white hat",
+          "intended_subject": "chef",
+          "predicted_owner": "cyclist",
+          "model_scores": {
+            "barista": 0.0027999987360090017,
+            "cyclist": 0.0028232804033905268,
+            "chef": 0.002757452428340912,
+            "farmer": 0.0027921395376324654
+          }
+        },
+        {
+          "attribute": "shovel",
+          "intended_subject": "farmer",
+          "predicted_owner": "chef",
+          "model_scores": {
+            "barista": 0.0034364352468401194,
+            "cyclist": 0.0034670247696340084,
+            "chef": 0.003738142317160964,
+            "farmer": 0.0035458249039947987
+          }
+        }
+      ]
+    },
+    {
+      "prompt_id": 13,
+      "n": 4,
+      "prompt": "a photo of a nurse wearing blue gloves, a pilot wearing dark sunglasses, a teacher holding a book, and a chef holding a pan",
+      "subjects": [
+        "nurse",
+        "pilot",
+        "teacher",
+        "chef"
+      ],
+      "seed": 42,
+      "detected": true,
+      "num_people_detected": 4,
+      "image_path": "artifacts/images/p13.png",
+      "attributes": [
+        {
+          "attribute": "blue gloves",
+          "intended_subject": "nurse",
+          "predicted_owner": "pilot",
+          "model_scores": {
+            "nurse": 0.008523872122168541,
+            "pilot": 0.00857359729707241,
+            "teacher": 0.008349224925041199,
+            "chef": 0.00847786758095026
+          }
+        },
+        {
+          "attribute": "dark sunglasses",
+          "intended_subject": "pilot",
+          "predicted_owner": "chef",
+          "model_scores": {
+            "nurse": 0.0051878830417990685,
+            "pilot": 0.005172026343643665,
+            "teacher": 0.005286902654916048,
+            "chef": 0.005299080163240433
+          }
+        },
+        {
+          "attribute": "book",
+          "intended_subject": "teacher",
+          "predicted_owner": "chef",
+          "model_scores": {
+            "nurse": 0.0028130942955613136,
+            "pilot": 0.002777836052700877,
+            "teacher": 0.002613147720694542,
+            "chef": 0.0028493113350123167
+          }
+        },
+        {
+          "attribute": "pan",
+          "intended_subject": "chef",
+          "predicted_owner": "chef",
+          "model_scores": {
+            "nurse": 0.002191525883972645,
+            "pilot": 0.002164173172786832,
+            "teacher": 0.0022203000262379646,
+            "chef": 0.0022237671073526144
+          }
+        }
+      ]
+    },
+    {
+      "prompt_id": 14,
+      "n": 4,
+      "prompt": "a photo of a farmer holding a shovel, a barista wearing a red apron, a cyclist wearing a yellow helmet, and a nurse wearing blue gloves",
+      "subjects": [
+        "farmer",
+        "barista",
+        "cyclist",
+        "nurse"
+      ],
+      "seed": 42,
+      "detected": true,
+      "num_people_detected": 4,
+      "image_path": "artifacts/images/p14.png",
+      "attributes": [
+        {
+          "attribute": "shovel",
+          "intended_subject": "farmer",
+          "predicted_owner": "farmer",
+          "model_scores": {
+            "farmer": 0.007235545665025711,
+            "barista": 0.0070859091356396675,
+            "cyclist": 0.007225279696285725,
+            "nurse": 0.0070755067281425
+          }
+        },
+        {
+          "attribute": "red apron",
+          "intended_subject": "barista",
+          "predicted_owner": "nurse",
+          "model_scores": {
+            "farmer": 0.0027605092618614435,
+            "barista": 0.0026539971586316824,
+            "cyclist": 0.0027777357026934624,
+            "nurse": 0.0027779077645391226
+          }
+        },
+        {
+          "attribute": "yellow helmet",
+          "intended_subject": "cyclist",
+          "predicted_owner": "nurse",
+          "model_scores": {
+            "farmer": 0.0031102094799280167,
+            "barista": 0.003005484351888299,
+            "cyclist": 0.0031552377622574568,
+            "nurse": 0.0032098060473799706
+          }
+        },
+        {
+          "attribute": "blue gloves",
+          "intended_subject": "nurse",
+          "predicted_owner": "nurse",
+          "model_scores": {
+            "farmer": 0.0034109544940292835,
+            "barista": 0.0033131639938801527,
+            "cyclist": 0.0034052955452352762,
+            "nurse": 0.0034546363167464733
+          }
+        }
+      ]
+    },
+    {
+      "prompt_id": 15,
+      "n": 4,
+      "prompt": "a photo of a chef wearing a white hat, a teacher holding a book, a pilot wearing dark sunglasses, and a cyclist wearing a yellow helmet",
+      "subjects": [
+        "chef",
+        "teacher",
+        "pilot",
+        "cyclist"
+      ],
+      "seed": 7,
+      "detected": true,
+      "num_people_detected": 4,
+      "image_path": "artifacts/images/p15.png",
+      "attributes": [
+        {
+          "attribute": "white hat",
+          "intended_subject": "chef",
+          "predicted_owner": "cyclist",
+          "model_scores": {
+            "chef": 0.005898873321712017,
+            "teacher": 0.005646469071507454,
+            "pilot": 0.005816863849759102,
+            "cyclist": 0.005960100796073675
+          }
+        },
+        {
+          "attribute": "book",
+          "intended_subject": "teacher",
+          "predicted_owner": "cyclist",
+          "model_scores": {
+            "chef": 0.0030253182630985975,
+            "teacher": 0.002851360011845827,
+            "pilot": 0.0029134151991456747,
+            "cyclist": 0.0031006967183202505
+          }
+        },
+        {
+          "attribute": "dark sunglasses",
+          "intended_subject": "pilot",
+          "predicted_owner": "chef",
+          "model_scores": {
+            "chef": 0.0035922923125326633,
+            "teacher": 0.0034845287445932627,
+            "pilot": 0.0035834740847349167,
+            "cyclist": 0.003552754409611225
+          }
+        },
+        {
+          "attribute": "yellow helmet",
+          "intended_subject": "cyclist",
+          "predicted_owner": "teacher",
+          "model_scores": {
+            "chef": 0.00342162954621017,
+            "teacher": 0.00366158876568079,
+            "pilot": 0.003401872469112277,
+            "cyclist": 0.0033797279465943575
+          }
+        }
+      ]
+    },
+    {
+      "prompt_id": 16,
+      "n": 4,
+      "prompt": "a photo of a barista wearing a red apron, a nurse wearing blue gloves, a farmer holding a shovel, and a pilot wearing dark sunglasses",
+      "subjects": [
+        "barista",
+        "nurse",
+        "farmer",
+        "pilot"
+      ],
+      "seed": 42,
+      "detected": true,
+      "num_people_detected": 4,
+      "image_path": "artifacts/images/p16.png",
+      "attributes": [
+        {
+          "attribute": "red apron",
+          "intended_subject": "barista",
+          "predicted_owner": "barista",
+          "model_scores": {
+            "barista": 0.005596318282186985,
+            "nurse": 0.0054011959582567215,
+            "farmer": 0.005535421893000603,
+            "pilot": 0.0054457043297588825
+          }
+        },
+        {
+          "attribute": "blue gloves",
+          "intended_subject": "nurse",
+          "predicted_owner": "nurse",
+          "model_scores": {
+            "barista": 0.005023380275815725,
+            "nurse": 0.005073356907814741,
+            "farmer": 0.00505413580685854,
+            "pilot": 0.00504554295912385
+          }
+        },
+        {
+          "attribute": "shovel",
+          "intended_subject": "farmer",
+          "predicted_owner": "farmer",
+          "model_scores": {
+            "barista": 0.0031124893575906754,
+            "nurse": 0.0031709957402199507,
+            "farmer": 0.003219475969672203,
+            "pilot": 0.0031480183824896812
+          }
+        },
+        {
+          "attribute": "dark sunglasses",
+          "intended_subject": "pilot",
+          "predicted_owner": "nurse",
+          "model_scores": {
+            "barista": 0.004024296998977661,
+            "nurse": 0.004102297127246857,
+            "farmer": 0.004075305536389351,
+            "pilot": 0.00404368806630373
+          }
+        }
+      ]
+    },
+    {
+      "prompt_id": 17,
+      "n": 4,
+      "prompt": "a photo of a cyclist wearing a yellow helmet, a chef holding a pan, a teacher holding a book, and a nurse wearing blue gloves",
+      "subjects": [
+        "cyclist",
+        "chef",
+        "teacher",
+        "nurse"
+      ],
+      "seed": 7,
+      "detected": true,
+      "num_people_detected": 4,
+      "image_path": "artifacts/images/p17.png",
+      "attributes": [
+        {
+          "attribute": "yellow helmet",
+          "intended_subject": "cyclist",
+          "predicted_owner": "cyclist",
+          "model_scores": {
+            "cyclist": 0.008443493396043777,
+            "chef": 0.008336908183991909,
+            "teacher": 0.008363037370145321,
+            "nurse": 0.0084385322406888
+          }
+        },
+        {
+          "attribute": "pan",
+          "intended_subject": "chef",
+          "predicted_owner": "nurse",
+          "model_scores": {
+            "cyclist": 0.0016085106180980802,
+            "chef": 0.001498695812188089,
+            "teacher": 0.001617287052795291,
+            "nurse": 0.0016417488222941756
+          }
+        },
+        {
+          "attribute": "book",
+          "intended_subject": "teacher",
+          "predicted_owner": "nurse",
+          "model_scores": {
+            "cyclist": 0.0023838088382035494,
+            "chef": 0.00234331120736897,
+            "teacher": 0.002375660464167595,
+            "nurse": 0.0024149140808731318
+          }
+        },
+        {
+          "attribute": "blue gloves",
+          "intended_subject": "nurse",
+          "predicted_owner": "nurse",
+          "model_scores": {
+            "cyclist": 0.0029094265773892403,
+            "chef": 0.0027419382240623236,
+            "teacher": 0.0029500883538275957,
+            "nurse": 0.003108335193246603
+          }
+        }
+      ]
+    }
+  ]
+}

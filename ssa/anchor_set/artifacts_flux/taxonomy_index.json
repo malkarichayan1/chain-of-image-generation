@@ -1,0 +1,5720 @@
+{
+  "0": {
+    "attributes": [
+      "red apron",
+      "yellow helmet"
+    ],
+    "exact_pooled_owners": [
+      "barista",
+      "cyclist"
+    ],
+    "grid_pooled_owners": [
+      "barista",
+      "cyclist"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "barista",
+      "cyclist"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 0,
+    "repro_mean_abs_pixel_diff": 0.028952429071068764,
+    "seed": 42,
+    "subjects": [
+      "barista",
+      "cyclist"
+    ]
+  },
+  "1": {
+    "attributes": [
+      "white hat",
+      "shovel"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "farmer"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "farmer"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "farmer"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 1,
+    "repro_mean_abs_pixel_diff": 0.009143638424575329,
+    "seed": 42,
+    "subjects": [
+      "chef",
+      "farmer"
+    ]
+  },
+  "10": {
+    "attributes": [
+      "book",
+      "dark sunglasses",
+      "white hat"
+    ],
+    "exact_pooled_owners": [
+      "teacher",
+      "pilot",
+      "chef"
+    ],
+    "grid_pooled_owners": [
+      "teacher",
+      "pilot",
+      "chef"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "teacher",
+      "pilot",
+      "chef"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 10,
+    "repro_mean_abs_pixel_diff": 0.006579650565981865,
+    "seed": 42,
+    "subjects": [
+      "chef",
+      "pilot",
+      "teacher"
+    ]
+  },
+  "100": {
+    "attributes": [
+      "red apron",
+      "white hat"
+    ],
+    "exact_pooled_owners": [
+      "barista",
+      "chef"
+    ],
+    "grid_pooled_owners": [
+      "barista",
+      "chef"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "barista",
+      "chef"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 100,
+    "repro_mean_abs_pixel_diff": 0.0051517183892428875,
+    "seed": 101,
+    "subjects": [
+      "barista",
+      "chef"
+    ]
+  },
+  "101": {
+    "attributes": [
+      "red apron",
+      "pan"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "barista"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "barista"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "barista"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 101,
+    "repro_mean_abs_pixel_diff": 0.015123851597309113,
+    "seed": 101,
+    "subjects": [
+      "barista",
+      "chef"
+    ]
+  },
+  "104": {
+    "attributes": [
+      "red apron",
+      "blue gloves"
+    ],
+    "exact_pooled_owners": [
+      "barista",
+      "nurse"
+    ],
+    "grid_pooled_owners": [
+      "barista",
+      "nurse"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "barista",
+      "nurse"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 104,
+    "repro_mean_abs_pixel_diff": 0.010204867459833622,
+    "seed": 101,
+    "subjects": [
+      "barista",
+      "nurse"
+    ]
+  },
+  "105": {
+    "attributes": [
+      "red apron",
+      "dark sunglasses"
+    ],
+    "exact_pooled_owners": [
+      "barista",
+      "pilot"
+    ],
+    "grid_pooled_owners": [
+      "barista",
+      "pilot"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "barista",
+      "pilot"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 105,
+    "repro_mean_abs_pixel_diff": 0.013155893422663212,
+    "seed": 101,
+    "subjects": [
+      "barista",
+      "pilot"
+    ]
+  },
+  "106": {
+    "attributes": [
+      "red apron",
+      "book"
+    ],
+    "exact_pooled_owners": [
+      "barista",
+      "teacher"
+    ],
+    "grid_pooled_owners": [
+      "barista",
+      "teacher"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "barista",
+      "teacher"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 106,
+    "repro_mean_abs_pixel_diff": 0.0069160922430455685,
+    "seed": 101,
+    "subjects": [
+      "barista",
+      "teacher"
+    ]
+  },
+  "107": {
+    "attributes": [
+      "white hat",
+      "yellow helmet"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "cyclist"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "cyclist"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "cyclist"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 107,
+    "repro_mean_abs_pixel_diff": 0.006776982452720404,
+    "seed": 101,
+    "subjects": [
+      "chef",
+      "cyclist"
+    ]
+  },
+  "108": {
+    "attributes": [
+      "pan",
+      "yellow helmet"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "cyclist"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "cyclist"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "cyclist"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 108,
+    "repro_mean_abs_pixel_diff": 0.008788787759840488,
+    "seed": 101,
+    "subjects": [
+      "chef",
+      "cyclist"
+    ]
+  },
+  "11": {
+    "attributes": [
+      "red apron",
+      "blue gloves",
+      "yellow helmet"
+    ],
+    "exact_pooled_owners": [
+      "barista",
+      "nurse",
+      "cyclist"
+    ],
+    "grid_pooled_owners": [
+      "barista",
+      "nurse",
+      "cyclist"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "barista",
+      "nurse",
+      "cyclist"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 11,
+    "repro_mean_abs_pixel_diff": 0.01314027700573206,
+    "seed": 42,
+    "subjects": [
+      "barista",
+      "cyclist",
+      "nurse"
+    ]
+  },
+  "110": {
+    "attributes": [
+      "pan",
+      "shovel"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "farmer"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "farmer"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "farmer"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 110,
+    "repro_mean_abs_pixel_diff": 0.004993721842765808,
+    "seed": 101,
+    "subjects": [
+      "chef",
+      "farmer"
+    ]
+  },
+  "111": {
+    "attributes": [
+      "white hat",
+      "blue gloves"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "nurse"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "nurse"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "nurse"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 111,
+    "repro_mean_abs_pixel_diff": 0.007910555228590965,
+    "seed": 101,
+    "subjects": [
+      "chef",
+      "nurse"
+    ]
+  },
+  "112": {
+    "attributes": [
+      "pan",
+      "blue gloves"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "nurse"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "nurse"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "nurse"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 112,
+    "repro_mean_abs_pixel_diff": 0.012455842457711697,
+    "seed": 101,
+    "subjects": [
+      "chef",
+      "nurse"
+    ]
+  },
+  "113": {
+    "attributes": [
+      "white hat",
+      "dark sunglasses"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "pilot"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "pilot"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "pilot"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 113,
+    "repro_mean_abs_pixel_diff": 0.023725250735878944,
+    "seed": 101,
+    "subjects": [
+      "chef",
+      "pilot"
+    ]
+  },
+  "114": {
+    "attributes": [
+      "pan",
+      "dark sunglasses"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "pilot"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "pilot"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "pilot"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 114,
+    "repro_mean_abs_pixel_diff": 0.0074384454637765884,
+    "seed": 101,
+    "subjects": [
+      "chef",
+      "pilot"
+    ]
+  },
+  "115": {
+    "attributes": [
+      "white hat",
+      "book"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "teacher"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "teacher"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "teacher"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 115,
+    "repro_mean_abs_pixel_diff": 0.010491914115846157,
+    "seed": 101,
+    "subjects": [
+      "chef",
+      "teacher"
+    ]
+  },
+  "116": {
+    "attributes": [
+      "pan",
+      "book"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "teacher"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "teacher"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "teacher"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 116,
+    "repro_mean_abs_pixel_diff": 0.04414292052388191,
+    "seed": 101,
+    "subjects": [
+      "chef",
+      "teacher"
+    ]
+  },
+  "118": {
+    "attributes": [
+      "yellow helmet",
+      "blue gloves"
+    ],
+    "exact_pooled_owners": [
+      "cyclist",
+      "nurse"
+    ],
+    "grid_pooled_owners": [
+      "cyclist",
+      "nurse"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "cyclist",
+      "nurse"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 118,
+    "repro_mean_abs_pixel_diff": 0.008919959887862206,
+    "seed": 101,
+    "subjects": [
+      "cyclist",
+      "nurse"
+    ]
+  },
+  "119": {
+    "attributes": [
+      "yellow helmet",
+      "dark sunglasses"
+    ],
+    "exact_pooled_owners": [
+      "cyclist",
+      "pilot"
+    ],
+    "grid_pooled_owners": [
+      "cyclist",
+      "pilot"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "cyclist",
+      "pilot"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 119,
+    "repro_mean_abs_pixel_diff": 0.024042325094342232,
+    "seed": 101,
+    "subjects": [
+      "cyclist",
+      "pilot"
+    ]
+  },
+  "12": {
+    "attributes": [
+      "red apron",
+      "yellow helmet",
+      "white hat",
+      "shovel"
+    ],
+    "exact_pooled_owners": [
+      "barista",
+      "cyclist",
+      "chef",
+      "farmer"
+    ],
+    "grid_pooled_owners": [
+      "barista",
+      "cyclist",
+      "chef",
+      "farmer"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "barista",
+      "cyclist",
+      "chef",
+      "farmer"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 12,
+    "repro_mean_abs_pixel_diff": 0.013139158487319946,
+    "seed": 2024,
+    "subjects": [
+      "barista",
+      "chef",
+      "cyclist",
+      "farmer"
+    ]
+  },
+  "120": {
+    "attributes": [
+      "yellow helmet",
+      "book"
+    ],
+    "exact_pooled_owners": [
+      "cyclist",
+      "teacher"
+    ],
+    "grid_pooled_owners": [
+      "cyclist",
+      "teacher"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "cyclist",
+      "teacher"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 120,
+    "repro_mean_abs_pixel_diff": 0.02108909748494625,
+    "seed": 101,
+    "subjects": [
+      "cyclist",
+      "teacher"
+    ]
+  },
+  "121": {
+    "attributes": [
+      "shovel",
+      "blue gloves"
+    ],
+    "exact_pooled_owners": [
+      "farmer",
+      "nurse"
+    ],
+    "grid_pooled_owners": [
+      "farmer",
+      "nurse"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "farmer",
+      "nurse"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 121,
+    "repro_mean_abs_pixel_diff": 0.03223983943462372,
+    "seed": 101,
+    "subjects": [
+      "farmer",
+      "nurse"
+    ]
+  },
+  "122": {
+    "attributes": [
+      "shovel",
+      "dark sunglasses"
+    ],
+    "exact_pooled_owners": [
+      "farmer",
+      "pilot"
+    ],
+    "grid_pooled_owners": [
+      "farmer",
+      "pilot"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "farmer",
+      "pilot"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 122,
+    "repro_mean_abs_pixel_diff": 0.022493546828627586,
+    "seed": 101,
+    "subjects": [
+      "farmer",
+      "pilot"
+    ]
+  },
+  "123": {
+    "attributes": [
+      "shovel",
+      "book"
+    ],
+    "exact_pooled_owners": [
+      "farmer",
+      "teacher"
+    ],
+    "grid_pooled_owners": [
+      "farmer",
+      "teacher"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "farmer",
+      "teacher"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 123,
+    "repro_mean_abs_pixel_diff": 0.00737330736592412,
+    "seed": 101,
+    "subjects": [
+      "farmer",
+      "teacher"
+    ]
+  },
+  "124": {
+    "attributes": [
+      "blue gloves",
+      "dark sunglasses"
+    ],
+    "exact_pooled_owners": [
+      "nurse",
+      "pilot"
+    ],
+    "grid_pooled_owners": [
+      "nurse",
+      "pilot"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "nurse",
+      "pilot"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 124,
+    "repro_mean_abs_pixel_diff": 0.02048639766871929,
+    "seed": 101,
+    "subjects": [
+      "nurse",
+      "pilot"
+    ]
+  },
+  "125": {
+    "attributes": [
+      "blue gloves",
+      "book"
+    ],
+    "exact_pooled_owners": [
+      "nurse",
+      "teacher"
+    ],
+    "grid_pooled_owners": [
+      "nurse",
+      "teacher"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "nurse",
+      "teacher"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 125,
+    "repro_mean_abs_pixel_diff": 0.004953107330948114,
+    "seed": 101,
+    "subjects": [
+      "nurse",
+      "teacher"
+    ]
+  },
+  "126": {
+    "attributes": [
+      "dark sunglasses",
+      "book"
+    ],
+    "exact_pooled_owners": [
+      "pilot",
+      "teacher"
+    ],
+    "grid_pooled_owners": [
+      "pilot",
+      "teacher"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "pilot",
+      "teacher"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 126,
+    "repro_mean_abs_pixel_diff": 0.009357419796288013,
+    "seed": 101,
+    "subjects": [
+      "pilot",
+      "teacher"
+    ]
+  },
+  "127": {
+    "attributes": [
+      "red apron",
+      "white hat"
+    ],
+    "exact_pooled_owners": [
+      "barista",
+      "chef"
+    ],
+    "grid_pooled_owners": [
+      "barista",
+      "chef"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "barista",
+      "chef"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 127,
+    "repro_mean_abs_pixel_diff": 0.020423592999577522,
+    "seed": 202,
+    "subjects": [
+      "barista",
+      "chef"
+    ]
+  },
+  "128": {
+    "attributes": [
+      "red apron",
+      "pan"
+    ],
+    "exact_pooled_owners": [
+      "barista",
+      "chef"
+    ],
+    "grid_pooled_owners": [
+      "barista",
+      "chef"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "barista",
+      "chef"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 128,
+    "repro_mean_abs_pixel_diff": 0.023046990856528282,
+    "seed": 202,
+    "subjects": [
+      "barista",
+      "chef"
+    ]
+  },
+  "129": {
+    "attributes": [
+      "red apron",
+      "yellow helmet"
+    ],
+    "exact_pooled_owners": [
+      "barista",
+      "cyclist"
+    ],
+    "grid_pooled_owners": [
+      "barista",
+      "cyclist"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "barista",
+      "cyclist"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 129,
+    "repro_mean_abs_pixel_diff": 0.008741923607885838,
+    "seed": 202,
+    "subjects": [
+      "barista",
+      "cyclist"
+    ]
+  },
+  "13": {
+    "attributes": [
+      "blue gloves",
+      "dark sunglasses",
+      "book",
+      "pan"
+    ],
+    "exact_pooled_owners": [
+      "nurse",
+      "pilot",
+      "teacher",
+      "chef"
+    ],
+    "grid_pooled_owners": [
+      "nurse",
+      "pilot",
+      "teacher",
+      "chef"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "nurse",
+      "pilot",
+      "teacher",
+      "chef"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 13,
+    "repro_mean_abs_pixel_diff": 0.009787789545953274,
+    "seed": 42,
+    "subjects": [
+      "chef",
+      "nurse",
+      "pilot",
+      "teacher"
+    ]
+  },
+  "130": {
+    "attributes": [
+      "red apron",
+      "shovel"
+    ],
+    "exact_pooled_owners": [
+      "barista",
+      "farmer"
+    ],
+    "grid_pooled_owners": [
+      "barista",
+      "farmer"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "barista",
+      "farmer"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 130,
+    "repro_mean_abs_pixel_diff": 0.011831908486783504,
+    "seed": 202,
+    "subjects": [
+      "barista",
+      "farmer"
+    ]
+  },
+  "131": {
+    "attributes": [
+      "red apron",
+      "blue gloves"
+    ],
+    "exact_pooled_owners": [
+      "barista",
+      "nurse"
+    ],
+    "grid_pooled_owners": [
+      "barista",
+      "nurse"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "barista",
+      "nurse"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 131,
+    "repro_mean_abs_pixel_diff": 0.02192770503461361,
+    "seed": 202,
+    "subjects": [
+      "barista",
+      "nurse"
+    ]
+  },
+  "132": {
+    "attributes": [
+      "red apron",
+      "dark sunglasses"
+    ],
+    "exact_pooled_owners": [
+      "barista",
+      "pilot"
+    ],
+    "grid_pooled_owners": [
+      "barista",
+      "pilot"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "barista",
+      "pilot"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 132,
+    "repro_mean_abs_pixel_diff": 0.014195228926837444,
+    "seed": 202,
+    "subjects": [
+      "barista",
+      "pilot"
+    ]
+  },
+  "133": {
+    "attributes": [
+      "red apron",
+      "book"
+    ],
+    "exact_pooled_owners": [
+      "barista",
+      "teacher"
+    ],
+    "grid_pooled_owners": [
+      "barista",
+      "teacher"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "barista",
+      "teacher"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 133,
+    "repro_mean_abs_pixel_diff": 0.04723575711250305,
+    "seed": 202,
+    "subjects": [
+      "barista",
+      "teacher"
+    ]
+  },
+  "134": {
+    "attributes": [
+      "white hat",
+      "yellow helmet"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "cyclist"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "cyclist"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "cyclist"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 134,
+    "repro_mean_abs_pixel_diff": 0.02818101830780506,
+    "seed": 202,
+    "subjects": [
+      "chef",
+      "cyclist"
+    ]
+  },
+  "135": {
+    "attributes": [
+      "pan",
+      "yellow helmet"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "cyclist"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "cyclist"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "cyclist"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 135,
+    "repro_mean_abs_pixel_diff": 0.010762423276901245,
+    "seed": 202,
+    "subjects": [
+      "chef",
+      "cyclist"
+    ]
+  },
+  "137": {
+    "attributes": [
+      "pan",
+      "shovel"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "farmer"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "farmer"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "farmer"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 137,
+    "repro_mean_abs_pixel_diff": 0.007514918688684702,
+    "seed": 202,
+    "subjects": [
+      "chef",
+      "farmer"
+    ]
+  },
+  "139": {
+    "attributes": [
+      "pan",
+      "blue gloves"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "nurse"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "nurse"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "nurse"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 139,
+    "repro_mean_abs_pixel_diff": 0.00764677906408906,
+    "seed": 202,
+    "subjects": [
+      "chef",
+      "nurse"
+    ]
+  },
+  "14": {
+    "attributes": [
+      "shovel",
+      "red apron",
+      "yellow helmet",
+      "blue gloves"
+    ],
+    "exact_pooled_owners": [
+      "farmer",
+      "barista",
+      "cyclist",
+      "nurse"
+    ],
+    "grid_pooled_owners": [
+      "farmer",
+      "barista",
+      "cyclist",
+      "nurse"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "farmer",
+      "barista",
+      "cyclist",
+      "nurse"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 14,
+    "repro_mean_abs_pixel_diff": 0.012576707638800144,
+    "seed": 42,
+    "subjects": [
+      "barista",
+      "cyclist",
+      "farmer",
+      "nurse"
+    ]
+  },
+  "140": {
+    "attributes": [
+      "white hat",
+      "dark sunglasses"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "pilot"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "pilot"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "pilot"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 140,
+    "repro_mean_abs_pixel_diff": 0.01784386858344078,
+    "seed": 202,
+    "subjects": [
+      "chef",
+      "pilot"
+    ]
+  },
+  "141": {
+    "attributes": [
+      "pan",
+      "dark sunglasses"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "pilot"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "pilot"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "pilot"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 141,
+    "repro_mean_abs_pixel_diff": 0.014709986746311188,
+    "seed": 202,
+    "subjects": [
+      "chef",
+      "pilot"
+    ]
+  },
+  "142": {
+    "attributes": [
+      "red apron",
+      "white hat",
+      "yellow helmet"
+    ],
+    "exact_pooled_owners": [
+      "barista",
+      "chef",
+      "cyclist"
+    ],
+    "grid_pooled_owners": [
+      "barista",
+      "chef",
+      "cyclist"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "barista",
+      "chef",
+      "cyclist"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 142,
+    "repro_mean_abs_pixel_diff": 0.015155931003391743,
+    "seed": 101,
+    "subjects": [
+      "barista",
+      "chef",
+      "cyclist"
+    ]
+  },
+  "143": {
+    "attributes": [
+      "red apron",
+      "pan",
+      "yellow helmet"
+    ],
+    "exact_pooled_owners": [
+      "barista",
+      "chef",
+      "cyclist"
+    ],
+    "grid_pooled_owners": [
+      "barista",
+      "chef",
+      "cyclist"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "barista",
+      "chef",
+      "cyclist"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 143,
+    "repro_mean_abs_pixel_diff": 0.007280384656041861,
+    "seed": 101,
+    "subjects": [
+      "barista",
+      "chef",
+      "cyclist"
+    ]
+  },
+  "144": {
+    "attributes": [
+      "red apron",
+      "white hat",
+      "shovel"
+    ],
+    "exact_pooled_owners": [
+      "farmer",
+      "chef",
+      "barista"
+    ],
+    "grid_pooled_owners": [
+      "farmer",
+      "chef",
+      "barista"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "farmer",
+      "chef",
+      "barista"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 144,
+    "repro_mean_abs_pixel_diff": 0.017299726605415344,
+    "seed": 101,
+    "subjects": [
+      "barista",
+      "chef",
+      "farmer"
+    ]
+  },
+  "145": {
+    "attributes": [
+      "red apron",
+      "pan",
+      "shovel"
+    ],
+    "exact_pooled_owners": [
+      "barista",
+      "chef",
+      "farmer"
+    ],
+    "grid_pooled_owners": [
+      "barista",
+      "chef",
+      "farmer"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "barista",
+      "chef",
+      "farmer"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 145,
+    "repro_mean_abs_pixel_diff": 0.015728892758488655,
+    "seed": 101,
+    "subjects": [
+      "barista",
+      "chef",
+      "farmer"
+    ]
+  },
+  "146": {
+    "attributes": [
+      "red apron",
+      "white hat",
+      "blue gloves"
+    ],
+    "exact_pooled_owners": [
+      "barista",
+      "chef",
+      "nurse"
+    ],
+    "grid_pooled_owners": [
+      "barista",
+      "chef",
+      "nurse"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "barista",
+      "chef",
+      "nurse"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 146,
+    "repro_mean_abs_pixel_diff": 0.02214682288467884,
+    "seed": 101,
+    "subjects": [
+      "barista",
+      "chef",
+      "nurse"
+    ]
+  },
+  "148": {
+    "attributes": [
+      "red apron",
+      "white hat",
+      "dark sunglasses"
+    ],
+    "exact_pooled_owners": [
+      "barista",
+      "chef",
+      "pilot"
+    ],
+    "grid_pooled_owners": [
+      "barista",
+      "chef",
+      "pilot"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "barista",
+      "chef",
+      "pilot"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 148,
+    "repro_mean_abs_pixel_diff": 0.008371151052415371,
+    "seed": 101,
+    "subjects": [
+      "barista",
+      "chef",
+      "pilot"
+    ]
+  },
+  "149": {
+    "attributes": [
+      "red apron",
+      "pan",
+      "dark sunglasses"
+    ],
+    "exact_pooled_owners": [
+      "pilot",
+      "chef",
+      "barista"
+    ],
+    "grid_pooled_owners": [
+      "pilot",
+      "chef",
+      "barista"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "pilot",
+      "chef",
+      "barista"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 149,
+    "repro_mean_abs_pixel_diff": 0.005780150648206472,
+    "seed": 101,
+    "subjects": [
+      "barista",
+      "chef",
+      "pilot"
+    ]
+  },
+  "15": {
+    "attributes": [
+      "white hat",
+      "book",
+      "dark sunglasses",
+      "yellow helmet"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "chef",
+      "teacher",
+      "pilot"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "chef",
+      "teacher",
+      "pilot"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "chef",
+      "teacher",
+      "pilot"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 15,
+    "repro_mean_abs_pixel_diff": 0.010436713695526123,
+    "seed": 1234,
+    "subjects": [
+      "chef",
+      "cyclist",
+      "pilot",
+      "teacher"
+    ]
+  },
+  "150": {
+    "attributes": [
+      "red apron",
+      "white hat",
+      "book"
+    ],
+    "exact_pooled_owners": [
+      "barista",
+      "chef",
+      "teacher"
+    ],
+    "grid_pooled_owners": [
+      "barista",
+      "chef",
+      "teacher"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "barista",
+      "chef",
+      "teacher"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 150,
+    "repro_mean_abs_pixel_diff": 0.020541243255138397,
+    "seed": 101,
+    "subjects": [
+      "barista",
+      "chef",
+      "teacher"
+    ]
+  },
+  "154": {
+    "attributes": [
+      "red apron",
+      "yellow helmet",
+      "dark sunglasses"
+    ],
+    "exact_pooled_owners": [
+      "barista",
+      "cyclist",
+      "pilot"
+    ],
+    "grid_pooled_owners": [
+      "barista",
+      "cyclist",
+      "pilot"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "barista",
+      "cyclist",
+      "pilot"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 154,
+    "repro_mean_abs_pixel_diff": 0.01685570739209652,
+    "seed": 101,
+    "subjects": [
+      "barista",
+      "cyclist",
+      "pilot"
+    ]
+  },
+  "155": {
+    "attributes": [
+      "red apron",
+      "yellow helmet",
+      "book"
+    ],
+    "exact_pooled_owners": [
+      "barista",
+      "cyclist",
+      "teacher"
+    ],
+    "grid_pooled_owners": [
+      "barista",
+      "cyclist",
+      "teacher"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "barista",
+      "cyclist",
+      "teacher"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 155,
+    "repro_mean_abs_pixel_diff": 0.03237875923514366,
+    "seed": 101,
+    "subjects": [
+      "barista",
+      "cyclist",
+      "teacher"
+    ]
+  },
+  "157": {
+    "attributes": [
+      "red apron",
+      "shovel",
+      "dark sunglasses"
+    ],
+    "exact_pooled_owners": [
+      "barista",
+      "farmer",
+      "pilot"
+    ],
+    "grid_pooled_owners": [
+      "barista",
+      "farmer",
+      "pilot"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "barista",
+      "farmer",
+      "pilot"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 157,
+    "repro_mean_abs_pixel_diff": 0.010161626152694225,
+    "seed": 101,
+    "subjects": [
+      "barista",
+      "farmer",
+      "pilot"
+    ]
+  },
+  "158": {
+    "attributes": [
+      "red apron",
+      "shovel",
+      "book"
+    ],
+    "exact_pooled_owners": [
+      "barista",
+      "farmer",
+      "teacher"
+    ],
+    "grid_pooled_owners": [
+      "barista",
+      "farmer",
+      "teacher"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "barista",
+      "farmer",
+      "teacher"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 158,
+    "repro_mean_abs_pixel_diff": 0.03172510862350464,
+    "seed": 101,
+    "subjects": [
+      "barista",
+      "farmer",
+      "teacher"
+    ]
+  },
+  "161": {
+    "attributes": [
+      "red apron",
+      "dark sunglasses",
+      "book"
+    ],
+    "exact_pooled_owners": [
+      "barista",
+      "pilot",
+      "teacher"
+    ],
+    "grid_pooled_owners": [
+      "barista",
+      "pilot",
+      "teacher"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "barista",
+      "pilot",
+      "teacher"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 161,
+    "repro_mean_abs_pixel_diff": 0.02314099855720997,
+    "seed": 101,
+    "subjects": [
+      "barista",
+      "pilot",
+      "teacher"
+    ]
+  },
+  "162": {
+    "attributes": [
+      "white hat",
+      "yellow helmet",
+      "shovel"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "cyclist",
+      "farmer"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "cyclist",
+      "farmer"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "cyclist",
+      "farmer"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 162,
+    "repro_mean_abs_pixel_diff": 0.015529844909906387,
+    "seed": 101,
+    "subjects": [
+      "chef",
+      "cyclist",
+      "farmer"
+    ]
+  },
+  "163": {
+    "attributes": [
+      "pan",
+      "yellow helmet",
+      "shovel"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "cyclist",
+      "farmer"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "cyclist",
+      "farmer"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "cyclist",
+      "farmer"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 163,
+    "repro_mean_abs_pixel_diff": 0.026277005672454834,
+    "seed": 101,
+    "subjects": [
+      "chef",
+      "cyclist",
+      "farmer"
+    ]
+  },
+  "164": {
+    "attributes": [
+      "white hat",
+      "yellow helmet",
+      "blue gloves"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "cyclist",
+      "nurse"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "cyclist",
+      "nurse"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "cyclist",
+      "nurse"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 164,
+    "repro_mean_abs_pixel_diff": 0.009546060115098953,
+    "seed": 101,
+    "subjects": [
+      "chef",
+      "cyclist",
+      "nurse"
+    ]
+  },
+  "165": {
+    "attributes": [
+      "pan",
+      "yellow helmet",
+      "blue gloves"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "cyclist",
+      "nurse"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "cyclist",
+      "nurse"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "cyclist",
+      "nurse"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 165,
+    "repro_mean_abs_pixel_diff": 0.022593481466174126,
+    "seed": 101,
+    "subjects": [
+      "chef",
+      "cyclist",
+      "nurse"
+    ]
+  },
+  "166": {
+    "attributes": [
+      "white hat",
+      "yellow helmet",
+      "dark sunglasses"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "cyclist",
+      "pilot"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "cyclist",
+      "pilot"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "cyclist",
+      "pilot"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 166,
+    "repro_mean_abs_pixel_diff": 0.007050007581710815,
+    "seed": 101,
+    "subjects": [
+      "chef",
+      "cyclist",
+      "pilot"
+    ]
+  },
+  "167": {
+    "attributes": [
+      "red apron",
+      "white hat",
+      "yellow helmet",
+      "shovel"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "barista",
+      "cyclist",
+      "farmer"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "barista",
+      "cyclist",
+      "farmer"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "barista",
+      "cyclist",
+      "farmer"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 167,
+    "repro_mean_abs_pixel_diff": 0.007083073258399963,
+    "seed": 101,
+    "subjects": [
+      "barista",
+      "chef",
+      "cyclist",
+      "farmer"
+    ]
+  },
+  "17": {
+    "attributes": [
+      "yellow helmet",
+      "pan",
+      "book",
+      "blue gloves"
+    ],
+    "exact_pooled_owners": [
+      "teacher",
+      "chef",
+      "cyclist",
+      "nurse"
+    ],
+    "grid_pooled_owners": [
+      "teacher",
+      "chef",
+      "cyclist",
+      "nurse"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "teacher",
+      "chef",
+      "cyclist",
+      "nurse"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 17,
+    "repro_mean_abs_pixel_diff": 0.00613021245226264,
+    "seed": 42,
+    "subjects": [
+      "chef",
+      "cyclist",
+      "nurse",
+      "teacher"
+    ]
+  },
+  "171": {
+    "attributes": [
+      "red apron",
+      "white hat",
+      "yellow helmet",
+      "dark sunglasses"
+    ],
+    "exact_pooled_owners": [
+      "pilot",
+      "chef",
+      "cyclist",
+      "barista"
+    ],
+    "grid_pooled_owners": [
+      "pilot",
+      "chef",
+      "cyclist",
+      "barista"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "pilot",
+      "chef",
+      "cyclist",
+      "barista"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 171,
+    "repro_mean_abs_pixel_diff": 0.030178286135196686,
+    "seed": 101,
+    "subjects": [
+      "barista",
+      "chef",
+      "cyclist",
+      "pilot"
+    ]
+  },
+  "174": {
+    "attributes": [
+      "red apron",
+      "pan",
+      "yellow helmet",
+      "book"
+    ],
+    "exact_pooled_owners": [
+      "cyclist",
+      "chef",
+      "barista",
+      "teacher"
+    ],
+    "grid_pooled_owners": [
+      "cyclist",
+      "chef",
+      "barista",
+      "teacher"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "cyclist",
+      "chef",
+      "barista",
+      "teacher"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 174,
+    "repro_mean_abs_pixel_diff": 0.02285153605043888,
+    "seed": 101,
+    "subjects": [
+      "barista",
+      "chef",
+      "cyclist",
+      "teacher"
+    ]
+  },
+  "18": {
+    "attributes": [
+      "white hat",
+      "blue gloves"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "nurse"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "nurse"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "nurse"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 18,
+    "repro_mean_abs_pixel_diff": 0.005501159932464361,
+    "seed": 42,
+    "subjects": [
+      "chef",
+      "nurse"
+    ]
+  },
+  "183": {
+    "attributes": [
+      "red apron",
+      "white hat",
+      "blue gloves",
+      "book"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "chef",
+      "nurse",
+      "teacher"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "chef",
+      "nurse",
+      "teacher"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "chef",
+      "nurse",
+      "teacher"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 183,
+    "repro_mean_abs_pixel_diff": 0.11378040164709091,
+    "seed": 101,
+    "subjects": [
+      "barista",
+      "chef",
+      "nurse",
+      "teacher"
+    ]
+  },
+  "19": {
+    "attributes": [
+      "shovel",
+      "book"
+    ],
+    "exact_pooled_owners": [
+      "farmer",
+      "teacher"
+    ],
+    "grid_pooled_owners": [
+      "farmer",
+      "teacher"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "farmer",
+      "teacher"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 19,
+    "repro_mean_abs_pixel_diff": 0.050123412162065506,
+    "seed": 42,
+    "subjects": [
+      "farmer",
+      "teacher"
+    ]
+  },
+  "2": {
+    "attributes": [
+      "blue gloves",
+      "dark sunglasses"
+    ],
+    "exact_pooled_owners": [
+      "nurse",
+      "pilot"
+    ],
+    "grid_pooled_owners": [
+      "nurse",
+      "pilot"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "nurse",
+      "pilot"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 2,
+    "repro_mean_abs_pixel_diff": 0.06325819343328476,
+    "seed": 42,
+    "subjects": [
+      "nurse",
+      "pilot"
+    ]
+  },
+  "20": {
+    "attributes": [
+      "red apron",
+      "pan",
+      "blue gloves"
+    ],
+    "exact_pooled_owners": [
+      "barista",
+      "chef",
+      "nurse"
+    ],
+    "grid_pooled_owners": [
+      "barista",
+      "chef",
+      "nurse"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "barista",
+      "chef",
+      "nurse"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 20,
+    "repro_mean_abs_pixel_diff": 0.006978729274123907,
+    "seed": 42,
+    "subjects": [
+      "barista",
+      "chef",
+      "nurse"
+    ]
+  },
+  "202": {
+    "attributes": [
+      "red apron",
+      "yellow helmet",
+      "shovel",
+      "blue gloves"
+    ],
+    "exact_pooled_owners": [
+      "farmer",
+      "cyclist",
+      "barista",
+      "nurse"
+    ],
+    "grid_pooled_owners": [
+      "farmer",
+      "cyclist",
+      "barista",
+      "nurse"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "farmer",
+      "cyclist",
+      "barista",
+      "nurse"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 202,
+    "repro_mean_abs_pixel_diff": 0.012536418624222279,
+    "seed": 202,
+    "subjects": [
+      "barista",
+      "cyclist",
+      "farmer",
+      "nurse"
+    ]
+  },
+  "203": {
+    "attributes": [
+      "red apron",
+      "yellow helmet",
+      "shovel",
+      "dark sunglasses"
+    ],
+    "exact_pooled_owners": [
+      "barista",
+      "cyclist",
+      "pilot",
+      "farmer"
+    ],
+    "grid_pooled_owners": [
+      "barista",
+      "cyclist",
+      "pilot",
+      "farmer"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "barista",
+      "cyclist",
+      "pilot",
+      "farmer"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 203,
+    "repro_mean_abs_pixel_diff": 0.015404107980430126,
+    "seed": 101,
+    "subjects": [
+      "barista",
+      "cyclist",
+      "farmer",
+      "pilot"
+    ]
+  },
+  "204": {
+    "attributes": [
+      "red apron",
+      "yellow helmet",
+      "shovel",
+      "book"
+    ],
+    "exact_pooled_owners": [
+      "barista",
+      "cyclist",
+      "farmer",
+      "teacher"
+    ],
+    "grid_pooled_owners": [
+      "barista",
+      "cyclist",
+      "farmer",
+      "teacher"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "barista",
+      "cyclist",
+      "farmer",
+      "teacher"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 204,
+    "repro_mean_abs_pixel_diff": 0.019473403692245483,
+    "seed": 101,
+    "subjects": [
+      "barista",
+      "cyclist",
+      "farmer",
+      "teacher"
+    ]
+  },
+  "205": {
+    "attributes": [
+      "red apron",
+      "yellow helmet",
+      "blue gloves",
+      "dark sunglasses"
+    ],
+    "exact_pooled_owners": [
+      "barista",
+      "cyclist",
+      "nurse",
+      "pilot"
+    ],
+    "grid_pooled_owners": [
+      "barista",
+      "cyclist",
+      "nurse",
+      "pilot"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "barista",
+      "cyclist",
+      "nurse",
+      "pilot"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 205,
+    "repro_mean_abs_pixel_diff": 0.03221740946173668,
+    "seed": 202,
+    "subjects": [
+      "barista",
+      "cyclist",
+      "nurse",
+      "pilot"
+    ]
+  },
+  "206": {
+    "attributes": [
+      "red apron",
+      "yellow helmet",
+      "blue gloves",
+      "book"
+    ],
+    "exact_pooled_owners": [
+      "barista",
+      "teacher",
+      "nurse",
+      "cyclist"
+    ],
+    "grid_pooled_owners": [
+      "barista",
+      "teacher",
+      "nurse",
+      "cyclist"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "barista",
+      "teacher",
+      "nurse",
+      "cyclist"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 206,
+    "repro_mean_abs_pixel_diff": 0.011488628573715687,
+    "seed": 202,
+    "subjects": [
+      "barista",
+      "cyclist",
+      "nurse",
+      "teacher"
+    ]
+  },
+  "207": {
+    "attributes": [
+      "red apron",
+      "yellow helmet",
+      "dark sunglasses",
+      "book"
+    ],
+    "exact_pooled_owners": [
+      "barista",
+      "cyclist",
+      "pilot",
+      "teacher"
+    ],
+    "grid_pooled_owners": [
+      "barista",
+      "cyclist",
+      "pilot",
+      "teacher"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "barista",
+      "cyclist",
+      "pilot",
+      "teacher"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 207,
+    "repro_mean_abs_pixel_diff": 0.009248435497283936,
+    "seed": 202,
+    "subjects": [
+      "barista",
+      "cyclist",
+      "pilot",
+      "teacher"
+    ]
+  },
+  "208": {
+    "attributes": [
+      "red apron",
+      "shovel",
+      "blue gloves",
+      "dark sunglasses"
+    ],
+    "exact_pooled_owners": [
+      "barista",
+      "farmer",
+      "nurse",
+      "pilot"
+    ],
+    "grid_pooled_owners": [
+      "barista",
+      "farmer",
+      "nurse",
+      "pilot"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "barista",
+      "farmer",
+      "nurse",
+      "pilot"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 208,
+    "repro_mean_abs_pixel_diff": 0.01911885105073452,
+    "seed": 202,
+    "subjects": [
+      "barista",
+      "farmer",
+      "nurse",
+      "pilot"
+    ]
+  },
+  "209": {
+    "attributes": [
+      "red apron",
+      "shovel",
+      "blue gloves",
+      "book"
+    ],
+    "exact_pooled_owners": [
+      "nurse",
+      "farmer",
+      "teacher",
+      "barista"
+    ],
+    "grid_pooled_owners": [
+      "nurse",
+      "farmer",
+      "teacher",
+      "barista"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "nurse",
+      "farmer",
+      "teacher",
+      "barista"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 209,
+    "repro_mean_abs_pixel_diff": 0.012565885670483112,
+    "seed": 202,
+    "subjects": [
+      "barista",
+      "farmer",
+      "nurse",
+      "teacher"
+    ]
+  },
+  "21": {
+    "attributes": [
+      "yellow helmet",
+      "dark sunglasses",
+      "book"
+    ],
+    "exact_pooled_owners": [
+      "cyclist",
+      "pilot",
+      "teacher"
+    ],
+    "grid_pooled_owners": [
+      "cyclist",
+      "pilot",
+      "teacher"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "cyclist",
+      "pilot",
+      "teacher"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 21,
+    "repro_mean_abs_pixel_diff": 0.015798183158040047,
+    "seed": 2024,
+    "subjects": [
+      "cyclist",
+      "pilot",
+      "teacher"
+    ]
+  },
+  "210": {
+    "attributes": [
+      "red apron",
+      "shovel",
+      "dark sunglasses",
+      "book"
+    ],
+    "exact_pooled_owners": [
+      "barista",
+      "farmer",
+      "pilot",
+      "teacher"
+    ],
+    "grid_pooled_owners": [
+      "barista",
+      "farmer",
+      "pilot",
+      "teacher"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "barista",
+      "farmer",
+      "pilot",
+      "teacher"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 210,
+    "repro_mean_abs_pixel_diff": 0.015091811306774616,
+    "seed": 202,
+    "subjects": [
+      "barista",
+      "farmer",
+      "pilot",
+      "teacher"
+    ]
+  },
+  "211": {
+    "attributes": [
+      "red apron",
+      "blue gloves",
+      "dark sunglasses",
+      "book"
+    ],
+    "exact_pooled_owners": [
+      "teacher",
+      "nurse",
+      "pilot",
+      "barista"
+    ],
+    "grid_pooled_owners": [
+      "teacher",
+      "nurse",
+      "pilot",
+      "barista"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "teacher",
+      "nurse",
+      "pilot",
+      "barista"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 211,
+    "repro_mean_abs_pixel_diff": 0.01022960152477026,
+    "seed": 202,
+    "subjects": [
+      "barista",
+      "nurse",
+      "pilot",
+      "teacher"
+    ]
+  },
+  "212": {
+    "attributes": [
+      "white hat",
+      "yellow helmet",
+      "shovel",
+      "blue gloves"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "cyclist",
+      "farmer",
+      "nurse"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "cyclist",
+      "farmer",
+      "nurse"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "cyclist",
+      "farmer",
+      "nurse"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 212,
+    "repro_mean_abs_pixel_diff": 0.030253589153289795,
+    "seed": 101,
+    "subjects": [
+      "chef",
+      "cyclist",
+      "farmer",
+      "nurse"
+    ]
+  },
+  "213": {
+    "attributes": [
+      "pan",
+      "yellow helmet",
+      "shovel",
+      "blue gloves"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "cyclist",
+      "farmer",
+      "nurse"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "cyclist",
+      "farmer",
+      "nurse"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "cyclist",
+      "farmer",
+      "nurse"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 213,
+    "repro_mean_abs_pixel_diff": 0.006239781621843576,
+    "seed": 101,
+    "subjects": [
+      "chef",
+      "cyclist",
+      "farmer",
+      "nurse"
+    ]
+  },
+  "214": {
+    "attributes": [
+      "white hat",
+      "yellow helmet",
+      "shovel",
+      "dark sunglasses"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "cyclist",
+      "pilot",
+      "farmer"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "cyclist",
+      "pilot",
+      "farmer"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "cyclist",
+      "pilot",
+      "farmer"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 214,
+    "repro_mean_abs_pixel_diff": 0.029442762956023216,
+    "seed": 101,
+    "subjects": [
+      "chef",
+      "cyclist",
+      "farmer",
+      "pilot"
+    ]
+  },
+  "215": {
+    "attributes": [
+      "pan",
+      "yellow helmet",
+      "shovel",
+      "dark sunglasses"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "cyclist",
+      "pilot",
+      "pilot"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "cyclist",
+      "pilot",
+      "pilot"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "cyclist",
+      "pilot",
+      "pilot"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 215,
+    "repro_mean_abs_pixel_diff": 0.02854415960609913,
+    "seed": 202,
+    "subjects": [
+      "chef",
+      "cyclist",
+      "farmer",
+      "pilot"
+    ]
+  },
+  "217": {
+    "attributes": [
+      "pan",
+      "yellow helmet",
+      "shovel",
+      "book"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "cyclist",
+      "teacher",
+      "farmer"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "cyclist",
+      "teacher",
+      "farmer"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "cyclist",
+      "teacher",
+      "farmer"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 217,
+    "repro_mean_abs_pixel_diff": 0.00986031349748373,
+    "seed": 101,
+    "subjects": [
+      "chef",
+      "cyclist",
+      "farmer",
+      "teacher"
+    ]
+  },
+  "218": {
+    "attributes": [
+      "white hat",
+      "yellow helmet",
+      "blue gloves",
+      "dark sunglasses"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "cyclist",
+      "nurse",
+      "pilot"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "cyclist",
+      "nurse",
+      "pilot"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "cyclist",
+      "nurse",
+      "pilot"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 218,
+    "repro_mean_abs_pixel_diff": 0.012864917516708374,
+    "seed": 202,
+    "subjects": [
+      "chef",
+      "cyclist",
+      "nurse",
+      "pilot"
+    ]
+  },
+  "219": {
+    "attributes": [
+      "pan",
+      "yellow helmet",
+      "blue gloves",
+      "dark sunglasses"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "cyclist",
+      "nurse",
+      "pilot"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "cyclist",
+      "nurse",
+      "pilot"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "cyclist",
+      "nurse",
+      "pilot"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 219,
+    "repro_mean_abs_pixel_diff": 0.009753580205142498,
+    "seed": 202,
+    "subjects": [
+      "chef",
+      "cyclist",
+      "nurse",
+      "pilot"
+    ]
+  },
+  "22": {
+    "attributes": [
+      "white hat",
+      "shovel",
+      "blue gloves",
+      "book"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "nurse",
+      "nurse",
+      "teacher"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "nurse",
+      "nurse",
+      "teacher"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "nurse",
+      "nurse",
+      "teacher"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 22,
+    "repro_mean_abs_pixel_diff": 0.01138414815068245,
+    "seed": 42,
+    "subjects": [
+      "chef",
+      "farmer",
+      "nurse",
+      "teacher"
+    ]
+  },
+  "220": {
+    "attributes": [
+      "white hat",
+      "yellow helmet",
+      "blue gloves",
+      "book"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "teacher",
+      "nurse",
+      "cyclist"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "teacher",
+      "nurse",
+      "cyclist"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "teacher",
+      "nurse",
+      "cyclist"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 220,
+    "repro_mean_abs_pixel_diff": 0.019140688702464104,
+    "seed": 303,
+    "subjects": [
+      "chef",
+      "cyclist",
+      "nurse",
+      "teacher"
+    ]
+  },
+  "221": {
+    "attributes": [
+      "pan",
+      "yellow helmet",
+      "blue gloves",
+      "book"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "teacher",
+      "cyclist",
+      "nurse"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "teacher",
+      "cyclist",
+      "nurse"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "teacher",
+      "cyclist",
+      "nurse"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 221,
+    "repro_mean_abs_pixel_diff": 0.06697078794240952,
+    "seed": 202,
+    "subjects": [
+      "chef",
+      "cyclist",
+      "nurse",
+      "teacher"
+    ]
+  },
+  "223": {
+    "attributes": [
+      "pan",
+      "yellow helmet",
+      "dark sunglasses",
+      "book"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "pilot",
+      "cyclist",
+      "teacher"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "pilot",
+      "cyclist",
+      "teacher"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "pilot",
+      "cyclist",
+      "teacher"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 223,
+    "repro_mean_abs_pixel_diff": 0.025800226256251335,
+    "seed": 303,
+    "subjects": [
+      "chef",
+      "cyclist",
+      "pilot",
+      "teacher"
+    ]
+  },
+  "224": {
+    "attributes": [
+      "white hat",
+      "shovel",
+      "blue gloves",
+      "dark sunglasses"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "farmer",
+      "nurse",
+      "pilot"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "farmer",
+      "nurse",
+      "pilot"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "farmer",
+      "nurse",
+      "pilot"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 224,
+    "repro_mean_abs_pixel_diff": 0.04048939421772957,
+    "seed": 101,
+    "subjects": [
+      "chef",
+      "farmer",
+      "nurse",
+      "pilot"
+    ]
+  },
+  "226": {
+    "attributes": [
+      "white hat",
+      "shovel",
+      "blue gloves",
+      "book"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "farmer",
+      "nurse",
+      "teacher"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "farmer",
+      "nurse",
+      "teacher"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "farmer",
+      "nurse",
+      "teacher"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 226,
+    "repro_mean_abs_pixel_diff": 0.04421461001038551,
+    "seed": 202,
+    "subjects": [
+      "chef",
+      "farmer",
+      "nurse",
+      "teacher"
+    ]
+  },
+  "227": {
+    "attributes": [
+      "pan",
+      "shovel",
+      "blue gloves",
+      "book"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "farmer",
+      "nurse",
+      "teacher"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "farmer",
+      "nurse",
+      "teacher"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "farmer",
+      "nurse",
+      "teacher"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 227,
+    "repro_mean_abs_pixel_diff": 0.03613372519612312,
+    "seed": 101,
+    "subjects": [
+      "chef",
+      "farmer",
+      "nurse",
+      "teacher"
+    ]
+  },
+  "23": {
+    "attributes": [
+      "red apron",
+      "yellow helmet",
+      "pan",
+      "dark sunglasses"
+    ],
+    "exact_pooled_owners": [
+      "barista",
+      "cyclist",
+      "pilot",
+      "pilot"
+    ],
+    "grid_pooled_owners": [
+      "barista",
+      "cyclist",
+      "pilot",
+      "pilot"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "barista",
+      "cyclist",
+      "pilot",
+      "pilot"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 23,
+    "repro_mean_abs_pixel_diff": 0.024163296446204185,
+    "seed": 2024,
+    "subjects": [
+      "barista",
+      "chef",
+      "cyclist",
+      "pilot"
+    ]
+  },
+  "3": {
+    "attributes": [
+      "book",
+      "yellow helmet"
+    ],
+    "exact_pooled_owners": [
+      "teacher",
+      "cyclist"
+    ],
+    "grid_pooled_owners": [
+      "teacher",
+      "cyclist"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "teacher",
+      "cyclist"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 3,
+    "repro_mean_abs_pixel_diff": 0.030566001310944557,
+    "seed": 42,
+    "subjects": [
+      "cyclist",
+      "teacher"
+    ]
+  },
+  "4": {
+    "attributes": [
+      "blue gloves",
+      "shovel"
+    ],
+    "exact_pooled_owners": [
+      "nurse",
+      "farmer"
+    ],
+    "grid_pooled_owners": [
+      "nurse",
+      "farmer"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "nurse",
+      "farmer"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 4,
+    "repro_mean_abs_pixel_diff": 0.009668800048530102,
+    "seed": 42,
+    "subjects": [
+      "farmer",
+      "nurse"
+    ]
+  },
+  "5": {
+    "attributes": [
+      "dark sunglasses",
+      "red apron"
+    ],
+    "exact_pooled_owners": [
+      "pilot",
+      "barista"
+    ],
+    "grid_pooled_owners": [
+      "pilot",
+      "barista"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "pilot",
+      "barista"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 5,
+    "repro_mean_abs_pixel_diff": 0.01292725745588541,
+    "seed": 42,
+    "subjects": [
+      "barista",
+      "pilot"
+    ]
+  },
+  "6": {
+    "attributes": [
+      "red apron",
+      "yellow helmet",
+      "white hat"
+    ],
+    "exact_pooled_owners": [
+      "barista",
+      "cyclist",
+      "chef"
+    ],
+    "grid_pooled_owners": [
+      "barista",
+      "cyclist",
+      "chef"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "barista",
+      "cyclist",
+      "chef"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 6,
+    "repro_mean_abs_pixel_diff": 0.01018745917826891,
+    "seed": 42,
+    "subjects": [
+      "barista",
+      "chef",
+      "cyclist"
+    ]
+  },
+  "7": {
+    "attributes": [
+      "pan",
+      "shovel",
+      "blue gloves"
+    ],
+    "exact_pooled_owners": [
+      "chef",
+      "farmer",
+      "nurse"
+    ],
+    "grid_pooled_owners": [
+      "chef",
+      "farmer",
+      "nurse"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "chef",
+      "farmer",
+      "nurse"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 7,
+    "repro_mean_abs_pixel_diff": 0.011272032745182514,
+    "seed": 42,
+    "subjects": [
+      "chef",
+      "farmer",
+      "nurse"
+    ]
+  },
+  "8": {
+    "attributes": [
+      "dark sunglasses",
+      "book",
+      "red apron"
+    ],
+    "exact_pooled_owners": [
+      "pilot",
+      "teacher",
+      "barista"
+    ],
+    "grid_pooled_owners": [
+      "pilot",
+      "teacher",
+      "barista"
+    ],
+    "layer_order": [
+      "transformer_blocks.0.attn.processor",
+      "transformer_blocks.1.attn.processor",
+      "transformer_blocks.2.attn.processor",
+      "transformer_blocks.3.attn.processor",
+      "transformer_blocks.4.attn.processor",
+      "transformer_blocks.5.attn.processor",
+      "transformer_blocks.6.attn.processor",
+      "transformer_blocks.7.attn.processor",
+      "transformer_blocks.8.attn.processor",
+      "transformer_blocks.9.attn.processor",
+      "transformer_blocks.10.attn.processor",
+      "transformer_blocks.11.attn.processor",
+      "transformer_blocks.12.attn.processor",
+      "transformer_blocks.13.attn.processor",
+      "transformer_blocks.14.attn.processor",
+      "transformer_blocks.15.attn.processor",
+      "transformer_blocks.16.attn.processor",
+      "transformer_blocks.17.attn.processor",
+      "transformer_blocks.18.attn.processor"
+    ],
+    "manifest_owners": [
+      "pilot",
+      "teacher",
+      "barista"
+    ],
+    "max_steps_early": 12,
+    "n_heads": 24,
+    "n_steps": 25,
+    "pooled_owner_grid_matches_manifest": true,
+    "pooled_owner_matches_manifest": true,
+    "prompt_id": 8,
+    "repro_mean_abs_pixel_diff": 0.05709036812186241,
+    "seed": 42,
+    "subjects": [
+      "barista",
+      "pilot",
+      "teacher"
+    ]
+  }
+}
